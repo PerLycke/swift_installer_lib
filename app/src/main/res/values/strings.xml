@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<resources>
+    <string name="app_name">Swift Installer</string>
+    <string name="main_help_desc">Please help us improve the theme by letting us know what issues you have</string>
+    <string name="main_help_title">Bugs? Report them here</string>
+    <string name="main_install_desc">Install separate or all overlays here</string>
+    <string name="main_install_title">Install / Uninstall overlays</string>
+    <string name="main_modify_accent_desc">Modify accent color for already installed overlays</string>
+    <string name="main_modify_accent_title">Accent</string>
+</resources>
