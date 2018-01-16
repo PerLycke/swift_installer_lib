@@ -6,4 +6,6 @@
 
     <dimen name="palette_width">30dp</dimen>
     <dimen name="palette_column">35dp</dimen>
+    <dimen name="palette_margin">6dp</dimen>
+    <item name="dialog_stroke_width" type="dimen" format="float">2.0px</item>
 </resources>

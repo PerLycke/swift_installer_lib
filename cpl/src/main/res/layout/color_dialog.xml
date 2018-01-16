@@ -236,11 +236,14 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/divider"
             android:layout_marginBottom="@dimen/common_margin"
-            android:paddingStart="@dimen/common_margin"
-            android:paddingLeft="@dimen/common_margin"
+            android:paddingLeft="14dp"
+            android:paddingStart="14dp"
+            android:paddingRight="14dp"
+            android:paddingEnd="14dp"
             android:text="@string/palette"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-condensed" />
 
         <GridView
             android:id="@+id/palette"
@@ -258,6 +261,7 @@
     <TextView
         android:id="@+id/cancel_button"
         style="@style/DialogButton"
+        android:textColor="@android:color/white"
         android:text="@android:string/cancel"
         android:layout_below="@id/palette_container"
         android:layout_toStartOf="@+id/ok_button"
@@ -266,6 +270,7 @@
     <TextView
         android:id="@+id/ok_button"
         style="@style/DialogButton"
+        android:textColor="@android:color/white"
         android:text="@android:string/ok"
         android:layout_below="@id/palette_container"
         android:layout_alignParentEnd="true"

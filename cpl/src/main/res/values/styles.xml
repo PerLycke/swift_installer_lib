@@ -17,6 +17,7 @@
     <style name="ColorPickerDialog">
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@drawable/dialog_bg</item>
     </style>
 
     <style name="DialogButton" parent="android:TextAppearance.DeviceDefault.Widget.Button">
