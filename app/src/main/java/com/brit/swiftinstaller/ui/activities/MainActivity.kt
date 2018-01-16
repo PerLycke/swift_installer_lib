@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 //        supportActionBar?.setSubtitle("0 / 200 overlays ic_install")
 
         installTile.setOnClickListener {
-            startActivity(Intent(this, AppListActivity::class.java))
+            startActivity(Intent(this, OverlayActivity::class.java))
         }
 
         accentTile.setOnClickListener {

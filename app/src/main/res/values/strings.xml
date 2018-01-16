@@ -7,4 +7,12 @@
     <string name="main_install_title">Install / Uninstall overlays</string>
     <string name="main_modify_accent_desc">Modify accent color for already installed overlays</string>
     <string name="main_modify_accent_title">Accent</string>
+
+    <string name="inactive_title">Inactive</string>
+    <string name="active_title">Active</string>
+    <string name="error_title">Error</string>
+
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <string name="tab_text">Tab %1$d</string>
 </resources>
