@@ -5,7 +5,15 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/background_main</item>
         <item name="actionOverflowMenuStyle">@style/PopupMenuOverflow</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
+
+    <style name="AppDialogTheme" parent="Theme.AppCompat.Dialog">
+        <item name="windowActionBar">false</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+    </style>
+
+
     <style name="ToolbarTitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">17.0dip</item>
         <item name="android:textColor">#d9ffffff</item>

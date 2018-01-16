@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.brit.swiftinstaller.MainActivity"
+    tools:context="com.brit.swiftinstaller.ui.activities.MainActivity"
     tools:showIn="@layout/activity_main">
 
     <ImageView
@@ -156,7 +156,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:fontFamily="sans-serif-condensed"
-        android:text="current :"
+        android:text="current : #"
         android:textColor="@android:color/white"
         android:textSize="11sp"
         android:textStyle="bold"
@@ -175,7 +175,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:fontFamily="sans-serif-condensed"
-        android:text=" GREEN"
+        android:text=" Accent"
         android:textColor="#47AE84"
         android:textSize="11sp"
         android:textStyle="bold"

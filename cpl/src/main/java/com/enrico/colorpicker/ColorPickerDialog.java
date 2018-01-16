@@ -2,6 +2,7 @@ package com.enrico.colorpicker;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
@@ -40,12 +41,13 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
     private EditText mGreen;
     private EditText mBlue;
 
-    private ColorSeletectedListener mListener;
+    private ColorPickerDialogListener mListener;
     private boolean mUpdating = false;
 
-    public ColorPickerDialog(@NonNull Context context, ColorSeletectedListener listener) {
+    public ColorPickerDialog(@NonNull Context context, ColorPickerDialogListener listener) {
         super(new ContextThemeWrapper(context, R.style.ColorPickerDialog));
         if (getActionBar() != null) getActionBar().hide();
+        setCanceledOnTouchOutside(true);
 
         mListener = listener;
 
@@ -145,14 +147,13 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.colorPicked(mColor);
+                mListener.colorPicked("", mColor);
                 dismiss();
             }
         });
 
         mView = view;
     }
-
     private static boolean isDarkColor(int color) {
         double darkness = 1 - (0.299 * Color.red(color)
                 + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
@@ -170,13 +171,17 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
     }
 
     @Override
+    public void dismiss() {
+        super.dismiss();
+        mListener.dismiss();
+    }
+
+    @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
-        Log.d("TEST", "width - " + mView.getMeasuredWidth());
     }
 
     private void updateColor(int color, boolean force) {
-        Log.d("TEST", "color - " + color);
         if ((mColor == color && !force) || mUpdating) {
             return;
         }
@@ -241,8 +246,9 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
     public void onStopTrackingTouch(SeekBar seekBar) {
     }
 
-    public interface ColorSeletectedListener {
-        void colorPicked(int color);
+    public interface ColorPickerDialogListener {
+        void colorPicked(String key, int color);
+        void dismiss();
     }
 
     private class PaletteAdapter extends BaseAdapter {

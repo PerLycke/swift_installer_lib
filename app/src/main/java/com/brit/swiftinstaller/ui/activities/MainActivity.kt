@@ -1,7 +1,6 @@
-package com.brit.swiftinstaller
+package com.brit.swiftinstaller.ui.activities
 
 import android.content.Intent
-import android.content.pm.ApplicationInfo
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.app.ActionBar
@@ -9,6 +8,8 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.utils.getAccentColor
 import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -22,9 +23,19 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setTitle(R.string.app_name)
 //        supportActionBar?.setSubtitle("0 / 200 overlays ic_install")
 
-        installTile.setOnClickListener { view ->
+        installTile.setOnClickListener {
             startActivity(Intent(this, AppListActivity::class.java))
         }
+
+        accentTile.setOnClickListener {
+            startActivity(Intent(this, AccentActivity::class.java))
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        currentAccent.setTextColor(getAccentColor(this))
+        currentAccent.text = String.format("%06x", getAccentColor(this))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
