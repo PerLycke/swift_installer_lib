@@ -1,16 +1,29 @@
 package com.brit.swiftinstaller.ui.activities
 
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageInfo
+import android.content.pm.PackageItemInfo
+import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.view.PagerAdapter
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutCompat
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import com.brit.swiftinstaller.R
+import kotlinx.android.synthetic.main.app_item.*
+import kotlinx.android.synthetic.main.app_list_activity.*
 import kotlinx.android.synthetic.main.fragment_main.view.*
 import kotlinx.android.synthetic.main.overlay_activity.*
 import kotlinx.android.synthetic.main.tab_layout.*
@@ -19,11 +32,38 @@ class OverlayActivity : AppCompatActivity() {
 
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
 
+    private var mApps: HashMap<Int, ArrayList<AppItem>> = HashMap()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.overlay_activity)
 
         setSupportActionBar(toolbar)
+
+        mApps.put(0, ArrayList())
+        mApps.put(1, ArrayList())
+        mApps.put(2, ArrayList())
+        var i: Int = 0
+        for (pn: String in assets.list("overlays")) {
+            Log.d("TEST", "pn - " + pn)
+            var info: ApplicationInfo? = null
+            var pInfo: PackageInfo? = null
+            try {
+                info = packageManager.getApplicationInfo(pn, PackageManager.GET_META_DATA)
+                pInfo = packageManager.getPackageInfo(pn, 0)
+            } catch (e: PackageManager.NameNotFoundException) {}
+            if (info != null) {
+                val item = AppItem()
+                item.icon = info.loadIcon(packageManager)
+                item.title = info.loadLabel(packageManager) as String
+                item.version = pInfo!!.versionCode
+                mApps.get(i)!!.add(item)
+                if (i == 2)
+                    i = 0
+                else
+                    i++
+            }
+        }
 
         mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
 
@@ -33,44 +73,85 @@ class OverlayActivity : AppCompatActivity() {
     }
 
     inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
-        override fun getItem(position: Int): Fragment {
-            return PlaceholderFragment.newInstance(position + 1)
+
+        var mFragments: ArrayList<PlaceholderFragment> = ArrayList()
+
+        init {
+            mFragments.add(PlaceholderFragment())
+            mFragments.get(0).setAppList(mApps.get(0)!!)
+            mFragments.add(PlaceholderFragment())
+            mFragments.get(1).setAppList(mApps.get(1)!!)
+            mFragments.add(PlaceholderFragment())
+            mFragments.get(2).setAppList(mApps.get(2)!!)
         }
+
+        override fun getItem(position: Int): Fragment {
+            return mFragments.get(position)
+        }
+
         override fun getCount(): Int {
+            // Show 3 total pages.
             return 3
         }
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    class PlaceholderFragment : Fragment() {
+    inner class AppItem {
+        var title: String = ""
+        var version: Int = 0
+        var icon: Drawable? = null
+    }
 
-        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                                  savedInstanceState: Bundle?): View? {
-            val rootView = inflater.inflate(R.layout.fragment_main, container, false)
-            rootView.section_label.text = getString(R.string.section_format, arguments!!.getInt(ARG_SECTION_NUMBER))
-            return rootView
+    class PlaceholderFragment: Fragment() {
+
+        var mApps: ArrayList<AppItem> = ArrayList()
+
+        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+            return inflater.inflate(R.layout.app_list_activity, container, false)
         }
 
-        companion object {
-            /**
-             * The fragment argument representing the section number for this
-             * fragment.
-             */
-            private val ARG_SECTION_NUMBER = "section_number"
+        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+            super.onViewCreated(view, savedInstanceState)
+            appListView.adapter = AppAdapter()
+            appListView.layoutManager = LinearLayoutManager(activity)
+        }
 
-            /**
-             * Returns a new instance of this fragment for the given section
-             * number.
-             */
-            fun newInstance(sectionNumber: Int): PlaceholderFragment {
-                val fragment = PlaceholderFragment()
-                val args = Bundle()
-                args.putInt(ARG_SECTION_NUMBER, sectionNumber)
-                fragment.arguments = args
-                return fragment
+        fun setAppList(apps: ArrayList<AppItem>) {
+            mApps.clear()
+            mApps.addAll(apps)
+            if (appListView != null) {
+                appListView.adapter.notifyDataSetChanged()
             }
+        }
+
+        inner class AppAdapter : RecyclerView.Adapter<AppAdapter.ViewHolder>() {
+            override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
+                return ViewHolder(LayoutInflater.from(activity).inflate(
+                        R.layout.app_item, parent, false))
+            }
+
+            override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+                holder.bindAppItem(mApps.get(position))
+            }
+
+            override fun getItemCount(): Int {
+                return mApps.size
+            }
+
+            inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
+                var appName: TextView
+                var appIcon: ImageView
+
+                init {
+                    appName = view.findViewById(R.id.appItemName)
+                    appIcon = view.findViewById(R.id.appItemImage)
+                }
+
+                fun bindAppItem(item: AppItem) {
+                    appName.text = item.title
+                    appIcon.setImageDrawable(item.icon)
+                }
+            }
+
         }
     }
 }
