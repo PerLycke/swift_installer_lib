@@ -2,6 +2,6 @@
 <shape android:shape="rectangle"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <solid android:color="@color/dialog_bg_tint" />
-    <stroke android:width="@dimen/dialog_stroke_width" android:color="@color/dialog_stroke" />
+    <stroke android:width="2.0px" android:color="@color/dialog_stroke" />
     <corners android:radius="2dp" />
 </shape>
