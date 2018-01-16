@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         currentAccent.setTextColor(getAccentColor(this))
-        currentAccent.text = String.format("%06x", getAccentColor(this))
+        currentAccent.text = "#" + String.format("%06x", getAccentColor(this))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

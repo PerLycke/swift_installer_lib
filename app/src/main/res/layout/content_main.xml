@@ -156,7 +156,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:fontFamily="sans-serif-condensed"
-        android:text="current : #"
+        android:text="current : "
         android:textColor="@android:color/white"
         android:textSize="11sp"
         android:textStyle="bold"

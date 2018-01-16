@@ -11,6 +11,8 @@
     <string name="R" translatable="false">R</string>
     <string name="G" translatable="false">G</string>
     <string name="B" translatable="false">B</string>
+    <string name="rgb_default">255</string>
+    <string name="spacer_char">|</string>
 
     <!-- Colors names -->
     <string name="red_name">Red</string>

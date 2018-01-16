@@ -2,13 +2,11 @@ package com.enrico.colorpicker;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,19 +22,18 @@ import android.widget.TextView;
 public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChangeListener {
 
     private int mColor = Color.RED;
-    private View mView;
     private View mValue;
 
-    private SeekBar mAlphaSeekBar;
     private SeekBar mRedSeekBar;
     private SeekBar mGreenSeekBar;
     private SeekBar mBlueSeekBar;
 
     private TextView mHexText;
     private TextView mHashTag;
+    private TextView mSpacer1;
+    private TextView mSpacer2;
     private TextView mRGB;
     private EditText mHex;
-    private EditText mAlpha;
     private EditText mRed;
     private EditText mGreen;
     private EditText mBlue;
@@ -52,17 +49,18 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
         mListener = listener;
 
         View view = View.inflate(context, R.layout.color_dialog, null);
-        GridView paletteGrid = (GridView) view.findViewById(R.id.palette);
+        GridView paletteGrid = view.findViewById(R.id.palette);
 
         mValue = view.findViewById(R.id.values_view);
-        mHexText = (TextView) view.findViewById(R.id.hashtext);
-        mHashTag = (TextView) view.findViewById(R.id.hashtag);
-        mRGB = (TextView) view.findViewById(R.id.rgb);
-        mHex = (EditText) view.findViewById(R.id.hex);
-        mAlpha = (EditText) view.findViewById(R.id.alpha_edit);
-        mRed = (EditText) view.findViewById(R.id.red_edit);
-        mGreen = (EditText) view.findViewById(R.id.green_edit);
-        mBlue = (EditText) view.findViewById(R.id.blue_edit);
+        mHexText = view.findViewById(R.id.hashtext);
+        mHashTag = view.findViewById(R.id.hashtag);
+        mRGB = view.findViewById(R.id.rgb);
+        mHex = view.findViewById(R.id.hex);
+        mRed = view.findViewById(R.id.red_edit);
+        mGreen = view.findViewById(R.id.green_edit);
+        mBlue = view.findViewById(R.id.blue_edit);
+        mSpacer1 = view.findViewById(R.id.spacer_1);
+        mSpacer2 = view.findViewById(R.id.spacer_2);
 
         TextWatcher watcher = new TextWatcher() {
             @Override
@@ -71,13 +69,12 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int a, r, g, b;
+                int r, g, b;
                 try {
-                    a = Integer.parseInt(mAlpha.getText().toString());
                     r = Integer.parseInt(mRed.getText().toString());
                     g = Integer.parseInt(mGreen.getText().toString());
                     b = Integer.parseInt(mBlue.getText().toString());
-                    updateColor(Color.argb(a, r, g, b));
+                    updateColor(Color.rgb(r, g, b));
                 } catch (Exception ignored) {
                 }
             }
@@ -89,14 +86,10 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
 
         paletteGrid.setAdapter(new PaletteAdapter(getContext()));
 
-        mAlphaSeekBar = (SeekBar) view.findViewById(R.id.alpha_seekbar);
-        mRedSeekBar = (SeekBar) view.findViewById(R.id.red_seekbar);
-        mGreenSeekBar = (SeekBar) view.findViewById(R.id.green_seekbar);
-        mBlueSeekBar = (SeekBar) view.findViewById(R.id.blue_seekbar);
+        mRedSeekBar = view.findViewById(R.id.red_seekbar);
+        mGreenSeekBar = view.findViewById(R.id.green_seekbar);
+        mBlueSeekBar = view.findViewById(R.id.blue_seekbar);
 
-        mAlphaSeekBar.setOnSeekBarChangeListener(this);
-        mAlphaSeekBar.getProgressDrawable().setColorFilter(Color.DKGRAY, PorterDuff.Mode.SRC_IN);
-        mAlphaSeekBar.getThumb().setColorFilter(Color.DKGRAY, PorterDuff.Mode.SRC_IN);
         mRedSeekBar.setOnSeekBarChangeListener(this);
         mRedSeekBar.getProgressDrawable().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
         mRedSeekBar.getThumb().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
@@ -130,7 +123,6 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
             }
         });
 
-        mAlpha.addTextChangedListener(watcher);
         mRed.addTextChangedListener(watcher);
         mGreen.addTextChangedListener(watcher);
         mBlue.addTextChangedListener(watcher);
@@ -151,8 +143,6 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
                 dismiss();
             }
         });
-
-        mView = view;
     }
     private static boolean isDarkColor(int color) {
         double darkness = 1 - (0.299 * Color.red(color)
@@ -173,7 +163,9 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
     @Override
     public void dismiss() {
         super.dismiss();
-        mListener.dismiss();
+        if (mListener != null) {
+            mListener.dismiss();
+        }
     }
 
     @Override
@@ -193,15 +185,13 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
         mHexText.setTextColor(textColor);
         mHashTag.setTextColor(textColor);
         mRGB.setTextColor(textColor);
-        mAlpha.setTextColor(textColor);
         mRed.setTextColor(textColor);
         mGreen.setTextColor(textColor);
         mBlue.setTextColor(textColor);
+        mSpacer1.setTextColor(textColor);
+        mSpacer2.setTextColor(textColor);
         if (!mHex.getText().toString().equals(String.format("%06x", mColor))) {
             mHex.setText(String.format("%06x", mColor));
-        }
-        if (!mAlpha.getText().toString().equals(String.valueOf(Color.alpha(mColor)))) {
-            mAlpha.setText(String.valueOf(Color.alpha(mColor)));
         }
         if (!mRed.getText().toString().equals(String.valueOf(Color.red(mColor)))) {
             mRed.setText(String.valueOf(Color.red(mColor)));
@@ -212,7 +202,6 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
         if (!mBlue.getText().toString().equals(String.valueOf(Color.blue(mColor)))) {
             mBlue.setText(String.valueOf(Color.blue(mColor)));
         }
-        mAlphaSeekBar.setProgress(Color.alpha(mColor));
         mRedSeekBar.setProgress(Color.red(mColor));
         mBlueSeekBar.setProgress(Color.blue(mColor));
         mGreenSeekBar.setProgress(Color.green(mColor));
@@ -221,13 +210,10 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        int alpha = Color.alpha(mColor);
         int red = Color.red(mColor);
         int green = Color.green(mColor);
         int blue = Color.blue(mColor);
-        if (seekBar.getId() == R.id.alpha_seekbar) {
-            alpha = progress;
-        } else if (seekBar.getId() == R.id.red_seekbar) {
+        if (seekBar.getId() == R.id.red_seekbar) {
             red = progress;
         } else if (seekBar.getId() == R.id.green_seekbar) {
             green = progress;
@@ -235,7 +221,7 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
             blue = progress;
         }
 
-        updateColor(Color.argb(alpha, red, green, blue));
+        updateColor(Color.rgb(red, green, blue));
     }
 
     @Override
@@ -282,7 +268,7 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
                 convertView = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.palette_view, parent, false);
             }
-            ImageView iv = (ImageView) convertView.findViewById(R.id.icon);
+            ImageView iv = convertView.findViewById(R.id.icon);
             iv.setBackground(new CircleDrawable(mColors[position]));
             convertView.setTag(mColors[position]);
             convertView.setOnClickListener(new View.OnClickListener() {
