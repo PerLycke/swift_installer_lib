@@ -3,9 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="5dp"
-    android:background="@drawable/big_tile_bg">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/appItemName"
@@ -14,6 +12,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="56dp"
         android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-condensed"
         android:gravity="center_vertical"
         android:textColor="@android:color/white"
         android:textSize="18sp"
@@ -21,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="App Name"
-        tools:textColor="@android:color/black" />
+        tools:textColor="@android:color/white" />
 
     <!--    <CheckBox
             android:id="@+id/appItemCheckBox"

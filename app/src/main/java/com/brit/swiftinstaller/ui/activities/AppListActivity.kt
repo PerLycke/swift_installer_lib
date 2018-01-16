@@ -27,6 +27,7 @@ class AppListActivity : AppCompatActivity() {
         val myToolbar = findViewById<View>(R.id.my_toolbar) as Toolbar
         setSupportActionBar(myToolbar)
         getSupportActionBar()?.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setTitle("Overlays")
 
         val appList: ArrayList<ApplicationInfo> = arrayListOf()

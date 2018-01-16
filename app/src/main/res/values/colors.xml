@@ -2,13 +2,13 @@
 <resources>
     <color name="background_main">#16161c</color>
     <color name="big_tile_pressed_tint">#37373d</color>
-    <color name="big_tile_tint">#232329</color>
+    <color name="big_tile_tint">#202026</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="colorPrimary">#232329</color>
-    <color name="colorPrimaryDark">#232329</color>
+    <color name="colorPrimary">#202026</color>
+    <color name="colorPrimaryDark">#202026</color>
     <color name="small_info_pressed_tint">#37373d</color>
-    <color name="small_info_tint">#232329</color>
-    <color name="status_bar">#232329</color>
+    <color name="small_info_tint">#202026</color>
+    <color name="status_bar">#202026</color>
     <color name="stroke_red">#FF6868</color>
-    <color name="toolbar">#232329</color>
+    <color name="toolbar">#202026</color>
 </resources>
