@@ -1,0 +1,29 @@
+<resources>
+
+    <!-- Main theme -->
+    <string name="red_name">Rosso</string>
+    <string name="pink_name">Rosa</string>
+    <string name="purple_name">Viola</string>
+    <string name="deepPurple_name">Viola scuro</string>
+    <string name="indigo_name">Indaco</string>
+    <string name="blue_name">Blu</string>
+    <string name="lightBlue_name">Blu chiaro</string>
+    <string name="cyan_name">Ciano</string>
+    <string name="teal_name">Alzavola</string>
+    <string name="green_name">Verde</string>
+    <string name="lightGreen_name">Verde chiaro</string>
+    <string name="lime_name">Lime</string>
+    <string name="yellow_name">Giallo</string>
+    <string name="amber_name">Ambra</string>
+    <string name="orange_name">Arancio</string>
+    <string name="deepOrange_name">Arancio scuro</string>
+    <string name="brown_name">Marrone</string>
+    <string name="grey_name">Grigio</string>
+    <string name="blueGrey_name">Grigio blu</string>
+    <string name="darkGrey_name">Grigio scuro</string>
+
+    <string name="hex_error">Digita un codice hex di 6 valori</string>
+    <string name="aahex_error">Digita un codice hex di 2 valori</string>
+    <string name="rgb_error">Digita un valore tra 0 e 255</string>
+
+</resources>

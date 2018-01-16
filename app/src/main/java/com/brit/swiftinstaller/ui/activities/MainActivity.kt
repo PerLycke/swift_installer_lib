@@ -1,5 +1,7 @@
 package com.brit.swiftinstaller
 
+import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.app.ActionBar
@@ -7,6 +9,7 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,6 +21,10 @@ class MainActivity : AppCompatActivity() {
         getSupportActionBar()?.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE)
         supportActionBar?.setTitle(R.string.app_name)
 //        supportActionBar?.setSubtitle("0 / 200 overlays ic_install")
+
+        installTile.setOnClickListener { view ->
+            startActivity(Intent(this, AppListActivity::class.java))
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

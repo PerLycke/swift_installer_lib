@@ -1,0 +1,30 @@
+<resources>
+
+    <!-- Colors names -->
+    <string name="red_name">赤</string>
+    <string name="pink_name">ピンク</string>
+    <string name="purple_name">紫</string>
+    <string name="deepPurple_name">ディープパープル</string>
+    <string name="indigo_name">インディゴ</string>
+    <string name="blue_name">青</string>
+    <string name="lightBlue_name">ライトブルー</string>
+    <string name="cyan_name">シアン</string>
+    <string name="teal_name">ティール</string>
+    <string name="green_name">緑</string>
+    <string name="lightGreen_name">ライトグリーン</string>
+    <string name="lime_name">ライム</string>
+    <string name="yellow_name">黄</string>
+    <string name="amber_name">アンバー</string>
+    <string name="orange_name">オレンジ</string>
+    <string name="deepOrange_name">ディープオレンジ</string>
+    <string name="brown_name">茶</string>
+    <string name="grey_name">グレー</string>
+    <string name="blueGrey_name">ブルーグレー</string>
+    <string name="darkGrey_name">ダークグレー</string>
+
+    <!-- Warnings -->
+    <string name="hex_error">6桁の16進コードを入力してください</string>
+    <string name="aahex_error">2桁の16進コードを入力してください</string>
+    <string name="rgb_error">0～255の間で値を入力してください</string>
+
+</resources>

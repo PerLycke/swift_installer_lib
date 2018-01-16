@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FF3F51B5</color>
+    <color name="colorPrimaryDark">#FF303F9F</color>
+    <color name="colorAccent">#FFFF4081</color>
+
+    <!-- Color tags used for palette -->
+    <color name="red">#FFF44336</color>
+    <color name="pink">#FFE91E63</color>
+    <color name="purple">#FF9C27B0</color>
+    <color name="deepPurple">#FF673AB7</color>
+    <color name="indigo">#FF3F51B5</color>
+    <color name="blue">#FF2196F3</color>
+    <color name="lightBlue">#FF03A9F4</color>
+    <color name="cyan">#FF00BCD4</color>
+    <color name="teal">#FF009688</color>
+    <color name="green">#FF4CAF50</color>
+    <color name="lightGreen">#FF8BC34A</color>
+    <color name="lime">#FFCDDC39</color>
+    <color name="yellow">#FFFFEB3B</color>
+    <color name="amber">#FFFFC107</color>
+    <color name="orange">#FFFF9800</color>
+    <color name="deepOrange">#FFFE5621</color>
+    <color name="brown">#FF795548</color>
+    <color name="grey">#FF9E9E9E</color>
+    <color name="blueGrey">#FF607D8B</color>
+    <color name="darkGrey">#FF363F45</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Seekbar colors -->
+    <color name="seekRed">#FFFF0000</color>
+    <color name="seekGreen">#FF00FF00</color>
+    <color name="seekBlue">#FF0000FF</color>
+
+    <integer-array name="colors">
+        <item>@color/red</item>
+        <item>@color/pink</item>
+        <item>@color/purple</item>
+        <item>@color/deepPurple</item>
+        <item>@color/indigo</item>
+        <item>@color/blue</item>
+        <item>@color/lightBlue</item>
+        <item>@color/cyan</item>
+        <item>@color/teal</item>
+        <item>@color/green</item>
+        <item>@color/lightGreen</item>
+        <item>@color/lime</item>
+        <item>@color/yellow</item>
+        <item>@color/amber</item>
+        <item>@color/orange</item>
+        <item>@color/deepOrange</item>
+        <item>@color/brown</item>
+        <item>@color/grey</item>
+        <item>@color/blueGrey</item>
+        <item>@color/darkGrey</item>
+        <item>@color/white</item>
+    </integer-array>
+</resources>

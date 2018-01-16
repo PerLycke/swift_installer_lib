@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/values_view"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="135dp">
+
+        <TextView
+            android:id="@+id/hashtext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/common_margin"
+            android:layout_marginEnd="@dimen/hex_margin"
+            android:layout_marginRight="@dimen/hex_margin"
+            android:text="@string/hex"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/hashtag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/common_margin"
+            android:layout_marginEnd="@dimen/circles_margin"
+            android:layout_marginRight="@dimen/circles_margin"
+            android:layout_toEndOf="@+id/hashtext"
+            android:layout_toRightOf="@+id/hashtext"
+            android:text="@string/hashtag"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/hex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/common_margin"
+            android:layout_toEndOf="@+id/hashtag"
+            android:layout_toRightOf="@+id/hashtag"
+            android:background="@null"
+            android:digits="0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,A,B,C,D,E,F"
+            android:inputType="textCapCharacters|textNoSuggestions"
+            android:maxLength="8"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/rgb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/hashtag"
+            android:layout_marginBottom="@dimen/common_margin"
+            android:layout_marginEnd="@dimen/circles_margin"
+            android:layout_marginRight="@dimen/circles_margin"
+            android:text="@string/rgb"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/alpha_edit"
+            style="@style/ARGBEditText"
+            android:layout_below="@+id/hex"
+            android:layout_toEndOf="@+id/rgb"
+            android:layout_toRightOf="@+id/rgb" />
+
+        <EditText
+            android:id="@+id/red_edit"
+            style="@style/ARGBEditText"
+            android:layout_below="@+id/hex"
+            android:layout_toEndOf="@+id/alpha_edit"
+            android:layout_toRightOf="@+id/alpha_edit" />
+
+        <EditText
+            android:id="@+id/green_edit"
+            style="@style/ARGBEditText"
+            android:layout_below="@+id/hex"
+            android:layout_toEndOf="@+id/red_edit"
+            android:layout_toRightOf="@+id/red_edit" />
+
+        <EditText
+            android:id="@+id/blue_edit"
+            style="@style/ARGBEditText"
+            android:layout_below="@+id/hex"
+            android:layout_toEndOf="@+id/green_edit"
+            android:layout_toRightOf="@+id/green_edit" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/seek_view"
+        android:layout_below="@id/values_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
+        android:gravity="center">
+
+        <RelativeLayout
+            android:id="@+id/alphame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_margin"
+            android:layout_marginLeft="@dimen/activity_margin"
+            android:layout_marginStart="@dimen/activity_margin"
+            android:layout_marginTop="@dimen/activity_margin">
+
+            <TextView
+                android:id="@+id/aaa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/circles_margin"
+                android:layout_marginRight="@dimen/circles_margin"
+                android:text="@string/A"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <SeekBar
+                android:id="@+id/alpha_seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_toEndOf="@+id/aaa"
+                android:layout_toRightOf="@+id/aaa"
+                android:max="255" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/red_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/alphame"
+            android:layout_marginBottom="@dimen/circles_margin"
+            android:layout_marginLeft="@dimen/activity_margin"
+            android:layout_marginStart="@dimen/activity_margin">
+
+            <TextView
+                android:id="@+id/red"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/circles_margin"
+                android:layout_marginRight="@dimen/circles_margin"
+                android:text="@string/R"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <SeekBar
+                android:id="@+id/red_seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_toEndOf="@+id/red"
+                android:layout_toRightOf="@+id/red"
+                android:max="255" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/green_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/red_container"
+            android:layout_marginBottom="@dimen/circles_margin"
+            android:layout_marginLeft="@dimen/activity_margin"
+            android:layout_marginStart="@dimen/activity_margin">
+
+            <TextView
+                android:id="@+id/green"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/circles_margin"
+                android:layout_marginRight="@dimen/circles_margin"
+                android:text="@string/G"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <SeekBar
+                android:id="@+id/green_seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_toEndOf="@+id/green"
+                android:layout_toRightOf="@+id/green"
+                android:max="255" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/blue_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/green_container"
+            android:layout_marginBottom="@dimen/activity_margin"
+            android:layout_marginLeft="@dimen/activity_margin"
+            android:layout_marginStart="@dimen/activity_margin">
+
+            <TextView
+                android:id="@+id/blue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/circles_margin"
+                android:layout_marginRight="@dimen/circles_margin"
+                android:text="@string/B"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <SeekBar
+                android:id="@+id/blue_seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_toEndOf="@+id/blue"
+                android:layout_toRightOf="@+id/blue"
+                android:max="255"
+                android:tag="@color/seekBlue" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/palette_container"
+        android:layout_below="@id/seek_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="@dimen/circles_margin"
+            android:background="?android:attr/listDivider" />
+
+        <TextView
+            android:id="@+id/paletteText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/divider"
+            android:layout_marginBottom="@dimen/common_margin"
+            android:paddingStart="@dimen/common_margin"
+            android:paddingLeft="@dimen/common_margin"
+            android:text="@string/palette"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <GridView
+            android:id="@+id/palette"
+            android:numColumns="auto_fit"
+            android:columnWidth="35dp"
+            android:layout_below="@id/paletteText"
+            android:paddingStart="@dimen/common_margin"
+            android:paddingEnd="@dimen/common_margin"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/cancel_button"
+        style="@style/DialogButton"
+        android:text="@android:string/cancel"
+        android:layout_below="@id/palette_container"
+        android:layout_toStartOf="@+id/ok_button"
+        android:layout_toLeftOf="@+id/ok_button"/>
+
+    <TextView
+        android:id="@+id/ok_button"
+        style="@style/DialogButton"
+        android:text="@android:string/ok"
+        android:layout_below="@id/palette_container"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true" />
+
+</RelativeLayout>
