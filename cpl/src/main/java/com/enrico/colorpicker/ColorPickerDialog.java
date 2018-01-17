@@ -18,6 +18,9 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import java.util.Arrays;
+import java.util.List;
+
 @SuppressWarnings("WeakerAccess")
 public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChangeListener {
 
@@ -38,6 +41,9 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
     private EditText mGreen;
     private EditText mBlue;
 
+    private TextView mUserGridTitle;
+    private GridView mUserGridView;
+
     private ColorPickerDialogListener mListener;
     private boolean mUpdating = false;
 
@@ -50,6 +56,9 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
 
         View view = View.inflate(context, R.layout.color_dialog, null);
         GridView paletteGrid = view.findViewById(R.id.palette);
+
+        mUserGridTitle = view.findViewById(R.id.userPaletteText);
+        mUserGridView = view.findViewById(R.id.userPalette);
 
         mValue = view.findViewById(R.id.values_view);
         mHexText = view.findViewById(R.id.hashtext);
@@ -84,7 +93,7 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
             }
         };
 
-        paletteGrid.setAdapter(new PaletteAdapter(getContext()));
+        paletteGrid.setAdapter(new PaletteAdapter(getContext(), context.getResources().getIntArray(R.array.colors)));
 
         mRedSeekBar = view.findViewById(R.id.red_seekbar);
         mGreenSeekBar = view.findViewById(R.id.green_seekbar);
@@ -168,6 +177,14 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
         }
     }
 
+    public void setColors(int[] colors) {
+        if (colors != null && colors.length > 0) {
+            mUserGridTitle.setVisibility(View.VISIBLE);
+            mUserGridView.setVisibility(View.VISIBLE);
+            mUserGridView.setAdapter(new PaletteAdapter(getContext(), colors));
+        }
+    }
+
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -241,10 +258,10 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
 
         private int[] mColors;
 
-        private PaletteAdapter(Context context) {
+        private PaletteAdapter(Context context, int[] colors) {
             super();
 
-            mColors = context.getResources().getIntArray(R.array.colors);
+            mColors = colors;
         }
 
         @Override

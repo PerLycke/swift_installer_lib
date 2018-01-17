@@ -10,10 +10,11 @@ public class ColorPickerDialogFragment extends DialogFragment {
 
     private ColorPickerDialog.ColorPickerDialogListener mListener;
     private int mColor;
+    private int[] mColors;
 
-    public static void showColorPicker(AppCompatActivity activity,
+    public static ColorPickerDialogFragment showColorPicker(AppCompatActivity activity,
                                        ColorPickerDialog.ColorPickerDialogListener listener,
-                                       int color, String tag) {
+                                       int color, int[] colors, String tag) {
         ColorPickerDialogFragment fragment = new ColorPickerDialogFragment();
         if (listener != null) {
             fragment.mListener = listener;
@@ -29,7 +30,13 @@ public class ColorPickerDialogFragment extends DialogFragment {
             };
         }
         fragment.mColor = color;
+        fragment.setColors(colors);
         fragment.show(activity.getSupportFragmentManager(), tag);
+        return fragment;
+    }
+
+    public void setColors(int[] colors) {
+        mColors = colors;
     }
 
     @NonNull
@@ -38,6 +45,7 @@ public class ColorPickerDialogFragment extends DialogFragment {
         ColorPickerDialog dialog = new ColorPickerDialog(getContext(),
                 mListener);
         dialog.updateColor(mColor);
+        dialog.setColors(mColors);
         return dialog;
     }
 }

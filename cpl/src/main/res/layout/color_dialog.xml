@@ -206,10 +206,38 @@
             android:background="?android:attr/listDivider" />
 
         <TextView
-            android:id="@+id/paletteText"
+            android:id="@+id/userPaletteText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/divider"
+            android:layout_marginBottom="@dimen/common_margin"
+            android:paddingLeft="14dp"
+            android:paddingStart="14dp"
+            android:paddingRight="14dp"
+            android:paddingEnd="14dp"
+            android:text="Recent"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:fontFamily="sans-serif-condensed" />
+
+        <GridView
+            android:id="@+id/userPalette"
+            android:numColumns="auto_fit"
+            android:columnWidth="35dp"
+            android:layout_below="@id/userPaletteText"
+            android:paddingStart="@dimen/common_margin"
+            android:paddingEnd="@dimen/common_margin"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/paletteText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/userPalette"
             android:layout_marginBottom="@dimen/common_margin"
             android:paddingLeft="14dp"
             android:paddingStart="14dp"
