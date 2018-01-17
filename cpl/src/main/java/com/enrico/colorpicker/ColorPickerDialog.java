@@ -110,7 +110,7 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
         mBlueSeekBar.getThumb().setColorFilter(Color.BLUE, PorterDuff.Mode.SRC_IN);
 
         setContentView(view);
-        updateColor(mColor, true);
+        updateColor(mColor, true, true);
 
         mHex.addTextChangedListener(new TextWatcher() {
             @Override
@@ -121,8 +121,8 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 int color;
                 try {
-                    color = Integer.decode("0x" + s.toString());
-                    updateColor(color);
+                    color = Color.parseColor("#ff" + s.toString());
+                    updateColor(color, false, false);
                 } catch (Exception ignored) {
                 }
             }
@@ -161,7 +161,7 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
 
     @SuppressWarnings("WeakerAccess")
     public void updateColor(int color) {
-        updateColor(color, false);
+        updateColor(color, false, true);
     }
 
     @Override
@@ -190,7 +190,7 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
         super.onAttachedToWindow();
     }
 
-    private void updateColor(int color, boolean force) {
+    private void updateColor(int color, boolean force, boolean updateHexInput) {
         if ((mColor == color && !force) || mUpdating) {
             return;
         }
@@ -207,8 +207,9 @@ public class ColorPickerDialog extends Dialog implements SeekBar.OnSeekBarChange
         mBlue.setTextColor(textColor);
         mSpacer1.setTextColor(textColor);
         mSpacer2.setTextColor(textColor);
-        if (!mHex.getText().toString().equals(String.format("%06x", mColor))) {
-            mHex.setText(String.format("%06x", mColor));
+        if (!mHex.getText().toString().equals(
+                String.format("%06x", mColor).substring(2)) && updateHexInput) {
+            mHex.setText(String.format("%06x", mColor).substring(2));
         }
         if (!mRed.getText().toString().equals(String.valueOf(Color.red(mColor)))) {
             mRed.setText(String.valueOf(Color.red(mColor)));
