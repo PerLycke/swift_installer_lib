@@ -5,6 +5,7 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import android.os.AsyncTask
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
@@ -41,34 +42,14 @@ class OverlayActivity : AppCompatActivity() {
         mApps.put(0, ArrayList())
         mApps.put(1, ArrayList())
         mApps.put(2, ArrayList())
-        var i: Int = 0
-        for (pn: String in assets.list("overlays")) {
-            Log.d("TEST", "pn - " + pn)
-            var info: ApplicationInfo? = null
-            var pInfo: PackageInfo? = null
-            try {
-                info = packageManager.getApplicationInfo(pn, PackageManager.GET_META_DATA)
-                pInfo = packageManager.getPackageInfo(pn, 0)
-            } catch (e: PackageManager.NameNotFoundException) {
-            }
-            if (info != null) {
-                val item = AppItem()
-                item.icon = info.loadIcon(packageManager)
-                item.title = info.loadLabel(packageManager) as String
-                item.version = pInfo!!.versionCode
-                mApps.get(i)!!.add(item)
-                if (i == 2)
-                    i = 0
-                else
-                    i++
-            }
-        }
 
         mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
 
         container.adapter = mSectionsPagerAdapter
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
+
+        AppLoader().execute()
     }
 
     inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
@@ -86,6 +67,12 @@ class OverlayActivity : AppCompatActivity() {
 
         override fun getItem(position: Int): Fragment {
             return mFragments.get(position)
+        }
+
+        fun notifyFragmentDataSetChanged() {
+            for (i in mFragments.indices) {
+                mFragments.get(i).setAppList(mApps.get(i)!!)
+            }
         }
 
         override fun getCount(): Int {
@@ -164,5 +151,45 @@ class OverlayActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    inner class AppLoader: AsyncTask<Void, Void, Void>() {
+        var index : Int = 0
+        override fun doInBackground(vararg params: Void?): Void? {
+            for (pn: String in assets.list("overlays")) {
+                Log.d("TEST", "pn - " + pn)
+                var info: ApplicationInfo? = null
+                var pInfo: PackageInfo? = null
+                try {
+                    info = packageManager.getApplicationInfo(pn, PackageManager.GET_META_DATA)
+                    pInfo = packageManager.getPackageInfo(pn, 0)
+                } catch (e: PackageManager.NameNotFoundException) {
+                }
+                if (info != null) {
+                    val item = AppItem()
+                    item.icon = info.loadIcon(packageManager)
+                    item.title = info.loadLabel(packageManager) as String
+                    item.version = pInfo!!.versionCode
+                    mApps.get(index)!!.add(item)
+                    publishProgress()
+                    if (index == 2)
+                        index = 0
+                    else
+                        index++
+                }
+            }
+            return null
+        }
+
+        override fun onPostExecute(result: Void?) {
+            super.onPostExecute(result)
+            mSectionsPagerAdapter!!.notifyFragmentDataSetChanged()
+        }
+
+        override fun onProgressUpdate(vararg values: Void?) {
+            super.onProgressUpdate(*values)
+            mSectionsPagerAdapter!!.notifyFragmentDataSetChanged()
+        }
+
     }
 }
