@@ -1,7 +1,6 @@
 package com.brit.swiftinstaller.utils
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.preference.PreferenceManager
 
 fun getAccentColor(context: Context): Int {

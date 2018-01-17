@@ -13,7 +13,6 @@ import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.adapter.AppListAdapter
 import kotlinx.android.synthetic.main.app_list_activity.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 class AppListActivity : AppCompatActivity() {
 

@@ -11,8 +11,8 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import com.brit.swiftinstaller.ui.activities.AppListActivity
 import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.ui.activities.AppListActivity
 
 class AppListAdapter(val activity: AppListActivity, val packages: MutableList<ApplicationInfo>) :
         RecyclerView.Adapter<AppListAdapter.Holder>() {

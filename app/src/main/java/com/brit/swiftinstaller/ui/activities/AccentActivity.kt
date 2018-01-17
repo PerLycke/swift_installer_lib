@@ -1,7 +1,6 @@
 package com.brit.swiftinstaller.ui.activities
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
 import com.brit.swiftinstaller.utils.getAccentColor
 import com.brit.swiftinstaller.utils.setAccentColor
