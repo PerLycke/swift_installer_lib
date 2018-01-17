@@ -18,13 +18,15 @@
 
     <TextView
         android:id="@+id/installTxt"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
         android:fontFamily="sans-serif-condensed"
         android:text="@string/dialog_install"
         android:textColor="@android:color/white"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/dialogInstallIcon"
         app:layout_constraintTop_toTopOf="@+id/dialogInstallIcon" />
 
@@ -39,13 +41,15 @@
 
     <TextView
         android:id="@+id/uninstallTxt"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
         android:fontFamily="sans-serif-condensed"
         android:text="@string/dialog_uninstall"
         android:textColor="@android:color/white"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/dialogUninstallIcon"
         app:layout_constraintTop_toTopOf="@+id/dialogUninstallIcon" />
 
@@ -62,13 +66,15 @@
 
     <TextView
         android:id="@+id/updateTxt"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
         android:fontFamily="sans-serif-condensed"
         android:text="@string/dialog_update"
         android:textColor="@android:color/white"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/dialogUpdateIcon"
         app:layout_constraintTop_toTopOf="@+id/dialogUpdateIcon" />
 
