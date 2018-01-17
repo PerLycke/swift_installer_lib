@@ -3,8 +3,10 @@ package com.brit.swiftinstaller.ui.activities
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.getAccentColor
 import kotlinx.android.synthetic.main.content_main.*
@@ -15,7 +17,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
+        val myToolbar = findViewById<View>(R.id.my_toolbar) as Toolbar
+        setSupportActionBar(myToolbar)
 
         installTile.setOnClickListener {
             startActivity(Intent(this, OverlayActivity::class.java))
