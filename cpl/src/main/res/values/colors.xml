@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="dialog_bg_tint">#16161c</color>
+    <color name="cpl_dialog_bg_tint">#16161c</color>
+    <color name="cpl_dialog_stroke">#232329</color>
     <color name="colorPrimary">#FF3F51B5</color>
     <color name="colorPrimaryDark">#FF303F9F</color>
     <color name="colorAccent">#FFFF4081</color>
+
+    <!-- Minimal palette -->
+    <color name="minimal_blue">#4A7CA5</color>
+    <color name="minimal_green">#47AE84</color>
+    <color name="minimal_orange">#FFC069</color>
+    <color name="minimal_tangerine">#FF9669</color>
+    <color name="minimal_red">#FF6868</color>
 
     <!-- Color tags used for palette -->
     <color name="amber">#ffab00</color>
@@ -25,7 +33,6 @@
     <color name="seekRed">#FFFF0000</color>
     <color name="seekGreen">#FF00FF00</color>
     <color name="seekBlue">#FF0000FF</color>
-    <color name="dialog_stroke">#303036</color>
 
     <integer-array name="colors">
         <item>@color/amber</item>

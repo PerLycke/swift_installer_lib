@@ -17,4 +17,7 @@
     <string name="tab_text">Tab %1$d</string>
     <string name="main_error_title">Overlays alert</string>
     <string name="main_error_desc">Some overlays requires your attention</string>
+    <string name="dialog_install">Install</string>
+    <string name="dialog_uninstall">Uninstall</string>
+    <string name="dialog_update">Update</string>
 </resources>

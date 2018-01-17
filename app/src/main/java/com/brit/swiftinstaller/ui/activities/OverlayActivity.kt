@@ -1,6 +1,5 @@
 package com.brit.swiftinstaller.ui.activities
 
-import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
@@ -11,6 +10,7 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -21,6 +21,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.brit.swiftinstaller.R
 import kotlinx.android.synthetic.main.app_list_activity.*
 import kotlinx.android.synthetic.main.overlay_activity.*
@@ -184,5 +185,28 @@ class OverlayActivity : AppCompatActivity() {
             mSectionsPagerAdapter!!.notifyFragmentDataSetChanged()
         }
 
+    }
+
+    fun fabClick(view: View) {
+        val installDialog = LayoutInflater.from(this).inflate(R.layout.install_dialog, null)
+        val uninstallClick = installDialog.findViewById<View>(R.id.uninstallTxt)
+        val builder = AlertDialog.Builder(this)
+                .setView(installDialog)
+        val dialog = builder.show()
+        uninstallClick.setOnClickListener {
+            dialog.dismiss()
+            val uninstallDialog = LayoutInflater.from(this).inflate(R.layout.uninstall_dialog, null)
+            val yesBtn = uninstallDialog.findViewById<View>(R.id.yesBtn)
+            val cancelBtn = uninstallDialog.findViewById<View>(R.id.cancelBtn)
+            val newBuilder = AlertDialog.Builder(this)
+                    .setView(uninstallDialog)
+            val newDialog = newBuilder.show()
+            yesBtn.setOnClickListener {
+                newDialog.dismiss()
+            }
+            cancelBtn.setOnClickListener {
+                newDialog.dismiss()
+            }
+        }
     }
 }

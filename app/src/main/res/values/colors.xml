@@ -11,4 +11,6 @@
     <color name="status_bar">#202026</color>
     <color name="stroke_red">#FF6868</color>
     <color name="toolbar">#202026</color>
+    <color name="dialog_bg_tint">#16161c</color>
+    <color name="dialog_stroke">#232329</color>
 </resources>
