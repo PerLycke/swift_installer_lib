@@ -15,7 +15,8 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:titleTextAppearance="@style/ToolbarTitle"
         app:subtitleTextAppearance="@style/ToolbarSubtitle"
-        app:popupTheme="@style/ThemeOverlay.AppCompat"/>
+        app:popupTheme="@style/ThemeOverlay.AppCompat"
+        app:title="Swift Installer"/>
 
     <include layout="@layout/content_main" />
 

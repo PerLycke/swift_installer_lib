@@ -21,9 +21,10 @@
             android:layout_height="?attr/actionBarSize"
             android:layout_weight="1"
             android:background="?attr/colorPrimary"
+            app:titleTextAppearance="@style/ToolbarTitle"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="@string/app_name">
+            app:title="Overlays">
 
         </android.support.v7.widget.Toolbar>
 
@@ -42,6 +43,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        app:srcCompat="@drawable/ic_fab_menu" />
 
 </android.support.design.widget.CoordinatorLayout>

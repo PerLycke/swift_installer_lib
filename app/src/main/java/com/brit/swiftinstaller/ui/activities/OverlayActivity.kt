@@ -1,8 +1,8 @@
 package com.brit.swiftinstaller.ui.activities
 
+import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
-import android.content.pm.PackageItemInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -10,21 +10,18 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.view.PagerAdapter
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.brit.swiftinstaller.R
-import kotlinx.android.synthetic.main.app_item.*
 import kotlinx.android.synthetic.main.app_list_activity.*
-import kotlinx.android.synthetic.main.fragment_main.view.*
 import kotlinx.android.synthetic.main.overlay_activity.*
 import kotlinx.android.synthetic.main.tab_layout.*
 
@@ -39,6 +36,7 @@ class OverlayActivity : AppCompatActivity() {
         setContentView(R.layout.overlay_activity)
 
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         mApps.put(0, ArrayList())
         mApps.put(1, ArrayList())
@@ -153,5 +151,17 @@ class OverlayActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem):Boolean {
+        when (item.getItemId()) {
+            android.R.id.home -> {
+                val intent = Intent(this, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

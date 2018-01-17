@@ -15,4 +15,6 @@
     <string name="section_format">Hello World from section: %1$d</string>
 
     <string name="tab_text">Tab %1$d</string>
+    <string name="main_error_title">Overlays alert</string>
+    <string name="main_error_desc">Some overlays requires your attention</string>
 </resources>
