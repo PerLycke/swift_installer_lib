@@ -54,24 +54,24 @@ class OverlayActivity : AppCompatActivity() {
 
     inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
-        var mFragments: ArrayList<PlaceholderFragment> = ArrayList()
+        private var mFragments: ArrayList<PlaceholderFragment> = ArrayList()
 
         init {
             mFragments.add(PlaceholderFragment())
-            mFragments.get(0).setAppList(mApps.get(0)!!)
+            mFragments[0].setAppList(mApps[0]!!)
             mFragments.add(PlaceholderFragment())
-            mFragments.get(1).setAppList(mApps.get(1)!!)
+            mFragments[1].setAppList(mApps[1]!!)
             mFragments.add(PlaceholderFragment())
-            mFragments.get(2).setAppList(mApps.get(2)!!)
+            mFragments[2].setAppList(mApps[2]!!)
         }
 
         override fun getItem(position: Int): Fragment {
-            return mFragments.get(position)
+            return mFragments[position]
         }
 
         fun notifyFragmentDataSetChanged() {
             for (i in mFragments.indices) {
-                mFragments.get(i).setAppList(mApps.get(i)!!)
+                mFragments[i].setAppList(mApps[i]!!)
             }
         }
 
@@ -116,7 +116,7 @@ class OverlayActivity : AppCompatActivity() {
             }
 
             override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-                holder.bindAppItem(mApps.get(position))
+                holder.bindAppItem(mApps[position])
             }
 
             override fun getItemCount(): Int {
@@ -124,13 +124,8 @@ class OverlayActivity : AppCompatActivity() {
             }
 
             inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-                var appName: TextView
-                var appIcon: ImageView
-
-                init {
-                    appName = view.findViewById(R.id.appItemName)
-                    appIcon = view.findViewById(R.id.appItemImage)
-                }
+                var appName: TextView = view.findViewById(R.id.appItemName)
+                var appIcon: ImageView = view.findViewById(R.id.appItemImage)
 
                 fun bindAppItem(item: AppItem) {
                     appName.text = item.title
