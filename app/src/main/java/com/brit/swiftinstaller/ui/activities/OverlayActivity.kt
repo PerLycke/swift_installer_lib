@@ -49,7 +49,8 @@ class OverlayActivity : AppCompatActivity() {
             try {
                 info = packageManager.getApplicationInfo(pn, PackageManager.GET_META_DATA)
                 pInfo = packageManager.getPackageInfo(pn, 0)
-            } catch (e: PackageManager.NameNotFoundException) {}
+            } catch (e: PackageManager.NameNotFoundException) {
+            }
             if (info != null) {
                 val item = AppItem()
                 item.icon = info.loadIcon(packageManager)
@@ -99,7 +100,7 @@ class OverlayActivity : AppCompatActivity() {
         var icon: Drawable? = null
     }
 
-    class PlaceholderFragment: Fragment() {
+    class PlaceholderFragment : Fragment() {
 
         var mApps: ArrayList<AppItem> = ArrayList()
 
@@ -135,7 +136,7 @@ class OverlayActivity : AppCompatActivity() {
                 return mApps.size
             }
 
-            inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
+            inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 var appName: TextView
                 var appIcon: ImageView
 
@@ -153,7 +154,7 @@ class OverlayActivity : AppCompatActivity() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem):Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.getItemId()) {
             android.R.id.home -> {
                 val intent = Intent(this, MainActivity::class.java)

@@ -35,7 +35,8 @@ class AppListActivity : AppCompatActivity() {
             var info: ApplicationInfo? = null
             try {
                 info = packageManager.getApplicationInfo(pn, PackageManager.GET_META_DATA)
-            } catch (e: PackageManager.NameNotFoundException) {}
+            } catch (e: PackageManager.NameNotFoundException) {
+            }
             if (info != null) {
                 appList.add(info)
             }
