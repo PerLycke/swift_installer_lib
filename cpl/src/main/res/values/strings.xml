@@ -4,9 +4,9 @@
     <string name="palette" translatable="false">Material palette</string>
 
     <!-- Texts-->
-    <string name="hex" translatable="false">HEX</string>
+    <string name="hex" translatable="false">HEX:</string>
     <string name="hashtag" translatable="false">#</string>
-    <string name="rgb" translatable="false">RGB</string>
+    <string name="rgb" translatable="false">RGB:</string>
     <string name="A" translatable="false">A</string>
     <string name="R" translatable="false">R</string>
     <string name="G" translatable="false">G</string>
