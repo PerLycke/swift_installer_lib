@@ -2,11 +2,13 @@ package com.brit.swiftinstaller.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.getAccentColor
 import kotlinx.android.synthetic.main.content_main.*
@@ -46,7 +48,13 @@ class MainActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_about -> {
+                val builder = AlertDialog.Builder(this).create()
+                builder.setTitle("About")
+                builder.setMessage("This is about")
+                builder.show()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
