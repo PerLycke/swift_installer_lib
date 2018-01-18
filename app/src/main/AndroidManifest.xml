@@ -20,7 +20,7 @@
         <activity android:name=".ui.activities.AppListActivity" />
         <activity android:name=".ui.activities.OverlayActivity" />
         <activity android:name=".ui.activities.AccentActivity"
-            android:theme="@style/Theme.AppCompat.Dialog"/>
+            android:theme="@style/AppDialogTheme"/>
     </application>
 
 </manifest>

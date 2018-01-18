@@ -10,7 +10,6 @@ import android.view.View
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.getAccentColor
 import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.overlay_activity.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,7 +31,8 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         currentAccent.setTextColor(getAccentColor(this))
-        currentAccent.text = "#" + String.format("%06x", getAccentColor(this))
+        currentAccent.text = getString(R.string.hex_string,
+                String.format("%06x", getAccentColor(this)).substring(2))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

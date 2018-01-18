@@ -12,6 +12,8 @@
     <string name="active_title">Active</string>
     <string name="error_title">Error</string>
 
+    <string name="hex_string">#%1$s</string>
+
     <string name="section_format">Hello World from section: %1$d</string>
 
     <string name="tab_text">Tab %1$d</string>
