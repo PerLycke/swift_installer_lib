@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.AsyncTask
 import android.os.Bundle
@@ -211,14 +209,17 @@ class OverlayActivity : AppCompatActivity() {
     }
 
     fun installAction() {
-        // TODO implement install action
+        val installationDialog = LayoutInflater.from(this).inflate(R.layout.install_progress_dialog, null)
+        val builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
+        builder.setView(installationDialog)
+        builder.show()
     }
 
     fun uninstallAction() {
-        val uninstallDialog = LayoutInflater.from(this).inflate(R.layout.uninstall_dialog, null)
-        val yesBtn = uninstallDialog.findViewById<View>(R.id.yesBtn)
-        val cancelBtn = uninstallDialog.findViewById<View>(R.id.cancelBtn)
-        val newBuilder = AlertDialog.Builder(this)
+        val uninstallDialog = LayoutInflater.from(this).inflate(R.layout.confirm_uninstall_dialog, null)
+        val yesBtn = uninstallDialog.findViewById<View>(R.id.confirmUninstallYesBtn)
+        val cancelBtn = uninstallDialog.findViewById<View>(R.id.confirmUninstallCancelBtn)
+        val newBuilder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
                 .setView(uninstallDialog)
         val newDialog = newBuilder.show()
         yesBtn.setOnClickListener {
@@ -234,14 +235,14 @@ class OverlayActivity : AppCompatActivity() {
     }
 
     /*fun fabClick(view: View) {
-        val installDialog = LayoutInflater.from(this).inflate(R.layout.install_dialog, null)
+        val installDialog = LayoutInflater.from(this).inflate(R.layout.fab_actions_dialog, null)
         val uninstallClick = installDialog.findViewById<View>(R.id.uninstallTxt)
         val builder = AlertDialog.Builder(this)
                 .setView(installDialog)
         val dialog = builder.show()
         uninstallClick.setOnClickListener {
             dialog.dismiss()
-            val uninstallDialog = LayoutInflater.from(this).inflate(R.layout.uninstall_dialog, null)
+            val uninstallDialog = LayoutInflater.from(this).inflate(R.layout.confirm_uninstall_dialog, null)
             val yesBtn = uninstallDialog.findViewById<View>(R.id.yesBtn)
             val cancelBtn = uninstallDialog.findViewById<View>(R.id.cancelBtn)
             val newBuilder = AlertDialog.Builder(this)

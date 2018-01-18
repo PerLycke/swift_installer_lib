@@ -89,7 +89,7 @@
         app:layout_constraintTop_toTopOf="@+id/hashtag" />
 
     <Button
-        android:id="@+id/setHex"
+        android:id="@+id/applyHex"
         style="@android:style/Widget.DeviceDefault.Button.Borderless.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
         android:backgroundTint="@color/minimal_blue"
         android:fontFamily="sans-serif-condensed"
         android:onClick="setAccent"
-        android:text="@string/set"
+        android:text="@string/apply"
         app:layout_constraintBottom_toBottomOf="@+id/hexInput"
         app:layout_constraintEnd_toEndOf="@+id/settings"
         app:layout_constraintTop_toTopOf="@+id/hexInput" />
