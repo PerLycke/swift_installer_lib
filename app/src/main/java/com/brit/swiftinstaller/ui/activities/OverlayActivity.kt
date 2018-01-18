@@ -1,8 +1,11 @@
 package com.brit.swiftinstaller.ui.activities
 
+import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.AsyncTask
 import android.os.Bundle
@@ -19,9 +22,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import com.brit.swiftinstaller.R
 import kotlinx.android.synthetic.main.app_list_activity.*
 import kotlinx.android.synthetic.main.overlay_activity.*
@@ -33,9 +34,17 @@ class OverlayActivity : AppCompatActivity() {
 
     private var mApps: HashMap<Int, ArrayList<AppItem>> = HashMap()
 
+    private lateinit var mDialogItems: Array<DialogItem>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.overlay_activity)
+
+        mDialogItems = arrayOf(
+                DialogItem(getDrawable(R.drawable.ic_install), getString(R.string.dialog_install)),
+                DialogItem(getDrawable(R.drawable.ic_uninstall), getString(R.string.dialog_uninstall)),
+                DialogItem(getDrawable(R.drawable.ic_update), getString(R.string.dialog_update))
+        )
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -188,6 +197,44 @@ class OverlayActivity : AppCompatActivity() {
     }
 
     fun fabClick(view: View) {
+        val builder = AlertDialog.Builder(this)
+        builder.setAdapter(DialogAdapter(this, R.layout.install_dialog_item, R.id.dialog_text), { dialog, which ->
+            dialog.dismiss()
+            when (which) {
+                0 -> installAction()
+                1 -> uninstallAction()
+                2 -> updateAction()
+            }
+        })
+        val dialog = builder.create()
+        dialog.window.setBackgroundDrawableResource(R.drawable.dialog_bg)
+        dialog.show()
+    }
+
+    fun installAction() {
+        // TODO implement install action
+    }
+
+    fun uninstallAction() {
+        val uninstallDialog = LayoutInflater.from(this).inflate(R.layout.uninstall_dialog, null)
+        val yesBtn = uninstallDialog.findViewById<View>(R.id.yesBtn)
+        val cancelBtn = uninstallDialog.findViewById<View>(R.id.cancelBtn)
+        val newBuilder = AlertDialog.Builder(this)
+                .setView(uninstallDialog)
+        val newDialog = newBuilder.show()
+        yesBtn.setOnClickListener {
+            newDialog.dismiss()
+        }
+        cancelBtn.setOnClickListener {
+            newDialog.dismiss()
+        }
+    }
+
+    fun updateAction() {
+        // TODO implement install action
+    }
+
+    /*fun fabClick(view: View) {
         val installDialog = LayoutInflater.from(this).inflate(R.layout.install_dialog, null)
         val uninstallClick = installDialog.findViewById<View>(R.id.uninstallTxt)
         val builder = AlertDialog.Builder(this)
@@ -207,6 +254,34 @@ class OverlayActivity : AppCompatActivity() {
             cancelBtn.setOnClickListener {
                 newDialog.dismiss()
             }
+        }
+    }*/
+
+    class DialogItem(icon: Drawable, title: String) {
+        var dialogIcon = icon
+        var dialogTitle = title
+    }
+
+    inner class DialogAdapter(context: Context?, resource: Int,
+                              textViewResourceId: Int) :
+            ArrayAdapter<String>(context, resource, textViewResourceId) {
+
+        val layoutResource = resource
+
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+            var view = convertView
+            if (view == null) {
+                view = LayoutInflater.from(this@OverlayActivity).inflate(layoutResource, parent, false)
+            }
+            var icon: ImageView = view!!.findViewById(R.id.dialog_icon)
+            var title: TextView = view.findViewById(R.id.dialog_text)
+            icon.setImageDrawable(mDialogItems[position].dialogIcon)
+            title.text = mDialogItems[position].dialogTitle
+            return view;
+        }
+
+        override fun getCount(): Int {
+            return mDialogItems.size
         }
     }
 }
