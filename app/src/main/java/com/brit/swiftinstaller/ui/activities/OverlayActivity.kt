@@ -223,7 +223,10 @@ class OverlayActivity : AppCompatActivity() {
                 .setView(uninstallDialog)
         val newDialog = newBuilder.show()
         yesBtn.setOnClickListener {
-            newDialog.dismiss()
+            val uninstallProgressDialog = LayoutInflater.from(this).inflate(R.layout.uninstall_progress_dialog, null)
+            val builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
+            builder.setView(uninstallProgressDialog)
+            builder.show()
         }
         cancelBtn.setOnClickListener {
             newDialog.dismiss()
