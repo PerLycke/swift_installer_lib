@@ -197,7 +197,7 @@ class OverlayActivity : AppCompatActivity() {
     }
 
     fun fabClick(view: View) {
-        val builder = AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
         builder.setAdapter(DialogAdapter(this, R.layout.install_dialog_item, R.id.dialog_text), { dialog, which ->
             dialog.dismiss()
             when (which) {
@@ -207,7 +207,6 @@ class OverlayActivity : AppCompatActivity() {
             }
         })
         val dialog = builder.create()
-        dialog.window.setBackgroundDrawableResource(R.drawable.dialog_bg)
         dialog.show()
     }
 

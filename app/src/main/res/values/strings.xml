@@ -22,4 +22,6 @@
     <string name="dialog_install">Install</string>
     <string name="dialog_uninstall">Uninstall</string>
     <string name="dialog_update">Update</string>
+    <string name="hex">HEX</string>
+    <string name="set">SET</string>
 </resources>

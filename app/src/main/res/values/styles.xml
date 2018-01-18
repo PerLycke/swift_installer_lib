@@ -15,7 +15,7 @@
     </style>
 
     <style name="AppAlertDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
-        <item name="android:background">@color/dialog_bg_tint</item>
+        <item name="android:windowBackground">@drawable/dialog_bg</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

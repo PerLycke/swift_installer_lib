@@ -13,4 +13,5 @@
     <color name="toolbar">#202026</color>
     <color name="dialog_bg_tint">#16161c</color>
     <color name="dialog_stroke">#232329</color>
+    <color name="accent_dialog_bg_tint">#16161c</color>
 </resources>

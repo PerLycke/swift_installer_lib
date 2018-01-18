@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/settings" />
+
+    <include
+        android:id="@+id/palette"
+        layout="@layout/palette"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/settings"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="@+id/settings"
+        app:layout_constraintTop_toBottomOf="@+id/settings" />
+
+    <ImageView
+        android:id="@+id/connectionsIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="70dp"
+        app:layout_constraintStart_toStartOf="@+id/settings"
+        app:layout_constraintTop_toTopOf="@+id/settings"
+        app:srcCompat="@drawable/ic_settings_connections" />
+
+    <ImageView
+        android:id="@+id/soundIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="27dp"
+        app:layout_constraintEnd_toEndOf="@+id/connectionsIcon"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/connectionsIcon"
+        app:layout_constraintTop_toBottomOf="@+id/connectionsIcon"
+        app:srcCompat="@drawable/ic_settings_sound" />
+
+    <ImageView
+        android:id="@+id/notificationsIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="27dp"
+        app:layout_constraintEnd_toEndOf="@+id/soundIcon"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/soundIcon"
+        app:layout_constraintTop_toBottomOf="@+id/soundIcon"
+        app:srcCompat="@drawable/ic_settings_notifications" />
+
+    <TextView
+        android:id="@+id/hashtag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="#"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/settings"
+        app:layout_constraintTop_toBottomOf="@+id/palette" />
+
+    <EditText
+        android:id="@+id/hexInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/minimal_green"
+        android:digits="0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,A,B,C,D,E,F"
+        android:ems="6"
+        android:fontFamily="sans-serif-condensed"
+        android:hint="@string/hex"
+        android:inputType="textCapCharacters|textNoSuggestions"
+        app:layout_constraintBottom_toBottomOf="@+id/hashtag"
+        app:layout_constraintStart_toEndOf="@+id/hashtag"
+        app:layout_constraintTop_toTopOf="@+id/hashtag" />
+
+    <Button
+        android:id="@+id/setHex"
+        style="@android:style/Widget.DeviceDefault.Button.Borderless.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:backgroundTint="@color/minimal_blue"
+        android:fontFamily="sans-serif-condensed"
+        android:onClick="setAccent"
+        android:text="@string/set"
+        app:layout_constraintBottom_toBottomOf="@+id/hexInput"
+        app:layout_constraintEnd_toEndOf="@+id/settings"
+        app:layout_constraintTop_toTopOf="@+id/hexInput" />
+
+</android.support.constraint.ConstraintLayout>

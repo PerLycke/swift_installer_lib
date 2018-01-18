@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -49,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_about -> {
-                val builder = AlertDialog.Builder(this).create()
+                val builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme).create()
                 builder.setTitle("About")
                 builder.setMessage("This is about")
                 builder.show()

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/palette1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/palette2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_palette_green" />
+
+    <ImageView
+        android:id="@+id/palette2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/palette1"
+        app:layout_constraintEnd_toStartOf="@+id/palette3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/palette1"
+        app:layout_constraintTop_toTopOf="@+id/palette1"
+        app:srcCompat="@drawable/ic_palette_blue" />
+
+    <ImageView
+        android:id="@+id/palette3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/palette2"
+        app:layout_constraintEnd_toStartOf="@+id/palette4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/palette2"
+        app:layout_constraintTop_toTopOf="@+id/palette2"
+        app:srcCompat="@drawable/ic_palette_orange" />
+
+    <ImageView
+        android:id="@+id/palette4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/palette3"
+        app:layout_constraintEnd_toStartOf="@+id/palette5"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/palette3"
+        app:layout_constraintTop_toTopOf="@+id/palette3"
+        app:srcCompat="@drawable/ic_palette_red" />
+
+    <ImageView
+        android:id="@+id/palette5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/palette4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/palette4"
+        app:layout_constraintTop_toTopOf="@+id/palette4"
+        app:srcCompat="@drawable/ic_palette_tangerine" />
+
+    <ImageView
+        android:id="@+id/palette6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/palette7"
+        app:layout_constraintEnd_toStartOf="@+id/palette7"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/palette7"
+        app:srcCompat="@drawable/ic_palette_tangerine" />
+
+    <ImageView
+        android:id="@+id/palette7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/palette8"
+        app:layout_constraintEnd_toStartOf="@+id/palette8"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/palette6"
+        app:layout_constraintTop_toTopOf="@+id/palette8"
+        app:srcCompat="@drawable/ic_palette_red" />
+
+    <ImageView
+        android:id="@+id/palette8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/palette9"
+        app:layout_constraintEnd_toStartOf="@+id/palette9"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/palette7"
+        app:layout_constraintTop_toTopOf="@+id/palette9"
+        app:srcCompat="@drawable/ic_palette_orange" />
+
+    <ImageView
+        android:id="@+id/palette9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/palette10"
+        app:layout_constraintEnd_toStartOf="@+id/palette10"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/palette8"
+        app:layout_constraintTop_toTopOf="@+id/palette10"
+        app:srcCompat="@drawable/ic_palette_blue" />
+
+    <ImageView
+        android:id="@+id/palette10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/palette9"
+        app:layout_constraintTop_toBottomOf="@+id/palette5"
+        app:srcCompat="@drawable/ic_palette_green" />
+</android.support.constraint.ConstraintLayout>
