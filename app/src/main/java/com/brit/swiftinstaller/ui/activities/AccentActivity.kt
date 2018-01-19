@@ -5,18 +5,8 @@ import android.view.View
 import android.widget.Toast
 import com.brit.swiftinstaller.utils.addAccentColor
 import com.brit.swiftinstaller.utils.setAccentColor
-import com.enrico.colorpicker.ColorPickerDialog.ColorPickerDialogListener
 
-class AccentActivity : AppCompatActivity(), ColorPickerDialogListener {
-    override fun dismiss() {
-        finish()
-    }
-
-    override fun colorPicked(key: String?, color: Int) {
-        setAccentColor(this, color)
-        addAccentColor(this, color)
-        finish()
-    }
+class AccentActivity : AppCompatActivity() {
 
     fun setAccent(view: View) {
         Toast.makeText(this, "Accent updated", Toast.LENGTH_SHORT).show()

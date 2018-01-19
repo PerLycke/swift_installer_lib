@@ -15,10 +15,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/settings" />
 
-    <include
+    <GridView
         android:id="@+id/palette"
-        layout="@layout/palette"
+        android:columnWidth="36dp"
         android:layout_width="0dp"
+        android:numColumns="5"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -26,7 +27,7 @@
         app:layout_constraintEnd_toEndOf="@+id/settings"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="@+id/settings"
-        app:layout_constraintTop_toBottomOf="@+id/settings" />
+        app:layout_constraintTop_toBottomOf="@+id/settings"/>
 
     <ImageView
         android:id="@+id/connectionsIcon"

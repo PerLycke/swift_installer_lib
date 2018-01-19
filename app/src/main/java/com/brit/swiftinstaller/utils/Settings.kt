@@ -39,7 +39,7 @@ fun setUserAccents(context: Context, colors: IntArray) {
 }
 
 fun addAccentColor(context: Context, color: Int) {
-    val presets = context.resources.getIntArray(R.array.colors)
+    val presets = context.resources.getIntArray(R.array.accent_colors)
     for (col: Int in presets) {
         if (col == color)
             return

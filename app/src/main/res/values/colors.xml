@@ -14,4 +14,39 @@
     <color name="dialog_bg_tint">#16161c</color>
     <color name="dialog_stroke">#232329</color>
     <color name="accent_dialog_bg_tint">#16161c</color>
+
+    <!-- Minimal palette -->
+    <color name="minimal_blue">#4A7CA5</color>
+    <color name="minimal_green">#47AE84</color>
+    <color name="minimal_orange">#FFC069</color>
+    <color name="minimal_tangerine">#FF9669</color>
+    <color name="minimal_red">#FF6868</color>
+
+    <color name="amber">#ffab00</color>
+    <color name="blue">#5e97f6</color>
+    <color name="cyan">#00d7ed</color>
+    <color name="emerald">#67ab9c</color>
+    <color name="fuchsia">#e6004e</color>
+    <color name="green">#1ed760</color>
+    <color name="lime">#ace600</color>
+    <color name="livid">#7b96a3</color>
+    <color name="orange">#ff5722</color>
+    <color name="oxygen">#42a5f5</color>
+    <color name="red">#d32828</color>
+    <color name="tangerine">#fd905d</color>
+    <color name="teal">#009688</color>
+    <color name="violet">#a67ac7</color>
+
+    <integer-array name="accent_colors">
+        <item>@color/minimal_green</item>
+        <item>@color/minimal_blue</item>
+        <item>@color/minimal_orange</item>
+        <item>@color/minimal_red</item>
+        <item>@color/minimal_tangerine</item>
+        <item>@color/blue</item>
+        <item>@color/red</item>
+        <item>@color/green</item>
+        <item>@color/amber</item>
+        <item>@color/violet</item>
+    </integer-array>
 </resources>
