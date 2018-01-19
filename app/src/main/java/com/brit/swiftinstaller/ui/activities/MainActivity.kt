@@ -2,6 +2,7 @@ package com.brit.swiftinstaller.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.BottomSheetDialog
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
@@ -9,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.getAccentColor
 import kotlinx.android.synthetic.main.content_main.*
@@ -27,7 +27,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         accentTile.setOnClickListener {
-            startActivity(Intent(this, AccentActivity::class.java))
+            val sheetView = LayoutInflater.from(this).inflate(R.layout.accent_sheet, null)
+            val mBottomSheetDialog = BottomSheetDialog(this)
+            mBottomSheetDialog.setContentView(sheetView)
+            mBottomSheetDialog.show()
         }
     }
 

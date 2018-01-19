@@ -52,7 +52,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
         android:text="@string/main_error_desc"
-        android:textSize="11sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/errorTile"
         app:layout_constraintEnd_toEndOf="@+id/errorTile"
         app:layout_constraintStart_toEndOf="@+id/errorIcon"

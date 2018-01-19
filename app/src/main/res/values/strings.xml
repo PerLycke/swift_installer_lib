@@ -1,28 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
+    <string name="active_title">Active</string>
     <string name="app_name">Swift Installer</string>
+    <string name="apply">APPLY</string>
+    <string name="dialog_install">Install</string>
+    <string name="dialog_uninstall">Uninstall</string>
+    <string name="dialog_update">Update</string>
+    <string name="error_title">Error</string>
+    <string name="hex">HEX</string>
+    <string name="hex_string">#%1$s</string>
+    <string name="inactive_title">Inactive</string>
+    <string name="installing_overlays">Installing overlays…</string>
+    <string name="main_error_desc">Some overlays requires your attention</string>
+    <string name="main_error_title">Overlays alert</string>
     <string name="main_help_desc">Please help us improve the theme by letting us know what issues you have</string>
     <string name="main_help_title">Bugs? Report them here</string>
     <string name="main_install_desc">Install separate or all overlays here</string>
     <string name="main_install_title">Install / Uninstall overlays</string>
     <string name="main_modify_accent_desc">Modify accent color for already installed overlays</string>
     <string name="main_modify_accent_title">Accent</string>
-
-    <string name="inactive_title">Inactive</string>
-    <string name="active_title">Active</string>
-    <string name="error_title">Error</string>
-
-    <string name="hex_string">#%1$s</string>
-
     <string name="section_format">Hello World from section: %1$d</string>
-
-    <string name="tab_text">Tab %1$d</string>
-    <string name="main_error_title">Overlays alert</string>
-    <string name="main_error_desc">Some overlays requires your attention</string>
-    <string name="dialog_install">Install</string>
-    <string name="dialog_uninstall">Uninstall</string>
-    <string name="dialog_update">Update</string>
-    <string name="hex">HEX</string>
     <string name="set">SET</string>
-    <string name="apply">APPLY</string>
+    <string name="tab_text">Tab %1$d</string>
+    <string name="uninstalling_overlays">Uninstalling overlays…</string>
+    <string name="tab_active">Active</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="tab_failed">Failed</string>
+    <string name="tab_inactive">inactive</string>
+    <string name="about">About</string>
 </resources>

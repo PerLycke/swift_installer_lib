@@ -7,11 +7,11 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.AsyncTask
 import android.os.Bundle
+import android.support.design.widget.BottomSheetDialog
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -20,7 +20,9 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.ImageView
+import android.widget.TextView
 import com.brit.swiftinstaller.R
 import kotlinx.android.synthetic.main.app_list_activity.*
 import kotlinx.android.synthetic.main.overlay_activity.*
@@ -195,70 +197,59 @@ class OverlayActivity : AppCompatActivity() {
     }
 
     fun fabClick(view: View) {
-        val builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
-        builder.setAdapter(DialogAdapter(this, R.layout.install_dialog_item, R.id.dialog_text), { dialog, which ->
-            dialog.dismiss()
-            when (which) {
-                0 -> installAction()
-                1 -> uninstallAction()
-                2 -> updateAction()
-            }
-        })
-        val dialog = builder.create()
-        dialog.show()
+        val mBottomSheetDialog = BottomSheetDialog(this)
+        val sheetView = LayoutInflater.from(this).inflate(R.layout.fab_actions_sheet, null)
+        mBottomSheetDialog.setContentView(sheetView)
+        mBottomSheetDialog.show()
+
+        val install = sheetView.findViewById<View>(R.id.installTxt)
+        install.setOnClickListener {
+            mBottomSheetDialog.dismiss()
+            installAction()
+        }
+
+        val uninstall = sheetView.findViewById<View>(R.id.uninstallTxt)
+        uninstall.setOnClickListener {
+            mBottomSheetDialog.dismiss()
+            uninstallAction()
+        }
     }
 
     fun installAction() {
-        val installationDialog = LayoutInflater.from(this).inflate(R.layout.install_progress_dialog, null)
-        val builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
-        builder.setView(installationDialog)
-        builder.show()
+        val mBottomSheetDialog = BottomSheetDialog(this)
+        val sheetView = LayoutInflater.from(this).inflate(R.layout.install_progress_sheet,null)
+        mBottomSheetDialog.setContentView(sheetView)
+        mBottomSheetDialog.show()
     }
 
     fun uninstallAction() {
-        val uninstallDialog = LayoutInflater.from(this).inflate(R.layout.confirm_uninstall_dialog, null)
-        val yesBtn = uninstallDialog.findViewById<View>(R.id.confirmUninstallYesBtn)
-        val cancelBtn = uninstallDialog.findViewById<View>(R.id.confirmUninstallCancelBtn)
-        val newBuilder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
-                .setView(uninstallDialog)
-        val newDialog = newBuilder.show()
-        yesBtn.setOnClickListener {
-            val uninstallProgressDialog = LayoutInflater.from(this).inflate(R.layout.uninstall_progress_dialog, null)
-            val builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
-            builder.setView(uninstallProgressDialog)
-            builder.show()
+        val mBottomSheetDialog = BottomSheetDialog(this)
+        val sheetView = LayoutInflater.from(this).inflate(R.layout.confirm_uninstall_sheet,null)
+        mBottomSheetDialog.setContentView(sheetView)
+        mBottomSheetDialog.show()
+
+        val uninstall = sheetView.findViewById<View>(R.id.confirmUninstallTxt)
+        uninstall.setOnClickListener {
+            mBottomSheetDialog.dismiss()
+            uninstallProgressAction()
         }
-        cancelBtn.setOnClickListener {
-            newDialog.dismiss()
+
+        val cancel = sheetView.findViewById<View>(R.id.cancelUninstallTxt)
+        cancel.setOnClickListener {
+            mBottomSheetDialog.dismiss()
         }
+    }
+
+    fun uninstallProgressAction() {
+        val mBottomSheetDialog = BottomSheetDialog(this)
+        val sheetView = LayoutInflater.from(this).inflate(R.layout.uninstall_progress_sheet,null)
+        mBottomSheetDialog.setContentView(sheetView)
+        mBottomSheetDialog.show()
     }
 
     fun updateAction() {
         // TODO implement install action
     }
-
-    /*fun fabClick(view: View) {
-        val installDialog = LayoutInflater.from(this).inflate(R.layout.fab_actions_dialog, null)
-        val uninstallClick = installDialog.findViewById<View>(R.id.uninstallTxt)
-        val builder = AlertDialog.Builder(this)
-                .setView(installDialog)
-        val dialog = builder.show()
-        uninstallClick.setOnClickListener {
-            dialog.dismiss()
-            val uninstallDialog = LayoutInflater.from(this).inflate(R.layout.confirm_uninstall_dialog, null)
-            val yesBtn = uninstallDialog.findViewById<View>(R.id.yesBtn)
-            val cancelBtn = uninstallDialog.findViewById<View>(R.id.cancelBtn)
-            val newBuilder = AlertDialog.Builder(this)
-                    .setView(uninstallDialog)
-            val newDialog = newBuilder.show()
-            yesBtn.setOnClickListener {
-                newDialog.dismiss()
-            }
-            cancelBtn.setOnClickListener {
-                newDialog.dismiss()
-            }
-        }
-    }*/
 
     class DialogItem(icon: Drawable, title: String) {
         var dialogIcon = icon
