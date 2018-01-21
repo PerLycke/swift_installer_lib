@@ -14,8 +14,10 @@ import java.io.File
 
 import com.brit.swiftinstaller.utils.getProperty
 
-class RomInfo internal constructor(var name: String, var version: String, vararg variants: String) {
+class RomInfo internal constructor(var name: String, var version: String, vararg vars: String) {
     private val overlayFolder: String? = null
+
+    val variants = vars
 
     //TODO expand installer
     val isSamsung: Boolean
