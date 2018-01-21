@@ -39,11 +39,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         accentTile.setOnClickListener {
-            val sheetView = LayoutInflater.from(this).inflate(R.layout.accent_sheet, null)
-            setupAccentSheet(sheetView);
-            val mBottomSheetDialog = BottomSheetDialog(this)
-            mBottomSheetDialog.setContentView(sheetView)
-            mBottomSheetDialog.show()
+            val dialog = LayoutInflater.from(this).inflate(R.layout.accent_sheet, null)
+            setupAccentSheet(dialog)
+            val builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
+            builder.setView(dialog)
+            builder.show()
         }
     }
 
