@@ -12,6 +12,7 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -21,10 +22,12 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.brit.swiftinstaller.R
 import kotlinx.android.synthetic.main.app_list_activity.*
+import kotlinx.android.synthetic.main.error_dialog.*
 import kotlinx.android.synthetic.main.overlay_activity.*
 import kotlinx.android.synthetic.main.tab_layout.*
 
@@ -213,6 +216,12 @@ class OverlayActivity : AppCompatActivity() {
             mBottomSheetDialog.dismiss()
             uninstallAction()
         }
+
+        val update = sheetView.findViewById<View>(R.id.updateTxt)
+        update.setOnClickListener {
+            mBottomSheetDialog.dismiss()
+            updateAction()
+        }
     }
 
     fun installAction() {
@@ -248,7 +257,21 @@ class OverlayActivity : AppCompatActivity() {
     }
 
     fun updateAction() {
-        // TODO implement install action
+        val mBottomSheetDialog = BottomSheetDialog(this)
+        val sheetView = LayoutInflater.from(this).inflate(R.layout.update_progress_sheet, null)
+        mBottomSheetDialog.setContentView(sheetView)
+        mBottomSheetDialog.show()
+    }
+
+    fun alertIconClick(view: View) {
+        val dialog = LayoutInflater.from(this).inflate(R.layout.error_dialog, null)
+        val builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme).create()
+        val closeBtn = dialog.findViewById<View>(R.id.closeBtn)
+        builder.setView(dialog)
+        closeBtn.setOnClickListener {
+            builder.dismiss()
+        }
+        builder.show()
     }
 
     class DialogItem(icon: Drawable, title: String) {

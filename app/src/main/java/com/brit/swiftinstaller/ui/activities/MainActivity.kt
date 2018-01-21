@@ -2,14 +2,7 @@ package com.brit.swiftinstaller.ui.activities
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.ColorFilter
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
-import android.media.Image
 import android.os.Bundle
-import android.provider.ContactsContract
-import android.support.design.widget.BottomSheetDialog
-import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
@@ -19,7 +12,6 @@ import android.widget.*
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.CircleDrawable
 import com.brit.swiftinstaller.utils.getAccentColor
-import kotlinx.android.synthetic.main.accent_sheet.*
 import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -39,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         accentTile.setOnClickListener {
-            val dialog = LayoutInflater.from(this).inflate(R.layout.accent_sheet, null)
+            val dialog = LayoutInflater.from(this).inflate(R.layout.accent_dialog, null)
             setupAccentSheet(dialog)
             val builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
             builder.setView(dialog)

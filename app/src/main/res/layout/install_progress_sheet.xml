@@ -10,9 +10,8 @@
     <TextView
         android:id="@+id/installProgressTxt"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
+        android:layout_height="56dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:fontFamily="sans-serif-condensed"
         android:gravity="center_vertical"
         android:text="@string/installing_overlays"
@@ -26,26 +25,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:fontFamily="sans-serif-condensed"
         android:text="15%"
         android:textColor="@android:color/white"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/installProgressBar" />
+        app:layout_constraintStart_toStartOf="@+id/installProgressBar"
+        app:layout_constraintTop_toBottomOf="@+id/installProgressBar"
+        app:layout_constraintVertical_bias="0.506" />
 
     <TextView
         android:id="@+id/installProgressCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:fontFamily="sans-serif-condensed"
         android:text="24 / 200"
         android:textColor="@android:color/white"
         android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/installProgressBar"
         app:layout_constraintTop_toTopOf="@+id/installProgressPercent" />
 
     <ProgressBar
@@ -55,10 +53,11 @@
         android:layout_height="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:indeterminate="false"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/installProgressTxt" />
 

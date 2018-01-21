@@ -29,4 +29,5 @@
     <string name="tab_failed">Failed</string>
     <string name="tab_inactive">inactive</string>
     <string name="about">About</string>
+    <string name="updating_overlays">Updating overlays</string>
 </resources>

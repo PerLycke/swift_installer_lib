@@ -8,20 +8,20 @@
     tools:layout_editor_absoluteY="25dp">
 
     <TextView
-        android:id="@+id/uninstallProgressTxt"
+        android:id="@+id/updateProgressTxt"
         android:layout_width="wrap_content"
         android:layout_height="56dp"
         android:layout_marginStart="16dp"
         android:fontFamily="sans-serif-condensed"
         android:gravity="center_vertical"
-        android:text="@string/uninstalling_overlays"
+        android:text="@string/updating_overlays"
         android:textColor="@android:color/white"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/uninstallProgressPercent"
+        android:id="@+id/updateProgressPercent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
@@ -31,31 +31,31 @@
         android:textColor="@android:color/white"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/uninstallProgressBar"
-        app:layout_constraintTop_toBottomOf="@+id/uninstallProgressBar" />
+        app:layout_constraintStart_toStartOf="@+id/updateProgressBar"
+        app:layout_constraintTop_toBottomOf="@+id/updateProgressBar" />
 
     <TextView
-        android:id="@+id/uninstallProgressCount"
+        android:id="@+id/updateProgressCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
         android:text="24 / 200"
         android:textColor="@android:color/white"
         android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@+id/uninstallProgressBar"
-        app:layout_constraintTop_toTopOf="@+id/uninstallProgressPercent" />
+        app:layout_constraintEnd_toEndOf="@+id/updateProgressBar"
+        app:layout_constraintTop_toTopOf="@+id/updateProgressPercent" />
 
     <ProgressBar
-        android:id="@+id/uninstallProgressBar"
+        android:id="@+id/updateProgressBar"
         style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:indeterminate="false"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/uninstallProgressTxt" />
+        app:layout_constraintTop_toBottomOf="@+id/updateProgressTxt" />
 </android.support.constraint.ConstraintLayout>
