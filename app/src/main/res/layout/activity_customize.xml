@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/customize_toolbar" />
+
+    <ScrollView
+        android:layout_marginTop="56dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/settingsPreview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/settings"
+                android:contentDescription="@string/image" />
+
+            <GridView
+                android:id="@+id/palette"
+                android:layout_width="0dp"
+                android:layout_height="86dp"
+                android:layout_marginTop="16dp"
+                android:columnWidth="36dp"
+                android:numColumns="5"
+                app:layout_constraintEnd_toEndOf="@+id/settingsPreview"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="@+id/settingsPreview"
+                app:layout_constraintTop_toBottomOf="@+id/accentCategoryTitle" />
+
+            <ImageView
+                android:id="@+id/connectionsIcon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="70dp"
+                app:layout_constraintStart_toStartOf="@+id/settingsPreview"
+                app:layout_constraintTop_toTopOf="@+id/settingsPreview"
+                app:srcCompat="@drawable/ic_settings_connections"
+                android:contentDescription="@string/image" />
+
+            <ImageView
+                android:id="@+id/soundIcon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="27dp"
+                app:layout_constraintEnd_toEndOf="@+id/connectionsIcon"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/connectionsIcon"
+                app:layout_constraintTop_toBottomOf="@+id/connectionsIcon"
+                app:srcCompat="@drawable/ic_settings_sound"
+                android:contentDescription="@string/image" />
+
+            <ImageView
+                android:id="@+id/notificationsIcon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="27dp"
+                app:layout_constraintEnd_toEndOf="@+id/soundIcon"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/soundIcon"
+                app:layout_constraintTop_toBottomOf="@+id/soundIcon"
+                app:srcCompat="@drawable/ic_settings_notifications"
+                android:contentDescription="@string/image" />
+
+            <TextView
+                android:id="@+id/hashtag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:text="@string/hashtag"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@+id/hexInput"
+                app:layout_constraintEnd_toStartOf="@+id/hexInput"
+                app:layout_constraintTop_toTopOf="@+id/hexInput" />
+
+            <EditText
+                android:id="@+id/hexInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="@color/minimal_green"
+                android:digits="0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,A,B,C,D,E,F"
+                android:ems="6"
+                android:fontFamily="sans-serif-condensed"
+                android:hint="@string/hex"
+                android:inputType="textCapCharacters|textNoSuggestions"
+                android:textAllCaps="false"
+                app:layout_constraintEnd_toEndOf="@+id/palette"
+                app:layout_constraintTop_toBottomOf="@+id/palette" />
+
+            <Button
+                android:id="@+id/applyHex"
+                style="@android:style/Widget.DeviceDefault.Button.Borderless.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:backgroundTint="@color/minimal_blue"
+                android:fontFamily="sans-serif-condensed"
+                android:text="@string/apply"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/hexInput"
+                app:layout_constraintEnd_toEndOf="@+id/settingsPreview"
+                app:layout_constraintTop_toTopOf="@+id/hexInput" />
+
+            <TextView
+                android:id="@+id/accentCategoryTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="@string/accent"
+                android:textAllCaps="true"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/settingsPreview" />
+
+            <TextView
+                android:id="@+id/backgroundCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="@string/background"
+                android:textAllCaps="true"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/hexInput" />
+
+            <ImageView
+                android:id="@+id/accentCategoryDivider"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="8dp"
+                android:background="#37373d"
+                android:contentDescription="@string/image"
+                app:layout_constraintBottom_toBottomOf="@+id/accentCategoryTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/accentCategoryTitle"
+                app:layout_constraintTop_toTopOf="@+id/accentCategoryTitle" />
+
+            <ImageView
+                android:id="@+id/backgroundCategoryDivider"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginStart="8dp"
+                android:background="#37373d"
+                android:contentDescription="@string/image"
+                app:layout_constraintBottom_toBottomOf="@+id/backgroundCategory"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/backgroundCategory"
+                app:layout_constraintTop_toTopOf="@+id/backgroundCategory" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/backgroundBg"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/background_frame"
+                app:layout_constraintEnd_toEndOf="@+id/palette"
+                app:layout_constraintStart_toStartOf="@+id/palette"
+                app:layout_constraintTop_toBottomOf="@+id/backgroundCategory">
+
+                <ImageView
+                    android:id="@+id/darkBgCircle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:contentDescription="@string/image"
+                    app:layout_constraintEnd_toStartOf="@+id/blackBgCircle"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/circle_dark" />
+
+                <ImageView
+                    android:id="@+id/blackBgCircle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="blackBgClick"
+                    app:layout_constraintBottom_toBottomOf="@+id/darkBgCircle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/darkBgCircle"
+                    app:layout_constraintTop_toTopOf="@+id/darkBgCircle"
+                    app:srcCompat="@drawable/circle_black" />
+
+                <TextView
+                    android:id="@+id/darkBgTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@string/dark"
+                    android:textAllCaps="true"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/darkBgCircle"
+                    app:layout_constraintStart_toStartOf="@+id/darkBgCircle"
+                    app:layout_constraintTop_toBottomOf="@+id/darkBgCircle" />
+
+                <TextView
+                    android:id="@+id/blackBgTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@string/black"
+                    android:textAllCaps="true"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="@+id/blackBgCircle"
+                    app:layout_constraintStart_toStartOf="@+id/blackBgCircle"
+                    app:layout_constraintTop_toTopOf="@+id/darkBgTxt" />
+
+                <ImageView
+                    android:id="@+id/activeBgIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/darkBgCircle"
+                    app:layout_constraintEnd_toEndOf="@+id/darkBgCircle"
+                    app:layout_constraintStart_toStartOf="@+id/darkBgCircle"
+                    app:layout_constraintTop_toTopOf="@+id/darkBgCircle"
+                    app:srcCompat="@drawable/circle_active_stroke" />
+
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
+
+
+</android.support.constraint.ConstraintLayout>

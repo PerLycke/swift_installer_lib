@@ -5,7 +5,6 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
-import android.content.om.OMS
 import android.os.Build
 import android.util.Log
 

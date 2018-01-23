@@ -17,6 +17,7 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -29,11 +30,13 @@ import android.widget.*
 import com.brit.swiftinstaller.IInstallerCallback
 import com.brit.swiftinstaller.IInstallerService
 import com.brit.swiftinstaller.InstallerService
-import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.Utils.getOverlayPackageName
 import com.brit.swiftinstaller.utils.Utils.isOverlayEnabled
 import com.brit.swiftinstaller.utils.Utils.isOverlayInstalled
+import com.brit.swiftinstaller.R
+import kotlinx.android.synthetic.main.activity_customize.*
 import kotlinx.android.synthetic.main.app_list_activity.*
+import kotlinx.android.synthetic.main.error_dialog.*
 import kotlinx.android.synthetic.main.overlay_activity.*
 import kotlinx.android.synthetic.main.tab_layout.*
 
@@ -235,7 +238,7 @@ class OverlayActivity : AppCompatActivity() {
     }
 
     fun fabClick(view: View) {
-        val mBottomSheetDialog = BottomSheetDialog(this)
+        val mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
         val sheetView = LayoutInflater.from(this).inflate(R.layout.fab_actions_sheet, null)
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
@@ -251,10 +254,16 @@ class OverlayActivity : AppCompatActivity() {
             mBottomSheetDialog.dismiss()
             uninstallAction()
         }
+
+        val update = sheetView.findViewById<View>(R.id.updateTxt)
+        update.setOnClickListener {
+            mBottomSheetDialog.dismiss()
+            updateAction()
+        }
     }
 
     fun installAction() {
-        val mBottomSheetDialog = BottomSheetDialog(this)
+        val mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
         val sheetView = LayoutInflater.from(this).inflate(R.layout.install_progress_sheet,null)
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
@@ -311,7 +320,7 @@ class OverlayActivity : AppCompatActivity() {
     }
 
     fun uninstallAction() {
-        val mBottomSheetDialog = BottomSheetDialog(this)
+        val mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
         val sheetView = LayoutInflater.from(this).inflate(R.layout.confirm_uninstall_sheet,null)
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
@@ -329,14 +338,28 @@ class OverlayActivity : AppCompatActivity() {
     }
 
     fun uninstallProgressAction() {
-        val mBottomSheetDialog = BottomSheetDialog(this)
+        val mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
         val sheetView = LayoutInflater.from(this).inflate(R.layout.uninstall_progress_sheet,null)
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
     }
 
     fun updateAction() {
-        // TODO implement install action
+        val mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
+        val sheetView = LayoutInflater.from(this).inflate(R.layout.update_progress_sheet, null)
+        mBottomSheetDialog.setContentView(sheetView)
+        mBottomSheetDialog.show()
+    }
+
+    fun alertIconClick(view: View) {
+        val dialog = LayoutInflater.from(this).inflate(R.layout.error_dialog, null)
+        val builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme).create()
+        val closeBtn = dialog.findViewById<View>(R.id.closeBtn)
+        builder.setView(dialog)
+        closeBtn.setOnClickListener {
+            builder.dismiss()
+        }
+        builder.show()
     }
 
     class DialogItem(icon: Drawable, title: String) {

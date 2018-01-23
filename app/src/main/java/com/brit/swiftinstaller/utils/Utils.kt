@@ -1,7 +1,6 @@
 package com.brit.swiftinstaller.utils
 
 import android.content.Context
-import android.content.om.OMS
 import android.content.pm.PackageManager
 import android.os.UserHandle
 import com.brit.swiftinstaller.utils.constants.CURRENT_USER

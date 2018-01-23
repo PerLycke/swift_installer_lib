@@ -20,7 +20,6 @@
     <string name="main_modify_accent_desc">Modify accent color for already installed overlays</string>
     <string name="main_modify_accent_title">Accent</string>
     <string name="section_format">Hello World from section: %1$d</string>
-    <string name="set">SET</string>
     <string name="tab_text">Tab %1$d</string>
     <string name="uninstalling_overlays">Uninstalling overlays…</string>
     <string name="tab_active">Active</string>
@@ -29,4 +28,20 @@
     <string name="tab_failed">Failed</string>
     <string name="tab_inactive">inactive</string>
     <string name="about">About</string>
+    <string name="updating_overlays">Updating overlays</string>
+    <string name="image">image</string>
+    <string name="hashtag">#</string>
+    <string name="black">Black</string>
+    <string name="white">White</string>
+    <string name="dark">Dark</string>
+    <string name="background">Background</string>
+    <string name="accent">Accent</string>
+    <string name="error_report">Error report</string>
+    <string name="error_msg_example">You have WhatsApp version 1.3 installed. This version is not yet supported, but we are working on it. Thanks for your patience.</string>
+    <string name="close">Close</string>
+    <string name="background_change_title">You are changing background</string>
+    <string name="background_change_msg">Changing background requires the whole theme to be reloaded. This will take some time. If you don\'t want to do this now, don\'t click continue.</string>
+    <string name="accent_change_info">Changing only accent is easier and faster.</string>
+    <string name="background_change_back">Back to cusomization screen</string>
+    <string name="background_change_continue">Continue and reload theme</string>
 </resources>

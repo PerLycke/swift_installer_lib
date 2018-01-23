@@ -1,4 +1,4 @@
-<inset android:insetLeft="24.0dip" android:insetRight="24.0dip"
+<inset android:insetLeft="18.0dip" android:insetRight="18.0dip"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <shape android:shape="rectangle"
         xmlns:android="http://schemas.android.com/apk/res/android">
