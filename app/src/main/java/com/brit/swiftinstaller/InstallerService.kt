@@ -15,6 +15,7 @@ import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.utils.constants.INSTALL_FAILED_INCOMPATIBLE
 import com.brit.swiftinstaller.utils.constants.SIMULATE_INSTALL
 import com.brit.swiftinstaller.utils.deleteFileShell
+import com.brit.swiftinstaller.utils.getAccentColor
 import com.brit.swiftinstaller.utils.rom.RomInfo
 
 import java.io.BufferedWriter
@@ -243,6 +244,9 @@ class InstallerService : Service() {
         for (path in assetPaths) {
             copyAssetFolder(am, path, resDir.absolutePath)
         }
+        if (overlay.equals("android")) {
+            applyAccent(resDir);
+        }
         generateManifest(overlayDir.absolutePath,
                 mPackageName, overlay!!, info.versionName)
         val overlayPath = cacheDir.toString() + "/" + mPackageName + "/overlays/" +
@@ -255,6 +259,33 @@ class InstallerService : Service() {
         //ShellUtils.deleteFile(overlayPath);
         if (!deleteFileShell(overlayDir.absolutePath)) {
             Log.e(TAG, "Unable to delete " + overlayPath)
+        }
+    }
+
+    private fun applyAccent(resDir: File) {
+        val accent = getAccentColor(this)
+        //val hightlightColor =
+        val file = StringBuilder()
+        file.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
+        file.append("<resources>\n")
+        file.append("<color name=\"material_blue_grey_900\">" + accent + "</color>")
+        //file.append("<color name=\"highlighted_text_dark\">")
+        file.append("</resources>")
+
+        var writer: BufferedWriter? = null
+        try {
+            writer = BufferedWriter(FileWriter(resDir.absolutePath + "values/accent.xml"))
+            writer.write(file.toString())
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } finally {
+            try {
+                if (writer != null) {
+                    writer.close()
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
         }
     }
 

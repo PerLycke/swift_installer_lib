@@ -11,6 +11,9 @@ import android.view.ViewGroup
 import android.widget.*
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.CircleDrawable
+import com.brit.swiftinstaller.utils.getAccentColor
+import com.brit.swiftinstaller.utils.setAccentColor
+import kotlinx.android.synthetic.main.customize_toolbar.*
 
 class CustomizeActivity : AppCompatActivity() {
 
@@ -18,11 +21,24 @@ class CustomizeActivity : AppCompatActivity() {
     lateinit var hexInput: EditText
     lateinit var applyButton: Button
 
+    private var mAccent: Int
+
+    init {
+        mAccent = getAccentColor(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val layout = LayoutInflater.from(this).inflate(R.layout.activity_customize, null)
         setupAccentSheet(layout)
         setContentView(layout)
+
+        customizeConfirmBtn.setOnClickListener {
+            setAccentColor(this, mAccent)
+            finish()
+
+            //TODO handle an already installed android overlay
+        }
     }
 
     fun setupAccentSheet(view: View) {
@@ -37,6 +53,7 @@ class CustomizeActivity : AppCompatActivity() {
     }
 
     fun updateColor(color: Int) {
+        mAccent = color
         Log.d("TEST", "n - " + settingsIcons.size)
         for (icon: ImageView? in settingsIcons) {
             Log.d("TEST", "color - " + color)

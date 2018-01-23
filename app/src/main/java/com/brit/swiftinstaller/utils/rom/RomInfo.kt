@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.os.Build
 import android.util.Log
+import com.brit.swiftinstaller.R
 
 import com.brit.swiftinstaller.ui.activities.MainActivity
 import com.brit.swiftinstaller.utils.ShellUtils
@@ -18,8 +19,15 @@ import java.io.File
 import com.brit.swiftinstaller.utils.getProperty
 import com.brit.swiftinstaller.utils.runCommand
 
-class RomInfo internal constructor(var name: String, var version: String, vararg vars: String) {
+class RomInfo internal constructor(var context: Context, var name: String,
+                                   var version: String, vararg vars: String) {
     private val overlayFolder: String? = null
+
+    var defaultAccent: Int = 0
+
+    init {
+        defaultAccent = context.getColor(R.color.minimal_blue)
+    }
 
     val variants = vars
 
@@ -65,9 +73,9 @@ class RomInfo internal constructor(var name: String, var version: String, vararg
         @Synchronized @JvmStatic
         fun getRomInfo(context: Context): RomInfo {
             if (sInfo == null) {
-                sInfo = RomInfo("AOSP", Build.VERSION.RELEASE, "type3_Dark")
+                sInfo = RomInfo(context,"AOSP", Build.VERSION.RELEASE, "type3_Dark")
             }
-            return RomInfo("AOSP", Build.VERSION.RELEASE, "type3_Dark")
+            return sInfo!!
         }
 
         private val isTouchwiz: Boolean
