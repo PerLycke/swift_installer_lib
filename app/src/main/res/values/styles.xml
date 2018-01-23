@@ -39,4 +39,11 @@
         <item name="android:popupElevation">2.0dip</item>
         <item name="android:dropDownWidth">24dp</item>
     </style>
+    <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
+    </style>
+
+    <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@color/background_main</item>
+    </style>
 </resources>

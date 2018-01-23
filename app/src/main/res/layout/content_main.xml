@@ -87,7 +87,7 @@
         app:srcCompat="@drawable/ic_accent" />
 
     <TextView
-        android:id="@+id/accentTitle"
+        android:id="@+id/accentCategoryTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -114,7 +114,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/accentTile"
         app:layout_constraintEnd_toEndOf="@+id/accentTile"
         app:layout_constraintStart_toEndOf="@+id/accentIcon"
-        app:layout_constraintTop_toBottomOf="@+id/accentTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/accentCategoryTitle" />
 
     <ImageView
         android:id="@+id/installedInfo"

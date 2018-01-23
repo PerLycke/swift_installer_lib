@@ -29,10 +29,9 @@
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden" />
         <activity
-            android:name=".ui.activities.AccentActivity"
+            android:name=".ui.activities.CustomizeActivity"
             android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden"
-            android:theme="@style/AppDialogTheme"/>
+            android:configChanges="orientation|keyboardHidden"/>
     </application>
 
 </manifest>

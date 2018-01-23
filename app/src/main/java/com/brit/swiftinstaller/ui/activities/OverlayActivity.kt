@@ -26,6 +26,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.brit.swiftinstaller.R
+import kotlinx.android.synthetic.main.activity_customize.*
 import kotlinx.android.synthetic.main.app_list_activity.*
 import kotlinx.android.synthetic.main.error_dialog.*
 import kotlinx.android.synthetic.main.overlay_activity.*
@@ -200,7 +201,7 @@ class OverlayActivity : AppCompatActivity() {
     }
 
     fun fabClick(view: View) {
-        val mBottomSheetDialog = BottomSheetDialog(this)
+        val mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
         val sheetView = LayoutInflater.from(this).inflate(R.layout.fab_actions_sheet, null)
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
@@ -225,14 +226,14 @@ class OverlayActivity : AppCompatActivity() {
     }
 
     fun installAction() {
-        val mBottomSheetDialog = BottomSheetDialog(this)
+        val mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
         val sheetView = LayoutInflater.from(this).inflate(R.layout.install_progress_sheet,null)
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
     }
 
     fun uninstallAction() {
-        val mBottomSheetDialog = BottomSheetDialog(this)
+        val mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
         val sheetView = LayoutInflater.from(this).inflate(R.layout.confirm_uninstall_sheet,null)
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
@@ -250,14 +251,14 @@ class OverlayActivity : AppCompatActivity() {
     }
 
     fun uninstallProgressAction() {
-        val mBottomSheetDialog = BottomSheetDialog(this)
+        val mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
         val sheetView = LayoutInflater.from(this).inflate(R.layout.uninstall_progress_sheet,null)
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
     }
 
     fun updateAction() {
-        val mBottomSheetDialog = BottomSheetDialog(this)
+        val mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
         val sheetView = LayoutInflater.from(this).inflate(R.layout.update_progress_sheet, null)
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
