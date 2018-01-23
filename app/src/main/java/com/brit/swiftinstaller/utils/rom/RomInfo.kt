@@ -5,14 +5,19 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.om.OMS
 import android.os.Build
 import android.util.Log
 
 import com.brit.swiftinstaller.ui.activities.MainActivity
+import com.brit.swiftinstaller.utils.ShellUtils
+import com.brit.swiftinstaller.utils.Utils
+import com.brit.swiftinstaller.utils.constants.CURRENT_USER
 
 import java.io.File
 
 import com.brit.swiftinstaller.utils.getProperty
+import com.brit.swiftinstaller.utils.runCommand
 
 class RomInfo internal constructor(var name: String, var version: String, vararg vars: String) {
     private val overlayFolder: String? = null
@@ -28,11 +33,11 @@ class RomInfo internal constructor(var name: String, var version: String, vararg
     }
 
     fun installOverlay(context: Context, targetPackage: String, overlayPath: String) {
-        //TODO
+        runCommand("pm install " + overlayPath, true)
+        runCommand("cmd overlay enable " + Utils.getOverlayPackageName(targetPackage), true)
     }
 
     fun postInstall(context: Context, targetPackage: String) {
-        //TODO
     }
 
     fun uninstall(context: Context, packageName: String) {
@@ -56,16 +61,14 @@ class RomInfo internal constructor(var name: String, var version: String, vararg
 
         private val TAG = "RomInfo"
 
-        @JvmStatic private lateinit var sInfo: RomInfo
+        @JvmStatic private var sInfo: RomInfo? = null
 
         @Synchronized @JvmStatic
         fun getRomInfo(context: Context): RomInfo {
             if (sInfo == null) {
-                return sInfo
+                sInfo = RomInfo("AOSP", Build.VERSION.RELEASE, "type3_Dark")
             }
-            val oxygen = getProperty("ro.oxygen.version")
-            sInfo = RomInfo("AOSP", Build.VERSION.RELEASE, "type3_v7_1")
-            return sInfo
+            return RomInfo("AOSP", Build.VERSION.RELEASE, "type3_Dark")
         }
 
         private val isTouchwiz: Boolean

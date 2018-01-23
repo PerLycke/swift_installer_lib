@@ -7,6 +7,7 @@ import android.system.ErrnoException
 import android.system.Os
 import android.text.TextUtils
 import android.util.Log
+import kellinwood.security.zipsigner.ZipSigner
 
 import java.io.DataOutputStream
 import java.io.File
@@ -55,10 +56,10 @@ object ShellUtils {
             }
         }
 
-        if (fileExists(unsigned.absolutePath) && !deleteFile(unsigned.absolutePath)) {
+        if (fileExists(unsigned.absolutePath) && !deleteFileShell(unsigned.absolutePath)) {
             Log.e(TAG, "Unable to delete " + unsigned.absolutePath)
         }
-        if (fileExists(overlay.absolutePath) && !deleteFile(overlay.absolutePath)) {
+        if (fileExists(overlay.absolutePath) && !deleteFileShell(overlay.absolutePath)) {
             Log.e(TAG, "Unable to delete " + overlay.absolutePath)
         }
 
@@ -93,9 +94,9 @@ object ShellUtils {
         if (unsigned.exists()) {
             runCommand("chmod 777 " + unsigned, false)
             try {
-                // ZipSigner zipSigner = new ZipSigner();
-                // zipSigner.setKeymode("testkey");
-                // zipSigner.signZip(unsigned.getAbsolutePath(), overlay.getAbsolutePath());
+                val zipSigner = ZipSigner()
+                zipSigner.setKeymode("testkey");
+                zipSigner.signZip(unsigned.getAbsolutePath(), overlay.getAbsolutePath());
                 unsigned.delete()
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -110,7 +111,7 @@ object ShellUtils {
         var `in`: InputStream? = null
         var out: OutputStream? = null
         try {
-            `in` = context.assets.open("aopt")
+            `in` = context.assets.open("aapt")
             out = FileOutputStream(aapt)
             val bytes = ByteArray(1024)
             var len: Int = `in`.read(bytes)
@@ -150,7 +151,7 @@ fun runCommand(cmd: String, root: Boolean = true): CommandOutput {
     var os: DataOutputStream? = null
     var process: Process? = null
     try {
-        process = Runtime.getRuntime().exec(if (root) "sh" else "sh")
+        process = Runtime.getRuntime().exec(if (root) "su" else "sh")
         os = DataOutputStream(process!!.outputStream)
         os.writeBytes(cmd + "\n")
         os.flush()
@@ -216,7 +217,7 @@ private fun remount(path: String, type: String): Boolean {
     return mount.exitCode == 0
 }
 
-fun deleteFile(path: String): Boolean {
+fun deleteFileShell(path: String): Boolean {
     val output = runCommand("rm -rf " + path, false)
     return output.exitCode == 0
 }

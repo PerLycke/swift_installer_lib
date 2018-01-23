@@ -1,12 +1,17 @@
 package com.brit.swiftinstaller.ui.activities
 
+import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.AsyncTask
 import android.os.Bundle
+import android.os.IBinder
+import android.os.RemoteException
 import android.support.design.widget.BottomSheetDialog
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
@@ -20,21 +25,32 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
+import com.brit.swiftinstaller.IInstallerCallback
+import com.brit.swiftinstaller.IInstallerService
+import com.brit.swiftinstaller.InstallerService
 import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.utils.Utils.getOverlayPackageName
+import com.brit.swiftinstaller.utils.Utils.isOverlayEnabled
+import com.brit.swiftinstaller.utils.Utils.isOverlayInstalled
 import kotlinx.android.synthetic.main.app_list_activity.*
 import kotlinx.android.synthetic.main.overlay_activity.*
 import kotlinx.android.synthetic.main.tab_layout.*
 
 class OverlayActivity : AppCompatActivity() {
 
+    private val INSTALL_TAB = 0
+    private val ACTIVE_TAB = 1
+    private val FAILED_TAB = 2
+
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
 
     private var mApps: HashMap<Int, ArrayList<AppItem>> = HashMap()
 
     private lateinit var mDialogItems: Array<DialogItem>
+
+    private lateinit var mService: IInstallerService
+    private lateinit var mConnection: ServiceConnection
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,10 +107,14 @@ class OverlayActivity : AppCompatActivity() {
         }
     }
 
+
+
     inner class AppItem {
+        var packageName: String = ""
         var title: String = ""
         var version: Int = 0
         var icon: Drawable? = null
+        var checked: Boolean = false
     }
 
     class PlaceholderFragment : Fragment() {
@@ -136,14 +156,28 @@ class OverlayActivity : AppCompatActivity() {
             inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 var appName: TextView = view.findViewById(R.id.appItemName)
                 var appIcon: ImageView = view.findViewById(R.id.appItemImage)
+                var appCheckBox: CheckBox = view.findViewById(R.id.appItemCheckBox)
 
                 fun bindAppItem(item: AppItem) {
                     appName.text = item.title
                     appIcon.setImageDrawable(item.icon)
+
+                    appCheckBox.setOnCheckedChangeListener({ checkBox: CompoundButton, checked: Boolean ->
+                        item.checked = checked
+                    })
                 }
             }
 
         }
+    }
+
+    fun getCheckedItems(index: Int): ArrayList<AppItem> {
+        val checked = ArrayList<AppItem>()
+        for (item: AppItem in mApps.get(index)!!) {
+            if (item.checked)
+                checked.add(item)
+        }
+        return checked
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -157,7 +191,6 @@ class OverlayActivity : AppCompatActivity() {
     }
 
     inner class AppLoader: AsyncTask<Void, Void, Void>() {
-        var index : Int = 0
         override fun doInBackground(vararg params: Void?): Void? {
             for (pn: String in assets.list("overlays")) {
                 Log.d("TEST", "pn - " + pn)
@@ -170,15 +203,20 @@ class OverlayActivity : AppCompatActivity() {
                 }
                 if (info != null) {
                     val item = AppItem()
+                    item.packageName = pn
                     item.icon = info.loadIcon(packageManager)
                     item.title = info.loadLabel(packageManager) as String
                     item.version = pInfo!!.versionCode
-                    mApps.get(index)!!.add(item)
+                    if (isOverlayInstalled(this@OverlayActivity, getOverlayPackageName(pn))) {
+                        if (isOverlayEnabled(this@OverlayActivity, getOverlayPackageName(pn))) {
+                            mApps.get(ACTIVE_TAB)!!.add(item)
+                        } else {
+                            mApps.get(INSTALL_TAB)!!.add(item)
+                        }
+                    } else {
+                        mApps.get(INSTALL_TAB)!!.add(item)
+                    }
                     publishProgress()
-                    if (index == 2)
-                        index = 0
-                    else
-                        index++
                 }
             }
             return null
@@ -220,6 +258,56 @@ class OverlayActivity : AppCompatActivity() {
         val sheetView = LayoutInflater.from(this).inflate(R.layout.install_progress_sheet,null)
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
+
+        val progressBar = sheetView.findViewById<ProgressBar>(R.id.installProgressBar)
+        val count = sheetView.findViewById<TextView>(R.id.installProgressCount)
+        val percent = sheetView.findViewById<TextView>(R.id.installProgressPercent)
+
+        val serviceIntent = Intent(this, InstallerService::class.java)
+        serviceIntent.putExtra(InstallerService.ARG_THEME_PACKAGE, packageName)
+
+        mConnection = object : ServiceConnection {
+            override fun onServiceDisconnected(name: ComponentName?) {
+            }
+
+            override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+                mService = IInstallerService.Stub.asInterface(service)
+                try {
+                    mService.setCallback(object : IInstallerCallback.Stub() {
+                        override fun installFailed(reason: Int) {
+                        }
+
+                        override fun installComplete(uninstall: Boolean) {
+                            mBottomSheetDialog.hide()
+                        }
+
+                        override fun progressUpdate(label: String?, progress: Int, max: Int, uninstall: Boolean) {
+                            runOnUiThread {
+                                progressBar.max = max
+                                progressBar.progress = progress
+                                count.text = Integer.toString(progress) + "/" + max
+                            }
+
+                        }
+
+                        override fun installStarted() {
+                        }
+
+                    })
+                    val checked = getCheckedItems(INSTALL_TAB)
+                    val apps = ArrayList<String>()
+                    for (item in checked) {
+                        apps.add(item.packageName)
+                    }
+                    mService.startInstall(apps)
+                } catch (e: RemoteException) {
+                    e.printStackTrace()
+                }
+            }
+        }
+
+        startService(serviceIntent)
+        bindService(serviceIntent, mConnection, Context.BIND_NOT_FOREGROUND)
     }
 
     fun uninstallAction() {

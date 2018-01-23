@@ -11,8 +11,10 @@ import android.os.RemoteException
 import android.support.v4.util.ArraySet
 import android.util.Log
 import com.brit.swiftinstaller.utils.ShellUtils
+import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.utils.constants.INSTALL_FAILED_INCOMPATIBLE
 import com.brit.swiftinstaller.utils.constants.SIMULATE_INSTALL
+import com.brit.swiftinstaller.utils.deleteFileShell
 import com.brit.swiftinstaller.utils.rom.RomInfo
 
 import java.io.BufferedWriter
@@ -60,8 +62,8 @@ class InstallerService : Service() {
                 mCallback = callback
             }
 
-            override fun startInstall(packageName: String?) {
-                install(packageName)
+            override fun startInstall(apps: List<String>) {
+                install(apps)
             }
 
             override fun startUninstall(app: String?) {
@@ -166,7 +168,7 @@ class InstallerService : Service() {
 
     }
 
-    private fun install(packageName: String?) {
+    private fun install(apps: List<String>) {
 
         try {
             mCallback!!.installStarted()
@@ -179,48 +181,9 @@ class InstallerService : Service() {
 
         mRomInfo!!.preInstall(this, mPackageName!!)
 
-        if (packageName != null) {
-            if (!mRomInfo!!.isOverlayCompatible(packageName)) {
-                try {
-                    mCallback!!.installFailed(INSTALL_FAILED_INCOMPATIBLE)
-                } catch (ignored: RemoteException) {
-                }
-
-            }
-            try {
-                val packageInfo = packageManager.getPackageInfo(packageName, 0)
-                Log.d("TEST", "here")
-                if (themeAssets != null) {
-                    installApp(themeAssets, packageInfo, packageName)
-                }
-                mRomInfo!!.postInstall(this, packageName)
-                mCallback!!.installComplete(false)
-                return
-            } catch (e: PackageManager.NameNotFoundException) {
-                e.printStackTrace()
-                return
-            } catch (e: RemoteException) {
-                e.printStackTrace()
-                return
-            }
-
-        }
-
         val am = themeAssets ?: return
         try {
-            val olays = am.list("overlays")
-            val overlays = ArrayList<String>()
-            for (o in olays) {
-                if (mExcludedPackages.contains(o)) continue
-                try {
-                    packageManager.getApplicationInfo(o, 0)
-                } catch (e: PackageManager.NameNotFoundException) {
-                    continue
-                }
-
-                overlays.add(o)
-            }
-            for (overlay in overlays) {
+            for (overlay in apps) {
                 val info: ApplicationInfo
                 val pInfo: PackageInfo
                 try {
@@ -232,7 +195,7 @@ class InstallerService : Service() {
 
                 try {
                     mCallback!!.progressUpdate(info.loadLabel(packageManager) as String,
-                            overlays.indexOf(overlay), overlays.size, false)
+                            apps.indexOf(overlay), apps.size, false)
                 } catch (ignored: RemoteException) {
                 }
 
@@ -290,7 +253,7 @@ class InstallerService : Service() {
         mRomInfo!!.installOverlay(this, overlay, overlayPath)
 
         //ShellUtils.deleteFile(overlayPath);
-        if (!deleteFile(overlayDir.absolutePath)) {
+        if (!deleteFileShell(overlayDir.absolutePath)) {
             Log.e(TAG, "Unable to delete " + overlayPath)
         }
     }
@@ -300,7 +263,7 @@ class InstallerService : Service() {
         val manifest = StringBuilder()
         manifest.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
         manifest.append("<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n")
-        manifest.append("package=\"$packageName.$targetPackage\">\n")
+        manifest.append("package=\"" + Utils.getOverlayPackageName(targetPackage) + "\">\n")
         manifest.append("<overlay ")
         manifest.append("android:priority=\"1\" ")
         if (targetPackage == "android") {
