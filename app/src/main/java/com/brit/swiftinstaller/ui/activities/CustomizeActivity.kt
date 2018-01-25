@@ -21,14 +21,11 @@ class CustomizeActivity : AppCompatActivity() {
     lateinit var hexInput: EditText
     lateinit var applyButton: Button
 
-    private var mAccent: Int
-
-    init {
-        mAccent = getAccentColor(this)
-    }
+    private var mAccent: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mAccent = getAccentColor(this)
         val layout = LayoutInflater.from(this).inflate(R.layout.activity_customize, null)
         setupAccentSheet(layout)
         setContentView(layout)
@@ -54,9 +51,7 @@ class CustomizeActivity : AppCompatActivity() {
 
     fun updateColor(color: Int) {
         mAccent = color
-        Log.d("TEST", "n - " + settingsIcons.size)
         for (icon: ImageView? in settingsIcons) {
-            Log.d("TEST", "color - " + color)
             icon!!.setColorFilter(color)
         }
         hexInput.background.setTint(color)

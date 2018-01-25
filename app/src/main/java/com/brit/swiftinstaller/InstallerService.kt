@@ -27,6 +27,8 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.util.ArrayList
 import java.util.Arrays
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 import javax.crypto.Cipher
 import javax.crypto.CipherInputStream
@@ -37,6 +39,8 @@ class InstallerService : Service() {
 
     private var mPackageName: String? = null
     private var mExcludedPackages: Set<String> = ArraySet()
+
+    private var mExecutor = Executors.newFixedThreadPool(4)
 
     private var mCallback: IInstallerCallback? = null
 
@@ -178,7 +182,7 @@ class InstallerService : Service() {
         }
 
         // check for previous theme
-        uninstall(true, packageName)
+        //uninstall(true, packageName)
 
         mRomInfo!!.preInstall(this, mPackageName!!)
 
@@ -194,28 +198,35 @@ class InstallerService : Service() {
                     continue
                 }
 
-                try {
-                    mCallback!!.progressUpdate(info.loadLabel(packageManager) as String,
-                            apps.indexOf(overlay), apps.size, false)
-                } catch (ignored: RemoteException) {
-                }
-
-                if (SIMULATE_INSTALL) {
+                mExecutor.submit {
                     try {
-                        Thread.sleep(200)
-                    } catch (e: InterruptedException) {
-                        e.printStackTrace()
+                        mCallback!!.progressUpdate(info.loadLabel(packageManager) as String,
+                                apps.indexOf(overlay), apps.size - 1, false)
+                    } catch (ignored: RemoteException) {
                     }
 
-                    continue
+                    if (SIMULATE_INSTALL) {
+                        try {
+                            Thread.sleep(1000)
+                        } catch (e: InterruptedException) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        installApp(am, pInfo, overlay)
+                    }
                 }
-                installApp(am, pInfo, overlay)
             }
             mRomInfo!!.postInstall(this, mPackageName!!)
-            try {
-                mCallback!!.installComplete(false)
-            } catch (ignored: RemoteException) {
+            mExecutor.submit {
+                try {
+                    while (!mExecutor.isShutdown) {
+                        Thread.sleep(500)
+                    }
+                    mCallback!!.installComplete(false)
+                } catch (ignored: RemoteException) {
+                }
             }
+            mExecutor.shutdown()
 
         } catch (e: IOException) {
             e.printStackTrace()
@@ -268,13 +279,15 @@ class InstallerService : Service() {
         val file = StringBuilder()
         file.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
         file.append("<resources>\n")
-        file.append("<color name=\"material_blue_grey_900\">" + accent + "</color>")
+        file.append("<color name=\"material_blue_grey_900\">#" + String.format("%06x", accent).substring(2) + "</color>")
         //file.append("<color name=\"highlighted_text_dark\">")
         file.append("</resources>")
 
+        val values = File(resDir, "/values")
+        values.mkdirs()
         var writer: BufferedWriter? = null
         try {
-            writer = BufferedWriter(FileWriter(resDir.absolutePath + "values/accent.xml"))
+            writer = BufferedWriter(FileWriter(resDir.absolutePath + "/values/accent.xml"))
             writer.write(file.toString())
         } catch (e: IOException) {
             e.printStackTrace()
@@ -312,8 +325,6 @@ class InstallerService : Service() {
         manifest.append("</application>\n")
         manifest.append("</manifest>")
 
-        Log.d("TEST", "manifest - " + manifest.toString())
-
         var writer: BufferedWriter? = null
         try {
             writer = BufferedWriter(FileWriter(path + "/AndroidManifest.xml"))
@@ -339,7 +350,6 @@ class InstallerService : Service() {
             if (!f.exists() && !f.mkdirs()) {
                 throw RuntimeException("cannot create directory: " + path)
             }
-            Log.d("TEST", "files - " + Arrays.toString(files))
             var res = true
             for (file in files) {
                 res = if (am.list(assetPath + "/" + file).isEmpty()) {
@@ -368,8 +378,6 @@ class InstallerService : Service() {
         if (path.endsWith(".enc")) {
             path = path.substring(0, path.lastIndexOf("."))
         }
-
-        Log.d("TEST", "assetPath - " + assetPath)
 
         try {
             `in` = if (mCipher != null && assetPath.endsWith(".enc")) {

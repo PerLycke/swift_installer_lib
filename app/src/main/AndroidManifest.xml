@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -38,7 +39,17 @@
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden"/>
 
+        <activity android:name=".ui.activities.InstallActivity"
+            android:theme="@style/BottomSheetActivity"
+            android:configChanges="orientation|keyboardHidden" />
+
         <service android:name=".InstallerService" />
+
+        <receiver android:name=".utils.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

@@ -78,14 +78,10 @@ object ShellUtils {
             cmd.append(" -I ").append(targetInfo.sourceDir)
         }
         cmd.append(" -F ").append(unsigned.absolutePath)
-        Log.d("TEST", "aapt - " + cmd.toString())
         //ShellUtils.runCommand(cmd.toString());
         try {
             val aapt = Runtime.getRuntime().exec(cmd.toString().split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
             val exitCode = aapt.waitFor()
-            Log.d("TEST", "aapt exitCode - " + exitCode)
-            Log.d("TEST", "aapt output - " + ShellUtils.inputStreamToString(aapt.inputStream))
-            Log.d("TEST", "aapt error - " + ShellUtils.inputStreamToString(aapt.errorStream))
             aapt.destroy()
         } catch (e: Exception) {
             e.printStackTrace()
@@ -95,8 +91,8 @@ object ShellUtils {
             runCommand("chmod 777 " + unsigned, false)
             try {
                 val zipSigner = ZipSigner()
-                zipSigner.setKeymode("testkey");
-                zipSigner.signZip(unsigned.getAbsolutePath(), overlay.getAbsolutePath());
+                zipSigner.setKeymode("testkey")
+                zipSigner.signZip(unsigned.getAbsolutePath(), overlay.getAbsolutePath())
                 unsigned.delete()
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -151,7 +147,9 @@ fun runCommand(cmd: String, root: Boolean = true): CommandOutput {
     var os: DataOutputStream? = null
     var process: Process? = null
     try {
-        process = Runtime.getRuntime().exec(if (root) "su" else "sh")
+
+        val pb = ProcessBuilder("sh")
+        process = pb.start()
         os = DataOutputStream(process!!.outputStream)
         os.writeBytes(cmd + "\n")
         os.flush()
@@ -170,8 +168,6 @@ fun runCommand(cmd: String, root: Boolean = true): CommandOutput {
         process.waitFor()
 
         val output = CommandOutput(`in`, err, process.exitValue())
-        Log.d("TEST", "cmd - " + cmd)
-        Log.d("TEST", "output exit value - " + output.exitCode + " : error - " + output.error + " : output - " + output.output)
         return output
     } catch (e: IOException) {
         e.printStackTrace()

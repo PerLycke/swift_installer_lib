@@ -3,6 +3,8 @@ package com.brit.swiftinstaller.utils
 import android.content.Context
 import android.preference.PreferenceManager
 import android.text.TextUtils
+import android.util.ArraySet
+import android.util.Log
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.rom.RomInfo
 import java.util.*
@@ -27,6 +29,15 @@ fun getUserAccents(context: Context): IntArray {
         accents[i] = Integer.parseInt(col.get(i))
     }
     return accents
+}
+
+fun getAppsToInstall(context: Context): Set<String> {
+    return PreferenceManager.getDefaultSharedPreferences(context).getStringSet("overlays_to_install", ArraySet<String>())
+}
+
+fun addAppToInstall(context: Context, packageName: String) {
+    val apps = getAppsToInstall(context)
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet("apps", apps.plus(packageName)).apply()
 }
 
 fun setUserAccents(context: Context, colors: IntArray) {

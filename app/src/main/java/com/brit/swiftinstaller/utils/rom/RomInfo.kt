@@ -10,14 +10,10 @@ import android.util.Log
 import com.brit.swiftinstaller.R
 
 import com.brit.swiftinstaller.ui.activities.MainActivity
-import com.brit.swiftinstaller.utils.ShellUtils
-import com.brit.swiftinstaller.utils.Utils
+import com.brit.swiftinstaller.utils.*
 import com.brit.swiftinstaller.utils.constants.CURRENT_USER
 
 import java.io.File
-
-import com.brit.swiftinstaller.utils.getProperty
-import com.brit.swiftinstaller.utils.runCommand
 
 class RomInfo internal constructor(var context: Context, var name: String,
                                    var version: String, vararg vars: String) {
@@ -40,8 +36,14 @@ class RomInfo internal constructor(var context: Context, var name: String,
     }
 
     fun installOverlay(context: Context, targetPackage: String, overlayPath: String) {
+        val installed = Utils.isOverlayInstalled(context, Utils.getOverlayPackageName(targetPackage))
         runCommand("pm install " + overlayPath, true)
-        runCommand("cmd overlay enable " + Utils.getOverlayPackageName(targetPackage), true)
+        if (installed) {
+            runCommand("cmd overlay enable " + Utils.getOverlayPackageName(targetPackage), true)
+
+        } else {
+            addAppToInstall(context, Utils.getOverlayPackageName(targetPackage))
+        }
     }
 
     fun postInstall(context: Context, targetPackage: String) {
@@ -85,7 +87,6 @@ class RomInfo internal constructor(var context: Context, var name: String,
             val am = context.getSystemService(ActivityManager::class.java)!!
             val services = am.getRunningServices(Integer.MAX_VALUE)
             for (info in services) {
-                Log.d("TEST", "name - " + info.service.className)
                 if (info.service.className.contains("IOverlayManager")) {
                     return true
                 }

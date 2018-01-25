@@ -45,11 +45,9 @@ class AppListAdapter(val activity: AppListActivity, val packages: MutableList<Ap
             appItemSelected?.isChecked = activity.apps.contains(appInfo)
             appItemSelected?.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
-                    Log.d("TEST", "checked " + appInfo.loadLabel(context.packageManager))
                     activity.apps.add(appInfo)
                     Toast.makeText(context, "${activity.apps}", Toast.LENGTH_SHORT).show()
                 } else {
-                    Log.d("TEST", "unchecked " + appInfo.loadLabel(context.packageManager))
                     activity.apps.remove(appInfo)
                     Toast.makeText(context, "${activity.apps}", Toast.LENGTH_SHORT).show()
                 }

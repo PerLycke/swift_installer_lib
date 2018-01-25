@@ -46,4 +46,12 @@
     <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@color/background_main</item>
     </style>
+
+    <style name="BottomSheetActivity" parent="@style/AppTheme">
+        <item name="android:colorBackground">?attr/colorBackgroundFloating</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@color/background_alpha</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
 </resources>

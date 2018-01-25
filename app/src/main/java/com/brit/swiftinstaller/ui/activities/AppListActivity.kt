@@ -31,7 +31,6 @@ class AppListActivity : AppCompatActivity() {
 
         val appList: ArrayList<ApplicationInfo> = arrayListOf()
         for (pn: String in assets.list("overlays")) {
-            Log.d("TEST", "pn - " + pn)
             var info: ApplicationInfo? = null
             try {
                 info = packageManager.getApplicationInfo(pn, PackageManager.GET_META_DATA)

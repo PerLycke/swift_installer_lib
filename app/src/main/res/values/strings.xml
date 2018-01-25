@@ -44,4 +44,6 @@
     <string name="accent_change_info">Changing only accent is easier and faster.</string>
     <string name="background_change_back">Back to cusomization screen</string>
     <string name="background_change_continue">Continue and reload theme</string>
+
+    <string name="install_count">%2$d / %2$d</string>
 </resources>

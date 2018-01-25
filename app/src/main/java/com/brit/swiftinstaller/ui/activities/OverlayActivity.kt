@@ -22,10 +22,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import com.brit.swiftinstaller.IInstallerCallback
 import com.brit.swiftinstaller.IInstallerService
@@ -34,6 +31,7 @@ import com.brit.swiftinstaller.utils.Utils.getOverlayPackageName
 import com.brit.swiftinstaller.utils.Utils.isOverlayEnabled
 import com.brit.swiftinstaller.utils.Utils.isOverlayInstalled
 import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.utils.InstallerHandler
 import kotlinx.android.synthetic.main.activity_customize.*
 import kotlinx.android.synthetic.main.app_list_activity.*
 import kotlinx.android.synthetic.main.error_dialog.*
@@ -49,6 +47,8 @@ class OverlayActivity : AppCompatActivity() {
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
 
     private var mApps: HashMap<Int, ArrayList<AppItem>> = HashMap()
+
+    lateinit var mBottomSheetDialog: BottomSheetDialog
 
     private lateinit var mDialogItems: Array<DialogItem>
 
@@ -79,6 +79,11 @@ class OverlayActivity : AppCompatActivity() {
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
 
         AppLoader().execute()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menu!!.add(0, 1, 0, "Select All").setIcon(R.drawable.select_all).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+        return super.onCreateOptionsMenu(menu)
     }
 
     inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
@@ -158,12 +163,16 @@ class OverlayActivity : AppCompatActivity() {
 
             inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 var appName: TextView = view.findViewById(R.id.appItemName)
+                var packageName: TextView = view.findViewById(R.id.appName)
                 var appIcon: ImageView = view.findViewById(R.id.appItemImage)
                 var appCheckBox: CheckBox = view.findViewById(R.id.appItemCheckBox)
 
                 fun bindAppItem(item: AppItem) {
                     appName.text = item.title
                     appIcon.setImageDrawable(item.icon)
+                    appCheckBox.isChecked = item.checked
+                    packageName.text = item.packageName
+
 
                     appCheckBox.setOnCheckedChangeListener({ checkBox: CompoundButton, checked: Boolean ->
                         item.checked = checked
@@ -189,6 +198,14 @@ class OverlayActivity : AppCompatActivity() {
                 finish()
                 return true
             }
+
+            1 -> {
+                for (appItem in mApps.get(container.currentItem)!!) {
+                    appItem.checked = true
+                }
+                mSectionsPagerAdapter!!.notifyFragmentDataSetChanged()
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -196,7 +213,6 @@ class OverlayActivity : AppCompatActivity() {
     inner class AppLoader: AsyncTask<Void, Void, Void>() {
         override fun doInBackground(vararg params: Void?): Void? {
             for (pn: String in assets.list("overlays")) {
-                Log.d("TEST", "pn - " + pn)
                 var info: ApplicationInfo? = null
                 var pInfo: PackageInfo? = null
                 try {
@@ -262,61 +278,18 @@ class OverlayActivity : AppCompatActivity() {
         }
     }
 
+    private lateinit var mProgressBar: ProgressBar
+
     fun installAction() {
-        val mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
-        val sheetView = LayoutInflater.from(this).inflate(R.layout.install_progress_sheet,null)
-        mBottomSheetDialog.setContentView(sheetView)
-        mBottomSheetDialog.show()
 
-        val progressBar = sheetView.findViewById<ProgressBar>(R.id.installProgressBar)
-        val count = sheetView.findViewById<TextView>(R.id.installProgressCount)
-        val percent = sheetView.findViewById<TextView>(R.id.installProgressPercent)
-
-        val serviceIntent = Intent(this, InstallerService::class.java)
-        serviceIntent.putExtra(InstallerService.ARG_THEME_PACKAGE, packageName)
-
-        mConnection = object : ServiceConnection {
-            override fun onServiceDisconnected(name: ComponentName?) {
-            }
-
-            override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-                mService = IInstallerService.Stub.asInterface(service)
-                try {
-                    mService.setCallback(object : IInstallerCallback.Stub() {
-                        override fun installFailed(reason: Int) {
-                        }
-
-                        override fun installComplete(uninstall: Boolean) {
-                            mBottomSheetDialog.hide()
-                        }
-
-                        override fun progressUpdate(label: String?, progress: Int, max: Int, uninstall: Boolean) {
-                            runOnUiThread {
-                                progressBar.max = max
-                                progressBar.progress = progress
-                                count.text = Integer.toString(progress) + "/" + max
-                            }
-
-                        }
-
-                        override fun installStarted() {
-                        }
-
-                    })
-                    val checked = getCheckedItems(INSTALL_TAB)
-                    val apps = ArrayList<String>()
-                    for (item in checked) {
-                        apps.add(item.packageName)
-                    }
-                    mService.startInstall(apps)
-                } catch (e: RemoteException) {
-                    e.printStackTrace()
-                }
-            }
+        val intent = Intent(this, InstallActivity::class.java)
+        val checked = getCheckedItems(INSTALL_TAB)
+        val apps = ArrayList<String>()
+        for (item in checked) {
+            apps.add(item.packageName)
         }
-
-        startService(serviceIntent)
-        bindService(serviceIntent, mConnection, Context.BIND_NOT_FOREGROUND)
+        intent.putStringArrayListExtra("apps", apps)
+        startActivity(intent)
     }
 
     fun uninstallAction() {
