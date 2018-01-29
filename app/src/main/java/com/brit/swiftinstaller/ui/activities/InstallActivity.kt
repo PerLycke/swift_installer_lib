@@ -9,6 +9,7 @@ import android.widget.ProgressBar
 import com.brit.swiftinstaller.IInstallerService
 import com.brit.swiftinstaller.InstallerService
 import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.installer.Notifier
 import com.brit.swiftinstaller.utils.InstallerHandler
 import kotlinx.android.synthetic.main.install_progress_sheet.*
 
@@ -34,6 +35,10 @@ class InstallActivity: AppCompatActivity() {
                installProgressCount.text = progress.toString() + "/" + max
                installProgressPercent.text = ((progress * 100) / max).toString() + "%"
            }
+           Log.d("TEST", "progress - " + progress + "/" + max)
+           if (progress == max) {
+               installComplete(false)
+           }
         })
     }
 
@@ -54,15 +59,20 @@ class InstallActivity: AppCompatActivity() {
                     progressUpdate(intent.getStringExtra("label"), intent.getIntExtra("progress", 0), intent.getIntExtra("max", 0), false)
                 } else if (intent!!.action.equals(InstallerHandler.INSTALL_COMPLETE)) {
                     installComplete(intent.getBooleanExtra("uninstall", false))
+                } else if (intent!!.action.equals(Notifier.ACTION_INSTALLED)) {
+                    val packageName = intent!!.extras.getString(Notifier.EXTRA_PACKAGE_NAME)
+                    progressUpdate(packageManager.getApplicationInfo(packageName, 0).loadLabel(packageManager) as String,
+                            intent.getIntExtra(Notifier.EXTRA_PROGRESS, 0), intent.getIntExtra(Notifier.EXTRA_MAX, 0), false)
+                } else if (intent.action.equals(Notifier.ACTION_INSTALL_STARTED)) {
+                    progressUpdate(null, 0, intent.getIntExtra(Notifier.EXTRA_MAX, 0), false)
                 }
             }
 
         }
 
-        val filter = IntentFilter(InstallerHandler.INSTALL_COMPLETE)
-        filter.addAction(InstallerHandler.INSTALL_FAILED)
-        filter.addAction(InstallerHandler.INSTALL_PROGRESS)
-        filter.addAction(InstallerHandler.INSTALL_STARTED)
+        val filter = IntentFilter()
+        filter.addAction(Notifier.ACTION_INSTALLED)
+        filter.addAction(Notifier.ACTION_FAILED)
 
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter)
 

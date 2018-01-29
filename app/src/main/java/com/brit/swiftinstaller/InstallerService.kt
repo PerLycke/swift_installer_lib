@@ -8,11 +8,11 @@ import android.content.pm.PackageManager
 import android.content.res.AssetManager
 import android.os.IBinder
 import android.os.RemoteException
-import android.support.v4.util.ArraySet
 import android.util.Log
+import com.brit.swiftinstaller.installer.OverlayManager
+import com.brit.swiftinstaller.utils.AssetHelper.Companion.copyAssetFolder
 import com.brit.swiftinstaller.utils.ShellUtils
 import com.brit.swiftinstaller.utils.Utils
-import com.brit.swiftinstaller.utils.constants.INSTALL_FAILED_INCOMPATIBLE
 import com.brit.swiftinstaller.utils.constants.SIMULATE_INSTALL
 import com.brit.swiftinstaller.utils.deleteFileShell
 import com.brit.swiftinstaller.utils.getAccentColor
@@ -20,33 +20,29 @@ import com.brit.swiftinstaller.utils.rom.RomInfo
 
 import java.io.BufferedWriter
 import java.io.File
-import java.io.FileOutputStream
 import java.io.FileWriter
 import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
 import java.util.ArrayList
 import java.util.Arrays
 import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
 
 import javax.crypto.Cipher
-import javax.crypto.CipherInputStream
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
 class InstallerService : Service() {
 
     private var mPackageName: String? = null
-    private var mExcludedPackages: Set<String> = ArraySet()
 
-    private var mExecutor = Executors.newFixedThreadPool(4)
+    private var mExecutor = Executors.newFixedThreadPool(1)
 
     private var mCallback: IInstallerCallback? = null
 
     private var mRomInfo: RomInfo? = null
 
     private var mCipher: Cipher? = null
+
+    private var mOM: OverlayManager? = null
 
     private val themeAssets: AssetManager?
         get() {
@@ -71,8 +67,8 @@ class InstallerService : Service() {
                 install(apps)
             }
 
-            override fun startUninstall(app: String?) {
-                uninstall(false, app)
+            override fun startUninstall(apps: List<String>) {
+                uninstall(false, apps)
             }
 
             @Throws(RemoteException::class)
@@ -98,6 +94,8 @@ class InstallerService : Service() {
         //mExcludedPackages = Settings.getExcludedApps(this)
         mRomInfo = RomInfo.getRomInfo(this)
 
+        mOM = OverlayManager(this)
+
         val enKey = intent.getByteArrayExtra(ARG_ENCRYPTION_KEY)
         val ivKey = intent.getByteArrayExtra(ARG_IV_KEY)
 
@@ -112,7 +110,7 @@ class InstallerService : Service() {
         return Service.START_NOT_STICKY
     }
 
-    private fun uninstall(preInstall: Boolean, packageName: String?) {
+    private fun uninstall(preInstall: Boolean, apps: List<String>) {
         if (!preInstall) {
             try {
                 mCallback!!.installStarted()
@@ -163,7 +161,9 @@ class InstallerService : Service() {
 
             return
         }
-        //mRomInfo!!.uninstall(this, mCallback, packageName)
+        for (packageName in apps) {
+            mRomInfo!!.uninstallOverlay(this, packageName)
+        }
         try {
             if (!preInstall) {
                 mCallback!!.installComplete(true)
@@ -181,55 +181,48 @@ class InstallerService : Service() {
             e.printStackTrace()
         }
 
+        if (mExecutor.isShutdown)
+            mExecutor = Executors.newFixedThreadPool(1)
+
         // check for previous theme
         //uninstall(true, packageName)
 
         mRomInfo!!.preInstall(this, mPackageName!!)
 
-        val am = themeAssets ?: return
-        try {
-            for (overlay in apps) {
-                val info: ApplicationInfo
-                val pInfo: PackageInfo
-                try {
-                    info = packageManager.getApplicationInfo(overlay, 0)
-                    pInfo = packageManager.getPackageInfo(overlay, 0)
-                } catch (e: PackageManager.NameNotFoundException) {
-                    continue
-                }
+        if (SIMULATE_INSTALL) {
 
-                mExecutor.submit {
+            val am = themeAssets ?: return
+            try {
+                for (overlay in apps) {
+                    val info: ApplicationInfo
+                    val pInfo: PackageInfo
                     try {
-                        mCallback!!.progressUpdate(info.loadLabel(packageManager) as String,
-                                apps.indexOf(overlay), apps.size - 1, false)
-                    } catch (ignored: RemoteException) {
+                        info = packageManager.getApplicationInfo(overlay, 0)
+                        pInfo = packageManager.getPackageInfo(overlay, 0)
+                    } catch (e: PackageManager.NameNotFoundException) {
+                        continue
                     }
 
-                    if (SIMULATE_INSTALL) {
+                    mExecutor.submit {
+                        try {
+                            mCallback!!.progressUpdate(info.loadLabel(packageManager) as String,
+                                    apps.indexOf(overlay), apps.size - 1, false)
+                        } catch (ignored: RemoteException) {
+                        }
                         try {
                             Thread.sleep(1000)
                         } catch (e: InterruptedException) {
                             e.printStackTrace()
                         }
-                    } else {
-                        installApp(am, pInfo, overlay)
                     }
                 }
-            }
-            mRomInfo!!.postInstall(this, mPackageName!!)
-            mExecutor.submit {
-                try {
-                    while (!mExecutor.isShutdown) {
-                        Thread.sleep(500)
-                    }
-                    mCallback!!.installComplete(false)
-                } catch (ignored: RemoteException) {
-                }
-            }
-            mExecutor.shutdown()
+                mRomInfo!!.postInstall(this, mPackageName!!)
 
-        } catch (e: IOException) {
-            e.printStackTrace()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        } else {
+            mOM!!.compileOverlays(apps)
         }
 
     }
@@ -253,18 +246,20 @@ class InstallerService : Service() {
         val overlayDir = File(cacheDir, "overlays/" + overlay)
         val resDir = File(overlayDir, "res")
         for (path in assetPaths) {
-            copyAssetFolder(am, path, resDir.absolutePath)
+            copyAssetFolder(am, path, resDir.absolutePath, mCipher)
         }
         if (overlay.equals("android")) {
-            applyAccent(resDir);
+            applyAccent(resDir)
         }
         generateManifest(overlayDir.absolutePath,
                 mPackageName, overlay!!, info.versionName)
         val overlayPath = cacheDir.toString() + "/" + mPackageName + "/overlays/" +
                 mPackageName + "." + overlay + ".apk"
+        Log.d("TEST", "compiling")
         ShellUtils.compileOverlay(this, mPackageName!!, resDir.absolutePath,
                 overlayDir.absolutePath + "/AndroidManifest.xml",
                 overlayPath, null, info.applicationInfo)
+        Log.d("TEST", "compiled")
         mRomInfo!!.installOverlay(this, overlay, overlayPath)
 
         //ShellUtils.deleteFile(overlayPath);
@@ -343,82 +338,13 @@ class InstallerService : Service() {
         }
     }
 
-    private fun copyAssetFolder(am: AssetManager?, assetPath: String, path: String): Boolean {
-        try {
-            val files = am!!.list(assetPath)
-            val f = File(path)
-            if (!f.exists() && !f.mkdirs()) {
-                throw RuntimeException("cannot create directory: " + path)
-            }
-            var res = true
-            for (file in files) {
-                res = if (am.list(assetPath + "/" + file).isEmpty()) {
-                    res and copyAsset(am, assetPath + "/" + file, path + "/" + file)
-                } else {
-                    res and copyAssetFolder(am, assetPath + "/" + file, path + "/" + file)
-                }
-            }
-            return res
-        } catch (e: IOException) {
-            e.printStackTrace()
-            return false
-        }
-
-    }
-
-    private fun copyAsset(am: AssetManager?, assetPath: String, realPath: String): Boolean {
-        var path = realPath
-        var `in`: InputStream? = null
-        var out: OutputStream? = null
-        val parent = File(path).parentFile
-        if (!parent.exists() && !parent.mkdirs()) {
-            throw RuntimeException("cannot create directory: " + parent.absolutePath)
-        }
-
-        if (path.endsWith(".enc")) {
-            path = path.substring(0, path.lastIndexOf("."))
-        }
-
-        try {
-            `in` = if (mCipher != null && assetPath.endsWith(".enc")) {
-                CipherInputStream(am!!.open(assetPath), mCipher)
-            } else {
-                am!!.open(assetPath)
-            }
-            out = FileOutputStream(File(path))
-            val bytes = ByteArray(DEFAULT_BUFFER_SIZE)
-            var len: Int = `in`!!.read(bytes)
-            while (len != -1) {
-                out.write(bytes, 0, len)
-                len = `in`.read(bytes)
-            }
-            return true
-        } catch (e: IOException) {
-            e.printStackTrace()
-            return false
-        } finally {
-            try {
-                if (`in` != null) {
-                    `in`.close()
-                }
-                if (out != null) {
-                    out.close()
-                }
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-
-        }
-    }
-
     companion object {
 
-        val TAG = "InstallerService"
+        const val TAG = "InstallerService"
 
-        val ARG_THEME_PACKAGE = "package_name"
-        val ARG_NOTIFICATION_ACCENT = "notification_color"
+        const val ARG_THEME_PACKAGE = "package_name"
 
-        val ARG_ENCRYPTION_KEY = "encryption_key"
-        val ARG_IV_KEY = "iv_key"
+        const val ARG_ENCRYPTION_KEY = "encryption_key"
+        const val ARG_IV_KEY = "iv_key"
     }
 }

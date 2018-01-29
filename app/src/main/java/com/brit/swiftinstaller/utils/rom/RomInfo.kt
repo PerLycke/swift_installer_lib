@@ -37,7 +37,7 @@ class RomInfo internal constructor(var context: Context, var name: String,
 
     fun installOverlay(context: Context, targetPackage: String, overlayPath: String) {
         val installed = Utils.isOverlayInstalled(context, Utils.getOverlayPackageName(targetPackage))
-        runCommand("pm install " + overlayPath, true)
+        runCommand("pm install -r " + overlayPath, true)
         if (installed) {
             runCommand("cmd overlay enable " + Utils.getOverlayPackageName(targetPackage), true)
 
@@ -49,8 +49,8 @@ class RomInfo internal constructor(var context: Context, var name: String,
     fun postInstall(context: Context, targetPackage: String) {
     }
 
-    fun uninstall(context: Context, packageName: String) {
-        //TODO
+    fun uninstallOverlay(context: Context, packageName: String) {
+        runCommand("pm uninstall " + packageName)
     }
 
     fun createFinishedDialog(activity: MainActivity): Dialog {
@@ -75,7 +75,7 @@ class RomInfo internal constructor(var context: Context, var name: String,
         @Synchronized @JvmStatic
         fun getRomInfo(context: Context): RomInfo {
             if (sInfo == null) {
-                sInfo = RomInfo(context,"AOSP", Build.VERSION.RELEASE, "type3_Dark")
+                sInfo = RomInfo(context,"AOSP", Build.VERSION.RELEASE, "type3_Android_8_-_Dark")
             }
             return sInfo!!
         }

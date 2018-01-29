@@ -8,7 +8,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.brit.swiftinstaller"
-        minSdkVersion 24
+        minSdkVersion 26
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -32,6 +32,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    implementation files('libs/zipsigner-lib-1.17.jar')
-    implementation files('libs/kellinwood-logging-android-1.4.jar')
+    implementation 'com.android.tools.build:apksig:3.0.1'
+    implementation "org.bouncycastle:bcprov-jdk16:1.45"
+
 }

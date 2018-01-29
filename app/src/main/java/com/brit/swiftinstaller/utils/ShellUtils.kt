@@ -3,19 +3,27 @@ package com.brit.swiftinstaller.utils
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.ApplicationInfo
+import android.os.Build
 import android.system.ErrnoException
 import android.system.Os
 import android.text.TextUtils
 import android.util.Log
-import kellinwood.security.zipsigner.ZipSigner
+import com.android.apksig.ApkSigner
 
 import java.io.DataOutputStream
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import java.lang.reflect.InvocationTargetException
+import java.security.KeyPair
+import java.security.KeyPairGenerator
+import java.security.KeyStore
+import java.security.PrivateKey
+import java.security.SecureRandom
+import java.security.cert.X509Certificate
 
 //import kellinwood.security.zipsigner.ZipSigner;
 
@@ -89,15 +97,28 @@ object ShellUtils {
 
         if (unsigned.exists()) {
             runCommand("chmod 777 " + unsigned, false)
-            try {
-                val zipSigner = ZipSigner()
-                zipSigner.setKeymode("testkey")
-                zipSigner.signZip(unsigned.getAbsolutePath(), overlay.getAbsolutePath())
-                unsigned.delete()
-            } catch (e: Exception) {
-                e.printStackTrace()
+            val key = File(context.dataDir, "/signing-key")
+            val keyPass = "overlay".toCharArray()
+            if (!key.exists()) {
+                Utils.makeKey(key)
             }
 
+            val ks = KeyStore.getInstance(KeyStore.getDefaultType())
+            ks.load(FileInputStream(key), keyPass)
+            val pk = ks.getKey("key", keyPass) as PrivateKey
+            val certs = ArrayList<X509Certificate>()
+            certs.add(ks.getCertificateChain("key")[0] as X509Certificate)
+            val signConfig = ApkSigner.SignerConfig.Builder("overlay", pk, certs).build()
+            val signConfigs = ArrayList<ApkSigner.SignerConfig>()
+            signConfigs.add(signConfig)
+            val signer = ApkSigner.Builder(signConfigs)
+            signer.setV1SigningEnabled(false)
+                    .setV2SigningEnabled(true)
+                    .setInputApk(unsigned)
+                    .setOutputApk(overlay)
+                    .setMinSdkVersion(Build.VERSION.SDK_INT)
+                    .build()
+                    .sign()
         }
     }
 
@@ -148,7 +169,7 @@ fun runCommand(cmd: String, root: Boolean = true): CommandOutput {
     var process: Process? = null
     try {
 
-        val pb = ProcessBuilder("sh")
+        val pb = ProcessBuilder(if (root) "su" else "sh")
         process = pb.start()
         os = DataOutputStream(process!!.outputStream)
         os.writeBytes(cmd + "\n")
@@ -168,6 +189,10 @@ fun runCommand(cmd: String, root: Boolean = true): CommandOutput {
         process.waitFor()
 
         val output = CommandOutput(`in`, err, process.exitValue())
+
+        Log.d("TEST", "cmd - " + cmd)
+        Log.d("TEST", "output - " + `in`)
+        Log.d("TEST", "error - " + err)
         return output
     } catch (e: IOException) {
         e.printStackTrace()

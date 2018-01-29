@@ -7,6 +7,6 @@ import java.util.List;
 interface IInstallerService {
     void setCallback(IInstallerCallback callback);
     void startInstall(inout List<String> apps);
-    void startUninstall(String app);
+    void startUninstall(inout List<String> apps);
     void updateApp(String packageName);
 }
