@@ -89,7 +89,7 @@ class OverlayTask(om: OverlayManager): Runnable {
         val file = StringBuilder()
         file.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
         file.append("<resources>\n")
-        file.append("<color name=\"material_blue_grey_900\">#" + String.format("%06x", accent).substring(2) + "</color>")
+        file.append("<color name=\"material_blue_grey_900\">#" + String.format("%06x", accent).substring(2) + "</color>\n")
         //file.append("<color name=\"highlighted_text_dark\">")
         file.append("</resources>")
 
@@ -97,7 +97,7 @@ class OverlayTask(om: OverlayManager): Runnable {
         values.mkdirs()
         var writer: BufferedWriter? = null
         try {
-            writer = BufferedWriter(FileWriter(resDir.absolutePath + "/values/accent.xml"))
+            writer = BufferedWriter(FileWriter(resDir.absolutePath + "/values/type1a.xml"))
             writer.write(file.toString())
         } catch (e: IOException) {
             e.printStackTrace()
@@ -121,7 +121,7 @@ class OverlayTask(om: OverlayManager): Runnable {
         manifest.append("<overlay ")
         manifest.append("android:priority=\"1\" ")
         if (targetPackage == "android") {
-            manifest.append("android:targetPackage=\"fwk\"/>\n")
+            manifest.append("android:targetPackage=\"android\"/>\n")
         } else {
             manifest.append("android:targetPackage=\"$targetPackage\"/>\n")
         }

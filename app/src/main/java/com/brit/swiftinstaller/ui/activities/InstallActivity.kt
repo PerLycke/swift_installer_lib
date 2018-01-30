@@ -71,6 +71,7 @@ class InstallActivity: AppCompatActivity() {
         }
 
         val filter = IntentFilter()
+        filter.addAction(Notifier.ACTION_INSTALL_STARTED)
         filter.addAction(Notifier.ACTION_INSTALLED)
         filter.addAction(Notifier.ACTION_FAILED)
 

@@ -90,6 +90,11 @@ object ShellUtils {
         try {
             val aapt = Runtime.getRuntime().exec(cmd.toString().split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
             val exitCode = aapt.waitFor()
+            val error = inputStreamToString(aapt.errorStream)
+            val output = inputStreamToString(aapt.inputStream)
+            Log.d("TEST", "aapt exitCode - " + exitCode)
+            Log.d("TEST", "aapt output - " + output)
+            Log.d("TEST", "aapt error - " + error)
             aapt.destroy()
         } catch (e: Exception) {
             e.printStackTrace()
