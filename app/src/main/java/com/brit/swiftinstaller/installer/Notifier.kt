@@ -3,6 +3,7 @@ package com.brit.swiftinstaller.installer
 import android.content.Context
 import android.content.Intent
 import android.support.v4.content.LocalBroadcastManager
+import android.util.Log
 import com.brit.swiftinstaller.BuildConfig
 
 
@@ -40,6 +41,7 @@ class Notifier(context : Context) {
     }
 
     fun broadcastOverlayInstalled(packageName: String, progress: Int, max: Int) {
+        Log.d("TEST", "broadcastOverlayInstalled")
         val intent = Intent()
         intent.action = ACTION_INSTALLED
         intent.putExtra(EXTRA_PACKAGE_NAME, packageName)

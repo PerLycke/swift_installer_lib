@@ -36,8 +36,6 @@ class InstallerService : Service() {
 
     private var mExecutor = Executors.newFixedThreadPool(1)
 
-    private var mCallback: IInstallerCallback? = null
-
     private var mRomInfo: RomInfo? = null
 
     private var mCipher: Cipher? = null
@@ -60,7 +58,6 @@ class InstallerService : Service() {
 
             @Throws(RemoteException::class)
             override fun setCallback(callback: IInstallerCallback) {
-                mCallback = callback
             }
 
             override fun startInstall(apps: List<String>) {
@@ -96,6 +93,8 @@ class InstallerService : Service() {
 
         mOM = OverlayManager(this)
 
+        sService = IInstallerService.Stub.asInterface(onBind(intent))
+
         val enKey = intent.getByteArrayExtra(ARG_ENCRYPTION_KEY)
         val ivKey = intent.getByteArrayExtra(ARG_IV_KEY)
 
@@ -111,14 +110,6 @@ class InstallerService : Service() {
     }
 
     private fun uninstall(preInstall: Boolean, apps: List<String>) {
-        if (!preInstall) {
-            try {
-                mCallback!!.installStarted()
-            } catch (e: RemoteException) {
-                e.printStackTrace()
-            }
-
-        }
         if (SIMULATE_INSTALL) {
             val am = themeAssets ?: return
             try {
@@ -138,21 +129,6 @@ class InstallerService : Service() {
                     } catch (e: InterruptedException) {
                         e.printStackTrace()
                     }
-
-                    try {
-                        mCallback!!.progressUpdate(info.loadLabel(packageManager).toString(),
-                                overlays.indexOf(overlay), overlays.size, true)
-                    } catch (e: RemoteException) {
-                        e.printStackTrace()
-                    }
-
-                }
-                try {
-                    if (preInstall) {
-                        mCallback!!.installComplete(true)
-                    }
-                } catch (e: RemoteException) {
-                    e.printStackTrace()
                 }
 
             } catch (e: IOException) {
@@ -164,23 +140,10 @@ class InstallerService : Service() {
         for (packageName in apps) {
             mRomInfo!!.uninstallOverlay(this, packageName)
         }
-        try {
-            if (!preInstall) {
-                mCallback!!.installComplete(true)
-            }
-        } catch (ignored: RemoteException) {
-        }
 
     }
 
     private fun install(apps: List<String>) {
-
-        try {
-            mCallback!!.installStarted()
-        } catch (e: RemoteException) {
-            e.printStackTrace()
-        }
-
         if (mExecutor.isShutdown)
             mExecutor = Executors.newFixedThreadPool(1)
 
@@ -204,11 +167,6 @@ class InstallerService : Service() {
                     }
 
                     mExecutor.submit {
-                        try {
-                            mCallback!!.progressUpdate(info.loadLabel(packageManager) as String,
-                                    apps.indexOf(overlay), apps.size - 1, false)
-                        } catch (ignored: RemoteException) {
-                        }
                         try {
                             Thread.sleep(1000)
                         } catch (e: InterruptedException) {
@@ -346,5 +304,11 @@ class InstallerService : Service() {
 
         const val ARG_ENCRYPTION_KEY = "encryption_key"
         const val ARG_IV_KEY = "iv_key"
+
+        private lateinit var sService: IInstallerService
+
+        fun getService() : IInstallerService {
+            return sService
+        }
     }
 }

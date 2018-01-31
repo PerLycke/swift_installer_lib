@@ -11,13 +11,12 @@ import com.brit.swiftinstaller.InstallerService
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.installer.Notifier
 import com.brit.swiftinstaller.utils.InstallerHandler
+import com.brit.swiftinstaller.utils.InstallerServiceHelper
 import kotlinx.android.synthetic.main.install_progress_sheet.*
 
 
 class InstallActivity: AppCompatActivity() {
 
-    private lateinit var mConnection: ServiceConnection
-    private lateinit var mService: IInstallerService
     private lateinit var mProgressBar: ProgressBar
 
     fun installStarted() {
@@ -52,6 +51,7 @@ class InstallActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.install_progress_sheet)
+        InstallerServiceHelper.connectService(this)
 
         val receiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
@@ -70,7 +70,7 @@ class InstallActivity: AppCompatActivity() {
 
         }
 
-        val filter = IntentFilter()
+        val filter = IntentFilter(Notifier.ACTION_INSTALL_FINISHED)
         filter.addAction(Notifier.ACTION_INSTALL_STARTED)
         filter.addAction(Notifier.ACTION_INSTALLED)
         filter.addAction(Notifier.ACTION_FAILED)
@@ -79,27 +79,6 @@ class InstallActivity: AppCompatActivity() {
 
         mProgressBar = installProgressBar
 
-        val serviceIntent = Intent(this, InstallerService::class.java)
-        serviceIntent.putExtra(InstallerService.ARG_THEME_PACKAGE, packageName)
-
-        mConnection = object : ServiceConnection {
-            override fun onServiceDisconnected(name: ComponentName?) {
-            }
-
-            override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-                mService = IInstallerService.Stub.asInterface(service)
-                try {
-                    mService.setCallback(InstallerHandler(this@InstallActivity))
-                    mService.startInstall(intent.getStringArrayListExtra("apps"))
-                } catch (e: RemoteException) {
-                    e.printStackTrace()
-                }
-            }
-        }
-
-        Handler().postDelayed( {
-            startService(serviceIntent)
-            bindService(serviceIntent, mConnection, Context.BIND_NOT_FOREGROUND)
-        }, 700)
+        InstallerServiceHelper.install(this, intent.getStringArrayListExtra("apps"))
     }
 }

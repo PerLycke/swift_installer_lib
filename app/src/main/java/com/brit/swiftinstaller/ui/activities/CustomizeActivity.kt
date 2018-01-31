@@ -11,9 +11,11 @@ import android.view.ViewGroup
 import android.widget.*
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.CircleDrawable
+import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.utils.getAccentColor
 import com.brit.swiftinstaller.utils.setAccentColor
 import kotlinx.android.synthetic.main.customize_toolbar.*
+import org.bouncycastle.jce.provider.PBE
 
 class CustomizeActivity : AppCompatActivity() {
 
@@ -32,6 +34,9 @@ class CustomizeActivity : AppCompatActivity() {
 
         customizeConfirmBtn.setOnClickListener {
             setAccentColor(this, mAccent)
+            if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
+
+            }
             finish()
 
             //TODO handle an already installed android overlay
