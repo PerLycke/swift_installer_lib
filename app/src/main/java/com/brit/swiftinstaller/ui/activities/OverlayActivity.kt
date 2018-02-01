@@ -1,17 +1,13 @@
 package com.brit.swiftinstaller.ui.activities
 
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.ServiceConnection
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.AsyncTask
 import android.os.Bundle
-import android.os.IBinder
-import android.os.RemoteException
 import android.support.design.widget.BottomSheetDialog
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
@@ -21,56 +17,46 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
-import android.view.*
-import android.widget.*
-import com.brit.swiftinstaller.IInstallerCallback
-import com.brit.swiftinstaller.IInstallerService
-import com.brit.swiftinstaller.InstallerService
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.CompoundButton
+import android.widget.ImageView
+import android.widget.TextView
+import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.Utils.getOverlayPackageName
 import com.brit.swiftinstaller.utils.Utils.isOverlayEnabled
 import com.brit.swiftinstaller.utils.Utils.isOverlayInstalled
-import com.brit.swiftinstaller.R
-import com.brit.swiftinstaller.utils.InstallerHandler
-import kotlinx.android.synthetic.main.activity_customize.*
 import kotlinx.android.synthetic.main.app_list_activity.*
-import kotlinx.android.synthetic.main.error_dialog.*
 import kotlinx.android.synthetic.main.overlay_activity.*
 import kotlinx.android.synthetic.main.tab_layout.*
+import java.lang.ref.WeakReference
 
 class OverlayActivity : AppCompatActivity() {
 
-    private val INSTALL_TAB = 0
-    private val ACTIVE_TAB = 1
-    private val FAILED_TAB = 2
+    companion object {
+        private const val INSTALL_TAB = 0
+        private const val ACTIVE_TAB = 1
+        private const val FAILED_TAB = 2
+    }
 
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
 
     private var mApps: HashMap<Int, ArrayList<AppItem>> = HashMap()
 
-    lateinit var mBottomSheetDialog: BottomSheetDialog
-
-    private lateinit var mDialogItems: Array<DialogItem>
-
-    private lateinit var mService: IInstallerService
-    private lateinit var mConnection: ServiceConnection
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.overlay_activity)
 
-        mDialogItems = arrayOf(
-                DialogItem(getDrawable(R.drawable.ic_install), getString(R.string.dialog_install)),
-                DialogItem(getDrawable(R.drawable.ic_uninstall), getString(R.string.dialog_uninstall)),
-                DialogItem(getDrawable(R.drawable.ic_update), getString(R.string.dialog_update))
-        )
-
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        mApps.put(0, ArrayList())
-        mApps.put(1, ArrayList())
-        mApps.put(2, ArrayList())
+        mApps[0] = ArrayList()
+        mApps[1] = ArrayList()
+        mApps[2] = ArrayList()
 
         mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
 
@@ -78,7 +64,13 @@ class OverlayActivity : AppCompatActivity() {
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
 
-        AppLoader().execute()
+        AppLoader(this, object : Callback {
+            override fun updateApps(tab: Int, item: AppItem) {
+                mApps[tab]!!.add(item)
+                mSectionsPagerAdapter!!.notifyFragmentDataSetChanged()
+            }
+        }).execute()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -92,11 +84,11 @@ class OverlayActivity : AppCompatActivity() {
 
         init {
             mFragments.add(PlaceholderFragment())
-            mFragments[0].setAppList(mApps[0]!!)
+            mFragments[INSTALL_TAB].setAppList(mApps[INSTALL_TAB]!!)
             mFragments.add(PlaceholderFragment())
-            mFragments[1].setAppList(mApps[1]!!)
+            mFragments[ACTIVE_TAB].setAppList(mApps[ACTIVE_TAB]!!)
             mFragments.add(PlaceholderFragment())
-            mFragments[2].setAppList(mApps[2]!!)
+            mFragments[FAILED_TAB].setAppList(mApps[FAILED_TAB]!!)
         }
 
         override fun getItem(position: Int): Fragment {
@@ -116,13 +108,16 @@ class OverlayActivity : AppCompatActivity() {
     }
 
 
-
-    inner class AppItem {
+    class AppItem {
         var packageName: String = ""
         var title: String = ""
         var version: Int = 0
         var icon: Drawable? = null
         var checked: Boolean = false
+    }
+
+    interface Callback {
+        fun updateApps(tab: Int, item: AppItem)
     }
 
     class PlaceholderFragment : Fragment() {
@@ -162,10 +157,10 @@ class OverlayActivity : AppCompatActivity() {
             }
 
             inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-                var appName: TextView = view.findViewById(R.id.appItemName)
+                private var appName: TextView = view.findViewById(R.id.appItemName)
                 var packageName: TextView = view.findViewById(R.id.appName)
-                var appIcon: ImageView = view.findViewById(R.id.appItemImage)
-                var appCheckBox: CheckBox = view.findViewById(R.id.appItemCheckBox)
+                private var appIcon: ImageView = view.findViewById(R.id.appItemImage)
+                private var appCheckBox: CheckBox = view.findViewById(R.id.appItemCheckBox)
 
                 fun bindAppItem(item: AppItem) {
                     appName.text = item.title
@@ -174,7 +169,7 @@ class OverlayActivity : AppCompatActivity() {
                     packageName.text = item.packageName
 
 
-                    appCheckBox.setOnCheckedChangeListener({ checkBox: CompoundButton, checked: Boolean ->
+                    appCheckBox.setOnCheckedChangeListener({ _: CompoundButton, checked: Boolean ->
                         item.checked = checked
                     })
                 }
@@ -183,24 +178,21 @@ class OverlayActivity : AppCompatActivity() {
         }
     }
 
-    fun getCheckedItems(index: Int): ArrayList<AppItem> {
+    private fun getCheckedItems(index: Int): ArrayList<AppItem> {
         val checked = ArrayList<AppItem>()
-        for (item: AppItem in mApps.get(index)!!) {
-            if (item.checked)
-                checked.add(item)
-        }
+        mApps[index]!!.filterTo(checked) { it.checked }
         return checked
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.getItemId()) {
+        when (item.itemId) {
             android.R.id.home -> {
                 finish()
                 return true
             }
 
             1 -> {
-                for (appItem in mApps.get(container.currentItem)!!) {
+                for (appItem in mApps[container.currentItem]!!) {
                     appItem.checked = true
                 }
                 mSectionsPagerAdapter!!.notifyFragmentDataSetChanged()
@@ -210,30 +202,39 @@ class OverlayActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    inner class AppLoader: AsyncTask<Void, Void, Void>() {
+    class AppLoader(context: Context, private val mCallback: Callback)
+            : AsyncTask<Void, AppLoader.Progress, Void>() {
+
+        private val mConRef: WeakReference<Context> = WeakReference(context)
+
+        class Progress(val tab: Int, val item: AppItem)
+
         override fun doInBackground(vararg params: Void?): Void? {
-            for (pn: String in assets.list("overlays")) {
+            assert(mConRef.get() != null)
+            val pm = mConRef.get()!!.packageManager
+            val context = mConRef.get()
+            for (pn: String in mConRef.get()!!.assets.list("overlays")) {
                 var info: ApplicationInfo? = null
                 var pInfo: PackageInfo? = null
                 try {
-                    info = packageManager.getApplicationInfo(pn, PackageManager.GET_META_DATA)
-                    pInfo = packageManager.getPackageInfo(pn, 0)
+                    info = pm.getApplicationInfo(pn, PackageManager.GET_META_DATA)
+                    pInfo = pm.getPackageInfo(pn, 0)
                 } catch (e: PackageManager.NameNotFoundException) {
                 }
                 if (info != null) {
                     val item = AppItem()
                     item.packageName = pn
-                    item.icon = info.loadIcon(packageManager)
-                    item.title = info.loadLabel(packageManager) as String
+                    item.icon = info.loadIcon(pm)
+                    item.title = info.loadLabel(pm) as String
                     item.version = pInfo!!.versionCode
-                    if (isOverlayInstalled(this@OverlayActivity, getOverlayPackageName(pn))) {
-                        if (isOverlayEnabled(this@OverlayActivity, getOverlayPackageName(pn))) {
-                            mApps.get(ACTIVE_TAB)!!.add(item)
+                    if (isOverlayInstalled(context!!, getOverlayPackageName(pn))) {
+                        if (isOverlayEnabled(context, getOverlayPackageName(pn))) {
+                            publishProgress(Progress(ACTIVE_TAB, item))
                         } else {
-                            mApps.get(INSTALL_TAB)!!.add(item)
+                            publishProgress(Progress(INSTALL_TAB, item))
                         }
-                    } else {
-                        mApps.get(INSTALL_TAB)!!.add(item)
+                    } else if (isOverlayInstalled(context, pn)) {
+                        publishProgress(Progress(INSTALL_TAB, item))
                     }
                     publishProgress()
                 }
@@ -241,21 +242,16 @@ class OverlayActivity : AppCompatActivity() {
             return null
         }
 
-        override fun onPostExecute(result: Void?) {
-            super.onPostExecute(result)
-            mSectionsPagerAdapter!!.notifyFragmentDataSetChanged()
-        }
-
-        override fun onProgressUpdate(vararg values: Void?) {
-            super.onProgressUpdate(*values)
-            mSectionsPagerAdapter!!.notifyFragmentDataSetChanged()
+        override fun onProgressUpdate(vararg progress: Progress?) {
+            super.onProgressUpdate(*progress)
+            mCallback.updateApps(progress[0]!!.tab, progress[0]!!.item)
         }
 
     }
 
     fun fabClick(view: View) {
         val mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
-        val sheetView = LayoutInflater.from(this).inflate(R.layout.fab_actions_sheet, null)
+        val sheetView = View.inflate(this, R.layout.fab_actions_sheet, null)
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
 
@@ -278,23 +274,18 @@ class OverlayActivity : AppCompatActivity() {
         }
     }
 
-    private lateinit var mProgressBar: ProgressBar
-
-    fun installAction() {
-
+    private fun installAction() {
         val intent = Intent(this, InstallActivity::class.java)
         val checked = getCheckedItems(INSTALL_TAB)
         val apps = ArrayList<String>()
-        for (item in checked) {
-            apps.add(item.packageName)
-        }
+        checked.mapTo(apps) { it.packageName }
         intent.putStringArrayListExtra("apps", apps)
         startActivity(intent)
     }
 
-    fun uninstallAction() {
+    private fun uninstallAction() {
         val mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
-        val sheetView = LayoutInflater.from(this).inflate(R.layout.confirm_uninstall_sheet,null)
+        val sheetView = LayoutInflater.from(this).inflate(R.layout.confirm_uninstall_sheet, null)
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
 
@@ -310,22 +301,22 @@ class OverlayActivity : AppCompatActivity() {
         }
     }
 
-    fun uninstallProgressAction() {
+    private fun uninstallProgressAction() {
         val mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
-        val sheetView = LayoutInflater.from(this).inflate(R.layout.uninstall_progress_sheet,null)
+        val sheetView = View.inflate(this, R.layout.uninstall_progress_sheet, null)
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
     }
 
-    fun updateAction() {
+    private fun updateAction() {
         val mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
-        val sheetView = LayoutInflater.from(this).inflate(R.layout.update_progress_sheet, null)
+        val sheetView = View.inflate(this, R.layout.update_progress_sheet, null)
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
     }
 
     fun alertIconClick(view: View) {
-        val dialog = LayoutInflater.from(this).inflate(R.layout.error_dialog, null)
+        val dialog = View.inflate(this, R.layout.error_dialog, null)
         val builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme).create()
         val closeBtn = dialog.findViewById<View>(R.id.closeBtn)
         builder.setView(dialog)
@@ -333,33 +324,5 @@ class OverlayActivity : AppCompatActivity() {
             builder.dismiss()
         }
         builder.show()
-    }
-
-    class DialogItem(icon: Drawable, title: String) {
-        var dialogIcon = icon
-        var dialogTitle = title
-    }
-
-    inner class DialogAdapter(context: Context?, resource: Int,
-                              textViewResourceId: Int) :
-            ArrayAdapter<String>(context, resource, textViewResourceId) {
-
-        val layoutResource = resource
-
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-            var view = convertView
-            if (view == null) {
-                view = LayoutInflater.from(this@OverlayActivity).inflate(layoutResource, parent, false)
-            }
-            var icon: ImageView = view!!.findViewById(R.id.dialog_icon)
-            var title: TextView = view.findViewById(R.id.dialog_text)
-            icon.setImageDrawable(mDialogItems[position].dialogIcon)
-            title.text = mDialogItems[position].dialogTitle
-            return view;
-        }
-
-        override fun getCount(): Int {
-            return mDialogItems.size
-        }
     }
 }

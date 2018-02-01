@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.brit.swiftinstaller.utils
 
 import android.annotation.SuppressLint
@@ -9,7 +11,6 @@ import android.system.Os
 import android.text.TextUtils
 import android.util.Log
 import com.android.apksig.ApkSigner
-
 import java.io.DataOutputStream
 import java.io.File
 import java.io.FileInputStream
@@ -18,11 +19,8 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import java.lang.reflect.InvocationTargetException
-import java.security.KeyPair
-import java.security.KeyPairGenerator
 import java.security.KeyStore
 import java.security.PrivateKey
-import java.security.SecureRandom
 import java.security.cert.X509Certificate
 
 //import kellinwood.security.zipsigner.ZipSigner;
@@ -35,11 +33,11 @@ object ShellUtils {
     val isRootAvailable: Boolean
         get() {
             var output: CommandOutput? = runCommand("id")
-            if (output != null && TextUtils.isEmpty(output.error) && output.exitCode == 0) {
-                return output.output != null && output.output!!.contains("uid=0")
+            return if (output != null && TextUtils.isEmpty(output.error) && output.exitCode == 0) {
+                output.output != null && output.output!!.contains("uid=0")
             } else {
                 output = runCommand("echo _TEST_")
-                return output.output!!.contains("_TEST_")
+                output.output!!.contains("_TEST_")
             }
         }
 

@@ -7,11 +7,7 @@
         <item name="actionOverflowMenuStyle">@style/PopupMenuOverflow</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
-    <style name="AppDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowCloseOnTouchOutside">true</item>
-    </style>
+
     <style name="AppAlertDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:windowBackground">@drawable/dialog_bg</item>
     </style>

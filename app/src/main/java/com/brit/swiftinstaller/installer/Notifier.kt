@@ -7,7 +7,7 @@ import android.util.Log
 import com.brit.swiftinstaller.BuildConfig
 
 
-class Notifier(context : Context) {
+class Notifier(context: Context) {
 
     companion object {
         private const val installerPackage = BuildConfig.APPLICATION_ID
@@ -21,7 +21,7 @@ class Notifier(context : Context) {
         const val EXTRA_MAX = installerPackage + ".extra.MAX"
     }
 
-    private val mBroadcaster : LocalBroadcastManager = LocalBroadcastManager.getInstance(context)
+    private val mBroadcaster: LocalBroadcastManager = LocalBroadcastManager.getInstance(context.applicationContext)
 
     fun broadcastInstallStarted(max: Int) {
         val intent = Intent()
@@ -48,6 +48,6 @@ class Notifier(context : Context) {
         intent.putExtra(EXTRA_PROGRESS, progress)
         intent.putExtra(EXTRA_MAX, max)
         intent.addCategory(Intent.CATEGORY_DEFAULT)
-        mBroadcaster.sendBroadcast(intent)
+        mBroadcaster.sendBroadcastSync(intent)
     }
 }

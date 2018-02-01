@@ -16,7 +16,7 @@ import java.io.IOException
 import java.util.*
 
 @Suppress("MemberVisibilityCanBePrivate")
-class OverlayTask(om: OverlayManager): Runnable {
+class OverlayTask(om: OverlayManager) : Runnable {
 
     lateinit var context: Context
 
@@ -62,7 +62,8 @@ class OverlayTask(om: OverlayManager): Runnable {
             ri.variants
                     .filter { variants != null && Arrays.asList(*variants).contains(it) }
                     .mapTo(assetPaths) { "overlays/$packageName/$it" }
-        } catch (ignored: Exception) {}
+        } catch (ignored: Exception) {
+        }
 
         val overlayDir = File(context.cacheDir, "overlays/$packageName")
         val resDir = File(overlayDir, "res")

@@ -2,14 +2,13 @@ package com.brit.swiftinstaller
 
 import android.app.Application
 import com.brit.swiftinstaller.utils.InstallerServiceHelper
-import java.io.File
 
 class SwiftInstaller : Application() {
 
     companion object {
         private lateinit var sSwiftInstaller: SwiftInstaller
 
-        fun getInstance() : SwiftInstaller {
+        fun getInstance(): SwiftInstaller {
             return sSwiftInstaller
         }
     }

@@ -2,7 +2,6 @@ package com.brit.swiftinstaller
 
 import android.app.Service
 import android.content.Intent
-import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.res.AssetManager
@@ -17,15 +16,12 @@ import com.brit.swiftinstaller.utils.constants.SIMULATE_INSTALL
 import com.brit.swiftinstaller.utils.deleteFileShell
 import com.brit.swiftinstaller.utils.getAccentColor
 import com.brit.swiftinstaller.utils.rom.RomInfo
-
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
-import java.util.ArrayList
-import java.util.Arrays
+import java.util.*
 import java.util.concurrent.Executors
-
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
@@ -65,7 +61,7 @@ class InstallerService : Service() {
             }
 
             override fun startUninstall(apps: List<String>) {
-                uninstall(false, apps)
+                uninstall(apps)
             }
 
             @Throws(RemoteException::class)
@@ -109,7 +105,7 @@ class InstallerService : Service() {
         return Service.START_NOT_STICKY
     }
 
-    private fun uninstall(preInstall: Boolean, apps: List<String>) {
+    private fun uninstall(apps: List<String>) {
         if (SIMULATE_INSTALL) {
             val am = themeAssets ?: return
             try {
@@ -117,9 +113,8 @@ class InstallerService : Service() {
                 val overlays = ArrayList<String>()
                 overlays.addAll(Arrays.asList(*olays))
                 for (overlay in overlays) {
-                    val info: ApplicationInfo
                     try {
-                        info = packageManager.getApplicationInfo(overlay, 0)
+                        packageManager.getApplicationInfo(overlay, 0)
                     } catch (e: PackageManager.NameNotFoundException) {
                         continue
                     }
@@ -154,14 +149,10 @@ class InstallerService : Service() {
 
         if (SIMULATE_INSTALL) {
 
-            val am = themeAssets ?: return
             try {
                 for (overlay in apps) {
-                    val info: ApplicationInfo
-                    val pInfo: PackageInfo
                     try {
-                        info = packageManager.getApplicationInfo(overlay, 0)
-                        pInfo = packageManager.getPackageInfo(overlay, 0)
+                        packageManager.getApplicationInfo(overlay, 0)
                     } catch (e: PackageManager.NameNotFoundException) {
                         continue
                     }
@@ -307,7 +298,7 @@ class InstallerService : Service() {
 
         private lateinit var sService: IInstallerService
 
-        fun getService() : IInstallerService {
+        fun getService(): IInstallerService {
             return sService
         }
     }

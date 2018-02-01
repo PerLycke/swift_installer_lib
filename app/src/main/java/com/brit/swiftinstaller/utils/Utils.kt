@@ -2,14 +2,10 @@ package com.brit.swiftinstaller.utils
 
 import android.content.Context
 import android.content.pm.PackageManager
-import android.os.FileObserver
-import android.os.UserHandle
-import com.brit.swiftinstaller.utils.constants.CURRENT_USER
 import org.bouncycastle.x509.X509V3CertificateGenerator
 import java.io.File
 import java.io.FileOutputStream
 import java.math.BigInteger
-import java.security.Key
 import java.security.KeyPair
 import java.security.KeyPairGenerator
 import java.security.KeyStore
@@ -21,15 +17,15 @@ import javax.security.auth.x500.X500Principal
 
 object Utils {
     fun getOverlayPackageName(pack: String): String {
-        return pack + ".swiftinstaller.overlay";
+        return pack + ".swiftinstaller.overlay"
     }
 
     fun isOverlayInstalled(context: Context, packageName: String): Boolean {
-        try {
+        return try {
             context.packageManager.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES)
-            return true
+            true
         } catch (e: PackageManager.NameNotFoundException) {
-            return false
+            false
         }
 
     }
@@ -47,7 +43,7 @@ object Utils {
         val privKey = keyPair.private
 
         val cert = generateX509Certificate(keyPair)
-        val chain = Array<X509Certificate>(1, { cert!! })
+        val chain = Array(1, { cert!! })
 
         val store = KeyStore.getInstance(KeyStore.getDefaultType())
         store.load(null, null)

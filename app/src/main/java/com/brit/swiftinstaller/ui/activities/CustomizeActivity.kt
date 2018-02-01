@@ -1,57 +1,49 @@
 package com.brit.swiftinstaller.ui.activities
 
-import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.BaseAdapter
+import android.widget.ImageView
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.CircleDrawable
+import com.brit.swiftinstaller.utils.InstallerServiceHelper
 import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.utils.getAccentColor
 import com.brit.swiftinstaller.utils.setAccentColor
+import kotlinx.android.synthetic.main.activity_customize.*
 import kotlinx.android.synthetic.main.customize_toolbar.*
-import org.bouncycastle.jce.provider.PBE
 
 class CustomizeActivity : AppCompatActivity() {
 
-    var settingsIcons: Array<ImageView?> = arrayOfNulls(3)
-    lateinit var hexInput: EditText
-    lateinit var applyButton: Button
+    private var settingsIcons: Array<ImageView?> = arrayOfNulls(3)
 
     private var mAccent: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mAccent = getAccentColor(this)
-        val layout = LayoutInflater.from(this).inflate(R.layout.activity_customize, null)
-        setupAccentSheet(layout)
-        setContentView(layout)
+        setupAccentSheet()
+        setContentView(R.layout.activity_customize)
+        updateColor(mAccent)
 
         customizeConfirmBtn.setOnClickListener {
             setAccentColor(this, mAccent)
             if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
-
+                InstallerServiceHelper.install(List(1, { "android" }))
             }
             finish()
-
-            //TODO handle an already installed android overlay
         }
     }
 
-    fun setupAccentSheet(view: View) {
-        val paletteGrid = view.findViewById<GridView>(R.id.palette)
-        paletteGrid.adapter = PaletteAdapter(this,
-                resources.getIntArray(R.array.accent_colors))
-        settingsIcons.set(0, view.findViewById<ImageView>(R.id.connectionsIcon))
-        settingsIcons.set(1, view.findViewById<ImageView>(R.id.soundIcon))
-        settingsIcons.set(2, view.findViewById<ImageView>(R.id.notificationsIcon))
-        hexInput = view.findViewById(R.id.hexInput)
-        applyButton = view.findViewById(R.id.applyHex)
+    private fun setupAccentSheet() {
+        palette.adapter = PaletteAdapter(resources.getIntArray(R.array.accent_colors))
+        settingsIcons[0] = connectionsIcon
+        settingsIcons[1] = soundIcon
+        settingsIcons[2] = notificationsIcon
     }
 
     fun updateColor(color: Int) {
@@ -60,10 +52,10 @@ class CustomizeActivity : AppCompatActivity() {
             icon!!.setColorFilter(color)
         }
         hexInput.background.setTint(color)
-        applyButton.setTextColor(color)
+        applyHex.setTextColor(color)
     }
 
-    inner class PaletteAdapter constructor(context: Context, private val mColors: IntArray) : BaseAdapter() {
+    inner class PaletteAdapter constructor(private val mColors: IntArray) : BaseAdapter() {
 
         override fun getCount(): Int {
             return mColors.size
@@ -78,21 +70,21 @@ class CustomizeActivity : AppCompatActivity() {
         }
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-            var convertView = convertView
-            if (convertView == null) {
-                convertView = LayoutInflater.from(parent.context)
+            var mainView = convertView
+            if (mainView == null) {
+                mainView = LayoutInflater.from(parent.context)
                         .inflate(R.layout.palette_view, parent, false)
             }
-            val iv = convertView!!.findViewById<ImageView>(R.id.icon)
+            val iv = mainView!!.findViewById<ImageView>(R.id.icon)
             iv.background = CircleDrawable(mColors[position])
-            convertView.tag = mColors[position]
-            convertView.setOnClickListener { updateColor(mColors[position]) }
-            return convertView
+            mainView.tag = mColors[position]
+            mainView.setOnClickListener { updateColor(mColors[position]) }
+            return mainView
         }
     }
 
     fun blackBgClick(view: View) {
-        val dialog = LayoutInflater.from(this).inflate(R.layout.background_alert_dialog, null)
+        val dialog = View.inflate(this, R.layout.background_alert_dialog, null)
         val builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme).create()
         builder.setView(dialog)
         builder.show()

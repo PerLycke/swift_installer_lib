@@ -85,7 +85,7 @@ class OverlayManager(context: Context) {
     }
 
     fun handleState(task: OverlayTask, state: Int) {
-        when(state) {
+        when (state) {
             OVERLAY_INSTALLED -> {
                 val installed = mHandler.obtainMessage(state, task)
                 installed.arg1 = task.index

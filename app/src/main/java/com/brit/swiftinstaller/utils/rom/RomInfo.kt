@@ -4,15 +4,12 @@ import android.app.ActivityManager
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Build
-import android.util.Log
 import com.brit.swiftinstaller.R
-
 import com.brit.swiftinstaller.ui.activities.MainActivity
-import com.brit.swiftinstaller.utils.*
-import com.brit.swiftinstaller.utils.constants.CURRENT_USER
-
+import com.brit.swiftinstaller.utils.Utils
+import com.brit.swiftinstaller.utils.addAppToInstall
+import com.brit.swiftinstaller.utils.runCommand
 import java.io.File
 
 class RomInfo internal constructor(var context: Context, var name: String,
@@ -70,12 +67,14 @@ class RomInfo internal constructor(var context: Context, var name: String,
 
         private val TAG = "RomInfo"
 
-        @JvmStatic private var sInfo: RomInfo? = null
+        @JvmStatic
+        private var sInfo: RomInfo? = null
 
-        @Synchronized @JvmStatic
+        @Synchronized
+        @JvmStatic
         fun getRomInfo(context: Context): RomInfo {
             if (sInfo == null) {
-                sInfo = RomInfo(context,"AOSP", Build.VERSION.RELEASE, "type3_Android_8_-_Dark")
+                sInfo = RomInfo(context, "AOSP", Build.VERSION.RELEASE, "type3_Android_8_-_Dark")
             }
             return sInfo!!
         }

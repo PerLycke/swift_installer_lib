@@ -7,7 +7,6 @@ import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.Toolbar
-import android.util.Log
 import android.view.View
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.adapter.AppListAdapter
@@ -17,7 +16,7 @@ import java.util.*
 class AppListActivity : AppCompatActivity() {
 
     private lateinit var adapter: AppListAdapter
-    val packages: MutableList<ApplicationInfo> = mutableListOf()
+    private val packages: MutableList<ApplicationInfo> = mutableListOf()
     var apps: ArrayList<ApplicationInfo> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,9 +24,9 @@ class AppListActivity : AppCompatActivity() {
         setContentView(R.layout.app_list_activity)
         val myToolbar = findViewById<View>(R.id.my_toolbar) as Toolbar
         setSupportActionBar(myToolbar)
-        getSupportActionBar()?.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE)
+        supportActionBar?.displayOptions = ActionBar.DISPLAY_SHOW_TITLE
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setTitle("Overlays")
+        supportActionBar?.title = "Overlays"
 
         val appList: ArrayList<ApplicationInfo> = arrayListOf()
         for (pn: String in assets.list("overlays")) {
@@ -41,9 +40,7 @@ class AppListActivity : AppCompatActivity() {
             }
         }
         Collections.sort(appList, ApplicationInfo.DisplayNameComparator(packageManager))
-        for (i in appList) {
-            packages.add(i)
-        }
+        packages += appList
 
         adapter = AppListAdapter(this, packages)
         appListView.adapter = adapter

@@ -7,13 +7,13 @@ import com.brit.swiftinstaller.IInstallerCallback
 
 class InstallerHandler(context: Context) : IInstallerCallback.Stub() {
 
-    val mContext = context
+    private val mContext = context
 
     companion object {
-        val INSTALL_PROGRESS = "com.brit.INSTALL_PROGRESS"
-        val INSTALL_STARTED = "com.brit.INSTALL_STARTED"
-        val INSTALL_COMPLETE = "com.brit.INSTALL_COMPLETE"
-        val INSTALL_FAILED = "com.brit.INSTALL_FAILED"
+        const val INSTALL_PROGRESS = "com.brit.INSTALL_PROGRESS"
+        const val INSTALL_STARTED = "com.brit.INSTALL_STARTED"
+        const val INSTALL_COMPLETE = "com.brit.INSTALL_COMPLETE"
+        const val INSTALL_FAILED = "com.brit.INSTALL_FAILED"
     }
 
     override fun installStarted() {
