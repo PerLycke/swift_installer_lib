@@ -10,6 +10,7 @@ import javax.crypto.Cipher
 import javax.crypto.CipherInputStream
 
 
+@Suppress("MemberVisibilityCanBePrivate")
 class AssetHelper {
     companion object {
         fun copyAssetFolder(am: AssetManager?, assetPath: String, path: String,

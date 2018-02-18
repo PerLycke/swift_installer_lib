@@ -35,4 +35,5 @@ dependencies {
     implementation 'com.android.tools.build:apksig:3.0.1'
     implementation "org.bouncycastle:bcprov-jdk16:1.45"
 
+    compile group: 'commons-io', name: 'commons-io', version: '2.0.1'
 }

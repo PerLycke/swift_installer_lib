@@ -236,7 +236,6 @@ class OverlayActivity : AppCompatActivity() {
                     } else if (isOverlayInstalled(context, pn)) {
                         publishProgress(Progress(INSTALL_TAB, item))
                     }
-                    publishProgress()
                 }
             }
             return null

@@ -32,7 +32,7 @@ object ShellUtils {
 
     val isRootAvailable: Boolean
         get() {
-            var output: CommandOutput? = runCommand("id")
+            var output: CommandOutput? = runCommand("id", true)
             return if (output != null && TextUtils.isEmpty(output.error) && output.exitCode == 0) {
                 output.output != null && output.output!!.contains("uid=0")
             } else {

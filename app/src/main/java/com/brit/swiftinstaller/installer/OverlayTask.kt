@@ -3,6 +3,7 @@ package com.brit.swiftinstaller.installer
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
+import android.os.Environment
 import com.brit.swiftinstaller.BuildConfig
 import com.brit.swiftinstaller.utils.AssetHelper
 import com.brit.swiftinstaller.utils.ShellUtils
@@ -16,11 +17,9 @@ import java.io.IOException
 import java.util.*
 
 @Suppress("MemberVisibilityCanBePrivate")
-class OverlayTask(om: OverlayManager) : Runnable {
+class OverlayTask(val mOm: OverlayManager) : Runnable {
 
     lateinit var context: Context
-
-    var mOm = om
 
     lateinit var packageName: String
     lateinit var packageInfo: PackageInfo
@@ -35,9 +34,9 @@ class OverlayTask(om: OverlayManager) : Runnable {
         this.packageName = packageName
         this.packageInfo = context.packageManager.getPackageInfo(packageName, 0)
         this.appInfo = context.packageManager.getApplicationInfo(packageName, 0)
-        this.overlayDir = File(context.cacheDir, "overlays/$packageName")
+        this.overlayDir = File(Environment.getExternalStorageDirectory(), ".swift/overlays/$packageName")
         this.resDir = File(overlayDir, "res")
-        this.overlayPath = context.cacheDir.toString() + "/" + BuildConfig.APPLICATION_ID +
+        this.overlayPath = Environment.getExternalStorageDirectory().absolutePath + "/.swift/" + BuildConfig.APPLICATION_ID +
                 "/overlays/" + Utils.getOverlayPackageName(packageName) + ".apk"
         this.index = index
     }
@@ -53,6 +52,10 @@ class OverlayTask(om: OverlayManager) : Runnable {
     }
 
     private fun extractResources() {
+
+        if (!resDir.exists())
+            resDir.mkdirs()
+
         val am = context.assets
         val assetPaths = ArrayList<String>()
         assetPaths.add("overlays/$packageName/res")
@@ -65,8 +68,6 @@ class OverlayTask(om: OverlayManager) : Runnable {
         } catch (ignored: Exception) {
         }
 
-        val overlayDir = File(context.cacheDir, "overlays/$packageName")
-        val resDir = File(overlayDir, "res")
         for (path in assetPaths) {
             AssetHelper.copyAssetFolder(am, path, resDir.absolutePath, null)
         }

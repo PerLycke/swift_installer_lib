@@ -5,11 +5,14 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Build
+import android.os.Environment
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.activities.MainActivity
+import com.brit.swiftinstaller.utils.ShellUtils
 import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.utils.addAppToInstall
 import com.brit.swiftinstaller.utils.runCommand
+import org.apache.commons.io.FileUtils
 import java.io.File
 
 class RomInfo internal constructor(var context: Context, var name: String,
@@ -17,9 +20,14 @@ class RomInfo internal constructor(var context: Context, var name: String,
     private val overlayFolder: String? = null
 
     var defaultAccent: Int = 0
+    var overlayDirectory: String
 
     init {
         defaultAccent = context.getColor(R.color.minimal_blue)
+        if (ShellUtils.isRootAvailable)
+            overlayDirectory = context.cacheDir.absolutePath
+        else
+            overlayDirectory = Environment.getExternalStorageDirectory().absolutePath + ".swift-installer"
     }
 
     val variants = vars
@@ -34,10 +42,23 @@ class RomInfo internal constructor(var context: Context, var name: String,
 
     fun installOverlay(context: Context, targetPackage: String, overlayPath: String) {
         val installed = Utils.isOverlayInstalled(context, Utils.getOverlayPackageName(targetPackage))
+        val script = File(Environment.getExternalStorageDirectory(), "run.sh")
+        if (!ShellUtils.isRootAvailable) {
+            if (script.exists())
+                script.delete()
+            script.createNewFile()
+            var s = FileUtils.readFileToString(script)
+            s += "\n"
+            s += "adb shell pm install -r $overlayPath"
+            s += "\n"
+            s += "adb shell cmd overlay enable ${Utils.getOverlayPackageName(targetPackage)}"
+            s += "\n"
+            FileUtils.writeStringToFile(script, s)
+            return
+        }
         runCommand("pm install -r " + overlayPath, true)
         if (installed) {
             runCommand("cmd overlay enable " + Utils.getOverlayPackageName(targetPackage), true)
-
         } else {
             addAppToInstall(context, Utils.getOverlayPackageName(targetPackage))
         }

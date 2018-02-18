@@ -32,11 +32,11 @@ class InstallerService : Service() {
 
     private var mExecutor = Executors.newFixedThreadPool(1)
 
-    private var mRomInfo: RomInfo? = null
+    private lateinit var mRomInfo: RomInfo
+    private lateinit var mOM: OverlayManager
+
 
     private var mCipher: Cipher? = null
-
-    private var mOM: OverlayManager? = null
 
     private val themeAssets: AssetManager?
         get() {
@@ -133,7 +133,7 @@ class InstallerService : Service() {
             return
         }
         for (packageName in apps) {
-            mRomInfo!!.uninstallOverlay(this, packageName)
+            mRomInfo.uninstallOverlay(this, packageName)
         }
 
     }
@@ -145,7 +145,7 @@ class InstallerService : Service() {
         // check for previous theme
         //uninstall(true, packageName)
 
-        mRomInfo!!.preInstall(this, mPackageName!!)
+        mRomInfo.preInstall(this, mPackageName!!)
 
         if (SIMULATE_INSTALL) {
 
@@ -165,13 +165,13 @@ class InstallerService : Service() {
                         }
                     }
                 }
-                mRomInfo!!.postInstall(this, mPackageName!!)
+                mRomInfo.postInstall(this, mPackageName!!)
 
             } catch (e: IOException) {
                 e.printStackTrace()
             }
         } else {
-            mOM!!.compileOverlays(apps)
+            mOM.compileOverlays(apps)
         }
 
     }
@@ -182,7 +182,7 @@ class InstallerService : Service() {
         val ri = mRomInfo
         try {
             val variants = am!!.list("overlays/" + overlay)
-            for (v in ri!!.variants) {
+            for (v in ri.variants) {
                 if (variants != null && Arrays.asList(*variants).contains(v)) {
                     assetPaths.add("overlays/$overlay/$v")
                     break
@@ -192,7 +192,7 @@ class InstallerService : Service() {
         } catch (ignored: Exception) {
         }
 
-        val overlayDir = File(cacheDir, "overlays/" + overlay)
+        val overlayDir = File(mRomInfo.overlayDirectory, "overlays/" + overlay)
         val resDir = File(overlayDir, "res")
         for (path in assetPaths) {
             copyAssetFolder(am, path, resDir.absolutePath, mCipher)
@@ -202,14 +202,14 @@ class InstallerService : Service() {
         }
         generateManifest(overlayDir.absolutePath,
                 mPackageName, overlay!!, info.versionName)
-        val overlayPath = cacheDir.toString() + "/" + mPackageName + "/overlays/" +
+        val overlayPath = mRomInfo.overlayDirectory + "/" + mPackageName + "/overlays/" +
                 mPackageName + "." + overlay + ".apk"
         Log.d("TEST", "compiling")
         ShellUtils.compileOverlay(this, mPackageName!!, resDir.absolutePath,
                 overlayDir.absolutePath + "/AndroidManifest.xml",
                 overlayPath, null, info.applicationInfo)
         Log.d("TEST", "compiled")
-        mRomInfo!!.installOverlay(this, overlay, overlayPath)
+        mRomInfo.installOverlay(this, overlay, overlayPath)
 
         //ShellUtils.deleteFile(overlayPath);
         if (!deleteFileShell(overlayDir.absolutePath)) {

@@ -10,7 +10,7 @@ import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 
-class OverlayManager(context: Context) {
+class OverlayManager(val mContext: Context) {
 
     companion object {
         const val OVERLAY_FAILED = -1
@@ -25,8 +25,6 @@ class OverlayManager(context: Context) {
         private val NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors()
     }
 
-    private val mContext = context
-
     private val mCompileQueue: BlockingQueue<Runnable>
     private val mOverlayQueue: Queue<OverlayTask>
 
@@ -36,7 +34,7 @@ class OverlayManager(context: Context) {
 
     private val mHandler: Handler
 
-    private val mNotifier = Notifier(context)
+    private val mNotifier = Notifier(mContext)
 
     init {
 
