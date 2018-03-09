@@ -2,9 +2,11 @@ package com.brit.swiftinstaller.utils
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.util.Log
 import org.bouncycastle.x509.X509V3CertificateGenerator
 import java.io.File
 import java.io.FileOutputStream
+import java.lang.reflect.Field
 import java.math.BigInteger
 import java.security.KeyPair
 import java.security.KeyPairGenerator
@@ -27,7 +29,20 @@ object Utils {
         } catch (e: PackageManager.NameNotFoundException) {
             false
         }
+    }
 
+    fun checkOverlayStatus() : Boolean {
+        try {
+            val pi = Class.forName("android.content.pm.PackageInfo")
+            for (field : Field in pi.declaredFields) {
+                if (field.name == "FLAG_OVERLAY_STATIC" || field.name == "FLAG_OVERLAY_TRUSTED") {
+                    return true
+                }
+            }
+        } catch (e : Exception) {
+            e.printStackTrace()
+        }
+        return false
     }
 
     fun isOverlayEnabled(context: Context, packageName: String): Boolean {

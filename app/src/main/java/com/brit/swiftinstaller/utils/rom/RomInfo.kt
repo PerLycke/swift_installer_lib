@@ -51,8 +51,12 @@ class RomInfo internal constructor(var context: Context, var name: String,
             s += "\n"
             s += "adb shell pm install -r $overlayPath"
             s += "\n"
-            s += "adb shell cmd overlay enable ${Utils.getOverlayPackageName(targetPackage)}"
-            s += "\n"
+            if (!Utils.checkOverlayStatus()) {
+                s += "adb shell cmd overlay enable ${Utils.getOverlayPackageName(targetPackage)}"
+                s += "\n"
+            } else {
+                addAppToInstall(context, Utils.getOverlayPackageName(targetPackage))
+            }
             FileUtils.writeStringToFile(script, s)
             return
         }

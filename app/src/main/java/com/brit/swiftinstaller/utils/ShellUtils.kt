@@ -32,17 +32,21 @@ object ShellUtils {
 
     val isRootAvailable: Boolean
         get() {
-            var output: CommandOutput? = runCommand("id", true)
-            return if (output != null && TextUtils.isEmpty(output.error) && output.exitCode == 0) {
-                output.output != null && output.output!!.contains("uid=0")
-            } else {
-                output = runCommand("echo _TEST_")
-                output.output!!.contains("_TEST_")
+            return try {
+                var output: CommandOutput? = runCommand("id", true)
+                if (output != null && TextUtils.isEmpty(output.error) && output.exitCode == 0) {
+                    output.output != null && output.output!!.contains("uid=0")
+                } else {
+                    output = runCommand("echo _TEST_", true)
+                    output.output!!.contains("_TEST_")
+                }
+            } catch (e: Exception) {
+                false
             }
         }
 
     fun listFiles(path: String): Array<String> {
-        val output = runCommand("ls " + path)
+        val output = runCommand("ls $path")
         return output.output!!.split("\n".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
     }
 
@@ -90,16 +94,16 @@ object ShellUtils {
             val exitCode = aapt.waitFor()
             val error = inputStreamToString(aapt.errorStream)
             val output = inputStreamToString(aapt.inputStream)
-            Log.d("TEST", "aapt exitCode - " + exitCode)
-            Log.d("TEST", "aapt output - " + output)
-            Log.d("TEST", "aapt error - " + error)
+            Log.d("TEST", "aapt exitCode - $exitCode")
+            Log.d("TEST", "aapt output - $output")
+            Log.d("TEST", "aapt error - $error")
             aapt.destroy()
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
         if (unsigned.exists()) {
-            runCommand("chmod 777 " + unsigned, false)
+            runCommand("chmod 777 $unsigned", false)
             val key = File(context.dataDir, "/signing-key")
             val keyPass = "overlay".toCharArray()
             if (!key.exists()) {
@@ -167,13 +171,12 @@ fun runCommand(cmd: String): CommandOutput {
     return runCommand(cmd, false)
 }
 
-fun runCommand(cmd: String, root: Boolean = true): CommandOutput {
+fun runCommand(cmd: String, root: Boolean): CommandOutput {
     var os: DataOutputStream? = null
     var process: Process? = null
     try {
 
-        val pb = ProcessBuilder(if (root) "su" else "sh")
-        process = pb.start()
+        process = Runtime.getRuntime().exec(if (root) "su" else "sh")
         os = DataOutputStream(process!!.outputStream)
         os.writeBytes(cmd + "\n")
         os.flush()
@@ -193,15 +196,15 @@ fun runCommand(cmd: String, root: Boolean = true): CommandOutput {
 
         val output = CommandOutput(`in`, err, process.exitValue())
 
-        Log.d("TEST", "cmd - " + cmd)
-        Log.d("TEST", "output - " + `in`)
-        Log.d("TEST", "error - " + err)
+        Log.d("TEST", "cmd - $cmd")
+        Log.d("TEST", "output - $`in`")
+        Log.d("TEST", "error - $err")
         return output
     } catch (e: IOException) {
-        e.printStackTrace()
+        //e.printStackTrace()
         return CommandOutput("", "", 1)
     } catch (e: InterruptedException) {
-        e.printStackTrace()
+        //e.printStackTrace()
         return CommandOutput("", "", 1)
     } finally {
         try {
@@ -218,7 +221,7 @@ fun runCommand(cmd: String, root: Boolean = true): CommandOutput {
 }
 
 fun fileExists(path: String): Boolean {
-    val output = runCommand("ls " + path)
+    val output = runCommand("ls $path")
     return output.exitCode == 0
 }
 
@@ -242,7 +245,7 @@ private fun remount(path: String, type: String): Boolean {
 }
 
 fun deleteFileShell(path: String): Boolean {
-    val output = runCommand("rm -rf " + path, false)
+    val output = runCommand("rm -rf $path", false)
     return output.exitCode == 0
 }
 

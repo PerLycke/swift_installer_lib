@@ -32,16 +32,19 @@ class InstallerServiceHelper {
         }
 
         fun connectService(context: Context) {
-            startInstallerService(context)
-            sConnection = object : ServiceConnection {
-                override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-                    sService = IInstallerService.Stub.asInterface(service)
-                }
+            try {
+                startInstallerService(context)
+                sConnection = object : ServiceConnection {
+                    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+                        sService = IInstallerService.Stub.asInterface(service)
+                    }
 
-                override fun onServiceDisconnected(name: ComponentName?) {
+                    override fun onServiceDisconnected(name: ComponentName?) {
+                    }
                 }
+                context.bindService(getServiceIntent(context), sConnection, Context.BIND_AUTO_CREATE)
+            } catch (e : Exception) {
             }
-            context.bindService(getServiceIntent(context), sConnection, Context.BIND_AUTO_CREATE)
         }
     }
 }

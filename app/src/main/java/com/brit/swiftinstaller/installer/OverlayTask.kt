@@ -36,8 +36,12 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         this.appInfo = context.packageManager.getApplicationInfo(packageName, 0)
         this.overlayDir = File(Environment.getExternalStorageDirectory(), ".swift/overlays/$packageName")
         this.resDir = File(overlayDir, "res")
-        this.overlayPath = Environment.getExternalStorageDirectory().absolutePath + "/.swift/" + BuildConfig.APPLICATION_ID +
-                "/overlays/" + Utils.getOverlayPackageName(packageName) + ".apk"
+        if (!resDir.exists())
+            resDir.mkdirs()
+        this.overlayPath = Environment.getExternalStorageDirectory().absolutePath + "/.swift/" +
+                "/overlays/compiled/" + Utils.getOverlayPackageName(packageName) + ".apk"
+        if (!File(overlayPath).parentFile.exists())
+            File(overlayPath).parentFile.mkdirs()
         this.index = index
     }
 

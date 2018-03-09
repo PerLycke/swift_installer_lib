@@ -143,7 +143,7 @@ class OverlayActivity : AppCompatActivity() {
         }
 
         inner class AppAdapter : RecyclerView.Adapter<AppAdapter.ViewHolder>() {
-            override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
+            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
                 return ViewHolder(LayoutInflater.from(activity).inflate(
                         R.layout.app_item, parent, false))
             }

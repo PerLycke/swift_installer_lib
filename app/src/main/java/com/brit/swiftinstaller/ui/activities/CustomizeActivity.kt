@@ -26,8 +26,8 @@ class CustomizeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mAccent = getAccentColor(this)
-        setupAccentSheet()
         setContentView(R.layout.activity_customize)
+        setupAccentSheet()
         updateColor(mAccent)
 
         customizeConfirmBtn.setOnClickListener {
