@@ -16,14 +16,14 @@ import com.brit.swiftinstaller.ui.activities.AppListActivity
 class AppListAdapter(val activity: AppListActivity, val packages: MutableList<ApplicationInfo>) :
         RecyclerView.Adapter<AppListAdapter.Holder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): Holder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(activity)
                 .inflate(R.layout.app_item, parent, false)
         return Holder(view)
     }
 
-    override fun onBindViewHolder(holder: Holder?, position: Int) {
-        holder?.bindApp(activity, packages[position])
+    override fun onBindViewHolder(holder: Holder, position: Int) {
+        holder.bindApp(activity, packages[position])
     }
 
     override fun getItemCount(): Int {
