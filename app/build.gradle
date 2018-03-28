@@ -33,7 +33,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'com.android.tools.build:apksig:3.0.1'
-    implementation "org.bouncycastle:bcprov-jdk16:1.45"
-
-    compile group: 'commons-io', name: 'commons-io', version: '2.0.1'
+    implementation 'org.bouncycastle:bcprov-jdk16:1.45'
+    compile 'commons-io:commons-io:2.0.1'
+    implementation files('libs/knoxsdk.jar')
 }

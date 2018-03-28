@@ -68,3 +68,19 @@ fun addAccentColor(context: Context, color: Int) {
     }
     setUserAccents(context, newColors)
 }
+
+fun setKnoxKey(context: Context, key: String) {
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putString("knox_key", key).apply()
+}
+
+fun getKnoxKey(context: Context) : String {
+    return PreferenceManager.getDefaultSharedPreferences(context).getString("knox_key", "")
+}
+
+fun setEnterpriseKey(context: Context, key: String) {
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putString("enterprise_key", key).apply()
+}
+
+fun getEnterpriseKey(context: Context) : String {
+    return PreferenceManager.getDefaultSharedPreferences(context).getString("enterprise_key", "")
+}
