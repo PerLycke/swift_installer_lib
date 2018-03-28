@@ -126,21 +126,21 @@ class RomInfo internal constructor(var context: Context, var name: String,
             }
         } else if (ShellUtils.isRootAvailable) {
             runCommand("pm install -r " + overlayPath, true)
-            if (installed) {
-                runCommand("cmd overlay enable " + Utils.getOverlayPackageName(targetPackage), true)
-            } else {
-                addAppToInstall(context, Utils.getOverlayPackageName(targetPackage))
-            }
-        } else {
-            addAppToInstall(context, Utils.getOverlayPackageName(targetPackage))
-        }
+    if (installed) {
+        runCommand("cmd overlay enable " + Utils.getOverlayPackageName(targetPackage), true)
+    } else {
+        addAppToInstall(context, Utils.getOverlayPackageName(targetPackage))
     }
+} else {
+    addAppToInstall(context, Utils.getOverlayPackageName(targetPackage))
+}
+}
 
-    fun postInstall(context: Context, targetPackage: String) {
+fun postInstall(context: Context, targetPackage: String) {
 
-    }
+}
 
-    fun uninstallOverlay(context: Context, packageName: String) {
+fun uninstallOverlay(context: Context, packageName: String) {
         runCommand("pm uninstall " + packageName)
     }
 
