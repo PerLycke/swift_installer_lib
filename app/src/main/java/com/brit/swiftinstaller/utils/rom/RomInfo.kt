@@ -24,6 +24,7 @@ import android.os.Bundle
 import android.provider.SyncStateContract
 import android.support.v4.content.PermissionChecker.checkCallingOrSelfPermission
 import android.support.v4.app.ActivityCompat.finishAffinity
+import android.util.Log
 import com.brit.swiftinstaller.utils.constants.ACTION_KNOX_LICENSE_STATUS
 import com.brit.swiftinstaller.utils.constants.ACTION_LICENSE_STATUS
 import com.brit.swiftinstaller.utils.constants.MDM_APP_MGMT_PERM
@@ -117,9 +118,12 @@ class RomInfo internal constructor(var context: Context, var name: String,
         val installed = Utils.isOverlayInstalled(context, Utils.getOverlayPackageName(targetPackage))
         if (!TextUtils.isEmpty(getKnoxKey(context)) && !TextUtils.isEmpty(getEnterpriseKey(context))) {
             val policy = EnterpriseDeviceManager.getInstance(context).applicationPolicy
-            policy.installApplication(Utils.getOverlayPackageName(targetPackage))
-            policy.setDisableApplication(targetPackage)
-            policy.setEnableApplication(targetPackage)
+            if (policy.installApplication(overlayPath, false)) {
+                policy.setDisableApplication(targetPackage)
+                policy.setEnableApplication(targetPackage)
+            } else {
+                Log.d("TEST", "failed to install " + overlayPath)
+            }
         } else if (ShellUtils.isRootAvailable) {
             runCommand("pm install -r " + overlayPath, true)
             if (installed) {
