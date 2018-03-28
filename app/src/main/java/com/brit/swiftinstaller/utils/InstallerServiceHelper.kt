@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import com.brit.swiftinstaller.BuildConfig
+import com.brit.swiftinstaller.IInstallerCallback
 import com.brit.swiftinstaller.IInstallerService
 import com.brit.swiftinstaller.InstallerService
 
@@ -25,6 +26,10 @@ class InstallerServiceHelper {
         @Suppress("MemberVisibilityCanBePrivate")
         fun startInstallerService(context: Context) {
             context.startService(getServiceIntent(context))
+        }
+
+        fun setInstallerCallback(callback: IInstallerCallback) {
+            InstallerService.getService().setCallback(callback)
         }
 
         fun install(apps: List<String>) {

@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import com.brit.swiftinstaller.IInstallerCallback
 import java.util.*
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.LinkedBlockingQueue
@@ -27,6 +28,8 @@ class OverlayManager(val mContext: Context) {
 
     private val mCompileQueue: BlockingQueue<Runnable>
     private val mOverlayQueue: Queue<OverlayTask>
+
+    private var mCallback: IInstallerCallback? = null
 
     var mMax = 0
 
@@ -56,11 +59,19 @@ class OverlayManager(val mContext: Context) {
                     }
 
                     OVERLAY_INSTALLED -> {
+                        mCallback!!.progressUpdate(mContext.packageManager
+                                .getApplicationInfo(overlayTask.packageName, 0)
+                                .loadLabel(mContext.packageManager) as String,
+                                msg.arg1, msg.arg2, false)
                         mNotifier.broadcastOverlayInstalled(overlayTask.packageName, msg.arg1, msg.arg2)
                     }
                 }
             }
         }
+    }
+
+    fun setCallback(callback: IInstallerCallback) {
+        mCallback = callback
     }
 
     fun compileOverlays(apps: List<String>) {

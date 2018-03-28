@@ -124,7 +124,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         manifest.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
         manifest.append("<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n")
         manifest.append("package=\"" + Utils.getOverlayPackageName(targetPackage) + "\">\n")
-        manifest.append("<permission android:name=\"com.samsung.android.permission.SAMSUNG_OVERLAY_COMPONENT\" />")
+        manifest.append("<permission android:name=\"com.samsung.android.permission.SAMSUNG_OVERLAY_COMPONENT\" />\n")
         manifest.append("<overlay ")
         manifest.append("android:priority=\"1\" ")
         if (targetPackage == "android") {

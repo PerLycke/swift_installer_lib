@@ -10,6 +10,8 @@ import android.util.Log
 import android.view.View
 import android.widget.EditText
 import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.utils.getEnterpriseKey
+import com.brit.swiftinstaller.utils.getKnoxKey
 import com.brit.swiftinstaller.utils.setEnterpriseKey
 import com.brit.swiftinstaller.utils.setKnoxKey
 import kotlinx.android.synthetic.main.knox.*
@@ -20,20 +22,23 @@ class IntroActivity : AppCompatActivity() {
         super.onCreate(savedState)
 
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("first_run", true)) {
-            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("first_run", true).apply()
+            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("first_run", false).apply()
             setContentView(R.layout.knox)
         } else {
             startMainActivity()
+            return
         }
 
         knox.setOnClickListener {
             val builder = AlertDialog.Builder(this)
             builder.setTitle("Setup Knox Key")
             val view = View.inflate(this, R.layout.knox_dialog, null)
+            val knoxKey = view.findViewById<EditText>(R.id.knox_key)
+            val enterpriseKey = view.findViewById<EditText>(R.id.enterprise_key)
+            knoxKey.setText(getKnoxKey(this))
+            enterpriseKey.setText(getEnterpriseKey(this))
             builder.setView(view)
                     .setPositiveButton(android.R.string.ok) { dialog, which ->
-                        val knoxKey = view.findViewById<EditText>(R.id.knox_key)
-                        val enterpriseKey = view.findViewById<EditText>(R.id.enterprise_key)
                         setKnoxKey(this, knoxKey.text.toString())
                         setEnterpriseKey(this, enterpriseKey.text.toString())
                         startMainActivity()

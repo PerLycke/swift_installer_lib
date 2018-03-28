@@ -115,25 +115,25 @@ class RomInfo internal constructor(var context: Context, var name: String,
 
     fun installOverlay(context: Context, targetPackage: String, overlayPath: String) {
         val installed = Utils.isOverlayInstalled(context, Utils.getOverlayPackageName(targetPackage))
-        val script = File(Environment.getExternalStorageDirectory(), "run.sh")
-        if (ShellUtils.isRootAvailable) {
+        if (!TextUtils.isEmpty(getKnoxKey(context)) && !TextUtils.isEmpty(getEnterpriseKey(context))) {
+            val policy = EnterpriseDeviceManager.getInstance(context).applicationPolicy
+            policy.installApplication(Utils.getOverlayPackageName(targetPackage))
+            policy.setDisableApplication(targetPackage)
+            policy.setEnableApplication(targetPackage)
+        } else if (ShellUtils.isRootAvailable) {
             runCommand("pm install -r " + overlayPath, true)
             if (installed) {
                 runCommand("cmd overlay enable " + Utils.getOverlayPackageName(targetPackage), true)
             } else {
                 addAppToInstall(context, Utils.getOverlayPackageName(targetPackage))
             }
-        } else if (!TextUtils.isEmpty(getKnoxKey(context)) && !TextUtils.isEmpty(getEnterpriseKey(context))) {
-            val policy = EnterpriseDeviceManager.getInstance(context).applicationPolicy
-            policy.uninstallApplication(Utils.getOverlayPackageName(targetPackage), false)
-            policy.setDisableApplication(targetPackage)
-            policy.setEnableApplication(targetPackage)
         } else {
             addAppToInstall(context, Utils.getOverlayPackageName(targetPackage))
         }
     }
 
     fun postInstall(context: Context, targetPackage: String) {
+
     }
 
     fun uninstallOverlay(context: Context, packageName: String) {

@@ -54,6 +54,7 @@ class InstallerService : Service() {
 
             @Throws(RemoteException::class)
             override fun setCallback(callback: IInstallerCallback) {
+                mOM.setCallback(callback)
             }
 
             override fun startInstall(apps: List<String>) {
