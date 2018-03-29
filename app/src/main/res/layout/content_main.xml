@@ -8,7 +8,7 @@
     tools:showIn="@layout/activity_main">
 
     <ImageView
-        android:id="@+id/installTile"
+        android:id="@+id/installUpdatesTile"
         android:layout_width="0dp"
         android:layout_height="94dp"
         android:layout_marginEnd="18dp"
@@ -17,6 +17,58 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/big_tile_bg" />
+
+    <ImageView
+        android:id="@+id/installUpdatesIcon"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/installUpdatesTile"
+        app:layout_constraintStart_toStartOf="@+id/installUpdatesTile"
+        app:layout_constraintTop_toTopOf="@+id/installUpdatesTile"
+        app:srcCompat="@drawable/ic_updates" />
+
+    <TextView
+        android:id="@+id/installUpdatesTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Install updates"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/installUpdatesDesc"
+        app:layout_constraintStart_toEndOf="@+id/installUpdatesIcon"
+        app:layout_constraintTop_toTopOf="@+id/installUpdatesTile"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/installUpdatesDesc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="16dp"
+        android:text="Some overlays were updated. Install them."
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/installUpdatesTile"
+        app:layout_constraintEnd_toEndOf="@+id/installUpdatesTile"
+        app:layout_constraintStart_toEndOf="@+id/installUpdatesIcon"
+        app:layout_constraintTop_toBottomOf="@+id/installUpdatesTitle" />
+
+    <ImageView
+        android:id="@+id/installTile"
+        android:layout_width="0dp"
+        android:layout_height="94dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/installUpdatesTile"
         app:srcCompat="@drawable/big_tile_bg" />
 
     <ImageView
