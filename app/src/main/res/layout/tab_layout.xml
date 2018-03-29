@@ -19,6 +19,12 @@
 
     <android.support.design.widget.TabItem
         android:id="@+id/tabItem3"
+        android:layout="@layout/updates_tab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <android.support.design.widget.TabItem
+        android:id="@+id/tabItem4"
         android:layout="@layout/failed_tab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
