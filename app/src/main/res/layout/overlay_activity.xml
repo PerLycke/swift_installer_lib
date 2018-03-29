@@ -44,6 +44,6 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/fab_margin"
         android:onClick="fabClick"
-        app:srcCompat="@drawable/ic_fab_menu" />
+        app:srcCompat="@drawable/ic_fab_install" />
 
 </android.support.design.widget.CoordinatorLayout>
