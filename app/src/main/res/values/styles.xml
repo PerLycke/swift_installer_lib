@@ -36,19 +36,12 @@
         <item name="android:popupElevation">2.0dip</item>
         <item name="android:dropDownWidth">24dp</item>
     </style>
-    <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+    <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@color/background_main</item>
-    </style>
-
-    <style name="BottomSheetActivity" parent="@style/AppTheme">
-        <item name="android:colorBackground">?attr/colorBackgroundFloating</item>
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowBackground">@color/background_alpha</item>
-        <item name="android:windowIsTranslucent">true</item>
     </style>
 </resources>

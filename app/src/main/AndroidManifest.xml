@@ -52,7 +52,7 @@
             android:configChanges="orientation|keyboardHidden"/>
 
         <activity android:name=".ui.activities.InstallActivity"
-            android:theme="@style/BottomSheetActivity"
+            android:theme="@style/CustomBottomSheetDialogTheme"
             android:configChanges="orientation|keyboardHidden" />
 
         <service android:name=".InstallerService" />
