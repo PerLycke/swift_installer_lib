@@ -158,7 +158,7 @@ class OverlayActivity : AppCompatActivity() {
 
             inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 private var appName: TextView = view.findViewById(R.id.appItemName)
-                var packageName: TextView = view.findViewById(R.id.appName)
+//                var packageName: TextView = view.findViewById(R.id.appName)
                 private var appIcon: ImageView = view.findViewById(R.id.appItemImage)
                 private var appCheckBox: CheckBox = view.findViewById(R.id.appItemCheckBox)
 
@@ -166,7 +166,7 @@ class OverlayActivity : AppCompatActivity() {
                     appName.text = item.title
                     appIcon.setImageDrawable(item.icon)
                     appCheckBox.isChecked = item.checked
-                    packageName.text = item.packageName
+//                    packageName.text = item.packageName
 
 
                     appCheckBox.setOnCheckedChangeListener({ _: CompoundButton, checked: Boolean ->
