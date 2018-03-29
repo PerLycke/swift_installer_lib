@@ -36,4 +36,11 @@
     <string name="background_change_continue">Continue and reload theme</string>
 
     <string name="install_count">%2$d / %2$d</string>
+    <string name="package_installer_desc">Install overlays one by one with Package Installer.</string>
+    <string name="package_installer_title">Use Package Installer</string>
+    <string name="knox_install_desc">Install all overlays at once. The fastest option!</string>
+    <string name="knox_install_title">Use Knox</string>
+    <string name="setup_knox_key">Setup Knox Key</string>
+    <string name="knox_key">Knox Key:</string>
+    <string name="enterprise_key">Enterprise Key:</string>
 </resources>

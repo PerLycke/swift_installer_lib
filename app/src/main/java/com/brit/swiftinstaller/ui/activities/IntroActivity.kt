@@ -30,8 +30,7 @@ class IntroActivity : AppCompatActivity() {
         }
 
         knox.setOnClickListener {
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle("Setup Knox Key")
+            val builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
             val view = View.inflate(this, R.layout.knox_dialog, null)
             val knoxKey = view.findViewById<EditText>(R.id.knox_key)
             val enterpriseKey = view.findViewById<EditText>(R.id.enterprise_key)

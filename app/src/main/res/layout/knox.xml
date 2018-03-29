@@ -1,54 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat"
+        app:subtitle="Select install variant"
+        app:subtitleTextAppearance="@style/ToolbarSubtitle"
+        app:title="Initial setup"
+        app:titleTextAppearance="@style/ToolbarTitle" />
+
+    <ImageView
         android:id="@+id/knox"
-        android:layout_width="match_parent"
-        android:background="@drawable/big_tile_bg"
-        android:layout_margin="20dp"
+        android:layout_width="0dp"
+        android:layout_height="94dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="80dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/big_tile_bg"
+        android:contentDescription="@string/image" />
+
+    <ImageView
+        android:id="@+id/knoxInstallIcon"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/knox"
+        app:layout_constraintStart_toStartOf="@+id/knox"
+        app:layout_constraintTop_toTopOf="@+id/knox"
+        app:srcCompat="@drawable/ic_knox"
+        android:contentDescription="@string/image" />
+
+    <TextView
+        android:id="@+id/knoxInstallTitle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:textSize="20sp"
-            android:layout_width="match_parent"
-            android:text="Use knox"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content" />
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="@string/knox_install_title"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/knoxInstallDesc"
+        app:layout_constraintStart_toEndOf="@+id/knoxInstallIcon"
+        app:layout_constraintTop_toTopOf="@+id/knox"
+        app:layout_constraintVertical_chainStyle="packed" />
 
-        <TextView
-            android:text="Use knox api to install app without root seamlessly"
-            android:layout_width="match_parent"
-            android:gravity="center"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/package_installer"
-        android:layout_width="match_parent"
-        android:background="@drawable/big_tile_bg"
-        android:layout_margin="20dp"
+    <TextView
+        android:id="@+id/knoxInstallDesc"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:textSize="20sp"
-            android:layout_width="match_parent"
-            android:text="Use Package Installer"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content" />
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:text="@string/knox_install_desc"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/knox"
+        app:layout_constraintEnd_toEndOf="@+id/knox"
+        app:layout_constraintStart_toEndOf="@+id/knoxInstallIcon"
+        app:layout_constraintTop_toBottomOf="@+id/knoxInstallTitle" />
 
-        <TextView
-            android:text="Choosing this will require lots of tapping"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/pkgInstallerTile"
+        android:layout_width="0dp"
+        android:layout_height="94dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/knox"
+        app:srcCompat="@drawable/big_tile_bg"
+        android:contentDescription="@string/image" />
 
-    </LinearLayout>
+    <ImageView
+        android:id="@+id/pkgInstallIcon"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/pkgInstallerTile"
+        app:layout_constraintStart_toStartOf="@+id/pkgInstallerTile"
+        app:layout_constraintTop_toTopOf="@+id/pkgInstallerTile"
+        app:srcCompat="@drawable/ic_package_installer"
+        android:contentDescription="@string/image" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/pkgInstallTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="@string/package_installer_title"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/pkgInstallDesc"
+        app:layout_constraintStart_toEndOf="@+id/pkgInstallIcon"
+        app:layout_constraintTop_toTopOf="@+id/pkgInstallerTile"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/pkgInstallDesc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:text="@string/package_installer_desc"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/pkgInstallerTile"
+        app:layout_constraintEnd_toEndOf="@+id/pkgInstallerTile"
+        app:layout_constraintStart_toEndOf="@+id/pkgInstallIcon"
+        app:layout_constraintTop_toBottomOf="@+id/pkgInstallTitle" />
+
+</android.support.constraint.ConstraintLayout>

@@ -10,6 +10,7 @@
 
     <style name="AppAlertDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:windowBackground">@drawable/dialog_bg</item>
+        <item name="android:colorAccent">@color/minimal_green</item>
     </style>
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
