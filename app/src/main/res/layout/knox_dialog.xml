@@ -45,7 +45,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/errorDialogTitle2"
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine"
+        tools:ignore="LabelFor" />
 
 
     <TextView
@@ -74,7 +75,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/knox_key"
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine"
+        tools:ignore="LabelFor" />
 
 
 </android.support.constraint.ConstraintLayout>

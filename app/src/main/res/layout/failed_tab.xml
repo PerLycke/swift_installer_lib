@@ -26,6 +26,7 @@
         android:layout_marginStart="3dp"
         app:layout_constraintBottom_toBottomOf="@+id/failedTabTxt"
         app:layout_constraintStart_toEndOf="@+id/failedTabTxt"
-        app:srcCompat="@drawable/ic_dot_red" />
+        app:srcCompat="@drawable/ic_dot_red"
+        android:contentDescription="@string/image" />
 
 </android.support.constraint.ConstraintLayout>

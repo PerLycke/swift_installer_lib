@@ -13,7 +13,8 @@
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_install" />
+        app:srcCompat="@drawable/ic_install"
+        android:contentDescription="@string/image" />
 
     <TextView
         android:id="@+id/installTxt"
@@ -36,7 +37,8 @@
         android:layout_height="48dp"
         app:layout_constraintStart_toStartOf="@+id/dialogInstallIcon"
         app:layout_constraintTop_toBottomOf="@+id/dialogInstallIcon"
-        app:srcCompat="@drawable/ic_uninstall" />
+        app:srcCompat="@drawable/ic_uninstall"
+        android:contentDescription="@string/image" />
 
     <TextView
         android:id="@+id/uninstallTxt"
@@ -60,7 +62,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/dialogUninstallIcon"
         app:layout_constraintTop_toBottomOf="@+id/dialogUninstallIcon"
-        app:srcCompat="@drawable/ic_update" />
+        app:srcCompat="@drawable/ic_update"
+        android:contentDescription="@string/image" />
 
     <TextView
         android:id="@+id/updateTxt"

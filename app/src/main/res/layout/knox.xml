@@ -97,6 +97,7 @@
         app:layout_constraintStart_toStartOf="@+id/pkgInstallerTile"
         app:layout_constraintTop_toTopOf="@+id/pkgInstallerTile"
         app:srcCompat="@drawable/ic_package_installer"
+        android:tint="@color/light_grey"
         android:contentDescription="@string/image" />
 
     <TextView

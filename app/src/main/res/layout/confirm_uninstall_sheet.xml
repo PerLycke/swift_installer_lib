@@ -45,7 +45,8 @@
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_confirm" />
+        app:srcCompat="@drawable/ic_confirm"
+        android:contentDescription="@string/image" />
 
     <ImageView
         android:id="@+id/cancelUninstallIcon"
@@ -55,5 +56,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/confirmUninstallIcon"
         app:layout_constraintTop_toBottomOf="@+id/confirmUninstallIcon"
-        app:srcCompat="@drawable/ic_cancel" />
+        app:srcCompat="@drawable/ic_cancel"
+        android:contentDescription="@string/image" />
 </android.support.constraint.ConstraintLayout>

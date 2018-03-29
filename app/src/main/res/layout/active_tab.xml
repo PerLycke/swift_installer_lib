@@ -26,6 +26,7 @@
         android:layout_marginStart="3dp"
         app:layout_constraintBottom_toBottomOf="@+id/activeTabTxt"
         app:layout_constraintStart_toEndOf="@+id/activeTabTxt"
-        app:srcCompat="@drawable/ic_dot_green" />
+        app:srcCompat="@drawable/ic_dot_green"
+        android:contentDescription="@string/image" />
 
 </android.support.constraint.ConstraintLayout>

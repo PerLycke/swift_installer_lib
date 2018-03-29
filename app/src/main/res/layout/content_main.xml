@@ -17,7 +17,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/big_tile_bg" />
+        app:srcCompat="@drawable/big_tile_bg"
+        android:contentDescription="@string/image" />
 
     <ImageView
         android:id="@+id/installUpdatesIcon"
@@ -27,7 +28,9 @@
         app:layout_constraintBottom_toBottomOf="@+id/installUpdatesTile"
         app:layout_constraintStart_toStartOf="@+id/installUpdatesTile"
         app:layout_constraintTop_toTopOf="@+id/installUpdatesTile"
-        app:srcCompat="@drawable/ic_updates" />
+        app:srcCompat="@drawable/ic_updates"
+        android:tint="@color/minimal_orange"
+        android:contentDescription="@string/image" />
 
     <TextView
         android:id="@+id/installUpdatesTitle"
@@ -36,7 +39,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:fontFamily="sans-serif-condensed"
-        android:text="Install updates"
+        android:text="@string/install_updates"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -52,7 +55,7 @@
         android:layout_marginBottom="12dp"
         android:layout_marginEnd="24dp"
         android:layout_marginStart="16dp"
-        android:text="Some overlays were updated. Install them."
+        android:text="@string/update_description"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/installUpdatesTile"
         app:layout_constraintEnd_toEndOf="@+id/installUpdatesTile"
@@ -69,7 +72,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/installUpdatesTile"
-        app:srcCompat="@drawable/big_tile_bg" />
+        app:srcCompat="@drawable/big_tile_bg"
+        android:contentDescription="@string/image" />
 
     <ImageView
         android:id="@+id/dialogInstallIcon"
@@ -81,7 +85,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/installTile"
         app:layout_constraintStart_toStartOf="@+id/installTile"
         app:layout_constraintTop_toTopOf="@+id/installTile"
-        app:srcCompat="@drawable/ic_install" />
+        app:srcCompat="@drawable/ic_install"
+        android:contentDescription="@string/image" />
 
     <TextView
         android:id="@+id/installTitle"
@@ -124,7 +129,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/installTile"
-        app:srcCompat="@drawable/big_tile_bg" />
+        app:srcCompat="@drawable/big_tile_bg"
+        android:contentDescription="@string/image" />
 
     <ImageView
         android:id="@+id/accentIcon"
@@ -136,7 +142,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/accentTile"
         app:layout_constraintStart_toStartOf="@+id/installTile"
         app:layout_constraintTop_toTopOf="@+id/accentTile"
-        app:srcCompat="@drawable/ic_accent" />
+        app:srcCompat="@drawable/ic_accent"
+        android:contentDescription="@string/image" />
 
     <TextView
         android:id="@+id/accentCategoryTitle"
@@ -176,7 +183,8 @@
         android:layout_marginTop="74dp"
         app:layout_constraintEnd_toEndOf="@+id/installTile"
         app:layout_constraintTop_toTopOf="@+id/installTile"
-        app:srcCompat="@drawable/small_info_bg" />
+        app:srcCompat="@drawable/small_info_bg"
+        android:contentDescription="@string/image" />
 
     <TextView
         android:id="@+id/installedInfoTxt"
@@ -200,7 +208,8 @@
         android:layout_marginTop="74dp"
         app:layout_constraintEnd_toEndOf="@+id/accentTile"
         app:layout_constraintTop_toTopOf="@+id/accentTile"
-        app:srcCompat="@drawable/small_info_bg" />
+        app:srcCompat="@drawable/small_info_bg"
+        android:contentDescription="@string/image" />
 
     <TextView
         android:id="@+id/currentTxt"

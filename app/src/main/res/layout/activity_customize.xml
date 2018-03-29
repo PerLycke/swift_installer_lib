@@ -203,7 +203,8 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/darkBgCircle"
                     app:layout_constraintTop_toTopOf="@+id/darkBgCircle"
-                    app:srcCompat="@drawable/circle_black" />
+                    app:srcCompat="@drawable/circle_black"
+                    android:contentDescription="@string/image" />
 
                 <TextView
                     android:id="@+id/darkBgTxt"
@@ -246,7 +247,8 @@
                     app:layout_constraintEnd_toEndOf="@+id/darkBgCircle"
                     app:layout_constraintStart_toStartOf="@+id/darkBgCircle"
                     app:layout_constraintTop_toTopOf="@+id/darkBgCircle"
-                    app:srcCompat="@drawable/circle_active_stroke" />
+                    app:srcCompat="@drawable/circle_active_stroke"
+                    android:contentDescription="@string/image" />
 
             </android.support.constraint.ConstraintLayout>
 

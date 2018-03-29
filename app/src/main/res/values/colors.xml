@@ -11,6 +11,7 @@
     <color name="small_info_tint">#202026</color>
     <color name="dialog_bg_tint">#16161c</color>
     <color name="dialog_stroke">#232329</color>
+    <color name="light_grey">#dedede</color>
 
     <!-- Minimal palette -->
     <color name="minimal_blue">#4A7CA5</color>
