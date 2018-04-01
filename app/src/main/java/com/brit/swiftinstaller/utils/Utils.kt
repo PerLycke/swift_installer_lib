@@ -2,6 +2,7 @@ package com.brit.swiftinstaller.utils
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
 import android.util.Log
 import org.bouncycastle.x509.X509V3CertificateGenerator
 import java.io.File
@@ -46,7 +47,17 @@ object Utils {
     }
 
     fun isOverlayEnabled(context: Context, packageName: String): Boolean {
-        return runCommand("cmd overlay").output!!.contains("packageName")
+        return isSamsungOreo(context) ||
+                runCommand("cmd overlay").output!!.contains("packageName")
+    }
+
+    fun isOverlayFailed(context: Context, packageName: String): Boolean {
+        return false
+    }
+
+    fun isSamsungOreo(context: Context): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
+                context.packageManager.hasSystemFeature("com.samsung.feature.samsung_experience_mobile")
     }
 
     fun makeKey(key: File) {

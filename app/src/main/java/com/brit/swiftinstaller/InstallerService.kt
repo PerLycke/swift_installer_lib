@@ -62,6 +62,7 @@ class InstallerService : Service() {
             }
 
             override fun startUninstall(apps: List<String>) {
+                Log.d("TEST", "InstallerService - uninstall")
                 uninstall(apps)
             }
 
@@ -133,10 +134,10 @@ class InstallerService : Service() {
 
             return
         }
-        for (packageName in apps) {
-            mRomInfo.uninstallOverlay(this, packageName)
+        for (app in apps) {
+            Log.d("TEST", "uninstalling app - " + app)
         }
-
+        mOM.uninstallOverlays(apps)
     }
 
     private fun install(apps: List<String>) {
@@ -172,7 +173,7 @@ class InstallerService : Service() {
                 e.printStackTrace()
             }
         } else {
-            mOM.compileOverlays(apps)
+            mOM.installOverlays(apps)
         }
 
     }

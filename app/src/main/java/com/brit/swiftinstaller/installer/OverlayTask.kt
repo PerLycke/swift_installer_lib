@@ -27,9 +27,10 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     lateinit var resDir: File
     lateinit var overlayDir: File
     lateinit var overlayPath: String
+    var uninstall: Boolean = false
     var index = 0
 
-    fun initializeOverlayTask(context: Context, packageName: String, index: Int) {
+    fun initializeOverlayTask(context: Context, packageName: String, index: Int, uninstall: Boolean) {
         this.context = context
         this.packageName = packageName
         this.packageInfo = context.packageManager.getPackageInfo(packageName, 0)
@@ -43,6 +44,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         if (!File(overlayPath).parentFile.exists())
             File(overlayPath).parentFile.mkdirs()
         this.index = index
+        this.uninstall = uninstall
     }
 
     fun getRunnable(): Runnable {
@@ -50,9 +52,14 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     }
 
     override fun run() {
-        extractResources()
-        compileOverlay()
-        mOm.handleState(this, OverlayManager.OVERLAY_INSTALLED)
+        if (uninstall) {
+            RomInfo.getRomInfo(context).uninstallOverlay(context, packageName)
+            mOm.handleState(this, OverlayManager.OVERLAY_UNINSTALLED)
+        } else {
+            extractResources()
+            compileOverlay()
+            mOm.handleState(this, OverlayManager.OVERLAY_INSTALLED)
+        }
     }
 
     private fun extractResources() {

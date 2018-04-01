@@ -30,6 +30,7 @@ import com.brit.swiftinstaller.utils.constants.ACTION_LICENSE_STATUS
 import com.brit.swiftinstaller.utils.constants.MDM_APP_MGMT_PERM
 import com.brit.swiftinstaller.utils.constants.MDM_SECURITY
 import com.swift.installer.CustomDialogFragment
+import org.bouncycastle.jce.provider.PBE
 
 
 class RomInfo internal constructor(var context: Context, var name: String,
@@ -126,22 +127,35 @@ class RomInfo internal constructor(var context: Context, var name: String,
             }
         } else if (ShellUtils.isRootAvailable) {
             runCommand("pm install -r " + overlayPath, true)
-    if (installed) {
-        runCommand("cmd overlay enable " + Utils.getOverlayPackageName(targetPackage), true)
-    } else {
-        addAppToInstall(context, Utils.getOverlayPackageName(targetPackage))
+            if (installed) {
+                runCommand("cmd overlay enable " + Utils.getOverlayPackageName(targetPackage), true)
+            } else {
+                addAppToInstall(context, Utils.getOverlayPackageName(targetPackage))
+            }
+        } else {
+            addAppToInstall(context, Utils.getOverlayPackageName(targetPackage))
+        }
     }
-} else {
-    addAppToInstall(context, Utils.getOverlayPackageName(targetPackage))
-}
-}
 
-fun postInstall(context: Context, targetPackage: String) {
+    fun postInstall(context: Context, targetPackage: String) {
 
-}
+    }
 
-fun uninstallOverlay(context: Context, packageName: String) {
-        runCommand("pm uninstall " + packageName)
+    fun uninstallOverlay(context: Context, packageName: String) {
+        if (!TextUtils.isEmpty(getKnoxKey(context)) && !TextUtils.isEmpty(getEnterpriseKey(context))) {
+            val policy = EnterpriseDeviceManager.getInstance(context).applicationPolicy
+            if (policy.isApplicationInstalled(Utils.getOverlayPackageName(packageName))) {
+                if (policy.uninstallApplication(Utils.getOverlayPackageName(packageName), false)) {
+                    Log.d("TEST", "uninstalled - " + Utils.getOverlayPackageName(packageName))
+                } else {
+                    Log.d("TEST", "failed to uninstall - " + Utils.getOverlayPackageName(packageName))
+                }
+                policy.setDisableApplication(packageName)
+                policy.setEnableApplication(packageName)
+            }
+        } else {
+            runCommand("pm uninstall " + packageName)
+        }
     }
 
     fun createFinishedDialog(activity: MainActivity): Dialog {

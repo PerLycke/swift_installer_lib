@@ -106,9 +106,10 @@ object ShellUtils {
             runCommand("chmod 777 $unsigned", false)
             val key = File(context.dataDir, "/signing-key")
             val keyPass = "overlay".toCharArray()
-            if (!key.exists()) {
-                Utils.makeKey(key)
+            if (key.exists()) {
+                key.delete()
             }
+            Utils.makeKey(key)
 
             val ks = KeyStore.getInstance(KeyStore.getDefaultType())
             ks.load(FileInputStream(key), keyPass)

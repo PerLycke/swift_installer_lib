@@ -36,6 +36,10 @@ class InstallerServiceHelper {
             InstallerService.getService().startInstall(apps)
         }
 
+        fun uninstall(apps: List<String>) {
+            InstallerService.getService().startUninstall(apps)
+        }
+
         fun connectService(context: Context) {
             try {
                 startInstallerService(context)

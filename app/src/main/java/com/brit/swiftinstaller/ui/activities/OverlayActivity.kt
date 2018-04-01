@@ -29,6 +29,7 @@ import android.widget.TextView
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.Utils.getOverlayPackageName
 import com.brit.swiftinstaller.utils.Utils.isOverlayEnabled
+import com.brit.swiftinstaller.utils.Utils.isOverlayFailed
 import com.brit.swiftinstaller.utils.Utils.isOverlayInstalled
 import kotlinx.android.synthetic.main.app_list_activity.*
 import kotlinx.android.synthetic.main.overlay_activity.*
@@ -51,18 +52,27 @@ class OverlayActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.overlay_activity)
 
+        mApps[INSTALL_TAB] = ArrayList()
+        mApps[ACTIVE_TAB] = ArrayList()
+        mApps[FAILED_TAB] = ArrayList()
+
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        mApps[0] = ArrayList()
-        mApps[1] = ArrayList()
-        mApps[2] = ArrayList()
 
         mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
 
         container.adapter = mSectionsPagerAdapter
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        mApps[INSTALL_TAB]!!.clear()
+        mApps[ACTIVE_TAB]!!.clear()
+        mApps[FAILED_TAB]!!.clear()
+
 
         AppLoader(this, object : Callback {
             override fun updateApps(tab: Int, item: AppItem) {
@@ -70,7 +80,6 @@ class OverlayActivity : AppCompatActivity() {
                 mSectionsPagerAdapter!!.notifyFragmentDataSetChanged()
             }
         }).execute()
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -233,7 +242,9 @@ class OverlayActivity : AppCompatActivity() {
                         } else {
                             publishProgress(Progress(INSTALL_TAB, item))
                         }
-                    } else if (isOverlayInstalled(context, pn)) {
+                    } else if (isOverlayFailed(context, getOverlayPackageName(pn))) {
+                        publishProgress(Progress(FAILED_TAB, item))
+                    } else {
                         publishProgress(Progress(INSTALL_TAB, item))
                     }
                 }
@@ -301,10 +312,13 @@ class OverlayActivity : AppCompatActivity() {
     }
 
     private fun uninstallProgressAction() {
-        val mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
-        val sheetView = View.inflate(this, R.layout.uninstall_progress_sheet, null)
-        mBottomSheetDialog.setContentView(sheetView)
-        mBottomSheetDialog.show()
+        val intent = Intent(this, InstallActivity::class.java)
+        val checked = getCheckedItems(ACTIVE_TAB)
+        val apps = ArrayList<String>()
+        checked.mapTo(apps) { it.packageName }
+        intent.putStringArrayListExtra("apps", apps)
+        intent.putExtra("uninstall", true)
+        startActivity(intent)
     }
 
     private fun updateAction() {

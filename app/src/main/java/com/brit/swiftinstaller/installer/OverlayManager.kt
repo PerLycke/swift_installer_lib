@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import com.brit.swiftinstaller.IInstallerCallback
+import com.brit.swiftinstaller.utils.rom.RomInfo
 import java.util.*
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.LinkedBlockingQueue
@@ -16,8 +17,9 @@ class OverlayManager(val mContext: Context) {
     companion object {
         const val OVERLAY_FAILED = -1
         const val OVERLAY_COMPILING = 1
-        const val OVERLAY_INSTALLING = 3
-        const val OVERLAY_INSTALLED = 2
+        const val OVERLAY_INSTALLING = 2
+        const val OVERLAY_INSTALLED = 3
+        const val OVERLAY_UNINSTALLED = 4
 
         private const val KEEP_ALIVE_TIME: Long = 1
         private const val CORE_POOL_SIZE = 2
@@ -65,6 +67,13 @@ class OverlayManager(val mContext: Context) {
                                 msg.arg1, msg.arg2, false)
                         mNotifier.broadcastOverlayInstalled(overlayTask.packageName, msg.arg1, msg.arg2)
                     }
+
+                    OVERLAY_UNINSTALLED -> {
+                        mCallback!!.progressUpdate(mContext.packageManager
+                                .getApplicationInfo(overlayTask.packageName, 0)
+                                .loadLabel(mContext.packageManager) as String,
+                                msg.arg1, msg.arg2, true)
+                    }
                 }
             }
         }
@@ -74,22 +83,41 @@ class OverlayManager(val mContext: Context) {
         mCallback = callback
     }
 
-    fun compileOverlays(apps: List<String>) {
+    fun installOverlays(apps: List<String>) {
         mMax = apps.size - 1
         mNotifier.broadcastInstallStarted(mMax)
         for (pn in apps) {
-            compileOverlay(pn, apps.indexOf(pn))
+            installOverlay(pn, apps.indexOf(pn))
         }
     }
 
-    private fun compileOverlay(packageName: String, index: Int) {
+    fun uninstallOverlays(apps: List<String>) {
+        mMax = apps.size - 1
+        mNotifier.broadcastInstallStarted(mMax)
+        for (pn in apps) {
+            uninstallOverlay(pn, apps.indexOf(pn))
+
+        }
+    }
+
+    private fun installOverlay(packageName: String, index: Int) {
         var task = mOverlayQueue.poll()
         if (task == null) {
             task = OverlayTask(this)
         }
 
-        task.initializeOverlayTask(mContext, packageName, index)
+        task.initializeOverlayTask(mContext, packageName, index, false)
 
+        mThreadPool.execute(task.getRunnable())
+    }
+
+    private fun uninstallOverlay(packageName: String, index: Int) {
+        var task = mOverlayQueue.poll()
+        if (task == null) {
+            task = (OverlayTask(this))
+        }
+
+        task.initializeOverlayTask(mContext, packageName, index, true)
         mThreadPool.execute(task.getRunnable())
     }
 
@@ -100,6 +128,12 @@ class OverlayManager(val mContext: Context) {
                 installed.arg1 = task.index
                 installed.arg2 = mMax
                 installed.sendToTarget()
+            }
+            OVERLAY_UNINSTALLED -> {
+                val uninstalled = mHandler.obtainMessage(state, task)
+                uninstalled.arg1 = task.index
+                uninstalled.arg2 = mMax
+                uninstalled.sendToTarget()
             }
         }
     }
