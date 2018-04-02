@@ -182,7 +182,7 @@ class RomInfo internal constructor(var context: Context, var name: String,
         @JvmStatic
         fun getRomInfo(context: Context): RomInfo {
             if (sInfo == null) {
-                sInfo = RomInfo(context, "AOSP", Build.VERSION.RELEASE, "type3_Android_8_-_Dark")
+                sInfo = RomInfo(context, "AOSP", Build.VERSION.RELEASE, "type3-common", "type3_Dark")
             }
             return sInfo!!
         }
