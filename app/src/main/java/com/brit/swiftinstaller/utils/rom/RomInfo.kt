@@ -64,14 +64,15 @@ class RomInfo internal constructor(var context: Context, var name: String,
             override fun onReceive(context: Context, intent: Intent) {
                 if (ACTION_KNOX_LICENSE_STATUS == intent.action) {
                     if (intent.getStringExtra("edm.intent.extra.knox_license.status") != "success") {
-                        CustomDialogFragment.Companion.showDialog(activity, object : CustomDialogFragment.DialogCreator {
+                        Log.d("TEST", "knox failed")
+                        /*CustomDialogFragment.Companion.showDialog(activity, object : CustomDialogFragment.DialogCreator {
                             //finishAffinity();
                             override val dialog: Dialog
                                 get() = AlertDialog.Builder(activity)
                                         .setMessage("App will not function without knox! Exiting now!")
                                         .setPositiveButton(android.R.string.ok) { dialog, which -> }
                                         .create()
-                        })
+                        })*/
                     }
                 } else if (ACTION_LICENSE_STATUS == intent.action) {
                     if (!intent.getStringExtra("edm.intent.extra.license.status").equals("success")) {
@@ -138,7 +139,7 @@ class RomInfo internal constructor(var context: Context, var name: String,
     }
 
     fun postInstall(context: Context, targetPackage: String) {
-
+        val apps = getAppsToInstall(context)
     }
 
     fun uninstallOverlay(context: Context, packageName: String) {
@@ -153,8 +154,8 @@ class RomInfo internal constructor(var context: Context, var name: String,
                 policy.setDisableApplication(packageName)
                 policy.setEnableApplication(packageName)
             }
-        } else {
-            runCommand("pm uninstall " + packageName)
+        } else if (ShellUtils.isRootAvailable) {
+            runCommand("pm uninstall " + Utils.getOverlayPackageName(packageName), true)
         }
     }
 

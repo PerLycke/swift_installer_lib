@@ -31,13 +31,11 @@ class MainActivity : AppCompatActivity() {
         val myToolbar = findViewById<View>(R.id.my_toolbar) as Toolbar
         setSupportActionBar(myToolbar)
 
-        Log.d("TEST", "isSamsung ? " + Utils.isSamsungOreo(this))
-
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                            Manifest.permission.READ_CONTACTS)) {
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
                 // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
@@ -58,13 +56,6 @@ class MainActivity : AppCompatActivity() {
                 // app-defined int constant. The callback method gets the
                 // result of the request.
             }
-        }
-
-        if (!TextUtils.isEmpty(getKnoxKey(this)) && !TextUtils.isEmpty(getEnterpriseKey(this))) {
-            val bundle = Bundle()
-            bundle.putString("knox_key", getKnoxKey(this))
-            bundle.putString("enterprise_key", getEnterpriseKey(this))
-            RomInfo.getRomInfo(this).init(this, bundle)
         }
 
         installTile.setOnClickListener {

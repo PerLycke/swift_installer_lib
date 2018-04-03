@@ -15,6 +15,14 @@ fun setAccentColor(context: Context, color: Int) {
     PreferenceManager.getDefaultSharedPreferences(context).edit().putInt("accent_color", color).apply()
 }
 
+fun useBlackBackground(context: Context): Boolean {
+    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("black_background", false)
+}
+
+fun setUseBlackBackground(context: Context, black: Boolean) {
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("black_background", black).apply()
+}
+
 fun getUserAccents(context: Context): IntArray {
     val temp = PreferenceManager.getDefaultSharedPreferences(context).getString("accents", "")
     if (TextUtils.isEmpty(temp)) {

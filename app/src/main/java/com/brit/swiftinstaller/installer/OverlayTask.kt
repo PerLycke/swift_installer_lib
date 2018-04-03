@@ -3,18 +3,15 @@ package com.brit.swiftinstaller.installer
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
+import android.content.res.AssetManager
 import android.os.Environment
+import android.util.Log
 import com.brit.swiftinstaller.BuildConfig
-import com.brit.swiftinstaller.utils.AssetHelper
-import com.brit.swiftinstaller.utils.ShellUtils
-import com.brit.swiftinstaller.utils.Utils
-import com.brit.swiftinstaller.utils.getAccentColor
+import com.brit.swiftinstaller.utils.*
 import com.brit.swiftinstaller.utils.rom.RomInfo
-import java.io.BufferedWriter
-import java.io.File
-import java.io.FileWriter
-import java.io.IOException
+import java.io.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 @Suppress("MemberVisibilityCanBePrivate")
 class OverlayTask(val mOm: OverlayManager) : Runnable {
@@ -37,8 +34,9 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         this.appInfo = context.packageManager.getApplicationInfo(packageName, 0)
         this.overlayDir = File(Environment.getExternalStorageDirectory(), ".swift/overlays/$packageName")
         this.resDir = File(overlayDir, "res")
-        if (!resDir.exists())
-            resDir.mkdirs()
+        if (resDir.exists())
+            resDir.deleteRecursively()
+        resDir.mkdirs()
         this.overlayPath = Environment.getExternalStorageDirectory().absolutePath + "/.swift/" +
                 "/overlays/compiled/" + Utils.getOverlayPackageName(packageName) + ".apk"
         if (!File(overlayPath).parentFile.exists())
@@ -63,23 +61,24 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     }
 
     private fun extractResources() {
-
+        val black = useBlackBackground(context)
         if (!resDir.exists())
             resDir.mkdirs()
 
         val am = context.assets
         val assetPaths = ArrayList<String>()
-        assetPaths.add("overlays/$packageName/res")
+        //assetPaths.add("overlays/$packageName/res")
         val ri = RomInfo.getRomInfo(context)
         try {
-            val variants = am.list("overlays/$packageName")
-            ri.variants
-                    .filter { variants != null && Arrays.asList(*variants).contains(it) }
-                    .mapTo(assetPaths) { "overlays/$packageName/$it" }
+            parseOverlayAssetPath(am, "overlays/$packageName", assetPaths, black)
+            //ri.variants
+            //        .filter { variants != null && Arrays.asList(*variants).contains(it) }
+            //        .mapTo(assetPaths) { "overlays/$packageName/$it" }
         } catch (ignored: Exception) {
         }
 
         for (path in assetPaths) {
+            Log.d("TEST", "asset path - $path")
             AssetHelper.copyAssetFolder(am, path, resDir.absolutePath, null)
         }
         if (packageName == "android") {
@@ -87,6 +86,52 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         }
         generateManifest(overlayDir.absolutePath,
                 BuildConfig.APPLICATION_ID, packageName, packageInfo.versionName)
+    }
+
+    private fun checkAssetPath(am: AssetManager, path: String): Boolean {
+        val variants = am.list(path)
+        return !variants.contains("dark")
+                && !variants.contains("black") && !variants.contains("common")
+    }
+
+    private fun addAssetPath(assetPaths: ArrayList<String>, asset: String) {
+        assetPaths.add(asset)
+        Log.d("TEST", "asset - " + asset)
+        val e = NullPointerException()
+
+        val outError = StringWriter()
+        e.printStackTrace(PrintWriter(outError))
+        val errorString = outError.toString()
+        Log.d("TEST", "stack - " + errorString)
+    }
+
+    private fun parseOverlayAssetPath(am: AssetManager, path: String, assetPaths: ArrayList<String>, black: Boolean) {
+        val variants = am.list(path)
+        for (variant in variants) {
+            if (!black && variant.equals("dark")) {
+                if (checkAssetPath(am, "$path/dark")) {
+                    addAssetPath(assetPaths, "$path/dark")
+                } else {
+                    parseOverlayAssetPath(am, "$path/dark", assetPaths, black)
+                }
+            } else if (black && variant.equals("black")) {
+                if (checkAssetPath(am, "$path/black")) {
+                    addAssetPath(assetPaths, "$path/black")
+                } else {
+                    parseOverlayAssetPath(am, "$path/black", assetPaths, black)
+                }
+            } else if (variant.equals("common")) {
+                if (checkAssetPath(am, "$path/common")) {
+                    addAssetPath(assetPaths, "$path/common")
+                } else {
+                    parseOverlayAssetPath(am, "$path/common", assetPaths, black)
+                }
+            } else if (packageInfo.versionName.startsWith(variant)) {
+                parseOverlayAssetPath(am, "$path/$variant", assetPaths, black)
+            } else if (checkAssetPath(am, path)) {
+                addAssetPath(assetPaths, path)
+            }
+        }
     }
 
     private fun compileOverlay() {
@@ -98,7 +143,6 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
 
     private fun applyAccent(resDir: File) {
         val accent = getAccentColor(context)
-        //val hightlightColor =
         val file = StringBuilder()
         file.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
         file.append("<resources>\n")

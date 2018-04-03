@@ -10,11 +10,9 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.CircleDrawable
-import com.brit.swiftinstaller.utils.InstallerServiceHelper
-import com.brit.swiftinstaller.utils.Utils
-import com.brit.swiftinstaller.utils.getAccentColor
-import com.brit.swiftinstaller.utils.setAccentColor
+import com.brit.swiftinstaller.utils.*
 import kotlinx.android.synthetic.main.activity_customize.*
+import kotlinx.android.synthetic.main.background_alert_dialog.view.*
 import kotlinx.android.synthetic.main.customize_toolbar.*
 
 class CustomizeActivity : AppCompatActivity() {
@@ -44,6 +42,16 @@ class CustomizeActivity : AppCompatActivity() {
         settingsIcons[0] = connectionsIcon
         settingsIcons[1] = soundIcon
         settingsIcons[2] = notificationsIcon
+    }
+
+    fun setBgIndicator() {
+        if (useBlackBackground(this)) {
+            blackBgIndicator.visibility = View.VISIBLE
+            darkBgIndicator.visibility = View.GONE
+        } else {
+            darkBgIndicator.visibility = View.VISIBLE
+            blackBgIndicator.visibility = View.GONE
+        }
     }
 
     fun updateColor(color: Int) {
@@ -83,10 +91,22 @@ class CustomizeActivity : AppCompatActivity() {
         }
     }
 
-    fun blackBgClick(view: View) {
-        val dialog = View.inflate(this, R.layout.background_alert_dialog, null)
-        val builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme).create()
-        builder.setView(dialog)
+    fun bgClick(view: View) {
+        val dialogView = View.inflate(this, R.layout.background_alert_dialog, null)
+        val builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
+        builder.setView(dialogView)
+        val dialog = builder.create()
+
+        dialogView.continueBtn.setOnClickListener {
+            setUseBlackBackground(this, view.id == R.id.blackBgCircle)
+            setBgIndicator()
+            dialog.dismiss()
+        }
+
+        dialogView.backBtn.setOnClickListener {
+            dialog.dismiss()
+        }
+
         builder.show()
     }
 

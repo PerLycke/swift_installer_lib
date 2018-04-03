@@ -13,6 +13,7 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.view.ViewPager
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -45,6 +46,7 @@ class OverlayActivity : AppCompatActivity() {
     }
 
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
+    private lateinit var mViewPager: ViewPager
 
     private var mApps: HashMap<Int, ArrayList<AppItem>> = HashMap()
 
@@ -60,6 +62,8 @@ class OverlayActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
+
+        mViewPager = container
 
         container.adapter = mSectionsPagerAdapter
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
@@ -286,7 +290,7 @@ class OverlayActivity : AppCompatActivity() {
 
     private fun installAction() {
         val intent = Intent(this, InstallActivity::class.java)
-        val checked = getCheckedItems(INSTALL_TAB)
+        val checked = getCheckedItems(mViewPager.currentItem)
         val apps = ArrayList<String>()
         checked.mapTo(apps) { it.packageName }
         intent.putStringArrayListExtra("apps", apps)
@@ -313,7 +317,7 @@ class OverlayActivity : AppCompatActivity() {
 
     private fun uninstallProgressAction() {
         val intent = Intent(this, InstallActivity::class.java)
-        val checked = getCheckedItems(ACTIVE_TAB)
+        val checked = getCheckedItems(mViewPager.currentItem)
         val apps = ArrayList<String>()
         checked.mapTo(apps) { it.packageName }
         intent.putStringArrayListExtra("apps", apps)

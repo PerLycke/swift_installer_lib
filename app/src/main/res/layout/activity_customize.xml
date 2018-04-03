@@ -240,7 +240,7 @@
                     app:layout_constraintTop_toTopOf="@+id/darkBgTxt" />
 
                 <ImageView
-                    android:id="@+id/activeBgIndicator"
+                    android:id="@+id/darkBgIndicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="@+id/darkBgCircle"
@@ -248,7 +248,20 @@
                     app:layout_constraintStart_toStartOf="@+id/darkBgCircle"
                     app:layout_constraintTop_toTopOf="@+id/darkBgCircle"
                     app:srcCompat="@drawable/circle_active_stroke"
-                    android:contentDescription="@string/image" />
+                    android:contentDescription="@string/image"
+                    android:visibility="gone"/>
+
+                <ImageView
+                    android:id="@+id/blackBgIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/blackBgCircle"
+                    app:layout_constraintEnd_toEndOf="@+id/blackBgCircle"
+                    app:layout_constraintStart_toStartOf="@+id/blackBgCircle"
+                    app:layout_constraintTop_toTopOf="@+id/blackBgCircle"
+                    app:srcCompat="@drawable/circle_active_stroke"
+                    android:contentDescription="@string/image"
+                    android:visibility="gone"/>
 
             </android.support.constraint.ConstraintLayout>
 
