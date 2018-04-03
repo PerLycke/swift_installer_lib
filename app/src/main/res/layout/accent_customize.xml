@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <GridView
+        android:id="@+id/palette"
+        android:layout_width="0dp"
+        android:layout_height="86dp"
+        android:layout_marginTop="16dp"
+        android:columnWidth="36dp"
+        android:numColumns="5" />
+
+    <TextView
+        android:id="@+id/hashtag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:text="@string/hashtag"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/hexInput"
+        app:layout_constraintEnd_toStartOf="@+id/hexInput"
+        app:layout_constraintTop_toTopOf="@+id/hexInput" />
+
+    <EditText
+        android:id="@+id/hexInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/minimal_green"
+        android:digits="0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,A,B,C,D,E,F"
+        android:ems="6"
+        android:fontFamily="sans-serif-condensed"
+        android:hint="@string/hex"
+        android:inputType="textCapCharacters|textNoSuggestions"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="@+id/palette"
+        app:layout_constraintTop_toBottomOf="@+id/palette" />
+
+    <Button
+        android:id="@+id/applyHex"
+        style="@android:style/Widget.DeviceDefault.Button.Borderless.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:backgroundTint="@color/minimal_blue"
+        android:fontFamily="sans-serif-condensed"
+        android:text="@string/apply"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/hexInput"
+        app:layout_constraintTop_toTopOf="@+id/hexInput" />
+
+</android.support.constraint.ConstraintLayout>

@@ -11,8 +11,10 @@ import android.widget.ImageView
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.CircleDrawable
 import com.brit.swiftinstaller.utils.*
+import kotlinx.android.synthetic.main.accent_customize.*
 import kotlinx.android.synthetic.main.activity_customize.*
 import kotlinx.android.synthetic.main.background_alert_dialog.view.*
+import kotlinx.android.synthetic.main.background_customize.*
 import kotlinx.android.synthetic.main.customize_toolbar.*
 
 class CustomizeActivity : AppCompatActivity() {

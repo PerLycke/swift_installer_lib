@@ -48,4 +48,5 @@
     <string name="update_description">Some overlays were updated. Install them.</string>
     <string name="reboot_now">Reboot now to finish installation</string>
     <string name="reboot_later">Reboot later</string>
+    <string name="icons">Icons</string>
 </resources>

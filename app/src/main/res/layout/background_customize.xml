@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_frame">
+
+        <ImageView
+            android:id="@+id/darkBgCircle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_marginTop="20dp"
+            android:contentDescription="@string/image"
+            app:layout_constraintEnd_toStartOf="@+id/blackBgCircle"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/circle_dark" />
+
+        <ImageView
+            android:id="@+id/blackBgCircle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:contentDescription="@string/image"
+            android:onClick="bgClick"
+            app:layout_constraintBottom_toBottomOf="@+id/darkBgCircle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/darkBgCircle"
+            app:layout_constraintTop_toTopOf="@+id/darkBgCircle"
+            app:srcCompat="@drawable/circle_black" />
+
+        <TextView
+            android:id="@+id/darkBgTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@string/dark"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/darkBgCircle"
+            app:layout_constraintStart_toStartOf="@+id/darkBgCircle"
+            app:layout_constraintTop_toBottomOf="@+id/darkBgCircle" />
+
+        <TextView
+            android:id="@+id/blackBgTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@string/black"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/blackBgCircle"
+            app:layout_constraintStart_toStartOf="@+id/blackBgCircle"
+            app:layout_constraintTop_toTopOf="@+id/darkBgTxt" />
+
+        <ImageView
+            android:id="@+id/darkBgIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/darkBgCircle"
+            app:layout_constraintEnd_toEndOf="@+id/darkBgCircle"
+            app:layout_constraintStart_toStartOf="@+id/darkBgCircle"
+            app:layout_constraintTop_toTopOf="@+id/darkBgCircle"
+            app:srcCompat="@drawable/circle_active_stroke" />
+
+        <ImageView
+            android:id="@+id/blackBgIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/blackBgCircle"
+            app:layout_constraintEnd_toEndOf="@+id/blackBgCircle"
+            app:layout_constraintStart_toStartOf="@+id/blackBgCircle"
+            app:layout_constraintTop_toTopOf="@+id/blackBgCircle"
+            app:srcCompat="@drawable/circle_active_stroke" />
+
+</android.support.constraint.ConstraintLayout>
