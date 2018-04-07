@@ -40,6 +40,7 @@ class OverlayManager(val mContext: Context) {
     private val mHandler: Handler
 
     private val mNotifier = Notifier(mContext)
+    private val mRomInfo = RomInfo.getRomInfo(mContext)
 
     init {
 
@@ -65,6 +66,9 @@ class OverlayManager(val mContext: Context) {
                                 .getApplicationInfo(overlayTask.packageName, 0)
                                 .loadLabel(mContext.packageManager) as String,
                                 msg.arg1, msg.arg2, false)
+                        if (msg.arg1 == msg.arg2) {
+                            //mRomInfo.postInstall(mContext)
+                        }
                         mNotifier.broadcastOverlayInstalled(overlayTask.packageName, msg.arg1, msg.arg2)
                     }
 

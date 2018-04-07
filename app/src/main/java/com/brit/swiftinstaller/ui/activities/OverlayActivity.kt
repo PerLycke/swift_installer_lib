@@ -77,7 +77,6 @@ class OverlayActivity : AppCompatActivity() {
         mApps[ACTIVE_TAB]!!.clear()
         mApps[FAILED_TAB]!!.clear()
 
-
         AppLoader(this, object : Callback {
             override fun updateApps(tab: Int, item: AppItem) {
                 mApps[tab]!!.add(item)

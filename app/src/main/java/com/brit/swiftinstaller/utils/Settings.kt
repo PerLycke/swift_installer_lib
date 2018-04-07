@@ -42,7 +42,24 @@ fun getAppsToInstall(context: Context): Set<String> {
 
 fun addAppToInstall(context: Context, packageName: String) {
     val apps = getAppsToInstall(context)
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet("apps", apps.plus(packageName)).apply()
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet("overlays_to_install", apps.plus(packageName)).apply()
+}
+
+fun clearAppsToInstall(context: Context) {
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet("overlays_to_install", ArraySet<String>()).apply()
+}
+
+fun getAppsToUninstall(context: Context): Set<String> {
+    return PreferenceManager.getDefaultSharedPreferences(context).getStringSet("overlays_to_uninstall", ArraySet<String>())
+}
+
+fun addAppToUninstall(context: Context, packageName: String) {
+    val apps = getAppsToInstall(context)
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet("overlays_to_uninstall", apps.plus(packageName)).apply()
+}
+
+fun clearAppsToUninstall(context: Context) {
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet("overlays_to_uninstall", ArraySet<String>()).apply()
 }
 
 fun setUserAccents(context: Context, colors: IntArray) {

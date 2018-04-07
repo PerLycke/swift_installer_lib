@@ -33,8 +33,10 @@ object Utils {
     }
 
     fun getThemeVersion(context: Context, targetPackage: String): Int {
-        return Integer.parseInt(ShellUtils.inputStreamToString(
-                context.assets.open("overlays/$targetPackage/version")))
+        val ver = ShellUtils.inputStreamToString(context.assets.open(
+                "overlays/$targetPackage/version"))
+        Log.d("TEST", "$targetPackage version - $ver")
+        return 1
     }
 
     fun checkOverlayStatus() : Boolean {

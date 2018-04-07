@@ -12,6 +12,7 @@ import android.widget.TextView
 import com.brit.swiftinstaller.IInstallerCallback
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.InstallerServiceHelper
+import com.brit.swiftinstaller.utils.rom.RomInfo
 import kotlinx.android.synthetic.main.install_progress_sheet.*
 import kotlinx.android.synthetic.main.install_progress_sheet.view.*
 
@@ -33,12 +34,13 @@ class InstallActivity : AppCompatActivity() {
         }
         Log.d("TEST", "progress - $progress/$max")
         if (progress == max) {
-            installComplete(false)
+            installComplete(uninstall)
         }
     }
 
     fun installComplete(uninstall: Boolean) {
         finish()
+        RomInfo.getRomInfo(this).postInstall(uninstall)
     }
 
     fun installFailed(reason: Int) {

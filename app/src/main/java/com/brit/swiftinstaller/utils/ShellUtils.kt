@@ -112,7 +112,13 @@ object ShellUtils {
             Utils.makeKey(key)
 
             val ks = KeyStore.getInstance(KeyStore.getDefaultType())
-            ks.load(FileInputStream(key), keyPass)
+            try {
+                ks.load(FileInputStream(key), keyPass)
+            } catch (e: IOException) {
+                key.delete()
+                Utils.makeKey(key)
+                ks.load(FileInputStream(key), keyPass)
+            }
             val pk = ks.getKey("key", keyPass) as PrivateKey
             val certs = ArrayList<X509Certificate>()
             certs.add(ks.getCertificateChain("key")[0] as X509Certificate)

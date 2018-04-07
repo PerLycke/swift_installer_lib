@@ -12,6 +12,7 @@ import com.brit.swiftinstaller.utils.*
 import org.apache.commons.io.FileUtils
 import java.io.File
 import android.R.attr.targetPackage
+import android.app.Activity
 import com.samsung.android.knox.EnterpriseDeviceManager
 import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.app.admin.DevicePolicyManager
@@ -20,11 +21,15 @@ import com.samsung.android.knox.application.ApplicationPolicy
 import com.samsung.android.knox.license.EnterpriseLicenseManager
 import com.samsung.android.knox.license.KnoxEnterpriseLicenseManager
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.provider.SyncStateContract
 import android.support.v4.content.PermissionChecker.checkCallingOrSelfPermission
 import android.support.v4.app.ActivityCompat.finishAffinity
+import android.support.v4.content.FileProvider
 import android.util.Log
+import com.brit.swiftinstaller.BuildConfig
+import com.brit.swiftinstaller.installer.PackageInstallActivity
 import com.brit.swiftinstaller.utils.constants.ACTION_KNOX_LICENSE_STATUS
 import com.brit.swiftinstaller.utils.constants.ACTION_LICENSE_STATUS
 import com.brit.swiftinstaller.utils.constants.MDM_APP_MGMT_PERM
@@ -131,15 +136,37 @@ class RomInfo internal constructor(var context: Context, var name: String,
             if (installed) {
                 runCommand("cmd overlay enable " + Utils.getOverlayPackageName(targetPackage), true)
             } else {
-                addAppToInstall(context, Utils.getOverlayPackageName(targetPackage))
+                addAppToInstall(context, overlayPath)
             }
         } else {
-            addAppToInstall(context, Utils.getOverlayPackageName(targetPackage))
+            addAppToInstall(context, overlayPath)
         }
     }
 
-    fun postInstall(context: Context, targetPackage: String) {
-        val apps = getAppsToInstall(context)
+    fun postInstall(uninstall: Boolean) {
+        val apps = if (uninstall) { getAppsToUninstall(context) } else { getAppsToInstall(context) }
+        Log.d("TEST", "apps - $apps")
+
+        val intents = Array<Intent>(apps.size, { i ->
+            Intent(if (uninstall) { Intent.ACTION_DELETE } else { Intent.ACTION_VIEW })
+                    .setData( if (!uninstall) { FileProvider.getUriForFile(context,
+                            BuildConfig.APPLICATION_ID + ".myprovider",
+                            File(apps.elementAt(i))) } else {
+                        Uri.fromParts("package", apps.elementAt(i), null) })
+                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        })
+
+        context.startActivities(intents)
+
+        clearAppsToUninstall(context)
+        clearAppsToInstall(context)
+
+        /*val intent = Intent(context, PackageInstallActivity::class.java)
+        intent.putExtra("apps", apps.toTypedArray())
+        val a = apps.toTypedArray()
+        Log.d("TEST", "a - " + a.javaClass.name)
+        context.startActivity(intent)*/
     }
 
     fun uninstallOverlay(context: Context, packageName: String) {
@@ -156,6 +183,8 @@ class RomInfo internal constructor(var context: Context, var name: String,
             }
         } else if (ShellUtils.isRootAvailable) {
             runCommand("pm uninstall " + Utils.getOverlayPackageName(packageName), true)
+        } else {
+            addAppToUninstall(context, Utils.getOverlayPackageName(packageName))
         }
     }
 

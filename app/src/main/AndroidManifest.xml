@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="com.samsung.android.permission.MODIFY_THEME" />
 
     <uses-permission android:name="com.samsung.android.knox.permission.KNOX_APP_MGMT" />
@@ -55,6 +56,10 @@
             android:theme="@style/CustomBottomSheetDialogTheme"
             android:configChanges="orientation|keyboardHidden" />
 
+        <activity android:name=".installer.PackageInstallActivity"
+            android:theme="@style/Theme.AppCompat"
+            android:configChanges="orientation|keyboardHidden"/>
+
         <service android:name=".InstallerService" />
 
         <receiver android:name=".utils.BootReceiver"
@@ -77,6 +82,16 @@
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
         </receiver>
+
+        <provider
+            android:name=".utils.SwiftFileProvider"
+            android:authorities="${applicationId}.myprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
 
     </application>
 

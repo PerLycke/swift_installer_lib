@@ -167,7 +167,7 @@ class InstallerService : Service() {
                         }
                     }
                 }
-                mRomInfo.postInstall(this, mPackageName!!)
+                //mRomInfo.postInstall(this)
 
             } catch (e: IOException) {
                 e.printStackTrace()

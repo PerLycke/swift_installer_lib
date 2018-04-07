@@ -90,19 +90,21 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
 
     private fun addAssetPath(assetPaths: ArrayList<String>, asset: String) {
         assetPaths.add(asset)
-        Log.d("TEST", "asset - $asset")
-        val e = NullPointerException()
-
-        val outError = StringWriter()
-        e.printStackTrace(PrintWriter(outError))
-        val errorString = outError.toString()
-        Log.d("TEST", "stack - $errorString")
     }
 
     private fun parseOverlayAssetPath(am: AssetManager, path: String, assetPaths: ArrayList<String>, black: Boolean) {
         val variants = am.list(path)
+        if (variants.contains("common")) {
+            if (checkAssetPath(am, "$path/common")) {
+                addAssetPath(assetPaths, "$path/common")
+            } else {
+                parseOverlayAssetPath(am, "$path/common", assetPaths, black)
+            }
+        }
         for (variant in variants) {
-            if (!black && variant == "dark") {
+            if (packageInfo.versionName.startsWith(variant)) {
+                parseOverlayAssetPath(am, "$path/$variant", assetPaths, black)
+            } else if (!black && variant == "dark") {
                 if (checkAssetPath(am, "$path/dark")) {
                     addAssetPath(assetPaths, "$path/dark")
                 } else {
@@ -114,14 +116,6 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
                 } else {
                     parseOverlayAssetPath(am, "$path/black", assetPaths, black)
                 }
-            } else if (variant == "common") {
-                if (checkAssetPath(am, "$path/common")) {
-                    addAssetPath(assetPaths, "$path/common")
-                } else {
-                    parseOverlayAssetPath(am, "$path/common", assetPaths, black)
-                }
-            } else if (packageInfo.versionName.startsWith(variant)) {
-                parseOverlayAssetPath(am, "$path/$variant", assetPaths, black)
             } else if (checkAssetPath(am, path)) {
                 addAssetPath(assetPaths, path)
             }

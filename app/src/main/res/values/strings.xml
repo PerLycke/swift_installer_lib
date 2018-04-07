@@ -35,7 +35,7 @@
     <string name="background_change_back">Back to cusomization screen</string>
     <string name="background_change_continue">Continue and reload theme</string>
 
-    <string name="install_count">%2$d / %2$d</string>
+    <string name="install_count">%1$d / %2$d</string>
     <string name="package_installer_desc">Install overlays one by one with Package Installer.</string>
     <string name="package_installer_title">Use Package Installer</string>
     <string name="knox_install_desc">Install all overlays at once. The fastest option!</string>
