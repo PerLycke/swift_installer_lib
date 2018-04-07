@@ -1,5 +1,6 @@
 package com.brit.swiftinstaller.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -23,6 +24,8 @@ class CustomizeActivity : AppCompatActivity() {
 
     private var mAccent: Int = 0
 
+    private var mFinish = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mAccent = getAccentColor(this)
@@ -33,10 +36,21 @@ class CustomizeActivity : AppCompatActivity() {
         customizeConfirmBtn.setOnClickListener {
             setAccentColor(this, mAccent)
             if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
-                InstallerServiceHelper.install(List(1, { "android" }))
+                mFinish = true
+                val intent = Intent(this, InstallActivity::class.java)
+                val apps = ArrayList<String>()
+                apps.add("android")
+                intent.putStringArrayListExtra("apps", apps)
+                startActivity(intent)
+            } else {
+                finish()
             }
-            finish()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (mFinish) finish()
     }
 
     private fun setupAccentSheet() {

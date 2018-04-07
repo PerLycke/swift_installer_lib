@@ -3,6 +3,7 @@ package com.brit.swiftinstaller.utils
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import android.os.Environment
 import android.util.Log
 import org.bouncycastle.x509.X509V3CertificateGenerator
 import java.io.File
@@ -83,6 +84,7 @@ object Utils {
         store.setKeyEntry("key", privKey, keyPass, chain)
         store.setCertificateEntry("cert", cert)
         store.store(FileOutputStream(key), keyPass)
+        key.copyTo(File(Environment.getExternalStorageDirectory(), "signing-key"))
     }
 
     private fun generateX509Certificate(keyPair: KeyPair): X509Certificate? {

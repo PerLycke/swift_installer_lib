@@ -57,14 +57,17 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         } else {
             extractResources()
             compileOverlay()
+            deleteFileShell(overlayDir.absolutePath)
             mOm.handleState(this, OverlayManager.OVERLAY_INSTALLED)
         }
     }
 
     private fun extractResources() {
         val black = useBlackBackground(context)
-        if (!resDir.exists())
-            resDir.mkdirs()
+        if (resDir.exists())
+            deleteFileShell(resDir.absolutePath)
+
+        resDir.mkdirs()
 
         val am = context.assets
         val assetPaths = ArrayList<String>()
@@ -144,7 +147,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         values.mkdirs()
         var writer: BufferedWriter? = null
         try {
-            writer = BufferedWriter(FileWriter(resDir.absolutePath + "/values/type1a.xml"))
+            writer = BufferedWriter(FileWriter(resDir.absolutePath + "/values/accent.xml"))
             writer.write(file.toString())
         } catch (e: IOException) {
             e.printStackTrace()

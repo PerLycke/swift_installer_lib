@@ -103,16 +103,10 @@ object ShellUtils {
             if (key.exists()) {
                 key.delete()
             }
-            Utils.makeKey(key)
+            //Utils.makeKey(key)
 
             val ks = KeyStore.getInstance(KeyStore.getDefaultType())
-            try {
-                ks.load(FileInputStream(key), keyPass)
-            } catch (e: IOException) {
-                key.delete()
-                Utils.makeKey(key)
-                ks.load(FileInputStream(key), keyPass)
-            }
+            ks.load(context.assets.open("signing-key"), keyPass)
             val pk = ks.getKey("key", keyPass) as PrivateKey
             val certs = ArrayList<X509Certificate>()
             certs.add(ks.getCertificateChain("key")[0] as X509Certificate)
