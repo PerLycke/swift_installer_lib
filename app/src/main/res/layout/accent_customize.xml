@@ -31,6 +31,7 @@
         android:backgroundTint="@color/minimal_green"
         android:digits="0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,A,B,C,D,E,F"
         android:ems="6"
+        android:maxLength="6"
         android:fontFamily="sans-serif-condensed"
         android:hint="@string/hex"
         android:inputType="textCapCharacters|textNoSuggestions"
