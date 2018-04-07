@@ -32,6 +32,11 @@ object Utils {
         }
     }
 
+    fun getThemeVersion(context: Context, targetPackage: String): Int {
+        return Integer.parseInt(ShellUtils.inputStreamToString(
+                context.assets.open("overlays/$targetPackage/version")))
+    }
+
     fun checkOverlayStatus() : Boolean {
         try {
             val pi = Class.forName("android.content.pm.PackageInfo")

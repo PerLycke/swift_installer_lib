@@ -10,7 +10,6 @@ import com.brit.swiftinstaller.BuildConfig
 import com.brit.swiftinstaller.utils.*
 import com.brit.swiftinstaller.utils.rom.RomInfo
 import java.io.*
-import java.util.*
 import kotlin.collections.ArrayList
 
 @Suppress("MemberVisibilityCanBePrivate")
@@ -67,13 +66,8 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
 
         val am = context.assets
         val assetPaths = ArrayList<String>()
-        //assetPaths.add("overlays/$packageName/res")
-        val ri = RomInfo.getRomInfo(context)
         try {
             parseOverlayAssetPath(am, "overlays/$packageName", assetPaths, black)
-            //ri.variants
-            //        .filter { variants != null && Arrays.asList(*variants).contains(it) }
-            //        .mapTo(assetPaths) { "overlays/$packageName/$it" }
         } catch (ignored: Exception) {
         }
 
@@ -84,8 +78,8 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         if (packageName == "android") {
             applyAccent(resDir)
         }
-        generateManifest(overlayDir.absolutePath,
-                BuildConfig.APPLICATION_ID, packageName, packageInfo.versionName)
+        generateManifest(overlayDir.absolutePath, packageName, packageInfo.versionName,
+                Utils.getThemeVersion(context, packageName))
     }
 
     private fun checkAssetPath(am: AssetManager, path: String): Boolean {
@@ -96,31 +90,31 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
 
     private fun addAssetPath(assetPaths: ArrayList<String>, asset: String) {
         assetPaths.add(asset)
-        Log.d("TEST", "asset - " + asset)
+        Log.d("TEST", "asset - $asset")
         val e = NullPointerException()
 
         val outError = StringWriter()
         e.printStackTrace(PrintWriter(outError))
         val errorString = outError.toString()
-        Log.d("TEST", "stack - " + errorString)
+        Log.d("TEST", "stack - $errorString")
     }
 
     private fun parseOverlayAssetPath(am: AssetManager, path: String, assetPaths: ArrayList<String>, black: Boolean) {
         val variants = am.list(path)
         for (variant in variants) {
-            if (!black && variant.equals("dark")) {
+            if (!black && variant == "dark") {
                 if (checkAssetPath(am, "$path/dark")) {
                     addAssetPath(assetPaths, "$path/dark")
                 } else {
                     parseOverlayAssetPath(am, "$path/dark", assetPaths, black)
                 }
-            } else if (black && variant.equals("black")) {
+            } else if (black && variant == "black") {
                 if (checkAssetPath(am, "$path/black")) {
                     addAssetPath(assetPaths, "$path/black")
                 } else {
                     parseOverlayAssetPath(am, "$path/black", assetPaths, black)
                 }
-            } else if (variant.equals("common")) {
+            } else if (variant == "common") {
                 if (checkAssetPath(am, "$path/common")) {
                     addAssetPath(assetPaths, "$path/common")
                 } else {
@@ -169,8 +163,8 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         }
     }
 
-    private fun generateManifest(path: String, packageName: String?,
-                                 targetPackage: String, themeVersion: String) {
+    private fun generateManifest(path: String, targetPackage: String,
+                                 appVersion: String, themeVersion: Int) {
         val manifest = StringBuilder()
         manifest.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
         manifest.append("<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n")
@@ -184,18 +178,15 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
             manifest.append("android:targetPackage=\"$targetPackage\"/>\n")
         }
         manifest.append("<application android:allowBackup=\"false\" android:hasCode=\"false\">\n")
-        manifest.append("<meta-data android:name=\"theme_version\" android:value=\"v="
-                + themeVersion + "\"/>\n")
-        manifest.append("<meta-data android:name=\"theme_package\" android:value=\""
-                + packageName + "\"/>\n")
-        manifest.append("<meta-data android:name=\"target_package\" android:value=\""
-                + targetPackage + "\"/>\n")
+        manifest.append("<meta-data android:name=\"app_version\" android:value=\"v=$appVersion\"/>\n")
+        manifest.append("<meta-data android:name=\"theme_version\" android:value=\"$themeVersion\"/>\n")
+        manifest.append("<meta-data android:name=\"target_package\" android:value=\"$targetPackage\"/>\n")
         manifest.append("</application>\n")
         manifest.append("</manifest>")
 
         var writer: BufferedWriter? = null
         try {
-            writer = BufferedWriter(FileWriter(path + "/AndroidManifest.xml"))
+            writer = BufferedWriter(FileWriter("$path/AndroidManifest.xml"))
             writer.write(manifest.toString())
         } catch (e: IOException) {
             e.printStackTrace()
