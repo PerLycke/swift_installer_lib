@@ -11,13 +11,7 @@ import android.system.Os
 import android.text.TextUtils
 import android.util.Log
 import com.android.apksig.ApkSigner
-import java.io.DataOutputStream
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
+import java.io.*
 import java.lang.reflect.InvocationTargetException
 import java.security.KeyStore
 import java.security.PrivateKey

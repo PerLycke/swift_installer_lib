@@ -9,8 +9,10 @@ import android.util.Log
 import com.brit.swiftinstaller.BuildConfig
 import com.brit.swiftinstaller.utils.*
 import com.brit.swiftinstaller.utils.rom.RomInfo
-import java.io.*
-import kotlin.collections.ArrayList
+import java.io.BufferedWriter
+import java.io.File
+import java.io.FileWriter
+import java.io.IOException
 
 @Suppress("MemberVisibilityCanBePrivate")
 class OverlayTask(val mOm: OverlayManager) : Runnable {

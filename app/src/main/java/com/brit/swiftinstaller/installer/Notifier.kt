@@ -2,7 +2,6 @@ package com.brit.swiftinstaller.installer
 
 import android.content.Context
 import android.content.Intent
-import android.support.v4.content.LocalBroadcastManager
 import android.util.Log
 import com.brit.swiftinstaller.BuildConfig
 

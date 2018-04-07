@@ -1,8 +1,6 @@
 package com.brit.swiftinstaller.ui.activities
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.support.design.widget.BottomSheetDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -13,7 +11,6 @@ import com.brit.swiftinstaller.IInstallerCallback
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.InstallerServiceHelper
 import com.brit.swiftinstaller.utils.rom.RomInfo
-import kotlinx.android.synthetic.main.install_progress_sheet.*
 import kotlinx.android.synthetic.main.install_progress_sheet.view.*
 
 

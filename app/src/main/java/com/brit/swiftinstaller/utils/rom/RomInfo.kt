@@ -3,57 +3,35 @@ package com.brit.swiftinstaller.utils.rom
 import android.app.ActivityManager
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Environment
-import android.text.TextUtils
-import com.brit.swiftinstaller.R
-import com.brit.swiftinstaller.ui.activities.MainActivity
-import com.brit.swiftinstaller.utils.*
-import org.apache.commons.io.FileUtils
-import java.io.File
-import android.R.attr.targetPackage
-import android.app.Activity
-import android.support.v4.app.ActivityCompat.startActivityForResult
-import android.app.admin.DevicePolicyManager
-import android.content.*
-import android.content.pm.PackageManager
-import android.net.Uri
-import android.os.Bundle
-import android.provider.SyncStateContract
-import android.support.v4.content.PermissionChecker.checkCallingOrSelfPermission
-import android.support.v4.app.ActivityCompat.finishAffinity
 import android.support.v4.content.FileProvider
 import android.util.Log
 import com.brit.swiftinstaller.BuildConfig
-import com.brit.swiftinstaller.installer.PackageInstallActivity
-import com.brit.swiftinstaller.utils.constants.ACTION_KNOX_LICENSE_STATUS
-import com.brit.swiftinstaller.utils.constants.ACTION_LICENSE_STATUS
-import com.brit.swiftinstaller.utils.constants.MDM_APP_MGMT_PERM
-import com.brit.swiftinstaller.utils.constants.MDM_SECURITY
-import com.swift.installer.CustomDialogFragment
-import org.bouncycastle.jce.provider.PBE
+import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.ui.activities.MainActivity
+import com.brit.swiftinstaller.utils.*
+import java.io.File
 
 
 class RomInfo internal constructor(var context: Context, var name: String,
                                    var version: String, vararg vars: String) {
-    private val overlayFolder: String? = null
 
     var defaultAccent: Int = 0
     var overlayDirectory: String
 
     init {
         defaultAccent = context.getColor(R.color.minimal_blue)
-        if (ShellUtils.isRootAvailable)
-            overlayDirectory = context.cacheDir.absolutePath
+        overlayDirectory = if (ShellUtils.isRootAvailable)
+            context.cacheDir.absolutePath
         else
-            overlayDirectory = Environment.getExternalStorageDirectory().absolutePath + ".swift-installer"
+            Environment.getExternalStorageDirectory().absolutePath + ".swift-installer"
     }
 
     val variants = vars
-
-    //TODO expand installer
-    val isSamsung: Boolean
-        get() = true
 
     fun preInstall(context: Context, themePackage: String) {
         //TODO
