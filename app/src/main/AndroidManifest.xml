@@ -32,10 +32,6 @@
         </activity>
 
         <activity
-            android:name=".ui.activities.AppListActivity"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden" />
-        <activity
             android:name=".ui.activities.OverlayActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden" />

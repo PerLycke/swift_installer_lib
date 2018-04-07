@@ -12,8 +12,7 @@
         <item name="android:windowBackground">@drawable/dialog_bg</item>
         <item name="android:colorAccent">@color/minimal_green</item>
     </style>
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
     <style name="ToolbarTitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">17.0dip</item>
         <item name="android:textColor">#d9ffffff</item>

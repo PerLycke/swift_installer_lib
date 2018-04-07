@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
     <color name="background_main">#16161c</color>
-    <color name="background_alpha">#99000000</color>
     <color name="big_tile_pressed_tint">#37373d</color>
     <color name="big_tile_tint">#202026</color>
     <color name="colorAccent">#47AE84</color>
@@ -11,7 +10,6 @@
     <color name="small_info_tint">#202026</color>
     <color name="dialog_bg_tint">#16161c</color>
     <color name="dialog_stroke">#232329</color>
-    <color name="light_grey">#dedede</color>
     <color name="divider">#37373d</color>
 
     <!-- Minimal palette -->

@@ -28,8 +28,10 @@ import com.brit.swiftinstaller.utils.Utils.getOverlayPackageName
 import com.brit.swiftinstaller.utils.Utils.isOverlayEnabled
 import com.brit.swiftinstaller.utils.Utils.isOverlayFailed
 import com.brit.swiftinstaller.utils.Utils.isOverlayInstalled
+import com.brit.swiftinstaller.utils.getAccentColor
 import kotlinx.android.synthetic.main.app_list_activity.*
 import kotlinx.android.synthetic.main.overlay_activity.*
+import kotlinx.android.synthetic.main.overlays_toolbar.*
 import kotlinx.android.synthetic.main.tab_layout.*
 import java.lang.ref.WeakReference
 
@@ -54,9 +56,6 @@ class OverlayActivity : AppCompatActivity() {
         mApps[ACTIVE_TAB] = ArrayList()
         mApps[FAILED_TAB] = ArrayList()
 
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
 
         mViewPager = container
@@ -68,6 +67,9 @@ class OverlayActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        currentAccent.setTextColor(getAccentColor(this))
+        currentAccent.text = getString(R.string.hex_string,
+                String.format("%06x", getAccentColor(this)).substring(2))
 
         mApps[INSTALL_TAB]!!.clear()
         mApps[ACTIVE_TAB]!!.clear()
@@ -81,9 +83,9 @@ class OverlayActivity : AppCompatActivity() {
         }).execute()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menu!!.add(0, 1, 0, "Select All").setIcon(R.drawable.select_all).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-        return super.onCreateOptionsMenu(menu)
+    fun customizeBtnClick(view: View) {
+        val intent = Intent(this, CustomizeActivity::class.java)
+        startActivity(intent)
     }
 
     inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
