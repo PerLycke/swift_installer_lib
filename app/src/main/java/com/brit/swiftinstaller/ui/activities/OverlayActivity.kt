@@ -40,7 +40,8 @@ class OverlayActivity : AppCompatActivity() {
     companion object {
         private const val INSTALL_TAB = 0
         private const val ACTIVE_TAB = 1
-        private const val FAILED_TAB = 2
+        private const val UPDATE_TAB = 2
+        private const val FAILED_TAB = 3
     }
 
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
@@ -54,6 +55,7 @@ class OverlayActivity : AppCompatActivity() {
 
         mApps[INSTALL_TAB] = ArrayList()
         mApps[ACTIVE_TAB] = ArrayList()
+        mApps[UPDATE_TAB] = ArrayList()
         mApps[FAILED_TAB] = ArrayList()
 
         mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
@@ -75,6 +77,22 @@ class OverlayActivity : AppCompatActivity() {
         container.adapter = mSectionsPagerAdapter
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
+        container.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            }
+
+            override fun onPageSelected(position: Int) {
+                if (position == FAILED_TAB) {
+                    fab.visibility = View.GONE
+                } else {
+                    fab.visibility = View.VISIBLE
+                }
+            }
+
+        })
     }
 
     override fun onResume() {
@@ -85,6 +103,7 @@ class OverlayActivity : AppCompatActivity() {
 
         mApps[INSTALL_TAB]!!.clear()
         mApps[ACTIVE_TAB]!!.clear()
+        mApps[UPDATE_TAB]!!.clear()
         mApps[FAILED_TAB]!!.clear()
 
         AppLoader(this, object : Callback {
@@ -110,6 +129,8 @@ class OverlayActivity : AppCompatActivity() {
             mFragments.add(PlaceholderFragment())
             mFragments[ACTIVE_TAB].setAppList(mApps[ACTIVE_TAB]!!)
             mFragments.add(PlaceholderFragment())
+            mFragments[UPDATE_TAB].setAppList(mApps[UPDATE_TAB]!!)
+            mFragments.add(PlaceholderFragment())
             mFragments[FAILED_TAB].setAppList(mApps[FAILED_TAB]!!)
         }
 
@@ -124,8 +145,7 @@ class OverlayActivity : AppCompatActivity() {
         }
 
         override fun getCount(): Int {
-            // Show 3 total pages.
-            return 3
+            return mFragments.size
         }
     }
 
@@ -294,6 +314,15 @@ class OverlayActivity : AppCompatActivity() {
         update.setOnClickListener {
             mBottomSheetDialog.dismiss()
             updateAction()
+        }
+
+        if (container.currentItem == INSTALL_TAB) {
+            uninstall.visibility = View.GONE
+            update.visibility = View.GONE
+        } else if (container.currentItem == ACTIVE_TAB) {
+            install.visibility = View.GONE
+        } else if (container.visibility == UPDATE_TAB) {
+            install.visibility == View.GONE
         }
     }
 
