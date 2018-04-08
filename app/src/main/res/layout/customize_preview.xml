@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/previewLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/settingsPreview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/settings_preview_dark" />
+
+        <ImageView
+            android:id="@+id/connectionsIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="14dp"
+            android:contentDescription="@string/image"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            app:layout_constraintBottom_toBottomOf="@+id/connectionDesc"
+            app:layout_constraintEnd_toStartOf="@+id/connectionsTitle"
+            app:layout_constraintTop_toTopOf="@+id/connectionsTitle"
+            app:srcCompat="@drawable/ic_settings_connections" />
+
+        <ImageView
+            android:id="@+id/soundIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="14dp"
+            android:contentDescription="@string/image"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            app:layout_constraintBottom_toBottomOf="@+id/soundsDesc"
+            app:layout_constraintEnd_toStartOf="@+id/soundsTitle"
+            app:layout_constraintTop_toTopOf="@+id/soundsTitle"
+            app:srcCompat="@drawable/ic_settings_sound" />
+
+        <ImageView
+            android:id="@+id/notificationsIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="14dp"
+            android:contentDescription="@string/image"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            app:layout_constraintBottom_toBottomOf="@+id/notificationsDesc"
+            app:layout_constraintEnd_toStartOf="@+id/notificationsTitle"
+            app:layout_constraintTop_toTopOf="@+id/notificationsTitle"
+            app:srcCompat="@drawable/ic_settings_notifications" />
+
+        <TextView
+            android:id="@+id/connectionsTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="54dp"
+            android:layout_marginTop="59dp"
+            android:text="Connections"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/connectionDesc"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/connectionDesc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Wi-Fi, Bluetooth, Data usage, Flight mode"
+            android:textColor="@android:color/white"
+            android:textSize="9sp"
+            app:layout_constraintBottom_toTopOf="@+id/soundsTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/connectionsTitle"
+            app:layout_constraintTop_toBottomOf="@+id/connectionsTitle" />
+
+        <TextView
+            android:id="@+id/soundsTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="54dp"
+            android:layout_marginTop="19dp"
+            android:text="Sound and vibration"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/soundsDesc"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/settingsPreview"
+            app:layout_constraintTop_toBottomOf="@+id/connectionDesc" />
+
+        <TextView
+            android:id="@+id/soundsDesc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Sounds, Vibration, Do not disturb"
+            android:textColor="@android:color/white"
+            android:textSize="9sp"
+            app:layout_constraintBottom_toTopOf="@+id/notificationsTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/soundsTitle"
+            app:layout_constraintTop_toBottomOf="@+id/soundsTitle" />
+
+        <TextView
+            android:id="@+id/notificationsTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="54dp"
+            android:layout_marginTop="19dp"
+            android:text="Notifications"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/notificationsDesc"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/settingsPreview"
+            app:layout_constraintTop_toBottomOf="@+id/soundsDesc" />
+
+        <TextView
+            android:id="@+id/notificationsDesc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Block, allow, prioritise"
+            android:textColor="@android:color/white"
+            android:textSize="9sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/notificationsTitle"
+            app:layout_constraintTop_toBottomOf="@+id/notificationsTitle" />
+
+
+    </android.support.constraint.ConstraintLayout>
+</android.support.constraint.ConstraintLayout>

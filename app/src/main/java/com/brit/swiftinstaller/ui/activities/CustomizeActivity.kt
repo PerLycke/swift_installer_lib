@@ -15,10 +15,10 @@ import android.widget.TextView
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.CircleDrawable
 import com.brit.swiftinstaller.utils.*
-import kotlinx.android.synthetic.main.accent_customize.*
-import kotlinx.android.synthetic.main.activity_customize.*
+import kotlinx.android.synthetic.main.customize_accent.*
 import kotlinx.android.synthetic.main.background_alert_dialog.view.*
-import kotlinx.android.synthetic.main.background_customize.*
+import kotlinx.android.synthetic.main.customize_background.*
+import kotlinx.android.synthetic.main.customize_preview.*
 import kotlinx.android.synthetic.main.customize_toolbar.*
 
 class CustomizeActivity : AppCompatActivity() {
@@ -32,7 +32,7 @@ class CustomizeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mAccent = getAccentColor(this)
-        setContentView(R.layout.activity_customize)
+        setContentView(R.layout.customize_activity)
         setupAccentSheet()
         updateColor(mAccent)
         setBgIndicator()

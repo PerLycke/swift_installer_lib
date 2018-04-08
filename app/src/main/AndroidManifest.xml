@@ -37,7 +37,6 @@
             android:configChanges="orientation|keyboardHidden" />
         <activity
             android:name=".ui.activities.CustomizeActivity"
-            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden"/>
 
