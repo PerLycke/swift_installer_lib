@@ -298,19 +298,19 @@ class OverlayActivity : AppCompatActivity() {
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
 
-        val install = sheetView.findViewById<View>(R.id.installTxt)
+        val install = sheetView.findViewById<View>(R.id.install)
         install.setOnClickListener {
             mBottomSheetDialog.dismiss()
             installAction()
         }
 
-        val uninstall = sheetView.findViewById<View>(R.id.uninstallTxt)
+        val uninstall = sheetView.findViewById<View>(R.id.uninstall)
         uninstall.setOnClickListener {
             mBottomSheetDialog.dismiss()
             uninstallAction()
         }
 
-        val update = sheetView.findViewById<View>(R.id.updateTxt)
+        val update = sheetView.findViewById<View>(R.id.update)
         update.setOnClickListener {
             mBottomSheetDialog.dismiss()
             updateAction()
