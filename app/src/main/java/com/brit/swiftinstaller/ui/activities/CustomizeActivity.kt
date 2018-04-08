@@ -1,9 +1,12 @@
 package com.brit.swiftinstaller.ui.activities
 
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.app.AppCompatDelegate
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -30,6 +33,10 @@ class CustomizeActivity : AppCompatActivity() {
     private var mFinish = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (AppCompatDelegate.getDefaultNightMode()
+                ==AppCompatDelegate.MODE_NIGHT_YES) {
+            setTheme(R.style.AppTheme_Black);
+        }
         super.onCreate(savedInstanceState)
         mAccent = getAccentColor(this)
         setContentView(R.layout.customize_activity)
@@ -48,6 +55,13 @@ class CustomizeActivity : AppCompatActivity() {
                 startActivity(intent)
             } else {
                 finish()
+            }
+            if (useBlackBackground(this)) {
+                AppCompatDelegate
+                        .setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            } else {
+                AppCompatDelegate
+                        .setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             }
         }
 
@@ -86,9 +100,13 @@ class CustomizeActivity : AppCompatActivity() {
         if (useBlackBackground(this)) {
             blackBgIndicator.visibility = View.VISIBLE
             darkBgIndicator.visibility = View.GONE
+            val settingsBg = ContextCompat.getDrawable(this, R.drawable.settings_preview_black)
+            settingsPreview.setImageDrawable(settingsBg)
         } else {
             darkBgIndicator.visibility = View.VISIBLE
             blackBgIndicator.visibility = View.GONE
+            val settingsBg = ContextCompat.getDrawable(this, R.drawable.settings_preview_dark)
+            settingsPreview.setImageDrawable(settingsBg)
         }
         darkBgIndicator.invalidate()
         blackBgIndicator.invalidate()
@@ -137,7 +155,13 @@ class CustomizeActivity : AppCompatActivity() {
 
     fun bgClick(view: View) {
         val dialogView = View.inflate(this, R.layout.background_alert_dialog, null)
-        val builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
+        val builder: AlertDialog.Builder
+        if (AppCompatDelegate.getDefaultNightMode()
+                == AppCompatDelegate.MODE_NIGHT_YES) {
+            builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme_Black)
+        } else {
+            builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
+        }
         builder.setView(dialogView)
         val dialog = builder.create()
 

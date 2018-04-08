@@ -1,6 +1,7 @@
 package com.brit.swiftinstaller
 
 import android.app.Application
+import android.support.v7.app.AppCompatDelegate
 import com.brit.swiftinstaller.utils.InstallerServiceHelper
 import com.brit.swiftinstaller.utils.UpdateChecker
 
@@ -15,6 +16,10 @@ class SwiftInstaller : Application() {
     }
 
     override fun onCreate() {
+        if (AppCompatDelegate.getDefaultNightMode()
+                == AppCompatDelegate.MODE_NIGHT_YES) {
+            setTheme(R.style.AppTheme_Black);
+        }
         super.onCreate()
         sSwiftInstaller = this
 

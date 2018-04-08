@@ -29,11 +29,11 @@
     <string name="error_report">Error report</string>
     <string name="error_msg_example">You have WhatsApp version 1.3 installed. This version is not yet supported, but we are working on it. Thanks for your patience.</string>
     <string name="close">Close</string>
-    <string name="background_change_title">You are changing background</string>
-    <string name="background_change_msg">Changing background requires the whole theme to be reloaded. This will take some time. If you don\'t want to do this now, don\'t click continue.</string>
-    <string name="accent_change_info">Changing accent is easier and faster.</string>
-    <string name="background_change_back">Back to cusomization screen</string>
-    <string name="background_change_continue">Continue and reload theme</string>
+    <string name="background_change_title">Changing background info</string>
+    <string name="background_change_msg">Changing background requires all overlays to be re-installed. This will take some time and the process will start once you click confirm on the previous screen.</string>
+    <string name="accent_change_info">Changing accent is much faster!</string>
+    <string name="background_change_back">Cancel</string>
+    <string name="background_change_continue">Ok</string>
 
     <string name="install_count">%1$d / %2$d</string>
     <string name="update">Update</string>

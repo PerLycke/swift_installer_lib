@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.PowerManager
 import android.support.design.widget.BottomSheetDialog
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.app.AppCompatDelegate
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -70,6 +71,10 @@ class InstallActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (AppCompatDelegate.getDefaultNightMode()
+                == AppCompatDelegate.MODE_NIGHT_YES) {
+            setTheme(R.style.AppTheme_Black);
+        }
         super.onCreate(savedInstanceState)
         mUninstall = intent.extras.getBoolean("uninstall", false)
         val apps = intent.getStringArrayListExtra("apps")
