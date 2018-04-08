@@ -2,12 +2,14 @@
 <android.support.design.widget.TabLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/tabs"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
     app:tabIndicatorColor="@android:color/white"
     app:tabIndicatorHeight="1dp"
-    app:tabTextColor="@color/light_grey"
-    app:tabSelectedTextColor="#ffffffff">
+    app:tabMode="scrollable"
+    app:tabSelectedTextColor="#ffffffff"
+    app:tabTextColor="@color/light_grey">
 
     <android.support.design.widget.TabItem
         android:id="@+id/tabItem"
