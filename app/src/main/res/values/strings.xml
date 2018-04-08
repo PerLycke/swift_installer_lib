@@ -45,4 +45,5 @@
     <string name="overlays">Overlays</string>
     <string name="bg">Bg:</string>
     <string name="accent_title">Accent:</string>
+    <string name="current">Current :</string>
 </resources>

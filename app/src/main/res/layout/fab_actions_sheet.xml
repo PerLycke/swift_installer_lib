@@ -59,11 +59,12 @@
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_marginBottom="8dp"
+        android:contentDescription="@string/image"
+        android:tint="@color/light_grey"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/dialogUninstallIcon"
         app:layout_constraintTop_toBottomOf="@+id/dialogUninstallIcon"
-        app:srcCompat="@drawable/ic_update"
-        android:contentDescription="@string/image" />
+        app:srcCompat="@drawable/ic_updates" />
 
     <TextView
         android:id="@+id/updateTxt"

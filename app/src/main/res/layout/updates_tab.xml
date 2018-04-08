@@ -12,7 +12,7 @@
         android:fontFamily="sans-serif-condensed"
         android:text="@string/update"
         android:textAllCaps="true"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/tab_indicator_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

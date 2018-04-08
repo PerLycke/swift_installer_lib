@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
     <color name="background_main">#16161c</color>
-    <color name="big_tile_pressed_tint">#37373d</color>
-    <color name="big_tile_tint">#202026</color>
+    <color name="big_tile_pressed_tint">#202026</color>
+    <color name="big_tile_tint">@color/background_main</color>
     <color name="colorAccent">#47AE84</color>
-    <color name="colorPrimary">#202026</color>
-    <color name="colorPrimaryDark">#202026</color>
-    <color name="small_info_pressed_tint">#37373d</color>
-    <color name="small_info_tint">#202026</color>
-    <color name="dialog_bg_tint">#16161c</color>
+    <color name="colorPrimary">@color/background_main</color>
+    <color name="colorPrimaryDark">@color/background_main</color>
+    <color name="small_info_pressed_tint">#232329</color>
+    <color name="small_info_tint">#1b1b21</color>
+    <color name="dialog_bg_tint">@color/background_main</color>
     <color name="dialog_stroke">#232329</color>
     <color name="divider">#37373d</color>
+    <color name="light_grey">#dedede</color>
 
     <!-- Minimal palette -->
     <color name="minimal_blue">#4A7CA5</color>

@@ -98,8 +98,8 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_about -> {
                 val builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme).create()
-                builder.setTitle("About")
-                builder.setMessage("This is about")
+                builder.setTitle("Notes")
+                builder.setMessage("Credits for the encryption implementation goes to Projekt Development Team & SlimRoms Ltd")
                 builder.show()
                 true
             }

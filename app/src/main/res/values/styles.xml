@@ -6,6 +6,7 @@
         <item name="android:windowBackground">@color/background_main</item>
         <item name="actionOverflowMenuStyle">@style/PopupMenuOverflow</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:checkboxStyle">@android:style/Widget.DeviceDefault.Light.CompoundButton.CheckBox</item>
     </style>
 
     <style name="AppAlertDialogTheme" parent="Theme.AppCompat.Dialog.Alert">

@@ -25,12 +25,11 @@
         android:layout_width="44dp"
         android:layout_height="44dp"
         android:layout_marginStart="16dp"
+        android:contentDescription="@string/image"
         app:layout_constraintBottom_toBottomOf="@+id/installUpdatesTile"
         app:layout_constraintStart_toStartOf="@+id/installUpdatesTile"
         app:layout_constraintTop_toTopOf="@+id/installUpdatesTile"
-        app:srcCompat="@drawable/ic_updates"
-        android:tint="@color/minimal_orange"
-        android:contentDescription="@string/image" />
+        app:srcCompat="@drawable/ic_updates" />
 
     <TextView
         android:id="@+id/installUpdatesTitle"
@@ -139,11 +138,11 @@
         android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:contentDescription="@string/image"
         app:layout_constraintBottom_toBottomOf="@+id/accentTile"
         app:layout_constraintStart_toStartOf="@+id/installTile"
         app:layout_constraintTop_toTopOf="@+id/accentTile"
-        app:srcCompat="@drawable/ic_accent"
-        android:contentDescription="@string/image" />
+        app:srcCompat="@drawable/ic_accent_new" />
 
     <TextView
         android:id="@+id/accentCategoryTitle"
@@ -191,7 +190,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
-        android:text="installed : 0 / 200"
+        android:text="Installed : 0 / 200"
         android:textColor="@android:color/white"
         android:textSize="12sp"
         android:textStyle="bold"
@@ -217,7 +216,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:fontFamily="sans-serif-condensed"
-        android:text="current : "
+        android:text="@string/current"
         android:textColor="@android:color/white"
         android:textSize="12sp"
         android:textStyle="bold"
