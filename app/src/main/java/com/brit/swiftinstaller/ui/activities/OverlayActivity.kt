@@ -60,6 +60,18 @@ class OverlayActivity : AppCompatActivity() {
 
         mViewPager = container
 
+        selectAllBtn.setOnClickListener {
+            var checked = 0
+            mApps[container.currentItem]!!.forEach {
+                if (it.checked) checked++
+            }
+            val check = checked < (mApps[container.currentItem]!!.size / 2)
+            for (appItem in mApps[container.currentItem]!!) {
+                appItem.checked = check
+            }
+            mSectionsPagerAdapter!!.notifyFragmentDataSetChanged()
+        }
+
         container.adapter = mSectionsPagerAdapter
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
