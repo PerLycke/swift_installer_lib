@@ -19,7 +19,7 @@
     <string name="tab_failed">Failed</string>
     <string name="tab_inactive">inactive</string>
     <string name="about">About</string>
-    <string name="updating_overlays">Updating overlays</string>
+    <string name="updating_overlays">Updating overlays…</string>
     <string name="image">image</string>
     <string name="hashtag">#</string>
     <string name="black">Black</string>
@@ -31,7 +31,7 @@
     <string name="close">Close</string>
     <string name="background_change_title">You are changing background</string>
     <string name="background_change_msg">Changing background requires the whole theme to be reloaded. This will take some time. If you don\'t want to do this now, don\'t click continue.</string>
-    <string name="accent_change_info">Changing only accent is easier and faster.</string>
+    <string name="accent_change_info">Changing accent is easier and faster.</string>
     <string name="background_change_back">Back to cusomization screen</string>
     <string name="background_change_continue">Continue and reload theme</string>
 
