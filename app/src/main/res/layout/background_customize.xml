@@ -12,6 +12,7 @@
             android:layout_marginEnd="4dp"
             android:layout_marginTop="20dp"
             android:contentDescription="@string/image"
+            android:onClick="bgClick"
             app:layout_constraintEnd_toStartOf="@+id/blackBgCircle"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="spread"

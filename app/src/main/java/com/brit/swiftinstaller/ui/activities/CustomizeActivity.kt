@@ -32,6 +32,7 @@ class CustomizeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_customize)
         setupAccentSheet()
         updateColor(mAccent)
+        setBgIndicator()
 
         customizeConfirmBtn.setOnClickListener {
             setAccentColor(this, mAccent)
@@ -68,6 +69,8 @@ class CustomizeActivity : AppCompatActivity() {
             darkBgIndicator.visibility = View.VISIBLE
             blackBgIndicator.visibility = View.GONE
         }
+        darkBgIndicator.invalidate()
+        blackBgIndicator.invalidate()
     }
 
     fun updateColor(color: Int) {
@@ -123,7 +126,7 @@ class CustomizeActivity : AppCompatActivity() {
             dialog.dismiss()
         }
 
-        builder.show()
+        dialog.show()
     }
 
     fun cancelBtnClick(view: View) {
