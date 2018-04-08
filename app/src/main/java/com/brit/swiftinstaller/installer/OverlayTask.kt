@@ -178,7 +178,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         }
         manifest.append("<application android:allowBackup=\"false\" android:hasCode=\"false\">\n")
         manifest.append("<meta-data android:name=\"app_version\" android:value=\"v=$appVersion\"/>\n")
-        manifest.append("<meta-data android:name=\"theme_version\" android:value=\"$themeVersion\"/>\n")
+        manifest.append("<meta-data android:name=\"overlay_version\" android:value=\"$themeVersion\"/>\n")
         manifest.append("<meta-data android:name=\"target_package\" android:value=\"$targetPackage\"/>\n")
         manifest.append("</application>\n")
         manifest.append("</manifest>")
