@@ -12,6 +12,7 @@ import android.support.v4.content.FileProvider
 import android.util.Log
 import com.brit.swiftinstaller.BuildConfig
 import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.installer.PackageInstallActivity
 import com.brit.swiftinstaller.ui.activities.MainActivity
 import com.brit.swiftinstaller.utils.*
 import java.io.File
@@ -54,6 +55,15 @@ class RomInfo internal constructor(var context: Context, var name: String,
     fun postInstall(uninstall: Boolean) {
         val apps = if (uninstall) { getAppsToUninstall(context) } else { getAppsToInstall(context) }
         Log.d("TEST", "apps - $apps")
+
+        if (uninstall) {
+            val intent = Intent(context, PackageInstallActivity::class.java)
+            intent.putExtra("apps", apps.toTypedArray())
+            intent.putExtra("uninstall", uninstall)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
+            return
+        }
 
         val intents = Array<Intent>(apps.size, { i ->
             Intent(if (uninstall) { Intent.ACTION_DELETE } else { Intent.ACTION_VIEW })

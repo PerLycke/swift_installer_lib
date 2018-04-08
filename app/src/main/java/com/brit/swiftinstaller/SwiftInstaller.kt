@@ -2,6 +2,7 @@ package com.brit.swiftinstaller
 
 import android.app.Application
 import com.brit.swiftinstaller.utils.InstallerServiceHelper
+import com.brit.swiftinstaller.utils.UpdateChecker
 
 class SwiftInstaller : Application() {
 

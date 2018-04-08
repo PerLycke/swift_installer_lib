@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
@@ -15,6 +16,7 @@ import android.view.View
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.UpdateChecker
 import com.brit.swiftinstaller.utils.getAccentColor
+import com.brit.swiftinstaller.utils.getAppsToUpdate
 import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -22,8 +24,19 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val myToolbar = findViewById<View>(R.id.my_toolbar) as Toolbar
+        val myToolbar = findViewById<Toolbar>(R.id.my_toolbar)
         setSupportActionBar(myToolbar)
+
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener { _, key ->
+            if (key == "overlays_to_update") {
+                val apps = getAppsToUpdate(this)
+                if (apps.isEmpty()) {
+                    installUpdatesTile.visibility = View.GONE
+                } else {
+                    installUpdatesTile.visibility = View.VISIBLE
+                }
+            }
+        }
 
         UpdateChecker.checkForOverlayUpdates(this)
 

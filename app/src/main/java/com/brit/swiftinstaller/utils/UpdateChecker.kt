@@ -16,7 +16,7 @@ class UpdateChecker() {
                     val version = Integer.parseInt(ver.trim().replace("\"", ""))
                     val current = aInfo.metaData.getInt("overlay_version")
                     if (current < version) {
-                        Log.d("TEST", "package - $packageName available for update")
+                        addAppToUpdate(context, packageName)
                     }
                 }
             }

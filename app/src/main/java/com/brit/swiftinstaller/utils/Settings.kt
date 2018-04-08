@@ -36,6 +36,19 @@ fun getUserAccents(context: Context): IntArray {
     return accents
 }
 
+fun getAppsToUpdate(context: Context): Set<String> {
+    return PreferenceManager.getDefaultSharedPreferences(context).getStringSet("overlays_to_update", ArraySet<String>())
+}
+
+fun addAppToUpdate(context: Context, packageName: String) {
+    val apps = getAppsToInstall(context)
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet("overlays_to_update", apps.plus(packageName)).apply()
+}
+
+fun clearAppsToUpdate(context: Context) {
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet("overlays_to_update", ArraySet<String>()).apply()
+}
+
 fun getAppsToInstall(context: Context): Set<String> {
     return PreferenceManager.getDefaultSharedPreferences(context).getStringSet("overlays_to_install", ArraySet<String>())
 }
