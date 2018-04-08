@@ -41,7 +41,7 @@ fun getAppsToUpdate(context: Context): Set<String> {
 }
 
 fun addAppToUpdate(context: Context, packageName: String) {
-    val apps = getAppsToInstall(context)
+    val apps = getAppsToUpdate(context)
     PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet("overlays_to_update", apps.plus(packageName)).apply()
 }
 
@@ -67,8 +67,8 @@ fun getAppsToUninstall(context: Context): Set<String> {
 }
 
 fun addAppToUninstall(context: Context, packageName: String) {
-    val apps = getAppsToInstall(context)
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet("overlays_to_uninstall", apps.plus(packageName)).apply()
+    val apps = getAppsToUninstall(context)
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet("overlays_to_uninstall", apps + packageName).apply()
 }
 
 fun clearAppsToUninstall(context: Context) {

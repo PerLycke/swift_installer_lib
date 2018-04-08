@@ -4,11 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
+import android.widget.TextView
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.CircleDrawable
 import com.brit.swiftinstaller.utils.*
@@ -47,6 +50,24 @@ class CustomizeActivity : AppCompatActivity() {
                 finish()
             }
         }
+
+        hexInput.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (count > 0)
+                    updateColor(Integer.decode("0x$s"))
+            }
+
+        })
+
+        applyHex.setOnClickListener {
+            updateColor(Integer.decode("0x" + hexInput.text.toString()))
+        }
     }
 
     override fun onResume() {
@@ -61,7 +82,7 @@ class CustomizeActivity : AppCompatActivity() {
         settingsIcons[2] = notificationsIcon
     }
 
-    fun setBgIndicator() {
+    private fun setBgIndicator() {
         if (useBlackBackground(this)) {
             blackBgIndicator.visibility = View.VISIBLE
             darkBgIndicator.visibility = View.GONE
@@ -79,6 +100,7 @@ class CustomizeActivity : AppCompatActivity() {
             icon!!.setColorFilter(color)
         }
         hexInput.background.setTint(color)
+        //hexInput.setText(Integer.toString(color), TextView.BufferType.EDITABLE)
         applyHex.setTextColor(color)
     }
 
@@ -105,7 +127,10 @@ class CustomizeActivity : AppCompatActivity() {
             val iv = mainView!!.findViewById<ImageView>(R.id.icon)
             iv.background = CircleDrawable(mColors[position])
             mainView.tag = mColors[position]
-            mainView.setOnClickListener { updateColor(mColors[position]) }
+            mainView.setOnClickListener {
+                hexInput.setText("", TextView.BufferType.EDITABLE)
+                updateColor(mColors[position])
+            }
             return mainView
         }
     }

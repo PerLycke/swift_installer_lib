@@ -1,15 +1,19 @@
 package com.brit.swiftinstaller.ui.activities
 
 import android.os.Bundle
+import android.os.PowerManager
 import android.support.design.widget.BottomSheetDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.brit.swiftinstaller.IInstallerCallback
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.InstallerServiceHelper
+import com.brit.swiftinstaller.utils.ShellUtils
+import com.brit.swiftinstaller.utils.addAppToUninstall
 import com.brit.swiftinstaller.utils.rom.RomInfo
 import kotlinx.android.synthetic.main.install_progress_sheet.view.*
 
@@ -20,6 +24,8 @@ class InstallActivity : AppCompatActivity() {
     private lateinit var mProgressBar: ProgressBar
     private lateinit var mProgressCount: TextView
     private lateinit var mProgressPercent: TextView
+
+    private var mUninstall = false
 
     fun updateProgress(label: String?, progress: Int, max: Int, uninstall: Boolean) {
         if (mProgressBar.progress < progress) {
@@ -36,8 +42,27 @@ class InstallActivity : AppCompatActivity() {
     }
 
     fun installComplete(uninstall: Boolean) {
-        finish()
         RomInfo.getRomInfo(this).postInstall(uninstall)
+
+        /*if (RomInfo.getRomInfo(this).shouldReboot()) {
+            val bottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
+            val sheetView = View.inflate(this, R.layout.reboot_sheet, null)
+            bottomSheetDialog.setContentView(sheetView)
+            bottomSheetDialog.show()
+
+            val rebootNow = sheetView.findViewById<View>(R.id.textView3)
+            rebootNow.setOnClickListener {
+                val pm = getSystemService(PowerManager::class.java)
+                pm.reboot(null)
+                bottomSheetDialog.dismiss()
+            }
+            val rebootLater = sheetView.findViewById<View>(R.id.textView4)
+            rebootLater.setOnClickListener {
+                bottomSheetDialog.dismiss()
+            }
+        } else {*/
+            finish()
+//        }
     }
 
     fun installFailed(reason: Int) {
@@ -46,8 +71,17 @@ class InstallActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val uninstall = intent.extras.getBoolean("uninstall", false)
+        mUninstall = intent.extras.getBoolean("uninstall", false)
         val apps = intent.getStringArrayListExtra("apps")
+
+        if (mUninstall && !ShellUtils.isRootAvailable) {
+            apps.forEach {
+                addAppToUninstall(this, it)
+                Log.d("TEST", "uninstall $it")
+            }
+            RomInfo.getRomInfo(this).postInstall(true)
+            return
+        }
 
         val mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
         val sheetView = LayoutInflater.from(this).inflate(R.layout.install_progress_sheet, null)
@@ -58,7 +92,7 @@ class InstallActivity : AppCompatActivity() {
         }
         InstallerServiceHelper.connectService(this)
 
-        if (uninstall) {
+        if (mUninstall) {
             sheetView.findViewById<TextView>(R.id.installProgressTxt).setText(R.string.uninstalling_overlays)
         }
 
@@ -66,7 +100,7 @@ class InstallActivity : AppCompatActivity() {
         mProgressCount = sheetView.installProgressCount
         mProgressPercent = sheetView.installProgressPercent
 
-        updateProgress("", 0, apps.size, uninstall)
+        updateProgress("", 0, apps.size, mUninstall)
 
         InstallerServiceHelper.setInstallerCallback(object : IInstallerCallback.Stub() {
             override fun installComplete(uninstall: Boolean) {
@@ -83,10 +117,16 @@ class InstallActivity : AppCompatActivity() {
             }
 
         })
-        if (uninstall) {
+        if (mUninstall) {
             InstallerServiceHelper.uninstall(apps)
         } else {
             InstallerServiceHelper.install(apps)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (mUninstall)
+            finish()
     }
 }

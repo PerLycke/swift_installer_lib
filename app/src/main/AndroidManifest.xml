@@ -45,10 +45,6 @@
             android:theme="@style/CustomBottomSheetDialogTheme"
             android:configChanges="orientation|keyboardHidden" />
 
-        <activity android:name=".installer.PackageInstallActivity"
-            android:theme="@style/Theme.AppCompat"
-            android:configChanges="orientation|keyboardHidden"/>
-
         <service android:name=".InstallerService" />
 
         <receiver android:name=".utils.BootReceiver"

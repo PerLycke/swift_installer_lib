@@ -1,8 +1,6 @@
 package com.brit.swiftinstaller.utils.rom
 
 import android.app.ActivityManager
-import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -12,8 +10,6 @@ import android.support.v4.content.FileProvider
 import android.util.Log
 import com.brit.swiftinstaller.BuildConfig
 import com.brit.swiftinstaller.R
-import com.brit.swiftinstaller.installer.PackageInstallActivity
-import com.brit.swiftinstaller.ui.activities.MainActivity
 import com.brit.swiftinstaller.utils.*
 import java.io.File
 
@@ -34,7 +30,7 @@ class RomInfo internal constructor(var context: Context, var name: String,
 
     val variants = vars
 
-    fun preInstall(context: Context, themePackage: String) {
+    fun preInstall() {
         //TODO
     }
 
@@ -56,21 +52,12 @@ class RomInfo internal constructor(var context: Context, var name: String,
         val apps = if (uninstall) { getAppsToUninstall(context) } else { getAppsToInstall(context) }
         Log.d("TEST", "apps - $apps")
 
-        if (uninstall) {
-            val intent = Intent(context, PackageInstallActivity::class.java)
-            intent.putExtra("apps", apps.toTypedArray())
-            intent.putExtra("uninstall", uninstall)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            context.startActivity(intent)
-            return
-        }
-
         val intents = Array<Intent>(apps.size, { i ->
             Intent(if (uninstall) { Intent.ACTION_DELETE } else { Intent.ACTION_VIEW })
                     .setData( if (!uninstall) { FileProvider.getUriForFile(context,
                             BuildConfig.APPLICATION_ID + ".myprovider",
                             File(apps.elementAt(i))) } else {
-                        Uri.fromParts("package", apps.elementAt(i), null) })
+                        Uri.fromParts("package", Utils.getOverlayPackageName(apps.elementAt(i)), null) })
                     .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         })
@@ -89,15 +76,11 @@ class RomInfo internal constructor(var context: Context, var name: String,
         }
     }
 
-    fun createFinishedDialog(activity: MainActivity): Dialog {
-        //TODO
-        return AlertDialog.Builder(activity)
-                .setMessage("Would you like to reboot?")
-                .setPositiveButton(android.R.string.ok
-                ) { dialog, which -> }
-                .setNegativeButton("Later") { dialog, which -> }.create()
+    fun shouldReboot(): Boolean {
+        return true
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun isOverlayCompatible(packageName: String): Boolean {
         return true
     }
@@ -121,6 +104,7 @@ class RomInfo internal constructor(var context: Context, var name: String,
         private val isTouchwiz: Boolean
             get() = File("/system/framework/touchwiz.jar").exists()
 
+        @Suppress("DEPRECATION")
         private fun isOMS(context: Context): Boolean {
             val am = context.getSystemService(ActivityManager::class.java)!!
             val services = am.getRunningServices(Integer.MAX_VALUE)

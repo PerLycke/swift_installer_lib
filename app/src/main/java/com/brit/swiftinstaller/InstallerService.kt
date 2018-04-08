@@ -78,7 +78,7 @@ class InstallerService : Service() {
                     return
                 }
 
-                installApp(themeAssets, info, packageName)
+                //installApp(themeAssets, info, packageName)
                 //mRomInfo!!.mountRO()
             }
         }
@@ -135,7 +135,7 @@ class InstallerService : Service() {
             return
         }
         for (app in apps) {
-            Log.d("TEST", "uninstalling app - " + app)
+            Log.d("TEST", "uninstalling app - $app")
         }
         mOM.uninstallOverlays(apps)
     }
@@ -147,7 +147,7 @@ class InstallerService : Service() {
         // check for previous theme
         //uninstall(true, packageName)
 
-        mRomInfo.preInstall(this, mPackageName!!)
+        mRomInfo.preInstall()
 
         if (SIMULATE_INSTALL) {
 
@@ -176,117 +176,6 @@ class InstallerService : Service() {
             mOM.installOverlays(apps)
         }
 
-    }
-
-    private fun installApp(am: AssetManager?, info: PackageInfo, overlay: String?) {
-        val assetPaths = ArrayList<String>()
-        assetPaths.add("overlays/$overlay/res")
-        val ri = mRomInfo
-        try {
-            val variants = am!!.list("overlays/" + overlay)
-            for (v in ri.variants) {
-                if (variants != null && Arrays.asList(*variants).contains(v)) {
-                    assetPaths.add("overlays/$overlay/$v")
-                    break
-                }
-            }
-
-        } catch (ignored: Exception) {
-        }
-
-        val overlayDir = File(mRomInfo.overlayDirectory, "overlays/" + overlay)
-        val resDir = File(overlayDir, "res")
-        for (path in assetPaths) {
-            copyAssetFolder(am, path, resDir.absolutePath, mCipher)
-        }
-        if (overlay.equals("android")) {
-            applyAccent(resDir)
-        }
-        generateManifest(overlayDir.absolutePath,
-                mPackageName, overlay!!, info.versionName)
-        val overlayPath = mRomInfo.overlayDirectory + "/" + mPackageName + "/overlays/" +
-                mPackageName + "." + overlay + ".apk"
-        Log.d("TEST", "compiling")
-        ShellUtils.compileOverlay(this, mPackageName!!, resDir.absolutePath,
-                overlayDir.absolutePath + "/AndroidManifest.xml",
-                overlayPath, null, info.applicationInfo)
-        Log.d("TEST", "compiled")
-        mRomInfo.installOverlay(this, overlay, overlayPath)
-
-        //ShellUtils.deleteFile(overlayPath);
-        if (!deleteFileShell(overlayDir.absolutePath)) {
-            Log.e(TAG, "Unable to delete " + overlayPath)
-        }
-    }
-
-    private fun applyAccent(resDir: File) {
-        val accent = getAccentColor(this)
-        //val hightlightColor =
-        val file = StringBuilder()
-        file.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
-        file.append("<resources>\n")
-        file.append("<color name=\"material_blue_grey_900\">#" + String.format("%06x", accent).substring(2) + "</color>")
-        //file.append("<color name=\"highlighted_text_dark\">")
-        file.append("</resources>")
-
-        val values = File(resDir, "/values")
-        values.mkdirs()
-        var writer: BufferedWriter? = null
-        try {
-            writer = BufferedWriter(FileWriter(resDir.absolutePath + "/values/accent.xml"))
-            writer.write(file.toString())
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } finally {
-            try {
-                if (writer != null) {
-                    writer.close()
-                }
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
-    }
-
-    private fun generateManifest(path: String, packageName: String?,
-                                 targetPackage: String, themeVersion: String) {
-        val manifest = StringBuilder()
-        manifest.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
-        manifest.append("<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n")
-        manifest.append("package=\"" + Utils.getOverlayPackageName(targetPackage) + "\">\n")
-        manifest.append("<overlay ")
-        manifest.append("android:priority=\"1\" ")
-        if (targetPackage == "android") {
-            manifest.append("android:targetPackage=\"fwk\"/>\n")
-        } else {
-            manifest.append("android:targetPackage=\"$targetPackage\"/>\n")
-        }
-        manifest.append("<application android:allowBackup=\"false\" android:hasCode=\"false\">\n")
-        manifest.append("<meta-data android:name=\"theme_version\" android:value=\"v="
-                + themeVersion + "\"/>\n")
-        manifest.append("<meta-data android:name=\"theme_package\" android:value=\""
-                + packageName + "\"/>\n")
-        manifest.append("<meta-data android:name=\"target_package\" android:value=\""
-                + targetPackage + "\"/>\n")
-        manifest.append("</application>\n")
-        manifest.append("</manifest>")
-
-        var writer: BufferedWriter? = null
-        try {
-            writer = BufferedWriter(FileWriter(path + "/AndroidManifest.xml"))
-            writer.write(manifest.toString())
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } finally {
-            try {
-                if (writer != null) {
-                    writer.close()
-                }
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-
-        }
     }
 
     companion object {
