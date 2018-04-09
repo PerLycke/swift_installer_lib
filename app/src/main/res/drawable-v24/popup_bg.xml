@@ -6,7 +6,7 @@
             <stroke android:width="2.0px" android:color="#232329" />
             <padding android:left="8.0dip" android:right="8.0dip" android:bottom="8.0dip" />
             <corners android:radius="4.0dip" />
-            <solid android:color="@color/background_main" />
+            <solid android:color="?android:colorBackgroundFloating" />
         </shape>
     </item>
 </layer-list>

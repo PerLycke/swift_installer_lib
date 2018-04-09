@@ -12,6 +12,7 @@
     <color name="dialog_stroke">#232329</color>
     <color name="divider">#37373d</color>
     <color name="light_grey">#dedede</color>
+    <color name="stroke">#202026</color>
 
     <!-- Minimal palette -->
     <color name="minimal_blue">#4A7CA5</color>
@@ -25,6 +26,7 @@
     <color name="green">#1ed760</color>
     <color name="red">#d32828</color>
     <color name="violet">#a67ac7</color>
+    <color name="bg_circle_dark">#1b1b21</color>
 
     <integer-array name="accent_colors">
         <item>@color/minimal_green</item>

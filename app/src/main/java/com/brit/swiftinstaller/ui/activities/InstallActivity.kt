@@ -88,7 +88,13 @@ class InstallActivity : AppCompatActivity() {
             return
         }
 
-        val mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
+        val mBottomSheetDialog: BottomSheetDialog
+        if (AppCompatDelegate.getDefaultNightMode()
+                == AppCompatDelegate.MODE_NIGHT_YES) {
+            mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme_Black)
+        } else {
+            mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
+        }
         val sheetView = LayoutInflater.from(this).inflate(R.layout.install_progress_sheet, null)
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()

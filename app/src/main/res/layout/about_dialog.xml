@@ -5,65 +5,74 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="8dp"
-    android:paddingTop="8dp"
-    tools:layout_editor_absoluteY="25dp">
+    android:paddingTop="8dp">
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/bgAlertTitle"
+        android:id="@+id/aboutDialogTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/bgTitle"
-            android:layout_width="wrap_content"
+            android:id="@+id/textView"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
             android:fontFamily="sans-serif-condensed"
-            android:text="@string/background_change_title"
+            android:text="Swift Installer"
             android:textAppearance="@android:style/TextAppearance.Material.DialogWindowTitle"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/bgAlertDesc"
+        android:id="@+id/aboutDescLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bgAlertTitle">
+        app:layout_constraintTop_toBottomOf="@+id/aboutDialogTitle">
 
         <TextView
-            android:id="@+id/bgDesc"
+            android:id="@+id/aboutDialogDesc"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:fontFamily="sans-serif"
+            android:layout_marginBottom="24dp"
             android:lineSpacingExtra="4sp"
-            android:text="@string/background_change_msg"
+            android:text="@string/credits"
             android:textAppearance="@android:style/TextAppearance.Material.Subhead"
-            app:layout_constraintBottom_toTopOf="@+id/accentInfo"
+            app:layout_constraintBottom_toTopOf="@+id/subsLink"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/accentInfo"
+            android:id="@+id/subsLink"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:layout_marginStart="24dp"
-            android:fontFamily="sans-serif"
-            android:lineSpacingExtra="4sp"
-            android:text="@string/accent_change_info"
+            android:layout_marginBottom="16dp"
+            android:autoLink="web"
+            android:text="https://github.com/substratum/template"
+            android:textAppearance="@android:style/TextAppearance.Material.Subhead"
+            app:layout_constraintBottom_toTopOf="@+id/slimLink"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/slimLink"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:text="https://slimroms.org"
             android:textAppearance="@android:style/TextAppearance.Material.Subhead"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -71,33 +80,22 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/bgAlertBtns"
+        android:id="@+id/aboutDialogBtnLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bgAlertDesc">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/aboutDescLayout">
 
         <Button
-            android:id="@+id/bgBackBtn"
+            android:id="@+id/aboutOkBtn"
             style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:layout_marginBottom="8dp"
-            android:fontFamily="sans-serif-condensed"
-            android:text="@string/background_change_back"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/bgContinueBtn"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/bgContinueBtn"
-            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
             android:fontFamily="sans-serif-condensed"
             android:text="@string/background_change_continue"
             app:layout_constraintBottom_toBottomOf="parent"

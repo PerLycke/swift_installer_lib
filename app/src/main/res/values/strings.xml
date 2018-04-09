@@ -33,7 +33,7 @@
     <string name="background_change_msg">Changing background requires all overlays to be re-installed. This will take some time and the process will start once you click confirm on the previous screen.</string>
     <string name="accent_change_info">Changing accent is much faster!</string>
     <string name="background_change_back">Cancel</string>
-    <string name="background_change_continue">Ok</string>
+    <string name="background_change_continue">OK</string>
 
     <string name="install_count">%1$d / %2$d</string>
     <string name="update">Update</string>
@@ -46,4 +46,7 @@
     <string name="bg">Bg:</string>
     <string name="accent_title">Accent:</string>
     <string name="current">Current :</string>
+    <string name="credits">Credit for the encryption implementation goes to Projekt Development Team &amp; SlimRoms Ltd</string>
+    <string name="updates">Updates :</string>
+    <string name="active">Active :</string>
 </resources>

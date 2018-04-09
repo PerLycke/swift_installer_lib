@@ -18,6 +18,7 @@ import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.UpdateChecker
 import com.brit.swiftinstaller.utils.getAccentColor
 import com.brit.swiftinstaller.utils.getAppsToUpdate
+import kotlinx.android.synthetic.main.about_dialog.view.*
 import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -118,10 +119,22 @@ class MainActivity : AppCompatActivity() {
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_about -> {
-                val builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme).create()
-                builder.setTitle("Notes")
-                builder.setMessage("Credits for the encryption implementation goes to Projekt Development Team & SlimRoms Ltd")
-                builder.show()
+                val dialogView = View.inflate(this, R.layout.about_dialog, null)
+                val builder: AlertDialog.Builder
+
+                if (AppCompatDelegate.getDefaultNightMode()
+                        == AppCompatDelegate.MODE_NIGHT_YES) {
+                    builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme_Black)
+                } else {
+                    builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
+                }
+                builder.setView(dialogView)
+                val dialog = builder.create()
+
+                dialogView.aboutOkBtn.setOnClickListener {
+                    dialog.dismiss()
+                }
+                dialog.show()
                 true
             }
             else -> super.onOptionsItemSelected(item)

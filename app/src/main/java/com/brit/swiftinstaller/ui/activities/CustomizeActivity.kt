@@ -1,7 +1,6 @@
 package com.brit.swiftinstaller.ui.activities
 
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
@@ -165,13 +164,13 @@ class CustomizeActivity : AppCompatActivity() {
         builder.setView(dialogView)
         val dialog = builder.create()
 
-        dialogView.continueBtn.setOnClickListener {
+        dialogView.bgContinueBtn.setOnClickListener {
             setUseBlackBackground(this, view.id == R.id.blackBgCircle)
             setBgIndicator()
             dialog.dismiss()
         }
 
-        dialogView.backBtn.setOnClickListener {
+        dialogView.bgBackBtn.setOnClickListener {
             dialog.dismiss()
         }
 

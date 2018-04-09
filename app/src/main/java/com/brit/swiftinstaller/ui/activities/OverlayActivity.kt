@@ -347,7 +347,13 @@ class OverlayActivity : AppCompatActivity() {
     }
 
     private fun uninstallAction() {
-        val mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
+        val mBottomSheetDialog: BottomSheetDialog
+        if (AppCompatDelegate.getDefaultNightMode()
+                == AppCompatDelegate.MODE_NIGHT_YES) {
+            mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme_Black)
+        } else {
+            mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
+        }
         val sheetView = LayoutInflater.from(this).inflate(R.layout.confirm_uninstall_sheet, null)
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
@@ -375,7 +381,13 @@ class OverlayActivity : AppCompatActivity() {
     }
 
     private fun updateAction() {
-        val mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
+        val mBottomSheetDialog: BottomSheetDialog
+        if (AppCompatDelegate.getDefaultNightMode()
+                == AppCompatDelegate.MODE_NIGHT_YES) {
+            mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme_Black)
+        } else {
+            mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
+        }
         val sheetView = View.inflate(this, R.layout.update_progress_sheet, null)
         mBottomSheetDialog.setContentView(sheetView)
         mBottomSheetDialog.show()
@@ -383,8 +395,14 @@ class OverlayActivity : AppCompatActivity() {
 
     fun alertIconClick(view: View) {
         val dialog = View.inflate(this, R.layout.error_dialog, null)
-        val builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme).create()
-        val closeBtn = dialog.findViewById<View>(R.id.closeBtn)
+        val builder: AlertDialog
+        if (AppCompatDelegate.getDefaultNightMode()
+                == AppCompatDelegate.MODE_NIGHT_YES) {
+            builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme_Black).create()
+        } else {
+            builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme).create()
+        }
+        val closeBtn = dialog.findViewById<View>(R.id.errorCloseBtn)
         builder.setView(dialog)
         closeBtn.setOnClickListener {
             builder.dismiss()
