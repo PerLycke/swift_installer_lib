@@ -8,7 +8,6 @@ import android.preference.PreferenceManager
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AppCompatDelegate
 import android.support.v7.widget.Toolbar
 import android.view.Menu
@@ -21,13 +20,9 @@ import com.brit.swiftinstaller.utils.getAppsToUpdate
 import kotlinx.android.synthetic.main.about_dialog.view.*
 import kotlinx.android.synthetic.main.content_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ThemeActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (AppCompatDelegate.getDefaultNightMode()
-                == AppCompatDelegate.MODE_NIGHT_YES) {
-            setTheme(R.style.AppTheme_Black);
-        }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val myToolbar = findViewById<Toolbar>(R.id.my_toolbar)
@@ -120,13 +115,11 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_about -> {
                 val dialogView = View.inflate(this, R.layout.about_dialog, null)
-                val builder: AlertDialog.Builder
-
-                if (AppCompatDelegate.getDefaultNightMode()
+                val builder = if (AppCompatDelegate.getDefaultNightMode()
                         == AppCompatDelegate.MODE_NIGHT_YES) {
-                    builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme_Black)
+                    AlertDialog.Builder(this, R.style.AppAlertDialogTheme_Black)
                 } else {
-                    builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
+                    AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
                 }
                 builder.setView(dialogView)
                 val dialog = builder.create()

@@ -1,17 +1,13 @@
 package com.brit.swiftinstaller.ui.activities
 
 import android.os.Bundle
-import android.os.PowerManager
-import android.support.design.widget.BottomSheetDialog
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.app.AppCompatDelegate
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.brit.swiftinstaller.IInstallerCallback
 import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.ui.ThemedBottomSheetDialog
 import com.brit.swiftinstaller.utils.InstallerServiceHelper
 import com.brit.swiftinstaller.utils.ShellUtils
 import com.brit.swiftinstaller.utils.addAppToUninstall
@@ -20,7 +16,7 @@ import kotlinx.android.synthetic.main.install_progress_sheet.view.*
 
 
 @Suppress("UNUSED_PARAMETER")
-class InstallActivity : AppCompatActivity() {
+class InstallActivity : ThemeActivity() {
 
     private lateinit var mProgressBar: ProgressBar
     private lateinit var mProgressCount: TextView
@@ -42,7 +38,7 @@ class InstallActivity : AppCompatActivity() {
         }
     }
 
-    fun installComplete(uninstall: Boolean) {
+    private fun installComplete(uninstall: Boolean) {
         RomInfo.getRomInfo(this).postInstall(uninstall)
 
         /*if (RomInfo.getRomInfo(this).shouldReboot()) {
@@ -71,10 +67,6 @@ class InstallActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (AppCompatDelegate.getDefaultNightMode()
-                == AppCompatDelegate.MODE_NIGHT_YES) {
-            setTheme(R.style.AppTheme_Black);
-        }
         super.onCreate(savedInstanceState)
         mUninstall = intent.extras.getBoolean("uninstall", false)
         val apps = intent.getStringArrayListExtra("apps")
@@ -88,17 +80,11 @@ class InstallActivity : AppCompatActivity() {
             return
         }
 
-        val mBottomSheetDialog: BottomSheetDialog
-        if (AppCompatDelegate.getDefaultNightMode()
-                == AppCompatDelegate.MODE_NIGHT_YES) {
-            mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme_Black)
-        } else {
-            mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
-        }
-        val sheetView = LayoutInflater.from(this).inflate(R.layout.install_progress_sheet, null)
-        mBottomSheetDialog.setContentView(sheetView)
-        mBottomSheetDialog.show()
-        mBottomSheetDialog.setOnCancelListener {
+        val bottomSheetDialog = ThemedBottomSheetDialog(this)
+        val sheetView = View.inflate(this, R.layout.install_progress_sheet, null)
+        bottomSheetDialog.setContentView(sheetView)
+        bottomSheetDialog.show()
+        bottomSheetDialog.setOnCancelListener {
             finish()
         }
         InstallerServiceHelper.connectService(this)

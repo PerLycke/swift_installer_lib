@@ -30,10 +30,14 @@ class CustomizeActivity : AppCompatActivity() {
     private var mAccent: Int = 0
 
     private var mFinish = false
+    private var mBlackBackround = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (AppCompatDelegate.getDefaultNightMode()
-                ==AppCompatDelegate.MODE_NIGHT_YES) {
+        mBlackBackround = useBlackBackground(this)
+        if (savedInstanceState != null) {
+            mBlackBackround = savedInstanceState.getBoolean("black", mBlackBackround)
+        }
+        if (mBlackBackround) {
             setTheme(R.style.AppTheme_Black);
         }
         super.onCreate(savedInstanceState)
@@ -42,6 +46,8 @@ class CustomizeActivity : AppCompatActivity() {
         setupAccentSheet()
         updateColor(mAccent)
         setBgIndicator()
+
+
 
         customizeConfirmBtn.setOnClickListener {
             setAccentColor(this, mAccent)
@@ -55,6 +61,11 @@ class CustomizeActivity : AppCompatActivity() {
             } else {
                 finish()
             }
+
+            if (mBlackBackround != useBlackBackground(this)) {
+                setUseBlackBackground(this, mBlackBackround)
+            }
+
             if (useBlackBackground(this)) {
                 AppCompatDelegate
                         .setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -88,6 +99,11 @@ class CustomizeActivity : AppCompatActivity() {
         if (mFinish) finish()
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean("black", mBlackBackround)
+    }
+
     private fun setupAccentSheet() {
         palette.adapter = PaletteAdapter(resources.getIntArray(R.array.accent_colors))
         settingsIcons[0] = connectionsIcon
@@ -96,7 +112,7 @@ class CustomizeActivity : AppCompatActivity() {
     }
 
     private fun setBgIndicator() {
-        if (useBlackBackground(this)) {
+        if (mBlackBackround) {
             blackBgIndicator.visibility = View.VISIBLE
             darkBgIndicator.visibility = View.GONE
             val settingsBg = ContextCompat.getDrawable(this, R.drawable.settings_preview_black)
@@ -165,8 +181,9 @@ class CustomizeActivity : AppCompatActivity() {
         val dialog = builder.create()
 
         dialogView.bgContinueBtn.setOnClickListener {
-            setUseBlackBackground(this, view.id == R.id.blackBgCircle)
+            mBlackBackround = view.id == R.id.blackBgCircle
             setBgIndicator()
+            recreate()
             dialog.dismiss()
         }
 

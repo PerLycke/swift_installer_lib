@@ -8,15 +8,12 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.AsyncTask
 import android.os.Bundle
-import android.support.design.widget.BottomSheetDialog
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.app.AppCompatDelegate
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.*
@@ -25,18 +22,20 @@ import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.TextView
 import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.ui.ThemedBottomSheetDialog
 import com.brit.swiftinstaller.utils.Utils.getOverlayPackageName
 import com.brit.swiftinstaller.utils.Utils.isOverlayEnabled
 import com.brit.swiftinstaller.utils.Utils.isOverlayFailed
 import com.brit.swiftinstaller.utils.Utils.isOverlayInstalled
 import com.brit.swiftinstaller.utils.getAccentColor
+import com.brit.swiftinstaller.utils.useBlackBackground
 import kotlinx.android.synthetic.main.app_list_activity.*
 import kotlinx.android.synthetic.main.overlay_activity.*
 import kotlinx.android.synthetic.main.overlays_toolbar.*
 import kotlinx.android.synthetic.main.tab_layout.*
 import java.lang.ref.WeakReference
 
-class OverlayActivity : AppCompatActivity() {
+class OverlayActivity : ThemeActivity() {
 
     companion object {
         private const val INSTALL_TAB = 0
@@ -51,10 +50,6 @@ class OverlayActivity : AppCompatActivity() {
     private var mApps: HashMap<Int, ArrayList<AppItem>> = HashMap()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (AppCompatDelegate.getDefaultNightMode()
-                == AppCompatDelegate.MODE_NIGHT_YES) {
-            setTheme(R.style.AppTheme_Black);
-        }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.overlay_activity)
 
@@ -298,42 +293,36 @@ class OverlayActivity : AppCompatActivity() {
     }
 
     fun fabClick(view: View) {
-        val mBottomSheetDialog: BottomSheetDialog
-        if (AppCompatDelegate.getDefaultNightMode()
-                == AppCompatDelegate.MODE_NIGHT_YES) {
-            mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme_Black)
-        } else {
-            mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
-        }
+        val bottomSheetDialog = ThemedBottomSheetDialog(this)
         val sheetView = View.inflate(this, R.layout.fab_actions_sheet, null)
-        mBottomSheetDialog.setContentView(sheetView)
-        mBottomSheetDialog.show()
+        bottomSheetDialog.setContentView(sheetView)
+        bottomSheetDialog.show()
 
         val install = sheetView.findViewById<View>(R.id.install)
         install.setOnClickListener {
-            mBottomSheetDialog.dismiss()
+            bottomSheetDialog.dismiss()
             installAction()
         }
 
         val uninstall = sheetView.findViewById<View>(R.id.uninstall)
         uninstall.setOnClickListener {
-            mBottomSheetDialog.dismiss()
+            bottomSheetDialog.dismiss()
             uninstallAction()
         }
 
         val update = sheetView.findViewById<View>(R.id.update)
         update.setOnClickListener {
-            mBottomSheetDialog.dismiss()
+            bottomSheetDialog.dismiss()
             updateAction()
         }
 
-        if (container.currentItem == INSTALL_TAB) {
-            uninstall.visibility = View.GONE
-            update.visibility = View.GONE
-        } else if (container.currentItem == ACTIVE_TAB) {
-            install.visibility = View.GONE
-        } else if (container.visibility == UPDATE_TAB) {
-            install.visibility == View.GONE
+        when {
+            container.currentItem == INSTALL_TAB -> {
+                uninstall.visibility = View.GONE
+                update.visibility = View.GONE
+            }
+            container.currentItem == ACTIVE_TAB -> install.visibility = View.GONE
+            container.visibility == UPDATE_TAB -> install.visibility == View.GONE
         }
     }
 
@@ -347,26 +336,20 @@ class OverlayActivity : AppCompatActivity() {
     }
 
     private fun uninstallAction() {
-        val mBottomSheetDialog: BottomSheetDialog
-        if (AppCompatDelegate.getDefaultNightMode()
-                == AppCompatDelegate.MODE_NIGHT_YES) {
-            mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme_Black)
-        } else {
-            mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
-        }
-        val sheetView = LayoutInflater.from(this).inflate(R.layout.confirm_uninstall_sheet, null)
-        mBottomSheetDialog.setContentView(sheetView)
-        mBottomSheetDialog.show()
+        val bottomSheetDialog = ThemedBottomSheetDialog(this)
+        val sheetView = View.inflate(this, R.layout.confirm_uninstall_sheet, null)
+        bottomSheetDialog.setContentView(sheetView)
+        bottomSheetDialog.show()
 
         val uninstall = sheetView.findViewById<View>(R.id.confirmUninstallTxt)
         uninstall.setOnClickListener {
-            mBottomSheetDialog.dismiss()
+            bottomSheetDialog.dismiss()
             uninstallProgressAction()
         }
 
         val cancel = sheetView.findViewById<View>(R.id.cancelUninstallTxt)
         cancel.setOnClickListener {
-            mBottomSheetDialog.dismiss()
+            bottomSheetDialog.dismiss()
         }
     }
 
@@ -381,26 +364,18 @@ class OverlayActivity : AppCompatActivity() {
     }
 
     private fun updateAction() {
-        val mBottomSheetDialog: BottomSheetDialog
-        if (AppCompatDelegate.getDefaultNightMode()
-                == AppCompatDelegate.MODE_NIGHT_YES) {
-            mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme_Black)
-        } else {
-            mBottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
-        }
+        val bottomSheetDialog = ThemedBottomSheetDialog(this)
         val sheetView = View.inflate(this, R.layout.update_progress_sheet, null)
-        mBottomSheetDialog.setContentView(sheetView)
-        mBottomSheetDialog.show()
+        bottomSheetDialog.setContentView(sheetView)
+        bottomSheetDialog.show()
     }
 
     fun alertIconClick(view: View) {
         val dialog = View.inflate(this, R.layout.error_dialog, null)
-        val builder: AlertDialog
-        if (AppCompatDelegate.getDefaultNightMode()
-                == AppCompatDelegate.MODE_NIGHT_YES) {
-            builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme_Black).create()
+        val builder = if (useBlackBackground(this)) {
+            AlertDialog.Builder(this, R.style.AppAlertDialogTheme_Black).create()
         } else {
-            builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme).create()
+            AlertDialog.Builder(this, R.style.AppAlertDialogTheme).create()
         }
         val closeBtn = dialog.findViewById<View>(R.id.errorCloseBtn)
         builder.setView(dialog)
