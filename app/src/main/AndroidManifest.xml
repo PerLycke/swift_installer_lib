@@ -21,40 +21,42 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup">
-
-        <activity android:name=".ui.activities.IntroActivity"
-            android:screenOrientation="portrait"
+        <activity
+            android:name=".ui.activities.IntroActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:theme="@style/CustomTutorialStyle"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomTutorialStyle">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.activities.MainActivity"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden" />
-
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activities.OverlayActivity"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden" />
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activities.CustomizeActivity"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden"/>
-
-        <activity android:name=".ui.activities.InstallActivity"
-            android:theme="@style/CustomBottomSheetDialogTheme"
-            android:configChanges="orientation|keyboardHidden" />
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.InstallActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:theme="@style/CustomBottomSheetDialogTheme" />
+        <activity android:name=".ui.activities.ResultActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
 
         <service android:name=".InstallerService" />
 
-        <receiver android:name=".utils.BootReceiver"
+        <receiver
+            android:name=".utils.BootReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -70,7 +72,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
 
     </application>

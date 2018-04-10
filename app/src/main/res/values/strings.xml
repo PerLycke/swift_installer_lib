@@ -58,4 +58,6 @@
     <string name="continue_intro">Continue</string>
     <string name="intro_customize_title">Customize background and accent</string>
     <string name="intro_customize_desc">You can change to your favourite background and accent color before installing overlays</string>
+    <string name="successful">Successful</string>
+    <string name="installation_result">Installation result</string>
 </resources>
