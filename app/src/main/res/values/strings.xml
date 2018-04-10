@@ -49,4 +49,13 @@
     <string name="credits">Credit for the encryption implementation goes to Projekt Development Team &amp; SlimRoms Ltd</string>
     <string name="updates">Updates :</string>
     <string name="active">Active :</string>
+
+    <string name="intro_title">Swift Installer</string>
+    <string name="intro_guide">This guide will explain what Swift Installer is and what it does</string>
+    <string name="intro_permission_hint">Continue and set permissions</string>
+    <string name="permission_title">Permissions</string>
+    <string name="permission_detail">A theme contain overlays, and it\'s the overlay that applies on top of an app and themes it. Overlays gets installed as APK\'s on your device. By pressing \'Give\' you acknowledge and accept this. \n\n We also need storage permission as we temporarily place the APK on the storage before installing it. Press \'Give\' to grant the permission.</string>
+    <string name="continue_intro">Continue</string>
+    <string name="intro_customize_title">Customize background and accent</string>
+    <string name="intro_customize_desc">You can change to your favourite background and accent color before installing overlays</string>
 </resources>

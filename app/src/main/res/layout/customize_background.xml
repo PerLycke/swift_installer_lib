@@ -18,7 +18,7 @@
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/circle_dark" />
+            app:srcCompat="@drawable/bg_circle_dark" />
 
         <ImageView
             android:id="@+id/blackBgCircle"
@@ -32,7 +32,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/darkBgCircle"
             app:layout_constraintTop_toTopOf="@+id/darkBgCircle"
-            app:srcCompat="@drawable/circle_black" />
+            app:srcCompat="@drawable/bg_circle_black" />
 
         <TextView
             android:id="@+id/darkBgTxt"
@@ -77,7 +77,7 @@
             app:layout_constraintEnd_toEndOf="@+id/darkBgCircle"
             app:layout_constraintStart_toStartOf="@+id/darkBgCircle"
             app:layout_constraintTop_toTopOf="@+id/darkBgCircle"
-            app:srcCompat="@drawable/circle_active_stroke" />
+            app:srcCompat="@drawable/bg_circle_active_stroke" />
 
         <ImageView
             android:id="@+id/blackBgIndicator"
@@ -89,6 +89,6 @@
             app:layout_constraintEnd_toEndOf="@+id/blackBgCircle"
             app:layout_constraintStart_toStartOf="@+id/blackBgCircle"
             app:layout_constraintTop_toTopOf="@+id/blackBgCircle"
-            app:srcCompat="@drawable/circle_active_stroke" />
+            app:srcCompat="@drawable/bg_circle_active_stroke" />
 
 </android.support.constraint.ConstraintLayout>

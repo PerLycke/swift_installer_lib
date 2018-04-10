@@ -65,4 +65,8 @@
     <style name="CustomBottomSheetStyle.Black" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@android:color/black</item>
     </style>
+    <style name="CustomTutorialStyle" parent="AppTheme">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
 </resources>
