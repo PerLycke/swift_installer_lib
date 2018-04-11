@@ -38,7 +38,7 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activities.OverlayActivity"
+            android:name=".ui.activities.OverlaysActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
         <activity
@@ -49,7 +49,7 @@
             android:name=".ui.activities.InstallActivity"
             android:configChanges="orientation|keyboardHidden"
             android:theme="@style/CustomBottomSheetDialogTheme" />
-        <activity android:name=".ui.activities.ResultActivity"
+        <activity android:name=".ui.activities.InstallSummaryActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
 

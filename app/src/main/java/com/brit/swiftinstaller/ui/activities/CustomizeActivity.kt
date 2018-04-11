@@ -18,10 +18,10 @@ import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.CircleDrawable
 import com.brit.swiftinstaller.utils.*
 import kotlinx.android.synthetic.main.customize_accent.*
-import kotlinx.android.synthetic.main.background_alert_dialog.view.*
+import kotlinx.android.synthetic.main.alert_dialog_background.view.*
 import kotlinx.android.synthetic.main.customize_background.*
 import kotlinx.android.synthetic.main.customize_preview.*
-import kotlinx.android.synthetic.main.customize_toolbar.*
+import kotlinx.android.synthetic.main.toolbar_customize.*
 
 class CustomizeActivity : AppCompatActivity() {
 
@@ -42,7 +42,7 @@ class CustomizeActivity : AppCompatActivity() {
         }
         super.onCreate(savedInstanceState)
         mAccent = getAccentColor(this)
-        setContentView(R.layout.customize_activity)
+        setContentView(R.layout.activity_customize)
         setupAccentSheet()
         updateColor(mAccent)
         setBgIndicator()
@@ -169,7 +169,7 @@ class CustomizeActivity : AppCompatActivity() {
     }
 
     fun bgClick(view: View) {
-        val dialogView = View.inflate(this, R.layout.background_alert_dialog, null)
+        val dialogView = View.inflate(this, R.layout.alert_dialog_background, null)
         val builder: AlertDialog.Builder
         if (AppCompatDelegate.getDefaultNightMode()
                 == AppCompatDelegate.MODE_NIGHT_YES) {

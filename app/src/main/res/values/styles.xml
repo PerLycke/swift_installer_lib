@@ -1,4 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
+    <style name="AppAlertDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/dialog_bg</item>
+        <item name="android:colorAccent">@color/minimal_green</item>
+    </style>
+    <style name="AppAlertDialogTheme.Black" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/dialog_bg_black</item>
+        <item name="android:colorAccent">@color/minimal_green</item>
+    </style>
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -21,36 +30,6 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:checkboxStyle">@android:style/Widget.DeviceDefault.Light.CompoundButton.CheckBox</item>
     </style>
-    <style name="AppAlertDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
-        <item name="android:windowBackground">@drawable/dialog_bg</item>
-        <item name="android:colorAccent">@color/minimal_green</item>
-    </style>
-    <style name="AppAlertDialogTheme.Black" parent="Theme.AppCompat.Dialog.Alert">
-        <item name="android:windowBackground">@drawable/dialog_bg_black</item>
-        <item name="android:colorAccent">@color/minimal_green</item>
-    </style>
-    <style name="ToolbarTitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
-        <item name="android:textSize">17.0dip</item>
-        <item name="android:textColor">#d9ffffff</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:fontFamily">sans-serif-condensed</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-    <style name="ToolbarSubtitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
-        <item name="android:textSize">12.0dip</item>
-        <item name="android:textColor">#d9ffffff</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:fontFamily">sans-serif-condensed</item>
-        <item name="android:textAllCaps">true</item>
-    </style>
-    <style name="PopupMenuOverflow" parent="Widget.AppCompat.PopupMenu.Overflow">
-        <item name="android:popupBackground">@drawable/popup_bg</item>
-        <item name="android:dropDownHorizontalOffset">0.0dip</item>
-        <item name="android:dropDownVerticalOffset">8.0dip</item>
-        <item name="android:popupElevation">2.0dip</item>
-        <item name="android:dropDownWidth">24dp</item>
-    </style>
     <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
         <item name="windowNoTitle">true</item>
@@ -68,5 +47,27 @@
     <style name="CustomTutorialStyle" parent="AppTheme">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+    <style name="PopupMenuOverflow" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <item name="android:popupBackground">@drawable/popup_bg</item>
+        <item name="android:dropDownHorizontalOffset">0.0dip</item>
+        <item name="android:dropDownVerticalOffset">8.0dip</item>
+        <item name="android:popupElevation">2.0dip</item>
+        <item name="android:dropDownWidth">24dp</item>
+    </style>
+    <style name="ToolbarSubtitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
+        <item name="android:textSize">12.0dip</item>
+        <item name="android:textColor">#d9ffffff</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+    <style name="ToolbarTitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">17.0dip</item>
+        <item name="android:textColor">#d9ffffff</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>

@@ -2,37 +2,24 @@
 <android.support.design.widget.TabLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/tabs"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     app:tabIndicatorColor="@android:color/white"
     app:tabIndicatorHeight="1dp"
-    app:tabMode="scrollable"
     app:tabSelectedTextColor="#ffffffff"
     app:tabTextColor="@color/light_grey">
 
     <android.support.design.widget.TabItem
-        android:id="@+id/tabItem"
+        android:id="@+id/tabItem1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout="@layout/inactive_tab" />
+        android:layout="@layout/tab_install_summary_success" />
 
     <android.support.design.widget.TabItem
         android:id="@+id/tabItem2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout="@layout/active_tab" />
-
-    <android.support.design.widget.TabItem
-        android:id="@+id/tabItem3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout="@layout/updates_tab" />
-
-    <android.support.design.widget.TabItem
-        android:id="@+id/tabItem4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout="@layout/failed_tab" />
+        android:layout="@layout/tab_install_summary_failed" />
 
 </android.support.design.widget.TabLayout>

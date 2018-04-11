@@ -12,7 +12,7 @@ import com.brit.swiftinstaller.utils.InstallerServiceHelper
 import com.brit.swiftinstaller.utils.ShellUtils
 import com.brit.swiftinstaller.utils.addAppToUninstall
 import com.brit.swiftinstaller.utils.rom.RomInfo
-import kotlinx.android.synthetic.main.install_progress_sheet.view.*
+import kotlinx.android.synthetic.main.sheet_install_progress.view.*
 
 
 @Suppress("UNUSED_PARAMETER")
@@ -43,7 +43,7 @@ class InstallActivity : ThemeActivity() {
 
         /*if (RomInfo.getRomInfo(this).shouldReboot()) {
             val bottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
-            val sheetView = View.inflate(this, R.layout.reboot_sheet, null)
+            val sheetView = View.inflate(this, R.layout.sheet_install_summary_fab, null)
             bottomSheetDialog.setContentView(sheetView)
             bottomSheetDialog.show()
 
@@ -81,7 +81,7 @@ class InstallActivity : ThemeActivity() {
         }
 
         val bottomSheetDialog = ThemedBottomSheetDialog(this)
-        val sheetView = View.inflate(this, R.layout.install_progress_sheet, null)
+        val sheetView = View.inflate(this, R.layout.sheet_install_progress, null)
         bottomSheetDialog.setContentView(sheetView)
         bottomSheetDialog.show()
         bottomSheetDialog.setOnCancelListener {

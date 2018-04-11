@@ -12,7 +12,7 @@
 
         <include
             android:id="@+id/include"
-            layout="@layout/customize_toolbar"
+            layout="@layout/toolbar_customize"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -90,7 +90,7 @@
                         app:layout_constraintGuide_percent="0.83" />
 
                     <TextView
-                        android:id="@+id/accentCategoryTitle"
+                        android:id="@+id/accentTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -112,10 +112,10 @@
                         android:layout_marginStart="8dp"
                         android:background="@color/divider"
                         android:contentDescription="@string/image"
-                        app:layout_constraintBottom_toBottomOf="@+id/accentCategoryTitle"
+                        app:layout_constraintBottom_toBottomOf="@+id/accentTitle"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/accentCategoryTitle"
-                        app:layout_constraintTop_toTopOf="@+id/accentCategoryTitle" />
+                        app:layout_constraintStart_toEndOf="@+id/accentTitle"
+                        app:layout_constraintTop_toTopOf="@+id/accentTitle" />
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/constraintLayout"
@@ -124,7 +124,7 @@
                         android:layout_marginTop="20dp"
                         app:layout_constraintEnd_toStartOf="@+id/guideline2"
                         app:layout_constraintStart_toStartOf="@+id/guideline1"
-                        app:layout_constraintTop_toBottomOf="@+id/accentCategoryTitle">
+                        app:layout_constraintTop_toBottomOf="@+id/accentTitle">
 
                         <include layout="@layout/customize_accent" />
 

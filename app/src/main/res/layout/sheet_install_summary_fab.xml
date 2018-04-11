@@ -4,122 +4,107 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:backgroundTint="@color/dialog_bg_tint"
     android:paddingBottom="8dp"
-    android:paddingTop="8dp"
-    tools:layout_editor_absoluteY="25dp">
+    android:paddingEnd="16dp"
+    android:paddingStart="16dp"
+    android:paddingTop="8dp">
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/install"
+        android:id="@+id/reboot"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/dialogInstallIcon"
+            android:id="@+id/rebootIcon"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:layout_marginStart="16dp"
             android:contentDescription="@string/image"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:tint="@color/minimal_green"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_install" />
+            app:srcCompat="@drawable/ic_reboot" />
 
         <TextView
-            android:id="@+id/installTxt"
+            android:id="@+id/rebootDesc"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="16dp"
+            android:layout_height="48dp"
             android:layout_marginStart="32dp"
             android:fontFamily="sans-serif-condensed"
             android:gravity="center_vertical"
-            android:text="@string/dialog_install"
+            android:text="@string/reboot_now"
             android:textColor="@android:color/white"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/dialogInstallIcon"
-            app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/uninstall"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/install">
-
-        <ImageView
-            android:id="@+id/dialogUninstallIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_marginStart="16dp"
-            android:contentDescription="@string/image"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_uninstall" />
-
-        <TextView
-            android:id="@+id/uninstallTxt"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="32dp"
-            android:fontFamily="sans-serif-condensed"
-            android:gravity="center_vertical"
-            android:text="@string/dialog_uninstall"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/dialogUninstallIcon"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/rebootIcon"
+            app:layout_constraintTop_toTopOf="@+id/rebootIcon" />
 
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/update"
+        android:id="@+id/sendLog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/uninstall">
+        app:layout_constraintTop_toBottomOf="@+id/reboot">
 
         <ImageView
-            android:id="@+id/dialogUpdateIcon"
+            android:id="@+id/sendIcon"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:layout_marginStart="16dp"
             android:contentDescription="@string/image"
-            android:tint="@color/light_grey"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_updates" />
+            app:srcCompat="@drawable/ic_email" />
 
         <TextView
-            android:id="@+id/updateTxt"
+            android:id="@+id/sendDesc"
             android:layout_width="0dp"
             android:layout_height="48dp"
-            android:layout_marginEnd="16dp"
             android:layout_marginStart="32dp"
             android:fontFamily="sans-serif-condensed"
             android:gravity="center_vertical"
-            android:text="@string/dialog_update"
+            android:text="@string/email_log"
             android:textColor="@android:color/white"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/dialogUpdateIcon"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/sendIcon"
+            app:layout_constraintTop_toTopOf="@+id/sendIcon" />
     </android.support.constraint.ConstraintLayout>
 
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/rebootLater"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sendLog">
+
+        <ImageView
+            android:id="@+id/rebootLaterIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:contentDescription="@string/image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_later" />
+
+        <TextView
+            android:id="@+id/rebootLaterDesc"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="32dp"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center_vertical"
+            android:text="@string/reboot_later"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/rebootLaterIcon"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

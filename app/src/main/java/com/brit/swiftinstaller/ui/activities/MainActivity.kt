@@ -17,7 +17,7 @@ import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.UpdateChecker
 import com.brit.swiftinstaller.utils.getAccentColor
 import com.brit.swiftinstaller.utils.getAppsToUpdate
-import kotlinx.android.synthetic.main.about_dialog.view.*
+import kotlinx.android.synthetic.main.dialog_about.view.*
 import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : ThemeActivity() {
@@ -69,7 +69,7 @@ class MainActivity : ThemeActivity() {
         }
 
         installTile.setOnClickListener {
-            startActivity(Intent(this, OverlayActivity::class.java))
+            startActivity(Intent(this, OverlaysActivity::class.java))
         }
 
         accentTile.setOnClickListener {
@@ -114,7 +114,7 @@ class MainActivity : ThemeActivity() {
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_about -> {
-                val dialogView = View.inflate(this, R.layout.about_dialog, null)
+                val dialogView = View.inflate(this, R.layout.dialog_about, null)
                 val builder = if (AppCompatDelegate.getDefaultNightMode()
                         == AppCompatDelegate.MODE_NIGHT_YES) {
                     AlertDialog.Builder(this, R.style.AppAlertDialogTheme_Black)

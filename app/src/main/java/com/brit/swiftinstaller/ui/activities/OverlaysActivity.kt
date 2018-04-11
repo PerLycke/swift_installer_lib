@@ -29,13 +29,13 @@ import com.brit.swiftinstaller.utils.Utils.isOverlayFailed
 import com.brit.swiftinstaller.utils.Utils.isOverlayInstalled
 import com.brit.swiftinstaller.utils.getAccentColor
 import com.brit.swiftinstaller.utils.useBlackBackground
-import kotlinx.android.synthetic.main.app_list_activity.*
-import kotlinx.android.synthetic.main.overlay_activity.*
-import kotlinx.android.synthetic.main.overlays_toolbar.*
-import kotlinx.android.synthetic.main.tab_layout.*
+import kotlinx.android.synthetic.main.activity_app_list.*
+import kotlinx.android.synthetic.main.activity_overlay.*
+import kotlinx.android.synthetic.main.toolbar_overlays.*
+import kotlinx.android.synthetic.main.tab_layout_overlay.*
 import java.lang.ref.WeakReference
 
-class OverlayActivity : ThemeActivity() {
+class OverlaysActivity : ThemeActivity() {
 
     companion object {
         private const val INSTALL_TAB = 0
@@ -51,7 +51,7 @@ class OverlayActivity : ThemeActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.overlay_activity)
+        setContentView(R.layout.activity_overlay)
 
         mApps[INSTALL_TAB] = ArrayList()
         mApps[ACTIVE_TAB] = ArrayList()
@@ -167,7 +167,7 @@ class OverlayActivity : ThemeActivity() {
         var mApps: ArrayList<AppItem> = ArrayList()
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-            return inflater.inflate(R.layout.app_list_activity, container, false)
+            return inflater.inflate(R.layout.activity_app_list, container, false)
         }
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -294,7 +294,7 @@ class OverlayActivity : ThemeActivity() {
 
     fun fabClick(view: View) {
         val bottomSheetDialog = ThemedBottomSheetDialog(this)
-        val sheetView = View.inflate(this, R.layout.fab_actions_sheet, null)
+        val sheetView = View.inflate(this, R.layout.sheet_overlays_fab, null)
         bottomSheetDialog.setContentView(sheetView)
         bottomSheetDialog.show()
 
@@ -337,7 +337,7 @@ class OverlayActivity : ThemeActivity() {
 
     private fun uninstallAction() {
         val bottomSheetDialog = ThemedBottomSheetDialog(this)
-        val sheetView = View.inflate(this, R.layout.confirm_uninstall_sheet, null)
+        val sheetView = View.inflate(this, R.layout.sheet_confirm_uninstall, null)
         bottomSheetDialog.setContentView(sheetView)
         bottomSheetDialog.show()
 
@@ -365,13 +365,13 @@ class OverlayActivity : ThemeActivity() {
 
     private fun updateAction() {
         val bottomSheetDialog = ThemedBottomSheetDialog(this)
-        val sheetView = View.inflate(this, R.layout.update_progress_sheet, null)
+        val sheetView = View.inflate(this, R.layout.sheet_update_progress, null)
         bottomSheetDialog.setContentView(sheetView)
         bottomSheetDialog.show()
     }
 
     fun alertIconClick(view: View) {
-        val dialog = View.inflate(this, R.layout.error_dialog, null)
+        val dialog = View.inflate(this, R.layout.alert_dialog_error, null)
         val builder = if (useBlackBackground(this)) {
             AlertDialog.Builder(this, R.style.AppAlertDialogTheme_Black).create()
         } else {
