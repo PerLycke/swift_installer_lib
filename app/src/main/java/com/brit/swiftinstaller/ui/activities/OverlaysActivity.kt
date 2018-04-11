@@ -370,18 +370,7 @@ class OverlaysActivity : ThemeActivity() {
         bottomSheetDialog.show()
     }
 
-    fun alertIconClick(view: View) {
-        val dialog = View.inflate(this, R.layout.alert_dialog_error, null)
-        val builder = if (useBlackBackground(this)) {
-            AlertDialog.Builder(this, R.style.AppAlertDialogTheme_Black).create()
-        } else {
-            AlertDialog.Builder(this, R.style.AppAlertDialogTheme).create()
-        }
-        val closeBtn = dialog.findViewById<View>(R.id.errorCloseBtn)
-        builder.setView(dialog)
-        closeBtn.setOnClickListener {
-            builder.dismiss()
-        }
-        builder.show()
+    fun overlaysBackClick(view: View) {
+        onBackPressed()
     }
 }
