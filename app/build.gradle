@@ -32,7 +32,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    implementation 'com.android.tools.build:apksig:3.1.1'
+    implementation 'com.android.tools.build:apksig:3.0.1'
     implementation 'org.bouncycastle:bcprov-jdk16:1.45'
     implementation 'commons-io:commons-io:2.5'
     implementation 'com.github.msayan:tutorial-view:v1.0.6'
