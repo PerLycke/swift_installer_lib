@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.brit.swiftinstaller.MainActivity">
     <item
+        android:id="@+id/disable_notifications"
+        android:orderInCategory="100"
+        android:title="@string/disable_notifications"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_about"
         android:orderInCategory="100"
         android:title="@string/about"

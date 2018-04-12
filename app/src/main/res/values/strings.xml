@@ -59,4 +59,9 @@
     <string name="update_description">Some overlays were updated. Install them.</string>
     <string name="updates">Updates :</string>
     <string name="updating_overlays">Updating overlays…</string>
+    <string name="disable_notifications">Disable notifications</string>
+    <string name="disable_notifications_title">Disable notifications?</string>
+    <string name="disable_notifications_desc">Notifications reminds you about updating the overlays for apps you update in Play Store. Are you sure you want to disable them?</string>
+    <string name="disable">Disable</string>
+    <string name="keep_enabled">Keep enabled</string>
 </resources>
