@@ -62,13 +62,15 @@ class InstallActivity : ThemeActivity() {
         super.onCreate(savedInstanceState)
         mUninstall = intent.extras.getBoolean("uninstall", false)
         mApps = intent.getStringArrayListExtra("apps")
+        mApps.forEach { Log.d("TEST", "install $it") }
 
         if (mUninstall && !ShellUtils.isRootAvailable) {
             mApps.forEach {
                 addAppToUninstall(this, it)
                 Log.d("TEST", "uninstall $it")
             }
-            RomInfo.getRomInfo(this).postInstall(true, Intent())
+            RomInfo.getRomInfo(this).postInstall(true, null)
+            finish()
             return
         }
 

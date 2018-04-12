@@ -51,23 +51,28 @@ class RomInfo internal constructor(var context: Context, var name: String,
     fun postInstall(uninstall: Boolean, intent: Intent?) {
         val apps = if (uninstall) { getAppsToUninstall(context) } else { getAppsToInstall(context) }
         Log.d("TEST", "apps - $apps")
+        val extraIntent = intent != null
 
-        val intents = Array<Intent>(if (uninstall) { apps.size } else { apps.size + 1 }, { i ->
-            if (!uninstall && i > 0) {
-                Intent(if (uninstall) {
-                    Intent.ACTION_DELETE
+        val intents = Array(if (!extraIntent) { apps.size } else { apps.size + 1 }, { i ->
+            val index = if (extraIntent) { i - 1 } else { i }
+            if (!extraIntent || i > 0) {
+                val appInstall = Intent()
+                if (uninstall) {
+                    appInstall.action = Intent.ACTION_DELETE
                 } else {
-                    Intent.ACTION_VIEW
-                })
-                        .setData(if (!uninstall) {
-                            FileProvider.getUriForFile(context,
-                                    BuildConfig.APPLICATION_ID + ".myprovider",
-                                    File(apps.elementAt(i - 1)))
-                        } else {
-                            Uri.fromParts("package", Utils.getOverlayPackageName(apps.elementAt(i)), null)
-                        })
-                        .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    appInstall.action = Intent.ACTION_VIEW
+                }
+                if (uninstall) {
+                    appInstall.data = Uri.fromParts("package",
+                            Utils.getOverlayPackageName(apps.elementAt(index)), null)
+                } else {
+                    appInstall.data = FileProvider.getUriForFile(context,
+                            BuildConfig.APPLICATION_ID + ".myprovider",
+                            File(apps.elementAt(index)))
+                }
+                appInstall.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                appInstall.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                appInstall
             } else {
                 intent!!
             }

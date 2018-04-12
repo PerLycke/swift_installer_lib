@@ -125,7 +125,7 @@ class InstallSummaryActivity : AppCompatActivity() {
             assert(mConRef.get() != null)
             val pm = mConRef.get()!!.packageManager
             val context = mConRef.get()
-            for (pn: String in mConRef.get()!!.assets.list("overlays")) {
+            for (pn: String in apps) {
                 var info: ApplicationInfo? = null
                 var pInfo: PackageInfo? = null
                 try {
