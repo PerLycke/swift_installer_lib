@@ -99,6 +99,7 @@ class InstallSummaryActivity : AppCompatActivity() {
                     text.append("App Version: " + item.version)
                     text.append("\n")
                     text.append("Error Log: " + mErrorMap[item.packageName])
+                    text.append("\n")
                     text.append("-------------------")
                     text.append("\n")
                 }

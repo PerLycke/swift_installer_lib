@@ -56,9 +56,14 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
             RomInfo.getRomInfo(context).uninstallOverlay(context, packageName)
             mOm.handleState(this, OverlayManager.OVERLAY_UNINSTALLED)
         } else {
-            extractResources()
-            compileOverlay()
-            deleteFileShell(overlayDir.absolutePath)
+            if (!checkVersionCompatible(context.assets, packageName)) {
+                errorLog = "Version Incompatible"
+                mOm.handleState(this, OverlayManager.OVERLAY_FAILED)
+            } else {
+                extractResources()
+                compileOverlay()
+                deleteFileShell(overlayDir.absolutePath)
+            }
             mOm.handleState(this, OverlayManager.OVERLAY_INSTALLED)
         }
     }
@@ -108,8 +113,8 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
             }
         }
         for (variant in variants) {
-            if (packageInfo.versionName.startsWith(variant)) {
-                parseOverlayAssetPath(am, "$path/$variant", assetPaths, black)
+            if (variant == "versions") {
+                parseOverlayVersions(am, assetPaths, "$path/versions")
             } else if (!black && variant == "dark") {
                 if (checkAssetPath(am, "$path/dark")) {
                     addAssetPath(assetPaths, "$path/dark")
@@ -124,6 +129,30 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
                 }
             } else if (checkAssetPath(am, path)) {
                 addAssetPath(assetPaths, path)
+            }
+        }
+    }
+
+    private fun checkVersionCompatible(am: AssetManager, packageName: String): Boolean {
+        val vers = am.list("overlays/$packageName/versions")
+        Log.d("TEST", "$packageName - ${packageInfo.versionName}")
+        for (ver in vers) {
+            Log.d("TEST", "Available ver - $ver")
+            if (packageInfo.versionName.startsWith(ver)) {
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun parseOverlayVersions(am: AssetManager, assetPaths: ArrayList<String>, path: String) {
+        val vers = am.list(path)
+        if (vers.contains("common")) {
+            assetPaths.add("$path/common")
+        }
+        for (ver in vers) {
+            if (packageInfo.versionName.startsWith(ver)) {
+                assetPaths.add("$path/$ver")
             }
         }
     }
