@@ -1,10 +1,12 @@
 package com.brit.swiftinstaller.ui.activities
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -14,6 +16,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.view.View
+import com.brit.swiftinstaller.BuildConfig
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.ThemedBottomSheetDialog
 import com.brit.swiftinstaller.ui.fragments.AppListFragment
@@ -76,8 +79,34 @@ class InstallSummaryActivity : AppCompatActivity() {
         }
 
         sheetView.sendLog.setOnClickListener {
-            // send log and reboot
-            sheetView.reboot.performClick()
+            val emailIntent = Intent(Intent.ACTION_SENDTO)
+            emailIntent.data = Uri.parse("mailto:")
+            emailIntent.putExtra(Intent.EXTRA_EMAIL, Array(1, { "swiftuserhelp@gmail.com" }))
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Swift Installer: Error Log")
+
+            val text = StringBuilder()
+            text.append("\n")
+            text.append("Installer Version: " + BuildConfig.VERSION_NAME)
+            text.append("\n")
+            text.append("**********************************")
+            text.append("\n")
+            for (item in mApps[FAILED_TAB]!!.iterator()) {
+                if (mErrorMap.containsKey(item.packageName)) {
+                    text.append("App: " + item.title)
+                    text.append("\n")
+                    text.append("App Package: " + item.packageName)
+                    text.append("\n")
+                    text.append("App Version: " + item.version)
+                    text.append("\n")
+                    text.append("Error Log: " + mErrorMap[item.packageName])
+                    text.append("-------------------")
+                    text.append("\n")
+                }
+            }
+
+            emailIntent.putExtra(Intent.EXTRA_TEXT, text.toString())
+            startActivity(emailIntent)
+            //sheetView.reboot.performClick()
         }
 
         sheetView.rebootLater.setOnClickListener {
