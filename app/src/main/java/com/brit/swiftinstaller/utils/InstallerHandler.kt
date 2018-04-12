@@ -35,9 +35,10 @@ class InstallerHandler(context: Context) : IInstallerCallback.Stub() {
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent)
     }
 
-    override fun installFailed(reason: Int) {
+    override fun installFailed(errorLog: String, packageName: String) {
         val intent = Intent(INSTALL_FAILED)
-        intent.putExtra("reason", reason)
+        intent.putExtra("errorLog", errorLog)
+        intent.putExtra("packageName", packageName)
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent)
     }
 

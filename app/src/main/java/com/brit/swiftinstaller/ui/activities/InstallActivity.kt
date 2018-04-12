@@ -24,6 +24,8 @@ class InstallActivity : ThemeActivity() {
 
     private var mUninstall = false
 
+    val errorMap: HashMap<String, String> = HashMap()
+
     fun updateProgress(label: String?, progress: Int, max: Int, uninstall: Boolean) {
         if (mProgressBar.progress < progress) {
             mProgressBar.progress = progress
@@ -40,26 +42,6 @@ class InstallActivity : ThemeActivity() {
 
     private fun installComplete(uninstall: Boolean) {
         RomInfo.getRomInfo(this).postInstall(uninstall)
-
-        /*if (RomInfo.getRomInfo(this).shouldReboot()) {
-            val bottomSheetDialog = BottomSheetDialog(this, R.style.CustomBottomSheetDialogTheme)
-            val sheetView = View.inflate(this, R.layout.sheet_install_summary_fab, null)
-            bottomSheetDialog.setContentView(sheetView)
-            bottomSheetDialog.show()
-
-            val rebootNow = sheetView.findViewById<View>(R.id.textView3)
-            rebootNow.setOnClickListener {
-                val pm = getSystemService(PowerManager::class.java)
-                pm.reboot(null)
-                bottomSheetDialog.dismiss()
-            }
-            val rebootLater = sheetView.findViewById<View>(R.id.textView4)
-            rebootLater.setOnClickListener {
-                bottomSheetDialog.dismiss()
-            }
-        } else {*/
-            finish()
-//        }
     }
 
     fun installFailed(reason: Int) {
@@ -103,7 +85,8 @@ class InstallActivity : ThemeActivity() {
             override fun installComplete(uninstall: Boolean) {
             }
 
-            override fun installFailed(reason: Int) {
+            override fun installFailed(errorLog: String, packageName: String) {
+                errorMap[packageName] = errorLog
             }
 
             override fun progressUpdate(label: String?, progress: Int, max: Int, uninstall: Boolean) {

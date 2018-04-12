@@ -25,6 +25,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     lateinit var resDir: File
     lateinit var overlayDir: File
     lateinit var overlayPath: String
+    var errorLog: String? = null
     var uninstall: Boolean = false
     var index = 0
 
@@ -128,10 +129,15 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     }
 
     private fun compileOverlay() {
-        ShellUtils.compileOverlay(context, BuildConfig.APPLICATION_ID, resDir.absolutePath,
+        val output = ShellUtils.compileOverlay(context, BuildConfig.APPLICATION_ID, resDir.absolutePath,
                 overlayDir.absolutePath + "/AndroidManifest.xml",
                 overlayPath, null, appInfo)
-        RomInfo.getRomInfo(context).installOverlay(context, packageName, overlayPath)
+        if (output.exitCode == 0) {
+            RomInfo.getRomInfo(context).installOverlay(context, packageName, overlayPath)
+        } else {
+            errorLog = output.error
+            mOm.handleState(this, OverlayManager.OVERLAY_FAILED)
+        }
     }
 
     private fun applyAccent(resDir: File) {

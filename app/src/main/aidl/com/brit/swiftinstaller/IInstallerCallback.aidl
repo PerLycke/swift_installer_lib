@@ -7,5 +7,5 @@ interface IInstallerCallback {
     void installStarted();
     void progressUpdate(String label, int progress, int max, boolean uninstall);
     void installComplete(boolean uninstall);
-    void installFailed(int reason);
+    void installFailed(String errorLog, String packageName);
 }

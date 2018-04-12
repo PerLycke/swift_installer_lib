@@ -62,7 +62,9 @@ class RomInfo internal constructor(var context: Context, var name: String,
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         })
 
-        context.startActivities(intents)
+        if (!intents.isEmpty()) {
+            context.startActivities(intents)
+        }
 
         clearAppsToUninstall(context)
         clearAppsToInstall(context)

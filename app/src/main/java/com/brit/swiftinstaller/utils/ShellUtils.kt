@@ -50,7 +50,8 @@ object ShellUtils {
     }
 
     fun compileOverlay(context: Context, themePackage: String, res: String?, manifest: String,
-                       overlayPath: String, assetPath: String?, targetInfo: ApplicationInfo?) {
+                       overlayPath: String, assetPath: String?, targetInfo: ApplicationInfo?) : CommandOutput {
+        var output: CommandOutput = CommandOutput("", "", 0)
         val overlay = File(overlayPath)
         val unsigned = File(overlay.parent, "unsigned_" + overlay.name)
         val overlayFolder = File(context.cacheDir.toString() + "/" + themePackage + "/overlays")
@@ -87,12 +88,14 @@ object ShellUtils {
             val aapt = Runtime.getRuntime().exec(cmd.toString().split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
             val exitCode = aapt.waitFor()
             val error = inputStreamToString(aapt.errorStream)
-            val output = inputStreamToString(aapt.inputStream)
+            val out = inputStreamToString(aapt.inputStream)
             Log.d("TEST", "aapt exitCode - $exitCode")
-            Log.d("TEST", "aapt output - $output")
             Log.d("TEST", "aapt error - $error")
+            Log.d("TEST", "aapt output - $out")
+            output = CommandOutput(out, error, exitCode)
             aapt.destroy()
         } catch (e: Exception) {
+            output = CommandOutput("", "", 1)
             e.printStackTrace()
         }
 
@@ -122,6 +125,7 @@ object ShellUtils {
                     .build()
                     .sign()
         }
+        return output
     }
 
     private fun getAapt(context: Context): String? {

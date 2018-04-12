@@ -59,6 +59,7 @@ class OverlayManager(val mContext: Context) {
                 when (msg.what) {
                     OVERLAY_FAILED -> {
                         mNotifier.broadcastOverlayFailed(overlayTask.packageName, msg.arg1)
+                        mCallback!!.installFailed(overlayTask.errorLog, overlayTask.packageName)
                     }
 
                     OVERLAY_INSTALLED -> {
@@ -138,6 +139,12 @@ class OverlayManager(val mContext: Context) {
                 uninstalled.arg1 = task.index
                 uninstalled.arg2 = mMax
                 uninstalled.sendToTarget()
+            }
+
+            OVERLAY_FAILED -> {
+                val failed = mHandler.obtainMessage(state, task)
+                failed.arg1 = task.index
+                failed.sendToTarget()
             }
         }
     }
