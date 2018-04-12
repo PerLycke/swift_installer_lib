@@ -48,18 +48,29 @@ class RomInfo internal constructor(var context: Context, var name: String,
         }
     }
 
-    fun postInstall(uninstall: Boolean) {
+    fun postInstall(uninstall: Boolean, intent: Intent?) {
         val apps = if (uninstall) { getAppsToUninstall(context) } else { getAppsToInstall(context) }
         Log.d("TEST", "apps - $apps")
 
-        val intents = Array<Intent>(apps.size, { i ->
-            Intent(if (uninstall) { Intent.ACTION_DELETE } else { Intent.ACTION_VIEW })
-                    .setData( if (!uninstall) { FileProvider.getUriForFile(context,
-                            BuildConfig.APPLICATION_ID + ".myprovider",
-                            File(apps.elementAt(i))) } else {
-                        Uri.fromParts("package", Utils.getOverlayPackageName(apps.elementAt(i)), null) })
-                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        val intents = Array<Intent>(if (uninstall) { apps.size } else { apps.size + 1 }, { i ->
+            if (!uninstall && i > 0) {
+                Intent(if (uninstall) {
+                    Intent.ACTION_DELETE
+                } else {
+                    Intent.ACTION_VIEW
+                })
+                        .setData(if (!uninstall) {
+                            FileProvider.getUriForFile(context,
+                                    BuildConfig.APPLICATION_ID + ".myprovider",
+                                    File(apps.elementAt(i - 1)))
+                        } else {
+                            Uri.fromParts("package", Utils.getOverlayPackageName(apps.elementAt(i)), null)
+                        })
+                        .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            } else {
+                intent!!
+            }
         })
 
         if (!intents.isEmpty()) {

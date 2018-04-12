@@ -9,8 +9,10 @@ class UpdateChecker() {
     companion object {
         fun checkForOverlayUpdates(context: Context) {
             val available = ArrayList<String>()
+            var installed = 0
             for (packageName in context.assets.list("overlays")) {
                 if (Utils.isOverlayInstalled(context, Utils.getOverlayPackageName(packageName))) {
+                    installed++
                     val aInfo = context.packageManager.getApplicationInfo(Utils.getOverlayPackageName(packageName), PackageManager.GET_META_DATA)
                     val ver = ShellUtils.inputStreamToString(context.assets.open("overlays/$packageName/version"))
                     val version = Integer.parseInt(ver.trim().replace("\"", ""))
@@ -20,6 +22,7 @@ class UpdateChecker() {
                     }
                 }
             }
+
         }
     }
 }

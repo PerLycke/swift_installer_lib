@@ -17,6 +17,7 @@ import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.UpdateChecker
 import com.brit.swiftinstaller.utils.getAccentColor
 import com.brit.swiftinstaller.utils.getAppsToUpdate
+import com.brit.swiftinstaller.utils.getInstalledCount
 import kotlinx.android.synthetic.main.dialog_about.view.*
 import kotlinx.android.synthetic.main.content_main.*
 
@@ -40,6 +41,15 @@ class MainActivity : ThemeActivity() {
         }
 
         UpdateChecker.checkForOverlayUpdates(this)
+
+        val updates = getAppsToUpdate(this)
+        if (updates.isEmpty()) {
+            updateTileLayout.visibility = View.GONE
+        } else {
+            updatesCount.text = String.format("%d", updates.size)
+        }
+
+        activeCount.text = String.format("%d", getInstalledCount(this))
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {

@@ -13,7 +13,6 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
-import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.*
@@ -23,12 +22,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.ThemedBottomSheetDialog
+import com.brit.swiftinstaller.ui.fragments.AppListFragment
 import com.brit.swiftinstaller.utils.Utils.getOverlayPackageName
 import com.brit.swiftinstaller.utils.Utils.isOverlayEnabled
 import com.brit.swiftinstaller.utils.Utils.isOverlayFailed
 import com.brit.swiftinstaller.utils.Utils.isOverlayInstalled
 import com.brit.swiftinstaller.utils.getAccentColor
-import com.brit.swiftinstaller.utils.useBlackBackground
 import kotlinx.android.synthetic.main.activity_app_list.*
 import kotlinx.android.synthetic.main.activity_overlay.*
 import kotlinx.android.synthetic.main.toolbar_overlays.*
@@ -71,7 +70,7 @@ class OverlaysActivity : ThemeActivity() {
             for (appItem in mApps[container.currentItem]!!) {
                 appItem.checked = check
             }
-            mSectionsPagerAdapter!!.notifyFragmentDataSetChanged()
+            mSectionsPagerAdapter!!.notifyFragmentDataSetChanged(container.currentItem)
         }
 
         container.adapter = mSectionsPagerAdapter
@@ -109,7 +108,7 @@ class OverlaysActivity : ThemeActivity() {
         AppLoader(this, object : Callback {
             override fun updateApps(tab: Int, item: AppItem) {
                 mApps[tab]!!.add(item)
-                mSectionsPagerAdapter!!.notifyFragmentDataSetChanged()
+                mSectionsPagerAdapter!!.notifyFragmentDataSetChanged(tab)
             }
         }).execute()
     }
@@ -121,16 +120,16 @@ class OverlaysActivity : ThemeActivity() {
 
     inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
-        private var mFragments: ArrayList<PlaceholderFragment> = ArrayList()
+        private var mFragments: ArrayList<AppListFragment> = ArrayList()
 
         init {
-            mFragments.add(PlaceholderFragment())
+            mFragments.add(AppListFragment.instance(false))
             mFragments[INSTALL_TAB].setAppList(mApps[INSTALL_TAB]!!)
-            mFragments.add(PlaceholderFragment())
+            mFragments.add(AppListFragment.instance(false))
             mFragments[ACTIVE_TAB].setAppList(mApps[ACTIVE_TAB]!!)
-            mFragments.add(PlaceholderFragment())
+            mFragments.add(AppListFragment.instance(false))
             mFragments[UPDATE_TAB].setAppList(mApps[UPDATE_TAB]!!)
-            mFragments.add(PlaceholderFragment())
+            mFragments.add(AppListFragment.instance(false))
             mFragments[FAILED_TAB].setAppList(mApps[FAILED_TAB]!!)
         }
 
@@ -138,10 +137,8 @@ class OverlaysActivity : ThemeActivity() {
             return mFragments[position]
         }
 
-        fun notifyFragmentDataSetChanged() {
-            for (i in mFragments.indices) {
-                mFragments[i].setAppList(mApps[i]!!)
-            }
+        fun notifyFragmentDataSetChanged(position: Int) {
+            mFragments[position].setAppList(mApps[position])
         }
 
         override fun getCount(): Int {
@@ -162,64 +159,6 @@ class OverlaysActivity : ThemeActivity() {
         fun updateApps(tab: Int, item: AppItem)
     }
 
-    class PlaceholderFragment : Fragment() {
-
-        var mApps: ArrayList<AppItem> = ArrayList()
-
-        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-            return inflater.inflate(R.layout.activity_app_list, container, false)
-        }
-
-        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            super.onViewCreated(view, savedInstanceState)
-            appListView.adapter = AppAdapter()
-            appListView.layoutManager = LinearLayoutManager(activity)
-        }
-
-        fun setAppList(apps: ArrayList<AppItem>) {
-            mApps.clear()
-            mApps.addAll(apps)
-            if (appListView != null) {
-                appListView.adapter.notifyDataSetChanged()
-            }
-        }
-
-        inner class AppAdapter : RecyclerView.Adapter<AppAdapter.ViewHolder>() {
-            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-                return ViewHolder(LayoutInflater.from(activity).inflate(
-                        R.layout.app_item, parent, false))
-            }
-
-            override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-                holder.bindAppItem(mApps[position])
-            }
-
-            override fun getItemCount(): Int {
-                return mApps.size
-            }
-
-            inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-                private var appName: TextView = view.findViewById(R.id.appItemName)
-//                var packageName: TextView = view.findViewById(R.id.appName)
-                private var appIcon: ImageView = view.findViewById(R.id.appItemImage)
-                private var appCheckBox: CheckBox = view.findViewById(R.id.appItemCheckBox)
-
-                fun bindAppItem(item: AppItem) {
-                    appName.text = item.title
-                    appIcon.setImageDrawable(item.icon)
-                    appCheckBox.isChecked = item.checked
-//                    packageName.text = item.packageName
-
-
-                    appCheckBox.setOnCheckedChangeListener({ _: CompoundButton, checked: Boolean ->
-                        item.checked = checked
-                    })
-                }
-            }
-
-        }
-    }
-
     private fun getCheckedItems(index: Int): ArrayList<AppItem> {
         val checked = ArrayList<AppItem>()
         mApps[index]!!.filterTo(checked) { it.checked }
@@ -237,7 +176,7 @@ class OverlaysActivity : ThemeActivity() {
                 for (appItem in mApps[container.currentItem]!!) {
                     appItem.checked = true
                 }
-                mSectionsPagerAdapter!!.notifyFragmentDataSetChanged()
+                mSectionsPagerAdapter!!.notifyFragmentDataSetChanged(container.currentItem)
                 return true
             }
         }

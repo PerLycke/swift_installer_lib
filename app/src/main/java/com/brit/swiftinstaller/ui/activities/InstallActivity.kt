@@ -1,5 +1,6 @@
 package com.brit.swiftinstaller.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,9 +11,11 @@ import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.ThemedBottomSheetDialog
 import com.brit.swiftinstaller.utils.InstallerServiceHelper
 import com.brit.swiftinstaller.utils.ShellUtils
+import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.utils.addAppToUninstall
 import com.brit.swiftinstaller.utils.rom.RomInfo
 import kotlinx.android.synthetic.main.sheet_install_progress.view.*
+import java.util.ArrayList
 
 
 @Suppress("UNUSED_PARAMETER")
@@ -23,6 +26,8 @@ class InstallActivity : ThemeActivity() {
     private lateinit var mProgressPercent: TextView
 
     private var mUninstall = false
+
+    private lateinit var mApps: ArrayList<String>
 
     val errorMap: HashMap<String, String> = HashMap()
 
@@ -41,7 +46,12 @@ class InstallActivity : ThemeActivity() {
     }
 
     private fun installComplete(uninstall: Boolean) {
-        RomInfo.getRomInfo(this).postInstall(uninstall)
+        val intent = Intent(this, InstallSummaryActivity::class.java)
+        intent.putExtra("errorMap", Utils.mapToBundle(errorMap))
+        intent.putExtra("apps", mApps)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        RomInfo.getRomInfo(this).postInstall(uninstall, intent)
+        finish()
     }
 
     fun installFailed(reason: Int) {
@@ -51,14 +61,14 @@ class InstallActivity : ThemeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mUninstall = intent.extras.getBoolean("uninstall", false)
-        val apps = intent.getStringArrayListExtra("apps")
+        mApps = intent.getStringArrayListExtra("apps")
 
         if (mUninstall && !ShellUtils.isRootAvailable) {
-            apps.forEach {
+            mApps.forEach {
                 addAppToUninstall(this, it)
                 Log.d("TEST", "uninstall $it")
             }
-            RomInfo.getRomInfo(this).postInstall(true)
+            RomInfo.getRomInfo(this).postInstall(true, Intent())
             return
         }
 
@@ -79,7 +89,7 @@ class InstallActivity : ThemeActivity() {
         mProgressCount = sheetView.installProgressCount
         mProgressPercent = sheetView.installProgressPercent
 
-        updateProgress("", 0, apps.size, mUninstall)
+        updateProgress("", 0, mApps.size, mUninstall)
 
         InstallerServiceHelper.setInstallerCallback(object : IInstallerCallback.Stub() {
             override fun installComplete(uninstall: Boolean) {
@@ -98,9 +108,9 @@ class InstallActivity : ThemeActivity() {
 
         })
         if (mUninstall) {
-            InstallerServiceHelper.uninstall(apps)
+            InstallerServiceHelper.uninstall(mApps)
         } else {
-            InstallerServiceHelper.install(apps)
+            InstallerServiceHelper.install(mApps)
         }
     }
 

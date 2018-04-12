@@ -3,6 +3,7 @@ package com.brit.swiftinstaller.utils
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import android.os.Bundle
 import android.os.Environment
 import android.util.Log
 import org.bouncycastle.x509.X509V3CertificateGenerator
@@ -17,11 +18,28 @@ import java.security.SecureRandom
 import java.security.cert.X509Certificate
 import java.util.*
 import javax.security.auth.x500.X500Principal
+import kotlin.collections.HashMap
 
 
 object Utils {
     fun getOverlayPackageName(pack: String): String {
         return pack + ".swiftinstaller.overlay"
+    }
+
+    fun mapToBundle(map: HashMap<String, String>): Bundle {
+        val bundle = Bundle()
+        for (key in map.keys) {
+            bundle.putString(key, map[key])
+        }
+        return bundle
+    }
+
+    fun bundleToMap(bundle: Bundle): HashMap<String, String> {
+        val map = HashMap<String, String>()
+        for (key in bundle.keySet()) {
+            map[key] = bundle.getString(key)
+        }
+        return map
     }
 
     fun isOverlayInstalled(context: Context, packageName: String): Boolean {
