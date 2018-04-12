@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AppCompatDelegate
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -84,13 +85,13 @@ class CustomizeActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (count > 0)
-                    updateColor(Integer.decode("0x$s"))
+                    updateColor(Utils.convertToColorInt(s.toString()))
             }
 
         })
 
         applyHex.setOnClickListener {
-            updateColor(Integer.decode("0x" + hexInput.text.toString()))
+            updateColor(Utils.convertToColorInt(hexInput.text.toString()))
         }
     }
 

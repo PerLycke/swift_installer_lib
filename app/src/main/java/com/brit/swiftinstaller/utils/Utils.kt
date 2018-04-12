@@ -2,6 +2,7 @@ package com.brit.swiftinstaller.utils
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -127,5 +128,40 @@ object Utils {
             e.printStackTrace()
             return null
         }
+    }
+
+    /**
+     * For custom purposes. Not used by ColorPickerPreferrence
+     *
+     * @param argb
+     * @throws NumberFormatException
+     * @author Unknown
+     */
+    @Throws(NumberFormatException::class)
+    fun convertToColorInt(color: String): Int {
+        var argb = color
+
+        if (argb.startsWith("#")) {
+            argb = argb.replace("#", "")
+        }
+
+        var alpha = -1
+        var red = -1
+        var green = -1
+        var blue = -1
+
+        if (argb.length == 8) {
+            alpha = Integer.parseInt(argb.substring(0, 2), 16)
+            red = Integer.parseInt(argb.substring(2, 4), 16)
+            green = Integer.parseInt(argb.substring(4, 6), 16)
+            blue = Integer.parseInt(argb.substring(6, 8), 16)
+        } else if (argb.length == 6) {
+            alpha = 255
+            red = Integer.parseInt(argb.substring(0, 2), 16)
+            green = Integer.parseInt(argb.substring(2, 4), 16)
+            blue = Integer.parseInt(argb.substring(4, 6), 16)
+        }
+
+        return Color.argb(alpha, red, green, blue)
     }
 }
