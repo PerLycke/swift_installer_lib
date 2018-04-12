@@ -134,13 +134,17 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     }
 
     private fun checkVersionCompatible(am: AssetManager, packageName: String): Boolean {
-        val vers = am.list("overlays/$packageName/versions")
-        Log.d("TEST", "$packageName - ${packageInfo.versionName}")
-        for (ver in vers) {
-            Log.d("TEST", "Available ver - $ver")
-            if (packageInfo.versionName.startsWith(ver)) {
-                return true
+        if (am.list("overlays/$packageName").contains("versions")) {
+            val vers = am.list("overlays/$packageName/versions")
+            Log.d("TEST", "$packageName - ${packageInfo.versionName}")
+            for (ver in vers) {
+                Log.d("TEST", "Available ver - $ver")
+                if (packageInfo.versionName.startsWith(ver)) {
+                    return true
+                }
             }
+        } else {
+            return true
         }
         return false
     }
