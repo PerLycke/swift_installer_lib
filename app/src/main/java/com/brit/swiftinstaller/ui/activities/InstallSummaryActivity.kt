@@ -32,7 +32,7 @@ class InstallSummaryActivity : AppCompatActivity() {
 
     companion object {
         private const val SUCCESS_TAB = 0
-        private const val FAILED_TAB = 1
+        const val FAILED_TAB = 1
     }
 
     private lateinit var mPagerAdapter: AppsTabPagerAdapter

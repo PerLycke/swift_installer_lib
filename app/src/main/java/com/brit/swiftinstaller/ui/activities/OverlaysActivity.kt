@@ -206,8 +206,11 @@ class OverlaysActivity : ThemeActivity() {
     }
 
     private fun installAction() {
-        val intent = Intent(this, InstallActivity::class.java)
         val checked = getCheckedItems(mViewPager.currentItem)
+        if (checked.isEmpty()) {
+            return
+        }
+        val intent = Intent(this, InstallActivity::class.java)
         val apps = ArrayList<String>()
         checked.mapTo(apps) { it.packageName }
         intent.putStringArrayListExtra("apps", apps)

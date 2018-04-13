@@ -23,12 +23,12 @@ fun setUseBlackBackground(context: Context, black: Boolean) {
     PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("black_background", black).apply()
 }
 
-fun setInstalledCount(context: Context, count: Int) {
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putInt("installed_count", count).apply()
+fun setHideFailedInfoCard(context: Context, hide: Boolean) {
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("hide_failed_info", hide).apply()
 }
 
-fun getInstalledCount(context: Context): Int {
-    return PreferenceManager.getDefaultSharedPreferences(context).getInt("installed_count", 0)
+fun getHideFailedInfoCard(context: Context): Boolean {
+    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("hide_failed_info", false)
 }
 
 fun getUserAccents(context: Context): IntArray {

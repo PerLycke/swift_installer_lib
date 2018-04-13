@@ -21,6 +21,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup">
+        <!--suppress AndroidDomInspection -->
         <activity
             android:name=".ui.activities.IntroActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -64,6 +65,8 @@
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
+
+        <receiver android:name=".utils.PackageListener" />
 
         <provider
             android:name=".utils.SwiftFileProvider"

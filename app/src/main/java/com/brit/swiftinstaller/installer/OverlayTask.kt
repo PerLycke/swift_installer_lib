@@ -90,7 +90,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
             applyAccent(resDir)
         }
         generateManifest(overlayDir.absolutePath, packageName, packageInfo.versionName,
-                Utils.getThemeVersion(context, packageName))
+                packageInfo.versionCode, Utils.getThemeVersion(context, packageName))
     }
 
     private fun checkAssetPath(am: AssetManager, path: String): Boolean {
@@ -202,7 +202,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     }
 
     private fun generateManifest(path: String, targetPackage: String,
-                                 appVersion: String, themeVersion: Int) {
+                                 appVersion: String, appVersionCode: Int, themeVersion: Int) {
         val manifest = StringBuilder()
         manifest.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
         manifest.append("<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n")
@@ -217,6 +217,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         }
         manifest.append("<application android:allowBackup=\"false\" android:hasCode=\"false\">\n")
         manifest.append("<meta-data android:name=\"app_version\" android:value=\"v=$appVersion\"/>\n")
+        manifest.append("<meta-data android:name=\"app_version_code\" android:value=\"$appVersionCode\"/>\n")
         manifest.append("<meta-data android:name=\"overlay_version\" android:value=\"$themeVersion\"/>\n")
         manifest.append("<meta-data android:name=\"target_package\" android:value=\"$targetPackage\"/>\n")
         manifest.append("</application>\n")

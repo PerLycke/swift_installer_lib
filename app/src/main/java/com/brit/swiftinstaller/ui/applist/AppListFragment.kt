@@ -15,7 +15,11 @@ import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.TextView
 import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.utils.getHideFailedInfoCard
+import com.brit.swiftinstaller.utils.setHideFailedInfoCard
 import kotlinx.android.synthetic.main.activity_app_list.*
+import kotlinx.android.synthetic.main.activity_app_list.view.*
+import kotlinx.android.synthetic.main.failed_info_card.view.*
 
 class AppListFragment : Fragment() {
 
@@ -24,28 +28,40 @@ class AppListFragment : Fragment() {
 
     private val mChecked = SparseBooleanArray()
 
-    var mSummary = false
+    private var mSummary = false
+    private var mFailedTab = false
 
     companion object {
-        fun instance(summary: Boolean): AppListFragment {
+        fun instance(summary: Boolean, failedTab: Boolean): AppListFragment {
             val fragment = AppListFragment()
             val args = Bundle()
             args.putBoolean("summary", summary)
+            args.putBoolean("failed_tab", failedTab)
             fragment.arguments = args
             return fragment
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.activity_app_list, container, false)
+        val view = inflater.inflate(R.layout.activity_app_list, container, false)
+        if (arguments != null) {
+            mSummary = arguments!!.getBoolean("summary", false)
+            mFailedTab = arguments!!.getBoolean("failed_tab", false)
+        }
+        if (mSummary && mFailedTab && !getHideFailedInfoCard(context!!)) {
+            view.failed_info.visibility = View.VISIBLE
+        } else {
+            view.failed_info.visibility = View.GONE
+        }
+        view.failed_info.closeInfoCard.setOnClickListener {
+            view.failed_info.visibility = View.GONE
+            setHideFailedInfoCard(context!!, true)
+        }
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-        if (arguments != null)
-            mSummary = arguments!!.getBoolean("summary", false)
 
         appListView.adapter = AppAdapter()
         appListView.layoutManager = LinearLayoutManager(activity)

@@ -5,6 +5,10 @@
     android:background="?android:colorBackground"
     android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/failed_info"
+        layout="@layout/failed_info_card"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/appListView"
         android:layout_width="match_parent"

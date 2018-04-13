@@ -20,9 +20,16 @@ import java.security.cert.X509Certificate
 import java.util.*
 import javax.security.auth.x500.X500Principal
 import kotlin.collections.HashMap
+import android.text.TextUtils
+import android.content.ComponentName
+import android.provider.Settings
+import com.brit.swiftinstaller.BuildConfig
 
 
 object Utils {
+
+    private val ENABLED_NOTIFICATION_LISTENERS = "enabled_notification_listeners"
+
     fun getOverlayPackageName(pack: String): String {
         return pack + ".swiftinstaller.overlay"
     }
@@ -79,6 +86,29 @@ object Utils {
     }
 
     fun isOverlayFailed(context: Context, packageName: String): Boolean {
+        return false
+    }
+
+    fun containsOverlay(context: Context, packageName: String): Boolean {
+        val apps = context.assets.list("overlays")
+        return apps.contains(packageName)
+    }
+
+    fun isNotificationServiceEnabled(context: Context): Boolean {
+        val pkgName = BuildConfig.APPLICATION_ID
+        val flat = Settings.Secure.getString(context.getContentResolver(),
+                ENABLED_NOTIFICATION_LISTENERS)
+        if (!TextUtils.isEmpty(flat)) {
+            val names = flat.split(":".toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()
+            for (i in names.indices) {
+                val cn = ComponentName.unflattenFromString(names[i])
+                if (cn != null) {
+                    if (TextUtils.equals(pkgName, cn.packageName)) {
+                        return true
+                    }
+                }
+            }
+        }
         return false
     }
 

@@ -2,6 +2,7 @@ package com.brit.swiftinstaller
 
 import android.app.Service
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.res.AssetManager
@@ -9,12 +10,9 @@ import android.os.IBinder
 import android.os.RemoteException
 import android.util.Log
 import com.brit.swiftinstaller.installer.OverlayManager
+import com.brit.swiftinstaller.utils.*
 import com.brit.swiftinstaller.utils.AssetHelper.Companion.copyAssetFolder
-import com.brit.swiftinstaller.utils.ShellUtils
-import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.utils.constants.SIMULATE_INSTALL
-import com.brit.swiftinstaller.utils.deleteFileShell
-import com.brit.swiftinstaller.utils.getAccentColor
 import com.brit.swiftinstaller.utils.rom.RomInfo
 import java.io.BufferedWriter
 import java.io.File
@@ -90,6 +88,14 @@ class InstallerService : Service() {
         mRomInfo = RomInfo.getRomInfo(this)
 
         mOM = OverlayManager(this)
+
+        Log.d("TEST", "register package listener")
+        val filter = IntentFilter(Intent.ACTION_PACKAGE_ADDED)
+        filter.addAction(Intent.ACTION_PACKAGE_CHANGED)
+        filter.addAction(Intent.ACTION_PACKAGE_REMOVED)
+        filter.addAction(Intent.ACTION_PACKAGE_FULLY_REMOVED)
+        filter.addDataScheme("package")
+        registerReceiver(PackageListener(), filter)
 
         sService = IInstallerService.Stub.asInterface(onBind(intent))
 

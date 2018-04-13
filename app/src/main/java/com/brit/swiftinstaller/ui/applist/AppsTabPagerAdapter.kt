@@ -3,9 +3,9 @@ package com.brit.swiftinstaller.ui.applist
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import com.brit.swiftinstaller.ui.activities.OverlaysActivity
+import com.brit.swiftinstaller.ui.activities.InstallSummaryActivity
 
-class AppsTabPagerAdapter(fm: FragmentManager, val summary: Boolean,vararg tabs: Int) : FragmentPagerAdapter(fm) {
+class AppsTabPagerAdapter(fm: FragmentManager, val summary: Boolean, vararg tabs: Int) : FragmentPagerAdapter(fm) {
 
     private val mApps = HashMap<Int, ArrayList<AppItem>>()
 
@@ -13,19 +13,14 @@ class AppsTabPagerAdapter(fm: FragmentManager, val summary: Boolean,vararg tabs:
 
     init {
         for(index in tabs) {
-            mFragments.add(AppListFragment.instance(summary))
+            mFragments.add(AppListFragment.instance(summary,
+                    (index == InstallSummaryActivity.FAILED_TAB)))
             mApps[index] = ArrayList()
         }
     }
 
     fun addApp(tab: Int, app: AppItem) {
         mApps[tab]!!.add(app)
-        notifyFragmentDataSetChanged(tab)
-    }
-
-    fun setApps(tab: Int, apps: ArrayList<AppItem>) {
-        mApps[tab]!!.clear()
-        mApps[tab]!!.addAll(apps)
         notifyFragmentDataSetChanged(tab)
     }
 
@@ -36,6 +31,7 @@ class AppsTabPagerAdapter(fm: FragmentManager, val summary: Boolean,vararg tabs:
     fun clearApps() {
         for (key in mApps.keys) {
             mApps[key]!!.clear()
+            mFragments[key].selectAll(false)
             notifyFragmentDataSetChanged(key)
         }
     }
