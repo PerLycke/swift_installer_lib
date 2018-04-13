@@ -22,7 +22,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.ThemedBottomSheetDialog
-import com.brit.swiftinstaller.ui.fragments.AppListFragment
+import com.brit.swiftinstaller.ui.applist.AppItem
+import com.brit.swiftinstaller.ui.applist.AppListFragment
+import com.brit.swiftinstaller.ui.applist.AppsTabPagerAdapter
 import com.brit.swiftinstaller.utils.Utils.getOverlayPackageName
 import com.brit.swiftinstaller.utils.Utils.isOverlayEnabled
 import com.brit.swiftinstaller.utils.Utils.isOverlayFailed
@@ -43,37 +45,26 @@ class OverlaysActivity : ThemeActivity() {
         private const val FAILED_TAB = 3
     }
 
-    private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
+    private var mPagerAdapter: AppsTabPagerAdapter? = null
     private lateinit var mViewPager: ViewPager
-
-    private var mApps: HashMap<Int, ArrayList<AppItem>> = HashMap()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_overlay)
 
-        mApps[INSTALL_TAB] = ArrayList()
-        mApps[ACTIVE_TAB] = ArrayList()
-        mApps[UPDATE_TAB] = ArrayList()
-        mApps[FAILED_TAB] = ArrayList()
-
-        mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
+        mPagerAdapter = AppsTabPagerAdapter(supportFragmentManager,
+                false, INSTALL_TAB, ACTIVE_TAB, UPDATE_TAB)
 
         mViewPager = container
 
         selectAllBtn.setOnClickListener {
-            var checked = 0
-            mApps[container.currentItem]!!.forEach {
-                if (it.checked) checked++
-            }
-            val check = checked < (mApps[container.currentItem]!!.size / 2)
-            for (appItem in mApps[container.currentItem]!!) {
-                appItem.checked = check
-            }
-            mSectionsPagerAdapter!!.notifyFragmentDataSetChanged(container.currentItem)
+            val checked = mPagerAdapter!!.getCheckedCount(container.currentItem)
+            val check = checked < (mPagerAdapter!!.getAppsCount(container.currentItem) / 2)
+            mPagerAdapter!!.selectAll(container.currentItem, check)
+            mPagerAdapter!!.notifyFragmentDataSetChanged(container.currentItem)
         }
 
-        container.adapter = mSectionsPagerAdapter
+        container.adapter = mPagerAdapter
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
         container.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -100,15 +91,11 @@ class OverlaysActivity : ThemeActivity() {
         currentAccent.text = getString(R.string.hex_string,
                 String.format("%06x", getAccentColor(this)).substring(2))
 
-        mApps[INSTALL_TAB]!!.clear()
-        mApps[ACTIVE_TAB]!!.clear()
-        mApps[UPDATE_TAB]!!.clear()
-        mApps[FAILED_TAB]!!.clear()
+        mPagerAdapter!!.clearApps()
 
         AppLoader(this, object : Callback {
             override fun updateApps(tab: Int, item: AppItem) {
-                mApps[tab]!!.add(item)
-                mSectionsPagerAdapter!!.notifyFragmentDataSetChanged(tab)
+                mPagerAdapter!!.addApp(tab, item)
             }
         }).execute()
     }
@@ -118,65 +105,18 @@ class OverlaysActivity : ThemeActivity() {
         startActivity(intent)
     }
 
-    inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
-
-        private var mFragments: ArrayList<AppListFragment> = ArrayList()
-
-        init {
-            mFragments.add(AppListFragment.instance(false))
-            mFragments[INSTALL_TAB].setAppList(mApps[INSTALL_TAB]!!)
-            mFragments.add(AppListFragment.instance(false))
-            mFragments[ACTIVE_TAB].setAppList(mApps[ACTIVE_TAB]!!)
-            mFragments.add(AppListFragment.instance(false))
-            mFragments[UPDATE_TAB].setAppList(mApps[UPDATE_TAB]!!)
-            mFragments.add(AppListFragment.instance(false))
-            mFragments[FAILED_TAB].setAppList(mApps[FAILED_TAB]!!)
-        }
-
-        override fun getItem(position: Int): Fragment {
-            return mFragments[position]
-        }
-
-        fun notifyFragmentDataSetChanged(position: Int) {
-            mFragments[position].setAppList(mApps[position])
-        }
-
-        override fun getCount(): Int {
-            return mFragments.size
-        }
-    }
-
-
-    class AppItem {
-        var packageName: String = ""
-        var title: String = ""
-        var version: Int = 0
-        var icon: Drawable? = null
-        var checked: Boolean = false
-    }
-
     interface Callback {
         fun updateApps(tab: Int, item: AppItem)
     }
 
     private fun getCheckedItems(index: Int): ArrayList<AppItem> {
-        val checked = ArrayList<AppItem>()
-        mApps[index]!!.filterTo(checked) { it.checked }
-        return checked
+        return mPagerAdapter!!.getCheckedItems(index)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
                 finish()
-                return true
-            }
-
-            1 -> {
-                for (appItem in mApps[container.currentItem]!!) {
-                    appItem.checked = true
-                }
-                mSectionsPagerAdapter!!.notifyFragmentDataSetChanged(container.currentItem)
                 return true
             }
         }

@@ -19,7 +19,8 @@ import android.view.View
 import com.brit.swiftinstaller.BuildConfig
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.ThemedBottomSheetDialog
-import com.brit.swiftinstaller.ui.fragments.AppListFragment
+import com.brit.swiftinstaller.ui.applist.AppItem
+import com.brit.swiftinstaller.ui.applist.AppsTabPagerAdapter
 import com.brit.swiftinstaller.utils.Utils
 import kotlin.collections.ArrayList
 import kotlinx.android.synthetic.main.activity_install_summary.*
@@ -34,24 +35,20 @@ class InstallSummaryActivity : AppCompatActivity() {
         private const val FAILED_TAB = 1
     }
 
-    private lateinit var mSectionsPagerAdapter: SectionsPagerAdapter
+    private lateinit var mPagerAdapter: AppsTabPagerAdapter
 
-    private var mApps: HashMap<Int, ArrayList<OverlaysActivity.AppItem>> = HashMap()
     private var mErrorMap: HashMap<String, String> = HashMap()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_install_summary)
 
-        mApps[SUCCESS_TAB] = ArrayList()
-        mApps[FAILED_TAB] = ArrayList()
-
         if (intent.extras.containsKey("errorMap")) {
             mErrorMap = Utils.bundleToMap(intent.getBundleExtra("errorMap"))
         }
 
-        mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
-        container.adapter = mSectionsPagerAdapter
+        mPagerAdapter = AppsTabPagerAdapter(supportFragmentManager, true, SUCCESS_TAB, FAILED_TAB)
+        container.adapter = mPagerAdapter
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
     }
@@ -61,9 +58,8 @@ class InstallSummaryActivity : AppCompatActivity() {
         val apps = intent.getStringArrayListExtra("apps")
 
         AppLoader(this, apps, mErrorMap, object : OverlaysActivity.Callback {
-            override fun updateApps(tab: Int, item: OverlaysActivity.AppItem) {
-                mApps[tab]!!.add(item)
-                mSectionsPagerAdapter.notifyFragmentDataSetChanged(tab)
+            override fun updateApps(tab: Int, item: AppItem) {
+                mPagerAdapter.addApp(tab, item)
             }
         }).execute()
     }
@@ -90,7 +86,7 @@ class InstallSummaryActivity : AppCompatActivity() {
             text.append("\n")
             text.append("**********************************")
             text.append("\n")
-            for (item in mApps[FAILED_TAB]!!.iterator()) {
+            for (item in mPagerAdapter.getApps(FAILED_TAB).iterator()) {
                 if (mErrorMap.containsKey(item.packageName)) {
                     text.append("App: " + item.title)
                     text.append("\n")
@@ -119,37 +115,13 @@ class InstallSummaryActivity : AppCompatActivity() {
         bottomSheetDialog.show()
     }
 
-    inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
-
-        private var mFragments: ArrayList<AppListFragment> = ArrayList()
-
-        init {
-            mFragments.add(AppListFragment.instance(true))
-            mFragments[SUCCESS_TAB].setAppList(mApps[SUCCESS_TAB])
-            mFragments.add(AppListFragment.instance(true))
-            mFragments[FAILED_TAB].setAppList(mApps[FAILED_TAB])
-        }
-
-        override fun getItem(position: Int): Fragment {
-            return mFragments[position]
-        }
-
-        fun notifyFragmentDataSetChanged(position: Int) {
-            mFragments[position].setAppList(mApps[position])
-        }
-
-        override fun getCount(): Int {
-            return mFragments.size
-        }
-    }
-
     class AppLoader(context: Context, val apps: ArrayList<String>,
                     val errorMap: HashMap<String, String>, private val mCallback: OverlaysActivity.Callback)
         : AsyncTask<Void, AppLoader.Progress, Void>() {
 
         private val mConRef: WeakReference<Context> = WeakReference(context)
 
-        class Progress(val tab: Int, val item: OverlaysActivity.AppItem)
+        class Progress(val tab: Int, val item: AppItem)
 
         override fun doInBackground(vararg params: Void?): Void? {
             assert(mConRef.get() != null)
@@ -164,7 +136,7 @@ class InstallSummaryActivity : AppCompatActivity() {
                 } catch (e: PackageManager.NameNotFoundException) {
                 }
                 if (info != null) {
-                    val item = OverlaysActivity.AppItem()
+                    val item = AppItem()
                     item.packageName = pn
                     item.icon = info.loadIcon(pm)
                     item.title = info.loadLabel(pm) as String
