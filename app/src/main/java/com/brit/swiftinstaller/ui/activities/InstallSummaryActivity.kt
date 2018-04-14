@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.AsyncTask
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PowerManager
@@ -88,7 +89,11 @@ class InstallSummaryActivity : AppCompatActivity() {
 
             val text = StringBuilder()
             text.append("\n")
-            text.append("Installer Version: " + BuildConfig.VERSION_NAME)
+            text.append("Installer Version: ${BuildConfig.VERSION_NAME}")
+            text.append("\n")
+            text.append("Device: ${Build.DEVICE}")
+            text.append("\n")
+            text.append("Android Version: ${Build.VERSION.RELEASE}")
             text.append("\n")
             text.append("**********************************")
             text.append("\n")
@@ -151,6 +156,9 @@ class InstallSummaryActivity : AppCompatActivity() {
                         onProgressUpdate(Progress(FAILED_TAB, item))
                     } else if (Utils.isOverlayInstalled(context!!, Utils.getOverlayPackageName(pn))) {
                         onProgressUpdate(Progress(SUCCESS_TAB, item))
+                    } else {
+                        errorMap[pn] = "Install Cancelled"
+                        onProgressUpdate(Progress(FAILED_TAB, item))
                     }
                 }
             }
