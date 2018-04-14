@@ -83,6 +83,12 @@ class MainActivity : ThemeActivity() {
             startActivity(Intent(this, OverlaysActivity::class.java))
         }
 
+        updateTileLayout.setOnClickListener {
+            val intent = Intent(this, OverlaysActivity::class.java)
+            intent.putExtra("tab", OverlaysActivity.UPDATE_TAB)
+            startActivity(intent)
+        }
+
         accentTile.setOnClickListener {
             val intent = Intent(this, CustomizeActivity::class.java)
             startActivity(intent)

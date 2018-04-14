@@ -40,7 +40,7 @@ class OverlaysActivity : ThemeActivity() {
     companion object {
         private const val INSTALL_TAB = 0
         private const val ACTIVE_TAB = 1
-        private const val UPDATE_TAB = 2
+        const val UPDATE_TAB = 2
     }
 
     private var mPagerAdapter: AppsTabPagerAdapter? = null
@@ -65,6 +65,10 @@ class OverlaysActivity : ThemeActivity() {
         container.adapter = mPagerAdapter
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
+
+        if (intent.hasExtra("tab")) {
+            mViewPager.currentItem = intent.getIntExtra("tab", 0)
+        }
     }
 
     override fun onResume() {
