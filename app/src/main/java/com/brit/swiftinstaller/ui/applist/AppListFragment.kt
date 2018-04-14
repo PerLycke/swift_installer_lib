@@ -20,6 +20,7 @@ import com.brit.swiftinstaller.utils.setHideFailedInfoCard
 import kotlinx.android.synthetic.main.activity_app_list.*
 import kotlinx.android.synthetic.main.activity_app_list.view.*
 import kotlinx.android.synthetic.main.failed_info_card.view.*
+import java.util.*
 
 class AppListFragment : Fragment() {
 
@@ -53,6 +54,7 @@ class AppListFragment : Fragment() {
         } else {
             view.failed_info.visibility = View.GONE
         }
+        selectAll(false)
         view.failed_info.closeInfoCard.setOnClickListener {
             view.failed_info.visibility = View.GONE
             setHideFailedInfoCard(context!!, true)
@@ -69,11 +71,10 @@ class AppListFragment : Fragment() {
 
     fun getCheckedItems(): ArrayList<AppItem> {
         val apps = ArrayList<AppItem>()
-        for (i in 0.until(mChecked.size())) {
+        for (i in mApps.indices) {
             Log.d("TEST", "i - $i")
-            Log.d("TEST", "key - ${mChecked.keyAt(i)}")
-            if (mChecked.get(mChecked.keyAt(i), false)) {
-                Log.d("TEST", "checked - ${mApps[mChecked.keyAt(i)].packageName}")
+            if (mChecked.get(i)) {
+                Log.d("TEST", "$i : checked - ${mApps[i].packageName}")
                 apps.add(mApps[i])
             }
         }
@@ -89,6 +90,9 @@ class AppListFragment : Fragment() {
     fun setAppList(apps: ArrayList<AppItem>?) {
         mApps.clear()
         mApps.addAll(apps!!)
+        mApps.sortWith(Comparator { o1: AppItem, o2: AppItem ->
+            o1.title.compareTo(o2.title)
+        })
         if (appListView != null && !appListView.isComputingLayout) {
             mHandler.post {
                 appListView.adapter.notifyDataSetChanged()

@@ -123,6 +123,7 @@ class OverlaysActivity : ThemeActivity() {
                     info = pm.getApplicationInfo(pn, PackageManager.GET_META_DATA)
                     pInfo = pm.getPackageInfo(pn, 0)
                 } catch (e: PackageManager.NameNotFoundException) {
+                    continue
                 }
                 if (info != null) {
                     val item = AppItem()
