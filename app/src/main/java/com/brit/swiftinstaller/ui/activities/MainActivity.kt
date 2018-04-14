@@ -39,19 +39,6 @@ class MainActivity : ThemeActivity() {
             }
         }
 
-        UpdateChecker(this, object : UpdateChecker.Callback() {
-            override fun finished(installedCount: Int, updates: ArrayList<String>) {
-                activeCount.text = String.format("%d", installedCount)
-                if (updates.isEmpty()) {
-                    updateTileLayout.visibility = View.GONE
-                } else {
-                    updatesCount.text = String.format("%d", updates.size)
-                    updateTileLayout.visibility = View.VISIBLE
-                }
-            }
-
-        }).execute()
-
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             // Should we show an explanation?
@@ -117,6 +104,19 @@ class MainActivity : ThemeActivity() {
         currentAccent.setTextColor(getAccentColor(this))
         currentAccent.text = getString(R.string.hex_string,
                 String.format("%06x", getAccentColor(this)).substring(2))
+
+        UpdateChecker(this, object : UpdateChecker.Callback() {
+            override fun finished(installedCount: Int, updates: ArrayList<String>) {
+                activeCount.text = String.format("%d", installedCount)
+                if (updates.isEmpty()) {
+                    updateTileLayout.visibility = View.GONE
+                } else {
+                    updatesCount.text = String.format("%d", updates.size)
+                    updateTileLayout.visibility = View.VISIBLE
+                }
+            }
+
+        }).execute()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
