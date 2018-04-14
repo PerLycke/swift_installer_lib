@@ -64,5 +64,5 @@
     <string name="disable_notifications_desc">Notifications reminds you about updating the overlays for apps you update in Play Store. Are you sure you want to disable them?</string>
     <string name="disable">Disable</string>
     <string name="keep_enabled">Keep enabled</string>
-    <string name="failed_info_card">One reason apps fails to install is that the app version don\'t match the overlays version. We usually update the theme and add support for new version\'s within a few days, so please be patient.</string>
+    <string name="failed_info_card">One reason apps fails to install is that the app version doesn\'t match the overlays version. We usually update the theme and add support for new versions within a few days, so please be patient. There\'s an option to send us an error log in the FAB menu.</string>
 </resources>
