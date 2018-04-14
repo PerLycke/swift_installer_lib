@@ -19,6 +19,7 @@ import java.security.SecureRandom
 import java.security.cert.X509Certificate
 import java.util.*
 import javax.security.auth.x500.X500Principal
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 
@@ -104,6 +105,16 @@ object Utils {
                 Utils.getOverlayPackageName(packageName),
                 PackageManager.GET_META_DATA).metaData.getInt("overlay_version")
         return overlayVersion > currentVersion
+    }
+
+    fun getInstalledOverlays(context: Context): ArrayList<String> {
+        val apps = ArrayList<String>()
+        for (app in context.assets.list("overlays")) {
+            if (isOverlayInstalled(context, Utils.getOverlayPackageName(app))) {
+                apps.add(app)
+            }
+        }
+        return apps
     }
 
     fun makeKey(key: File) {

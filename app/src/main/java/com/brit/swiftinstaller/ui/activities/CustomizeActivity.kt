@@ -51,20 +51,20 @@ class CustomizeActivity : AppCompatActivity() {
 
 
         customizeConfirmBtn.setOnClickListener {
-            setAccentColor(this, mAccent)
-            if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
-                mFinish = true
-                val intent = Intent(this, InstallActivity::class.java)
-                val apps = ArrayList<String>()
-                apps.add("android")
-                intent.putStringArrayListExtra("apps", apps)
-                startActivity(intent)
-            } else {
-                finish()
+            val apps = ArrayList<String>()
+            if (getAccentColor(this) != mAccent) {
+                setAccentColor(this, mAccent)
+                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
+                    apps.add("android")
+                }
             }
 
             if (mBlackBackround != useBlackBackground(this)) {
                 setUseBlackBackground(this, mBlackBackround)
+                if (apps.contains("android")) {
+                    apps.remove("android")
+                }
+                apps.addAll(Utils.getInstalledOverlays(this))
             }
 
             if (useBlackBackground(this)) {
@@ -73,6 +73,15 @@ class CustomizeActivity : AppCompatActivity() {
             } else {
                 AppCompatDelegate
                         .setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
+
+            if (!apps.isEmpty()) {
+                mFinish = true
+                val intent = Intent(this, InstallActivity::class.java)
+                intent.putStringArrayListExtra("apps", apps)
+                startActivity(intent)
+            } else {
+                finish()
             }
         }
 
