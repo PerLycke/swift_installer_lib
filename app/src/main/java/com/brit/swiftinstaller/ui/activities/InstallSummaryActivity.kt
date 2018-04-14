@@ -68,6 +68,12 @@ class InstallSummaryActivity : AppCompatActivity() {
         val bottomSheetDialog = ThemedBottomSheetDialog(this)
         val sheetView = View.inflate(this, R.layout.sheet_install_summary_fab, null)
 
+        if (mErrorMap.isEmpty()) {
+            sheetView.sendLog.visibility = View.GONE
+        } else {
+            sheetView.sendLog.visibility = View.VISIBLE
+        }
+
         sheetView.reboot.setOnClickListener {
             val pm = getSystemService(PowerManager::class.java)
             bottomSheetDialog.dismiss()
