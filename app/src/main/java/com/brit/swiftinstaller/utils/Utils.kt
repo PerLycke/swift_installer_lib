@@ -2,11 +2,13 @@ package com.brit.swiftinstaller.utils
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.content.res.AssetManager
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import com.brit.swiftinstaller.R
 import org.bouncycastle.x509.X509V3CertificateGenerator
 import java.io.File
 import java.io.FileOutputStream
@@ -98,6 +100,33 @@ object Utils {
         return appVersionCode > curVersionCode
     }
 
+    fun checkVersionCompatible(context: Context, packageName: String): Boolean {
+        val packageInfo = context.packageManager.getPackageInfo(packageName, 0)
+        if (context.assets.list("overlays/$packageName").contains("versions")) {
+            val vers = context.assets.list("overlays/$packageName/versions")
+            Log.d("TEST", "$packageName - ${packageInfo.versionName}")
+            for (ver in vers) {
+                Log.d("TEST", "Available ver - $ver")
+                if (packageInfo.versionName.startsWith(ver)) {
+                    return true
+                }
+            }
+        } else {
+            return true
+        }
+        return false
+    }
+
+    fun getAvailableOverlayVersions(context: Context, packageName: String): String {
+        val versions = StringBuilder()
+        for (version in context.assets.list("overlays/$packageName/versions")) {
+            if (version != "common") {
+                versions.append("v$version, ")
+            }
+        }
+        return versions.substring(0, versions.length - 2)
+    }
+
     fun checkOverlayVersion(context: Context, packageName: String): Boolean {
         val overlayVersion = Integer.parseInt(ShellUtils.inputStreamToString(context.assets.open(
                 "overlays/$packageName/version")).trim().replace("\"", ""))
@@ -115,6 +144,14 @@ object Utils {
             }
         }
         return apps
+    }
+
+    fun getDialogTheme(context: Context): Int {
+        if (useBlackBackground(context)) {
+            return R.style.AppAlertDialogTheme_Black
+        } else {
+            return R.style.AppAlertDialogTheme
+        }
     }
 
     fun makeKey(key: File) {

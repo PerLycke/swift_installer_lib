@@ -3,6 +3,7 @@ package com.brit.swiftinstaller.ui.applist
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.view.View
 import com.brit.swiftinstaller.ui.activities.InstallSummaryActivity
 
 class AppsTabPagerAdapter(fm: FragmentManager, val summary: Boolean, vararg tabs: Int) : FragmentPagerAdapter(fm) {
@@ -16,6 +17,12 @@ class AppsTabPagerAdapter(fm: FragmentManager, val summary: Boolean, vararg tabs
             mFragments.add(AppListFragment.instance(summary,
                     (index == InstallSummaryActivity.FAILED_TAB)))
             mApps[index] = ArrayList()
+        }
+    }
+
+    fun setAlertIconClickListener(listener: AppListFragment.AlertIconClickListener) {
+        mFragments.forEach {
+            it.alertIconClickListener = listener
         }
     }
 

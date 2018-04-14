@@ -1,6 +1,8 @@
 package com.brit.swiftinstaller.ui.activities
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
@@ -25,6 +27,7 @@ import com.brit.swiftinstaller.ui.ThemedBottomSheetDialog
 import com.brit.swiftinstaller.ui.applist.AppItem
 import com.brit.swiftinstaller.ui.applist.AppListFragment
 import com.brit.swiftinstaller.ui.applist.AppsTabPagerAdapter
+import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.utils.Utils.getOverlayPackageName
 import com.brit.swiftinstaller.utils.Utils.isOverlayEnabled
 import com.brit.swiftinstaller.utils.Utils.isOverlayInstalled
@@ -52,6 +55,23 @@ class OverlaysActivity : ThemeActivity() {
 
         mPagerAdapter = AppsTabPagerAdapter(supportFragmentManager,
                 false, INSTALL_TAB, ACTIVE_TAB, UPDATE_TAB)
+        mPagerAdapter!!.setAlertIconClickListener(object : AppListFragment.AlertIconClickListener {
+            override fun onAlertIconClick(appItem: AppItem) {
+                val packageInfo = packageManager.getPackageInfo(appItem.packageName, 0)
+                val dialog = AlertDialog.Builder(this@OverlaysActivity)
+                        .setTitle(appItem.title)
+                        .setIcon(appItem.icon)
+                        .setMessage("Version Unsupported." +
+                                "\nCurrent Version: ${packageInfo.versionName}" +
+                                "\nAvailable Versions: ${Utils.getAvailableOverlayVersions(
+                                        this@OverlaysActivity, appItem.packageName)}")
+                        .setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, i: Int ->
+                            dialogInterface.dismiss()
+                        }
+                dialog.show()
+            }
+
+        })
 
         mViewPager = container
 

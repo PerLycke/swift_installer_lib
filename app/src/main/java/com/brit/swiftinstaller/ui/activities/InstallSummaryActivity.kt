@@ -1,6 +1,7 @@
 package com.brit.swiftinstaller.ui.activities
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
@@ -16,11 +17,13 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v7.app.AlertDialog
 import android.view.View
 import com.brit.swiftinstaller.BuildConfig
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.ThemedBottomSheetDialog
 import com.brit.swiftinstaller.ui.applist.AppItem
+import com.brit.swiftinstaller.ui.applist.AppListFragment
 import com.brit.swiftinstaller.ui.applist.AppsTabPagerAdapter
 import com.brit.swiftinstaller.utils.Utils
 import kotlin.collections.ArrayList
@@ -49,6 +52,21 @@ class InstallSummaryActivity : AppCompatActivity() {
         }
 
         mPagerAdapter = AppsTabPagerAdapter(supportFragmentManager, true, SUCCESS_TAB, FAILED_TAB)
+        mPagerAdapter.setAlertIconClickListener(object : AppListFragment.AlertIconClickListener {
+            override fun onAlertIconClick(appItem: AppItem) {
+                val dialog = AlertDialog.Builder(this@InstallSummaryActivity,
+                        Utils.getDialogTheme(this@InstallSummaryActivity))
+                        .setTitle(appItem.title)
+                        .setIcon(appItem.icon)
+                        .setMessage(mErrorMap.get(appItem.packageName))
+                        .setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, _: Int ->
+                            dialogInterface.dismiss()
+                        }
+                dialog.show()
+            }
+
+        })
+
         container.adapter = mPagerAdapter
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))

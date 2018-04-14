@@ -1,5 +1,7 @@
 package com.brit.swiftinstaller.ui.applist
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
@@ -15,6 +17,7 @@ import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.TextView
 import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.utils.getHideFailedInfoCard
 import com.brit.swiftinstaller.utils.setHideFailedInfoCard
 import kotlinx.android.synthetic.main.activity_app_list.*
@@ -28,6 +31,8 @@ class AppListFragment : Fragment() {
     private val mHandler = Handler()
 
     private val mChecked = SparseBooleanArray()
+
+    var alertIconClickListener: AlertIconClickListener? = null
 
     private var mSummary = false
     private var mFailedTab = false
@@ -120,6 +125,7 @@ class AppListFragment : Fragment() {
             //                var packageName: TextView = view.findViewById(R.id.appName)
             private var appIcon: ImageView = view.findViewById(R.id.appItemImage)
             private var appCheckBox: CheckBox = view.findViewById(R.id.appItemCheckBox)
+            private var alertIcon: ImageView = view.findViewById(R.id.alertIcon)
 
             init {
                 view.setOnClickListener {
@@ -139,10 +145,35 @@ class AppListFragment : Fragment() {
 //                    packageName.text = item.packageName
 
                 if (mSummary) {
-                    appCheckBox.visibility = View.GONE
+                    appCheckBox.visibility = View.INVISIBLE
+                    appCheckBox.isEnabled = false
+                    if (mFailedTab) {
+                        alertIcon.visibility = View.VISIBLE
+                    }
+                } else {
+                    if (!Utils.checkVersionCompatible(context!!, item.packageName)) {
+                        appName.alpha = 0.3f
+                        alertIcon.visibility = View.VISIBLE
+                        appCheckBox.visibility = View.INVISIBLE
+                        appCheckBox.isEnabled = false
+                    } else {
+                        appName.alpha = 1.0f
+                        alertIcon.visibility = View.GONE
+                        appCheckBox.visibility = View.VISIBLE
+                    }
+                }
+
+                if (alertIconClickListener != null) {
+                    alertIcon.setOnClickListener {
+                        alertIconClickListener!!.onAlertIconClick(mApps[adapterPosition])
+                    }
                 }
             }
         }
 
+    }
+
+    interface AlertIconClickListener {
+        fun onAlertIconClick(appItem: AppItem)
     }
 }

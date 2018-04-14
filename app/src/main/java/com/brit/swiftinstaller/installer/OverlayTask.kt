@@ -56,7 +56,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
             RomInfo.getRomInfo(context).uninstallOverlay(context, packageName)
             mOm.handleState(this, OverlayManager.OVERLAY_UNINSTALLED)
         } else {
-            if (!checkVersionCompatible(context.assets, packageName)) {
+            if (!Utils.checkVersionCompatible(context, packageName)) {
                 errorLog = "Version Incompatible"
                 mOm.handleState(this, OverlayManager.OVERLAY_FAILED)
             } else {
@@ -131,22 +131,6 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
                 addAssetPath(assetPaths, path)
             }
         }
-    }
-
-    private fun checkVersionCompatible(am: AssetManager, packageName: String): Boolean {
-        if (am.list("overlays/$packageName").contains("versions")) {
-            val vers = am.list("overlays/$packageName/versions")
-            Log.d("TEST", "$packageName - ${packageInfo.versionName}")
-            for (ver in vers) {
-                Log.d("TEST", "Available ver - $ver")
-                if (packageInfo.versionName.startsWith(ver)) {
-                    return true
-                }
-            }
-        } else {
-            return true
-        }
-        return false
     }
 
     private fun parseOverlayVersions(am: AssetManager, assetPaths: ArrayList<String>, path: String) {
