@@ -1,108 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="64dp">
 
-    <ImageView
-        android:id="@+id/back"
-        android:layout_width="wrap_content"
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
-        android:contentDescription="@string/image"
-        android:onClick="overlaysBackClick"
+        android:layout_marginTop="8dp"
+        android:paddingEnd="72dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/constraintLayout6"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_back" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:paddingTop="4dp"
-        android:text="@string/overlays"
-        android:textAppearance="@style/ToolbarTitle"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout4"
-        app:layout_constraintStart_toEndOf="@+id/back"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        <SearchView
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layoutDirection="rtl"
+            android:searchIcon="@drawable/ic_search"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"></SearchView>
 
-    <ImageView
-        android:id="@+id/customizeBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:contentDescription="@string/image"
-        android:onClick="customizeBtnClick"
-        app:layout_constraintBottom_toBottomOf="@+id/selectAllBtn"
-        app:layout_constraintEnd_toStartOf="@+id/selectAllBtn"
-        app:layout_constraintTop_toTopOf="@+id/selectAllBtn"
-        app:srcCompat="@drawable/ic_accent_new" />
-
-    <ImageView
-        android:id="@+id/selectAllBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:contentDescription="@string/image"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_install" />
+    </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="customizeBtnClick"
-        android:paddingBottom="4dp"
-        android:paddingEnd="4dp"
+        android:id="@+id/constraintLayout6"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/title"
-        app:layout_constraintTop_toBottomOf="@+id/title">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/bgTitle"
+        <ImageView
+            android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/bg"
-            android:textAppearance="@style/ToolbarSubtitle"
-            android:textStyle="bold"
+            android:layout_marginStart="16dp"
+            android:contentDescription="@string/image"
+            android:onClick="overlaysBackClick"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_back" />
 
         <TextView
-            android:id="@+id/currentAccent"
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="#ff0000"
-            android:textAppearance="@style/ToolbarSubtitle"
-            app:layout_constraintStart_toEndOf="@+id/accentTitle"
-            app:layout_constraintTop_toTopOf="@+id/accentTitle" />
+            android:layout_marginStart="24dp"
+            android:paddingTop="4dp"
+            android:text="@string/overlays"
+            android:textAppearance="@style/ToolbarTitle"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout4"
+            app:layout_constraintStart_toEndOf="@+id/back"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
 
-        <TextView
-            android:id="@+id/currentBg"
+        <ImageView
+            android:id="@+id/selectAllBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="Dark"
-            android:textAppearance="@style/ToolbarSubtitle"
-            app:layout_constraintStart_toEndOf="@+id/bgTitle"
-            app:layout_constraintTop_toTopOf="@+id/bgTitle" />
+            android:layout_marginEnd="16dp"
+            android:contentDescription="@string/image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_install" />
 
-        <TextView
-            android:id="@+id/accentTitle"
+        <ImageView
+            android:id="@+id/customizeBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="@string/accent_title"
-            android:textAppearance="@style/ToolbarSubtitle"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/currentBg"
-            app:layout_constraintTop_toTopOf="@+id/currentBg" />
+            android:layout_marginEnd="16dp"
+            android:contentDescription="@string/image"
+            android:onClick="customizeBtnClick"
+            app:layout_constraintBottom_toBottomOf="@+id/selectAllBtn"
+            app:layout_constraintEnd_toStartOf="@+id/selectAllBtn"
+            app:layout_constraintTop_toTopOf="@+id/selectAllBtn"
+            app:srcCompat="@drawable/ic_accent_new" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayout4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="customizeBtnClick"
+            android:paddingBottom="4dp"
+            android:paddingEnd="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/title"
+            app:layout_constraintTop_toBottomOf="@+id/title">
+
+            <TextView
+                android:id="@+id/bgTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bg"
+                android:textAppearance="@style/ToolbarSubtitle"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/currentAccent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="#ff0000"
+                android:textAppearance="@style/ToolbarSubtitle"
+                app:layout_constraintStart_toEndOf="@+id/accentTitle"
+                app:layout_constraintTop_toTopOf="@+id/accentTitle" />
+
+            <TextView
+                android:id="@+id/currentBg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="Dark"
+                android:textAppearance="@style/ToolbarSubtitle"
+                app:layout_constraintStart_toEndOf="@+id/bgTitle"
+                app:layout_constraintTop_toTopOf="@+id/bgTitle" />
+
+            <TextView
+                android:id="@+id/accentTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/accent_title"
+                android:textAppearance="@style/ToolbarSubtitle"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/currentBg"
+                app:layout_constraintTop_toTopOf="@+id/currentBg" />
+        </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>
