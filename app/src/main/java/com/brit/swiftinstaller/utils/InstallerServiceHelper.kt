@@ -25,7 +25,7 @@ class InstallerServiceHelper {
 
         @Suppress("MemberVisibilityCanBePrivate")
         fun startInstallerService(context: Context) {
-            context.startForegroundService(getServiceIntent(context))
+            context.startService(getServiceIntent(context))
         }
 
         fun setInstallerCallback(callback: IInstallerCallback) {

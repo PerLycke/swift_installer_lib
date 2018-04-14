@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.provider.Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
@@ -16,7 +15,6 @@ import android.view.MenuItem
 import android.view.View
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.UpdateChecker
-import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.utils.getAccentColor
 import com.brit.swiftinstaller.utils.getAppsToUpdate
 import kotlinx.android.synthetic.main.dialog_about.view.*
@@ -29,10 +27,6 @@ class MainActivity : ThemeActivity() {
         setContentView(R.layout.activity_main)
         val myToolbar = findViewById<Toolbar>(R.id.my_toolbar)
         setSupportActionBar(myToolbar)
-
-        if (!Utils.isNotificationServiceEnabled(this)) {
-            startActivity(Intent(ACTION_NOTIFICATION_LISTENER_SETTINGS));
-        }
 
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener { _, key ->
             if (key == "overlays_to_update") {

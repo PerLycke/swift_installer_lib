@@ -27,7 +27,6 @@ import com.brit.swiftinstaller.ui.applist.AppListFragment
 import com.brit.swiftinstaller.ui.applist.AppsTabPagerAdapter
 import com.brit.swiftinstaller.utils.Utils.getOverlayPackageName
 import com.brit.swiftinstaller.utils.Utils.isOverlayEnabled
-import com.brit.swiftinstaller.utils.Utils.isOverlayFailed
 import com.brit.swiftinstaller.utils.Utils.isOverlayInstalled
 import com.brit.swiftinstaller.utils.getAccentColor
 import kotlinx.android.synthetic.main.activity_app_list.*
@@ -42,7 +41,6 @@ class OverlaysActivity : ThemeActivity() {
         private const val INSTALL_TAB = 0
         private const val ACTIVE_TAB = 1
         private const val UPDATE_TAB = 2
-        private const val FAILED_TAB = 3
     }
 
     private var mPagerAdapter: AppsTabPagerAdapter? = null
@@ -67,22 +65,6 @@ class OverlaysActivity : ThemeActivity() {
         container.adapter = mPagerAdapter
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
-        container.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {
-            }
-
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-            }
-
-            override fun onPageSelected(position: Int) {
-                if (position == FAILED_TAB) {
-                    fab.visibility = View.GONE
-                } else {
-                    fab.visibility = View.VISIBLE
-                }
-            }
-
-        })
     }
 
     override fun onResume() {
@@ -154,8 +136,6 @@ class OverlaysActivity : ThemeActivity() {
                         } else {
                             publishProgress(Progress(INSTALL_TAB, item))
                         }
-                    } else if (isOverlayFailed(context, getOverlayPackageName(pn))) {
-                        publishProgress(Progress(FAILED_TAB, item))
                     } else {
                         publishProgress(Progress(INSTALL_TAB, item))
                     }

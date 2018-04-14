@@ -10,6 +10,7 @@ class PackageListener : BroadcastReceiver() {
         Log.d("TEST", "action - ${intent!!.action}")
         Log.d("TEST", "extra replacing - ${intent.getBooleanExtra(Intent.EXTRA_REPLACING, false)}")
         Log.d("TEST", "package - ${intent.data.schemeSpecificPart}")
+
     }
 
 }

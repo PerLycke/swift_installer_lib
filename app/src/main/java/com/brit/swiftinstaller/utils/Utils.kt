@@ -20,18 +20,12 @@ import java.security.cert.X509Certificate
 import java.util.*
 import javax.security.auth.x500.X500Principal
 import kotlin.collections.HashMap
-import android.text.TextUtils
-import android.content.ComponentName
-import android.provider.Settings
-import com.brit.swiftinstaller.BuildConfig
 
 
 object Utils {
 
-    private val ENABLED_NOTIFICATION_LISTENERS = "enabled_notification_listeners"
-
     fun getOverlayPackageName(pack: String): String {
-        return pack + ".swiftinstaller.overlay"
+        return "$pack.swiftinstaller.overlay"
     }
 
     fun mapToBundle(map: HashMap<String, String>): Bundle {
@@ -82,11 +76,7 @@ object Utils {
 
     fun isOverlayEnabled(context: Context, packageName: String): Boolean {
         return isSamsungOreo(context) ||
-                runCommand("cmd overlay").output!!.contains("packageName")
-    }
-
-    fun isOverlayFailed(context: Context, packageName: String): Boolean {
-        return false
+                runCommand("cmd overlay").output!!.contains(packageName)
     }
 
     fun containsOverlay(context: Context, packageName: String): Boolean {
@@ -94,27 +84,26 @@ object Utils {
         return apps.contains(packageName)
     }
 
-    fun isNotificationServiceEnabled(context: Context): Boolean {
-        val pkgName = BuildConfig.APPLICATION_ID
-        val flat = Settings.Secure.getString(context.getContentResolver(),
-                ENABLED_NOTIFICATION_LISTENERS)
-        if (!TextUtils.isEmpty(flat)) {
-            val names = flat.split(":".toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()
-            for (i in names.indices) {
-                val cn = ComponentName.unflattenFromString(names[i])
-                if (cn != null) {
-                    if (TextUtils.equals(pkgName, cn.packageName)) {
-                        return true
-                    }
-                }
-            }
-        }
-        return false
-    }
-
     fun isSamsungOreo(context: Context): Boolean {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
                 context.packageManager.hasSystemFeature("com.samsung.feature.samsung_experience_mobile")
+    }
+
+    fun checkAppVersion(context: Context, packageName: String): Boolean {
+        val appVersionCode = context.packageManager.getPackageInfo(packageName, 0).versionCode
+        val curVersionCode = context.packageManager.getApplicationInfo(
+                Utils.getOverlayPackageName(packageName),
+                PackageManager.GET_META_DATA).metaData.getInt("app_version_code")
+        return appVersionCode > curVersionCode
+    }
+
+    fun checkOverlayVersion(context: Context, packageName: String): Boolean {
+        val overlayVersion = Integer.parseInt(ShellUtils.inputStreamToString(context.assets.open(
+                "overlays/$packageName/version")).trim().replace("\"", ""))
+        val currentVersion = context.packageManager.getApplicationInfo(
+                Utils.getOverlayPackageName(packageName),
+                PackageManager.GET_META_DATA).metaData.getInt("overlay_version")
+        return overlayVersion > currentVersion
     }
 
     fun makeKey(key: File) {
@@ -163,7 +152,7 @@ object Utils {
     /**
      * For custom purposes. Not used by ColorPickerPreferrence
      *
-     * @param argb
+     * @param color
      * @throws NumberFormatException
      * @author Unknown
      */

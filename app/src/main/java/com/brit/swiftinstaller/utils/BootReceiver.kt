@@ -16,7 +16,13 @@ class BootReceiver : BroadcastReceiver() {
 
         if (intent!!.action == Intent.ACTION_BOOT_COMPLETED ||
                 intent.action == "android.intent.action.QUICKBOOT_POWERON") {
-            InstallerServiceHelper.startInstallerService(context)
+            Log.d("TEST", "register package listener")
+            val filter = IntentFilter(Intent.ACTION_PACKAGE_ADDED)
+            filter.addAction(Intent.ACTION_PACKAGE_CHANGED)
+            filter.addAction(Intent.ACTION_PACKAGE_REMOVED)
+            filter.addAction(Intent.ACTION_PACKAGE_FULLY_REMOVED)
+            filter.addDataScheme("package")
+            context.applicationContext.registerReceiver(PackageListener(), filter)
         }
     }
 
