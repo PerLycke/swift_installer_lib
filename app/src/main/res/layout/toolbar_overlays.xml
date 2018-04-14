@@ -107,7 +107,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <SearchView
+        <android.support.v7.widget.SearchView
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layoutDirection="rtl"
@@ -115,7 +115,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"></SearchView>
+            app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 
