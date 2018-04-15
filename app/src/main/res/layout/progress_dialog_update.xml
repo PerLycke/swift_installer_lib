@@ -13,20 +13,24 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/updateTitle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/updateProgressTxt"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="16dp"
             android:fontFamily="sans-serif-condensed"
             android:gravity="center_vertical"
             android:text="@string/updating_overlays"
             android:textColor="@android:color/white"
-            android:textSize="14sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,6 +41,11 @@
         android:id="@+id/updateProgress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/updateTitle">
@@ -45,9 +54,7 @@
             android:id="@+id/updateProgressBar"
             style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
-            android:layout_height="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
+            android:layout_height="12dp"
             android:layout_marginTop="20dp"
             android:indeterminate="false"
             android:visibility="visible"
@@ -63,7 +70,7 @@
             android:fontFamily="sans-serif-condensed"
             android:text="15%"
             android:textColor="@android:color/white"
-            android:textSize="12sp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/updateProgressBar"
             app:layout_constraintTop_toBottomOf="@+id/updateProgressBar" />
@@ -76,7 +83,7 @@
             android:fontFamily="sans-serif-condensed"
             android:text="24 / 200"
             android:textColor="@android:color/white"
-            android:textSize="12sp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/updateProgressBar"
             app:layout_constraintTop_toBottomOf="@+id/updateProgressBar" />
 

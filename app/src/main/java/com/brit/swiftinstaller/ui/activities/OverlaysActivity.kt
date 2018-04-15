@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.graphics.PorterDuff
 import android.os.AsyncTask
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -302,7 +301,7 @@ class OverlaysActivity : ThemeActivity() {
 
     private fun updateAction() {
         val bottomSheetDialog = ThemedBottomSheetDialog(this)
-        val sheetView = View.inflate(this, R.layout.sheet_update_progress, null)
+        val sheetView = View.inflate(this, R.layout.progress_dialog_update, null)
         bottomSheetDialog.setContentView(sheetView)
         bottomSheetDialog.show()
     }
