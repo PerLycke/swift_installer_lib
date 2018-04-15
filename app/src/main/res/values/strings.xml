@@ -68,4 +68,7 @@
     <string name="attention">Please note that:</string>
     <string name="time_consuming">1. Installing and uninstalling can take a lot of time. Even though it seems stuck, just wait and it\'ll finish.\n\n2. When installing or uninstalling Android overlay some apps might crash. This is expected, and normal. Everything will work fine once you rebooted.</string>
     <string name="proceed">Proceed</string>
+    <string name="examined_result">After you examined the result, and optionally sent an error log if some overlay failed to install, you need to manually reboot!\n\nYou don\'t need to reboot if all overlays failed to install.</string>
+    <string name="got_it">Got it!</string>
+    <string name="reboot">Reboot to finish install</string>
 </resources>

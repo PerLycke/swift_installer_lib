@@ -12,8 +12,10 @@ import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PowerManager
+import android.preference.PreferenceManager
 import android.support.design.widget.TabLayout
 import android.support.v7.app.AlertDialog
+import android.support.v7.app.AppCompatDelegate
 import android.view.View
 import com.brit.swiftinstaller.BuildConfig
 import com.brit.swiftinstaller.R
@@ -26,6 +28,7 @@ import com.brit.swiftinstaller.utils.getAppVersion
 import com.brit.swiftinstaller.utils.setAppVersion
 import kotlin.collections.ArrayList
 import kotlinx.android.synthetic.main.activity_install_summary.*
+import kotlinx.android.synthetic.main.alert_dialog_reboot.view.*
 import kotlinx.android.synthetic.main.sheet_install_summary_fab.view.*
 import kotlinx.android.synthetic.main.tab_layout_install_summary.*
 import java.lang.ref.WeakReference
@@ -68,6 +71,24 @@ class InstallSummaryActivity : AppCompatActivity() {
         container.adapter = mPagerAdapter
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
+
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("first_install", true)) {
+            val inflater = View.inflate(this, R.layout.alert_dialog_reboot, null)
+            val builder: AlertDialog.Builder
+            if (AppCompatDelegate.getDefaultNightMode()
+                    == AppCompatDelegate.MODE_NIGHT_YES) {
+                builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme_Black)
+            } else {
+                builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
+            }
+            builder.setView(inflater)
+            val dialog = builder.create()
+            inflater.rebootDialogBtn.setOnClickListener {
+                dialog.dismiss()
+            }
+            dialog.show()
+            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("first_install", false).apply()
+        }
     }
 
     override fun onAttachedToWindow() {
