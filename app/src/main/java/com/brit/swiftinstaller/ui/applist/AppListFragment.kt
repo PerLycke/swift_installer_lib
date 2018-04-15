@@ -20,6 +20,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.Utils
+import com.brit.swiftinstaller.utils.getAppsToUpdate
 import com.brit.swiftinstaller.utils.getHideFailedInfoCard
 import com.brit.swiftinstaller.utils.setHideFailedInfoCard
 import kotlinx.android.synthetic.main.activity_app_list.*
@@ -83,7 +84,9 @@ class AppListFragment : Fragment() {
                 }
             }
         }
-        appListView.adapter.notifyDataSetChanged()
+        if (appListView != null && !appListView.isComputingLayout) {
+            appListView.adapter.notifyDataSetChanged()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -181,6 +184,12 @@ class AppListFragment : Fragment() {
                         appName.alpha = 1.0f
                         alertIcon.visibility = View.GONE
                         appCheckBox.visibility = View.VISIBLE
+                    }
+                    if (Utils.isOverlayInstalled(context!!, item.packageName)
+                            && getAppsToUpdate(context!!).contains(item.packageName)) {
+                        appName.setTextColor(context!!.getColor(R.color.minimal_orange))
+                    } else {
+                        appName.setTextColor(context!!.getColor(android.R.color.white))
                     }
                 }
 

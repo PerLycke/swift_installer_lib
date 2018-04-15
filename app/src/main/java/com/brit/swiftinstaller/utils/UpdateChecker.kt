@@ -8,6 +8,7 @@ class UpdateChecker(val context: Context, val callback: Callback) : AsyncTask<Vo
         var installedCount = 0
         val updates = ArrayList<String>()
 
+        clearAppsToUpdate(context)
         for (packageName in context.assets.list("overlays")) {
             if (Utils.isOverlayInstalled(context, Utils.getOverlayPackageName(packageName))
                     && Utils.isOverlayInstalled(context, packageName)) {

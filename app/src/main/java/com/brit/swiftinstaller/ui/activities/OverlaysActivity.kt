@@ -29,6 +29,7 @@ import com.brit.swiftinstaller.utils.Utils.getOverlayPackageName
 import com.brit.swiftinstaller.utils.Utils.isOverlayEnabled
 import com.brit.swiftinstaller.utils.Utils.isOverlayInstalled
 import com.brit.swiftinstaller.utils.getAccentColor
+import com.brit.swiftinstaller.utils.getAppsToUpdate
 import kotlinx.android.synthetic.main.activity_overlays.*
 import kotlinx.android.synthetic.main.alert_dialog_time.view.*
 import kotlinx.android.synthetic.main.toolbar_overlays.*
@@ -155,6 +156,7 @@ class OverlaysActivity : ThemeActivity() {
             assert(mConRef.get() != null)
             val pm = mConRef.get()!!.packageManager
             val context = mConRef.get()
+            val updates = getAppsToUpdate(context!!)
             for (pn: String in mConRef.get()!!.assets.list("overlays")) {
                 var info: ApplicationInfo? = null
                 var pInfo: PackageInfo? = null
@@ -170,9 +172,13 @@ class OverlaysActivity : ThemeActivity() {
                     item.icon = info.loadIcon(pm)
                     item.title = info.loadLabel(pm) as String
                     item.version = pInfo!!.versionCode
-                    if (isOverlayInstalled(context!!, getOverlayPackageName(pn))) {
+                    if (isOverlayInstalled(context, getOverlayPackageName(pn))) {
                         if (isOverlayEnabled(context, getOverlayPackageName(pn))) {
-                            publishProgress(Progress(ACTIVE_TAB, item))
+                            if (updates.contains(pn)) {
+                                publishProgress(Progress(UPDATE_TAB, item))
+                            } else {
+                                publishProgress(Progress(ACTIVE_TAB, item))
+                            }
                         } else {
                             publishProgress(Progress(INSTALL_TAB, item))
                         }
