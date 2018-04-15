@@ -71,4 +71,6 @@
     <string name="examined_result">After you examined the result, and optionally sent an error log if some overlay failed to install, you need to manually reboot!\n\nYou don\'t need to reboot if all overlays failed to install.</string>
     <string name="got_it">Got it!</string>
     <string name="reboot">Reboot to finish install</string>
+    <string name="reboot_uninstall">Reboot</string>
+    <string name="reboot_manually">You need to reboot manually to finish uninstall.</string>
 </resources>
