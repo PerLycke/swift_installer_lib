@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.content.res.Configuration
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Build
@@ -14,9 +13,6 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PowerManager
 import android.support.design.widget.TabLayout
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AlertDialog
 import android.view.View
 import com.brit.swiftinstaller.BuildConfig
@@ -26,6 +22,8 @@ import com.brit.swiftinstaller.ui.applist.AppItem
 import com.brit.swiftinstaller.ui.applist.AppListFragment
 import com.brit.swiftinstaller.ui.applist.AppsTabPagerAdapter
 import com.brit.swiftinstaller.utils.Utils
+import com.brit.swiftinstaller.utils.getAppVersion
+import com.brit.swiftinstaller.utils.setAppVersion
 import kotlin.collections.ArrayList
 import kotlinx.android.synthetic.main.activity_install_summary.*
 import kotlinx.android.synthetic.main.sheet_install_summary_fab.view.*
@@ -58,7 +56,7 @@ class InstallSummaryActivity : AppCompatActivity() {
                         Utils.getDialogTheme(this@InstallSummaryActivity))
                         .setTitle(appItem.title)
                         .setIcon(appItem.icon)
-                        .setMessage(mErrorMap.get(appItem.packageName))
+                        .setMessage(mErrorMap[appItem.packageName])
                         .setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, _: Int ->
                             dialogInterface.dismiss()
                         }
@@ -83,6 +81,7 @@ class InstallSummaryActivity : AppCompatActivity() {
         }).execute()
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun rebootActions(view: View) {
         val bottomSheetDialog = ThemedBottomSheetDialog(this)
         val sheetView = View.inflate(this, R.layout.sheet_install_summary_fab, null)
@@ -145,8 +144,9 @@ class InstallSummaryActivity : AppCompatActivity() {
     }
 
     class AppLoader(context: Context, val apps: ArrayList<String>,
-                    val errorMap: HashMap<String, String>, private val mCallback: OverlaysActivity.Callback)
-        : AsyncTask<Void, AppLoader.Progress, Void>() {
+                    private val errorMap: HashMap<String, String>,
+                    private val mCallback: OverlaysActivity.Callback) :
+            AsyncTask<Void, AppLoader.Progress, Void>() {
 
         private val mConRef: WeakReference<Context> = WeakReference(context)
 
@@ -159,9 +159,11 @@ class InstallSummaryActivity : AppCompatActivity() {
             for (pn: String in apps) {
                 var info: ApplicationInfo? = null
                 var pInfo: PackageInfo? = null
+                var oInfo: PackageInfo? = null
                 try {
                     info = pm.getApplicationInfo(pn, PackageManager.GET_META_DATA)
                     pInfo = pm.getPackageInfo(pn, 0)
+                    oInfo = pm.getPackageInfo(Utils.getOverlayPackageName(pn), 0)
                 } catch (e: PackageManager.NameNotFoundException) {
                 }
                 if (info != null) {
@@ -172,7 +174,9 @@ class InstallSummaryActivity : AppCompatActivity() {
                     item.version = pInfo!!.versionCode
                     if (errorMap.keys.contains(pn)) {
                         onProgressUpdate(Progress(FAILED_TAB, item))
-                    } else if (Utils.isOverlayInstalled(context!!, Utils.getOverlayPackageName(pn))) {
+                    } else if (Utils.isOverlayInstalled(context!!, Utils.getOverlayPackageName(pn))
+                            && oInfo!!.versionCode > getAppVersion(context, pn)) {
+                        setAppVersion(context, pn, oInfo.versionCode)
                         onProgressUpdate(Progress(SUCCESS_TAB, item))
                     } else {
                         errorMap[pn] = "Install Cancelled"

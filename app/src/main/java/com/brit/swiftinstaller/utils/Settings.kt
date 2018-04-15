@@ -1,6 +1,7 @@
 package com.brit.swiftinstaller.utils
 
 import android.content.Context
+import android.os.Bundle
 import android.preference.PreferenceManager
 import android.text.TextUtils
 import android.util.ArraySet
@@ -29,6 +30,34 @@ fun setHideFailedInfoCard(context: Context, hide: Boolean) {
 
 fun getHideFailedInfoCard(context: Context): Boolean {
     return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("hide_failed_info", false)
+}
+
+fun setAppVersion(context: Context, packageName: String, version: Int) {
+    val versions = getAppVersions(context)
+    versions.putInt(packageName, version)
+    setAppVersions(context, versions)
+}
+
+fun getAppVersion(context: Context, packageName: String): Int {
+    return getAppVersions(context).getInt(packageName, 0)
+}
+
+fun getAppVersions(context: Context): Bundle {
+    val versions = Bundle()
+    val vers = PreferenceManager.getDefaultSharedPreferences(context).getStringSet("overlay_versions", ArraySet<String>())
+    for (v in vers) {
+        val split = v.split("\\|")
+        versions.putInt(split[0], Integer.parseInt(split[1]))
+    }
+    return versions
+}
+
+fun setAppVersions(context: Context, versions: Bundle) {
+    val set = ArraySet<String>()
+    for (key in versions.keySet()) {
+        set.add("$key|${versions.getInt(key)}")
+    }
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet("overlay_versions", set).apply()
 }
 
 fun getUserAccents(context: Context): IntArray {

@@ -190,15 +190,13 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         val manifest = StringBuilder()
         manifest.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
         manifest.append("<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n")
-        manifest.append("package=\"" + Utils.getOverlayPackageName(targetPackage) + "\">\n")
+        manifest.append("package=\"${Utils.getOverlayPackageName(targetPackage)}\"\n")
+        manifest.append("android:versionCode=\"${getAppVersion(context, targetPackage) + 1}\"\n")
+        manifest.append("android:versionName=\"${getAppVersion(context, targetPackage) + 1}\">\n")
         manifest.append("<uses-permission android:name=\"com.samsung.android.permission.SAMSUNG_OVERLAY_COMPONENT\" />\n")
         manifest.append("<overlay ")
         manifest.append("android:priority=\"1\" ")
-        if (targetPackage == "android") {
-            manifest.append("android:targetPackage=\"android\"/>\n")
-        } else {
-            manifest.append("android:targetPackage=\"$targetPackage\"/>\n")
-        }
+        manifest.append("android:targetPackage=\"$targetPackage\"/>\n")
         manifest.append("<application android:allowBackup=\"false\" android:hasCode=\"false\">\n")
         manifest.append("<meta-data android:name=\"app_version\" android:value=\"v=$appVersion\"/>\n")
         manifest.append("<meta-data android:name=\"app_version_code\" android:value=\"$appVersionCode\"/>\n")
