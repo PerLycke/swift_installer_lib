@@ -16,6 +16,7 @@ import android.preference.PreferenceManager
 import android.support.design.widget.TabLayout
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatDelegate
+import android.util.Log
 import android.view.View
 import com.brit.swiftinstaller.BuildConfig
 import com.brit.swiftinstaller.R
@@ -43,6 +44,7 @@ class InstallSummaryActivity : AppCompatActivity() {
     private lateinit var mPagerAdapter: AppsTabPagerAdapter
 
     private var mErrorMap: HashMap<String, String> = HashMap()
+    private lateinit var mApps: ArrayList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +53,8 @@ class InstallSummaryActivity : AppCompatActivity() {
         if (intent.extras.containsKey("errorMap")) {
             mErrorMap = Utils.bundleToMap(intent.getBundleExtra("errorMap"))
         }
+
+        mApps = intent.getStringArrayListExtra("apps")
 
         mPagerAdapter = AppsTabPagerAdapter(supportFragmentManager, true, SUCCESS_TAB, FAILED_TAB)
         mPagerAdapter.setAlertIconClickListener(object : AppListFragment.AlertIconClickListener {
@@ -75,11 +79,11 @@ class InstallSummaryActivity : AppCompatActivity() {
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("first_install", true)) {
             val inflater = View.inflate(this, R.layout.alert_dialog_reboot, null)
             val builder: AlertDialog.Builder
-            if (AppCompatDelegate.getDefaultNightMode()
+            builder = if (AppCompatDelegate.getDefaultNightMode()
                     == AppCompatDelegate.MODE_NIGHT_YES) {
-                builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme_Black)
+                AlertDialog.Builder(this, R.style.AppAlertDialogTheme_Black)
             } else {
-                builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
+                AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
             }
             builder.setView(inflater)
             val dialog = builder.create()
@@ -93,9 +97,8 @@ class InstallSummaryActivity : AppCompatActivity() {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        val apps = intent.getStringArrayListExtra("apps")
-
-        AppLoader(this, apps, mErrorMap, object : OverlaysActivity.Callback {
+        mPagerAdapter.clearApps()
+        AppLoader(this, mApps, mErrorMap, object : OverlaysActivity.Callback {
             override fun updateApps(tab: Int, item: AppItem) {
                 mPagerAdapter.addApp(tab, item)
             }

@@ -54,8 +54,10 @@
             android:theme="@style/CustomBottomSheetDialogTheme" />
         <activity android:name=".ui.activities.InstallSummaryActivity"
             android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.activities.UninstallFinishedActivity"
+            android:launchMode="singleInstance"
             android:configChanges="orientation|keyboardHidden"
             android:theme="@style/CustomBottomSheetDialogTheme" />
 
