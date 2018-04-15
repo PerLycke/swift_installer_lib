@@ -29,15 +29,15 @@ class InstallerServiceHelper {
         }
 
         fun setInstallerCallback(callback: IInstallerCallback) {
-            InstallerService.getService().setCallback(callback)
+            sService!!.setCallback(callback)
         }
 
         fun install(apps: List<String>) {
-            InstallerService.getService().startInstall(apps)
+            InstallerService.getService()!!.startInstall(apps)
         }
 
         fun uninstall(apps: List<String>) {
-            InstallerService.getService().startUninstall(apps)
+            InstallerService.getService()!!.startUninstall(apps)
         }
 
         fun connectService(context: Context) {

@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import com.brit.swiftinstaller.IInstallerCallback
+import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.utils.rom.RomInfo
 import java.util.*
 import java.util.concurrent.BlockingQueue
@@ -111,7 +112,9 @@ class OverlayManager(val mContext: Context) {
             task = OverlayTask(this)
         }
 
-        task.initializeOverlayTask(mContext, packageName, index, false)
+        if (Utils.isOverlayInstalled(mContext, packageName)) {
+            task.initializeOverlayTask(mContext, packageName, index, false)
+        }
 
         mThreadPool.execute(task.getRunnable())
     }

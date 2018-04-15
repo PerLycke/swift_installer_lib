@@ -139,4 +139,8 @@ class InstallActivity : ThemeActivity() {
             InstallerServiceHelper.install(mApps)
         }
     }
+
+    override fun recreate() {
+        //super.recreate()
+    }
 }

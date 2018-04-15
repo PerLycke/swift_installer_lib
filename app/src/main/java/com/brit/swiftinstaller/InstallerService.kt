@@ -51,38 +51,41 @@ class InstallerService : Service() {
         }
 
     override fun onBind(intent: Intent): IBinder? {
-        return object : IInstallerService.Stub() {
+        if (sService == null) {
+            sService = object : IInstallerService.Stub() {
 
-            @Throws(RemoteException::class)
-            override fun setCallback(callback: IInstallerCallback) {
-                mOM.setCallback(callback)
-            }
-
-            override fun startInstall(apps: List<String>) {
-                install(apps)
-            }
-
-            override fun startUninstall(apps: List<String>) {
-                Log.d("TEST", "InstallerService - uninstall")
-                uninstall(apps)
-            }
-
-            @Throws(RemoteException::class)
-            override fun updateApp(packageName: String?) {
-                //mRomInfo!!.mountRW()
-                val info: PackageInfo
-                try {
-                    info = packageManager.getPackageInfo(packageName, 0)
-                } catch (e: PackageManager.NameNotFoundException) {
-                    e.printStackTrace()
-                    //mRomInfo!!.mountRO()
-                    return
+                @Throws(RemoteException::class)
+                override fun setCallback(callback: IInstallerCallback) {
+                    mOM.setCallback(callback)
                 }
 
-                //installApp(themeAssets, info, packageName)
-                //mRomInfo!!.mountRO()
+                override fun startInstall(apps: List<String>) {
+                    install(apps)
+                }
+
+                override fun startUninstall(apps: List<String>) {
+                    Log.d("TEST", "InstallerService - uninstall")
+                    uninstall(apps)
+                }
+
+                @Throws(RemoteException::class)
+                override fun updateApp(packageName: String?) {
+                    //mRomInfo!!.mountRW()
+                    val info: PackageInfo
+                    try {
+                        info = packageManager.getPackageInfo(packageName, 0)
+                    } catch (e: PackageManager.NameNotFoundException) {
+                        e.printStackTrace()
+                        //mRomInfo!!.mountRO()
+                        return
+                    }
+
+                    //installApp(themeAssets, info, packageName)
+                    //mRomInfo!!.mountRO()
+                }
             }
         }
+        return sService as IBinder
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
@@ -188,9 +191,9 @@ class InstallerService : Service() {
         const val ARG_ENCRYPTION_KEY = "encryption_key"
         const val ARG_IV_KEY = "iv_key"
 
-        private lateinit var sService: IInstallerService
+        private var sService: IInstallerService? = null
 
-        fun getService(): IInstallerService {
+        fun getService(): IInstallerService? {
             return sService
         }
     }

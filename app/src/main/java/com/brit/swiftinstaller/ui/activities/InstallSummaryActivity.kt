@@ -54,6 +54,13 @@ class InstallSummaryActivity : AppCompatActivity() {
             mErrorMap = Utils.bundleToMap(intent.getBundleExtra("errorMap"))
         }
 
+        if (mErrorMap.isNotEmpty()) {
+            sendEmailLayout.visibility = View.VISIBLE
+            sendEmailBtn.setOnClickListener {
+                sendErrorLog()
+            }
+        }
+
         mApps = intent.getStringArrayListExtra("apps")
 
         mPagerAdapter = AppsTabPagerAdapter(supportFragmentManager, true, SUCCESS_TAB, FAILED_TAB)
@@ -123,39 +130,7 @@ class InstallSummaryActivity : AppCompatActivity() {
         }
 
         sheetView.sendLog.setOnClickListener {
-            val emailIntent = Intent(Intent.ACTION_SENDTO)
-            emailIntent.data = Uri.parse("mailto:")
-            emailIntent.putExtra(Intent.EXTRA_EMAIL, Array(1, { "swiftuserhelp@gmail.com" }))
-            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Swift Installer: Error Log")
-
-            val text = StringBuilder()
-            text.append("\n")
-            text.append("Installer Version: ${BuildConfig.VERSION_NAME}")
-            text.append("\n")
-            text.append("Device: ${Build.DEVICE}")
-            text.append("\n")
-            text.append("Android Version: ${Build.VERSION.RELEASE}")
-            text.append("\n")
-            text.append("**********************************")
-            text.append("\n")
-            for (item in mPagerAdapter.getApps(FAILED_TAB).iterator()) {
-                if (mErrorMap.containsKey(item.packageName)) {
-                    text.append("App: " + item.title)
-                    text.append("\n")
-                    text.append("App Package: " + item.packageName)
-                    text.append("\n")
-                    text.append("App Version: " + item.version)
-                    text.append("\n")
-                    text.append("Error Log: " + mErrorMap[item.packageName])
-                    text.append("\n")
-                    text.append("-------------------")
-                    text.append("\n")
-                }
-            }
-
-            emailIntent.putExtra(Intent.EXTRA_TEXT, text.toString())
-            startActivity(emailIntent)
-            //sheetView.reboot.performClick()
+            sendErrorLog()
         }
 
         sheetView.rebootLater.setOnClickListener {
@@ -165,6 +140,41 @@ class InstallSummaryActivity : AppCompatActivity() {
 
         bottomSheetDialog.setContentView(sheetView)
         bottomSheetDialog.show()
+    }
+
+    private fun sendErrorLog() {
+        val emailIntent = Intent(Intent.ACTION_SENDTO)
+        emailIntent.data = Uri.parse("mailto:")
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, Array(1, { "swiftuserhelp@gmail.com" }))
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Swift Installer: Error Log")
+
+        val text = StringBuilder()
+        text.append("\n")
+        text.append("Installer Version: ${BuildConfig.VERSION_NAME}")
+        text.append("\n")
+        text.append("Device: ${Build.DEVICE}")
+        text.append("\n")
+        text.append("Android Version: ${Build.VERSION.RELEASE}")
+        text.append("\n")
+        text.append("**********************************")
+        text.append("\n")
+        for (item in mPagerAdapter.getApps(FAILED_TAB).iterator()) {
+            if (mErrorMap.containsKey(item.packageName)) {
+                text.append("App: " + item.title)
+                text.append("\n")
+                text.append("App Package: " + item.packageName)
+                text.append("\n")
+                text.append("App Version: " + item.version)
+                text.append("\n")
+                text.append("Error Log: " + mErrorMap[item.packageName])
+                text.append("\n")
+                text.append("-------------------")
+                text.append("\n")
+            }
+        }
+
+        emailIntent.putExtra(Intent.EXTRA_TEXT, text.toString())
+        startActivity(emailIntent)
     }
 
     class AppLoader(context: Context, val apps: ArrayList<String>,

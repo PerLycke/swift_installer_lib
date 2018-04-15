@@ -239,7 +239,16 @@ class OverlaysActivity : ThemeActivity() {
                 uninstall.visibility = View.GONE
                 update.visibility = View.GONE
             }
-            container.currentItem == ACTIVE_TAB -> install.visibility = View.GONE
+            container.currentItem == ACTIVE_TAB -> {
+                install.visibility = View.GONE
+                val checked = getCheckedItems(ACTIVE_TAB)
+                val updates = getAppsToUpdate(this)
+                var updatesAvailable = false
+                checked.forEach {
+                    if (!updatesAvailable)
+                        updatesAvailable = updates.contains(it.packageName)
+                }
+            }
             container.visibility == UPDATE_TAB -> install.visibility == View.GONE
         }
     }
@@ -300,10 +309,15 @@ class OverlaysActivity : ThemeActivity() {
     }
 
     private fun updateAction() {
-        val bottomSheetDialog = ThemedBottomSheetDialog(this)
-        val sheetView = View.inflate(this, R.layout.progress_dialog_update, null)
-        bottomSheetDialog.setContentView(sheetView)
-        bottomSheetDialog.show()
+        val checked = getCheckedItems(mViewPager.currentItem)
+        if (checked.isEmpty()) {
+            return
+        }
+        val intent = Intent(this, InstallActivity::class.java)
+        val apps = ArrayList<String>()
+        checked.mapTo(apps) { it.packageName }
+        intent.putStringArrayListExtra("apps", apps)
+        startActivity(intent)
     }
 
     fun overlaysBackClick(view: View) {

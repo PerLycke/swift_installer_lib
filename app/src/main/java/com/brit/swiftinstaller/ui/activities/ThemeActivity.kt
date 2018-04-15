@@ -9,18 +9,22 @@ import com.brit.swiftinstaller.utils.useBlackBackground
 
  @SuppressLint("Registered")
  open class ThemeActivity: AppCompatActivity() {
+     private var mBlackBackground = false
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (useBlackBackground(this)) {
+        mBlackBackground = useBlackBackground(this)
+        if (mBlackBackground) {
             setTheme(R.style.AppTheme_Black)
         } else {
             setTheme(R.style.AppTheme)
         }
         super.onCreate(savedInstanceState)
-
-        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener({ _, key ->
-            if (key == "black_background") {
-                recreate()
-            }
-        })
     }
+
+     override fun onResume() {
+         super.onResume()
+         if (useBlackBackground(this) != mBlackBackground) {
+             mBlackBackground = useBlackBackground(this)
+             recreate()
+         }
+     }
 }

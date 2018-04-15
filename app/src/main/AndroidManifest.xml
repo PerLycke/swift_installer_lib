@@ -50,6 +50,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activities.InstallActivity"
+            android:launchMode="singleInstance"
             android:configChanges="orientation|keyboardHidden"
             android:theme="@style/CustomBottomSheetDialogTheme" />
         <activity android:name=".ui.activities.InstallSummaryActivity"
