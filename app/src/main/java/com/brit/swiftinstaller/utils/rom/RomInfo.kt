@@ -58,9 +58,9 @@ class RomInfo internal constructor(var context: Context, var name: String,
             if (!extraIntent || i > 0) {
                 val appInstall = Intent()
                 if (uninstall) {
-                    appInstall.action = Intent.ACTION_DELETE
+                    appInstall.action = Intent.ACTION_UNINSTALL_PACKAGE
                 } else {
-                    appInstall.action = Intent.ACTION_VIEW
+                    appInstall.action = Intent.ACTION_INSTALL_PACKAGE
                 }
                 if (uninstall) {
                     appInstall.data = Uri.fromParts("package",

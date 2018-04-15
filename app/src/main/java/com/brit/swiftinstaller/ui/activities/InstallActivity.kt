@@ -1,6 +1,9 @@
 package com.brit.swiftinstaller.ui.activities
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -26,7 +29,6 @@ class InstallActivity : ThemeActivity() {
     private lateinit var mProgressPercent: TextView
 
     private var mUninstall = false
-    private var mFinish = false
 
     private lateinit var mApps: ArrayList<String>
 
@@ -90,13 +92,24 @@ class InstallActivity : ThemeActivity() {
         bottomSheetDialog.show()
 
         if (mUninstall && !ShellUtils.isRootAvailable) {
+            val filter = IntentFilter(Intent.ACTION_PACKAGE_FULLY_REMOVED)
+            filter.addDataScheme("package")
+            registerReceiver(object : BroadcastReceiver() {
+                var count = mApps.size
+                override fun onReceive(context: Context?, intent: Intent?) {
+                    count--
+                    if (count == 0) {
+                        startActivity(Intent(this@InstallActivity,
+                                UninstallFinishedActivity::class.java))
+                        finish()
+                    }
+                }
+            }, filter)
             mApps.forEach {
                 addAppToUninstall(this, it)
                 Log.d("TEST", "uninstall $it")
             }
-            val intent = Intent(this, UninstallFinishedActivity::class.java)
-            RomInfo.getRomInfo(this).postInstall(true, intent)
-            mFinish = true
+            RomInfo.getRomInfo(this).postInstall(true, null)
         }
 
         InstallerServiceHelper.connectService(this)
@@ -120,11 +133,5 @@ class InstallActivity : ThemeActivity() {
         if (!mUninstall) {
             InstallerServiceHelper.install(mApps)
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (mUninstall && mFinish)
-            finish()
     }
 }
