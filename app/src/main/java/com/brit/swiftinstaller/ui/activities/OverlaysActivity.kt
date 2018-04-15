@@ -195,25 +195,21 @@ class OverlaysActivity : ThemeActivity() {
 
         val install = sheetView.findViewById<View>(R.id.install)
         install.setOnClickListener {
-            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("first_time", false)) {
+            if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("first_time", false)) {
                 bottomSheetDialog.dismiss()
                 installAction()
             } else {
                 bottomSheetDialog.dismiss()
                 val inflate = View.inflate(this, R.layout.alert_dialog_time, null)
-                val builder = if (AppCompatDelegate.getDefaultNightMode()
-                        == AppCompatDelegate.MODE_NIGHT_YES) {
-                    AlertDialog.Builder(this, R.style.AppAlertDialogTheme_Black).create()
-                } else {
-                    AlertDialog.Builder(this, R.style.AppAlertDialogTheme).create()
-                }
+                val builder = AlertDialog.Builder(this, Utils.getDialogTheme(this))
                 builder.setView(inflate)
+                val dialog = builder.create()
                 inflate.timeDialogBtn.setOnClickListener {
                     PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("first_time", true).apply()
-                    builder.dismiss()
+                    dialog.dismiss()
                     installAction()
                 }
-                builder.show()
+                dialog.show()
             }
         }
 
