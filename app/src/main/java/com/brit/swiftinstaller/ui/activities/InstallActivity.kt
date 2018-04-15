@@ -1,23 +1,24 @@
 package com.brit.swiftinstaller.ui.activities
 
+import android.app.AlertDialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.support.v7.app.AppCompatDelegate
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.brit.swiftinstaller.IInstallerCallback
 import com.brit.swiftinstaller.R
-import com.brit.swiftinstaller.ui.ThemedBottomSheetDialog
 import com.brit.swiftinstaller.utils.InstallerServiceHelper
 import com.brit.swiftinstaller.utils.ShellUtils
 import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.utils.addAppToUninstall
 import com.brit.swiftinstaller.utils.rom.RomInfo
-import kotlinx.android.synthetic.main.sheet_install_progress.view.*
+import kotlinx.android.synthetic.main.progress_dialog_install.view.*
 import java.util.ArrayList
 
 
@@ -67,21 +68,25 @@ class InstallActivity : ThemeActivity() {
         mApps = intent.getStringArrayListExtra("apps")
         mApps.forEach { Log.d("TEST", "install $it") }
 
-        val bottomSheetDialog = ThemedBottomSheetDialog(this)
-        val sheetView = View.inflate(this, R.layout.sheet_install_progress, null)
-        bottomSheetDialog.setContentView(sheetView)
-        bottomSheetDialog.setOnCancelListener {
-            finish()
+        val inflate = View.inflate(this, R.layout.progress_dialog_install, null)
+        val builder: AlertDialog.Builder
+        if (AppCompatDelegate.getDefaultNightMode()
+                == AppCompatDelegate.MODE_NIGHT_YES) {
+            builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme_Black)
+        } else {
+            builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
         }
+        builder.setView(inflate)
+        val dialog = builder.create()
 
         if (mUninstall) {
-            sheetView.installProgressTxt.setText(R.string.uninstalling_overlays)
+            inflate.installProgressTxt.setText(R.string.uninstalling_overlays)
         }
 
-        mProgressBar = sheetView.installProgressBar
+        mProgressBar = inflate.installProgressBar
         mProgressBar.isIndeterminate = mUninstall
-        mProgressCount = sheetView.installProgressCount
-        mProgressPercent = sheetView.installProgressPercent
+        mProgressCount = inflate.installProgressCount
+        mProgressPercent = inflate.installProgressPercent
 
         if (!mUninstall) {
             updateProgress("", 0, mApps.size - 1, mUninstall)
@@ -89,7 +94,7 @@ class InstallActivity : ThemeActivity() {
             mProgressCount.visibility = View.INVISIBLE
             mProgressPercent.visibility = View.INVISIBLE
         }
-        bottomSheetDialog.show()
+        dialog.show()
 
         if (mUninstall && !ShellUtils.isRootAvailable) {
             val filter = IntentFilter(Intent.ACTION_PACKAGE_FULLY_REMOVED)
