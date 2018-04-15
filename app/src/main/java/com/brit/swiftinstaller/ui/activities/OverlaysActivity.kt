@@ -9,8 +9,10 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.AsyncTask
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
+import android.support.v7.app.AppCompatDelegate
 import android.view.*
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.ThemedBottomSheetDialog
@@ -23,6 +25,7 @@ import com.brit.swiftinstaller.utils.Utils.isOverlayEnabled
 import com.brit.swiftinstaller.utils.Utils.isOverlayInstalled
 import com.brit.swiftinstaller.utils.getAccentColor
 import kotlinx.android.synthetic.main.activity_overlays.*
+import kotlinx.android.synthetic.main.alert_dialog_time.view.*
 import kotlinx.android.synthetic.main.toolbar_overlays.*
 import kotlinx.android.synthetic.main.tab_layout_overlay.*
 import java.lang.ref.WeakReference
@@ -119,7 +122,7 @@ class OverlaysActivity : ThemeActivity() {
     }
 
     class AppLoader(context: Context, private val mCallback: Callback)
-            : AsyncTask<Void, AppLoader.Progress, Void>() {
+        : AsyncTask<Void, AppLoader.Progress, Void>() {
 
         private val mConRef: WeakReference<Context> = WeakReference(context)
 
@@ -173,8 +176,26 @@ class OverlaysActivity : ThemeActivity() {
 
         val install = sheetView.findViewById<View>(R.id.install)
         install.setOnClickListener {
-            bottomSheetDialog.dismiss()
-            installAction()
+            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("first_time", false)) {
+                bottomSheetDialog.dismiss()
+                installAction()
+            } else {
+                bottomSheetDialog.dismiss()
+                val inflate = View.inflate(this, R.layout.alert_dialog_time, null)
+                val builder = if (AppCompatDelegate.getDefaultNightMode()
+                        == AppCompatDelegate.MODE_NIGHT_YES) {
+                    AlertDialog.Builder(this, R.style.AppAlertDialogTheme_Black).create()
+                } else {
+                    AlertDialog.Builder(this, R.style.AppAlertDialogTheme).create()
+                }
+                builder.setView(inflate)
+                inflate.timeDialogBtn.setOnClickListener {
+                    PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("first_time", true).apply()
+                    builder.dismiss()
+                    installAction()
+                }
+                builder.show()
+            }
         }
 
         val uninstall = sheetView.findViewById<View>(R.id.uninstall)

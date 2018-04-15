@@ -65,4 +65,7 @@
     <string name="disable">Disable</string>
     <string name="keep_enabled">Keep enabled</string>
     <string name="failed_info_card">One reason apps fails to install is that the app version doesn\'t match the overlays version. We usually update the theme and add support for new versions within a few days, so please be patient. There\'s an option to send us an error log in the FAB menu.</string>
+    <string name="attention">Please note that:</string>
+    <string name="time_consuming">1. Installing and uninstalling can take a lot of time. Even though it seems stuck, just wait and it\'ll finish.\n\n2. When installing or uninstalling Android overlay some apps might crash. This is expected, and normal. Everything will work fine once you rebooted.</string>
+    <string name="proceed">Proceed</string>
 </resources>
