@@ -205,7 +205,7 @@ class OverlaysActivity : ThemeActivity() {
 
         val install = sheetView.findViewById<View>(R.id.install)
         install.setOnClickListener {
-            if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("first_time", false)) {
+            if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("first_time", true)) {
                 bottomSheetDialog.dismiss()
                 installAction()
             } else {
@@ -215,7 +215,7 @@ class OverlaysActivity : ThemeActivity() {
                 builder.setView(inflate)
                 val dialog = builder.create()
                 inflate.timeDialogBtn.setOnClickListener {
-                    PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("first_time", true).apply()
+                    PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("first_time", false).apply()
                     dialog.dismiss()
                     installAction()
                 }
