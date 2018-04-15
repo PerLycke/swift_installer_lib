@@ -28,9 +28,12 @@ class UninstallFinishedActivity: AppCompatActivity() {
         }
         builder.setView(inflate)
         dialog = builder.create()
+        dialog.setCancelable(false)
+        dialog.setCanceledOnTouchOutside(false)
 
         inflate.rebootUninstallBtn.setOnClickListener {
             dialog.dismiss()
+            finish()
         }
     }
 
