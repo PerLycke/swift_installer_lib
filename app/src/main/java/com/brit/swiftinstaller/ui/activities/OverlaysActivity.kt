@@ -7,14 +7,18 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.graphics.PorterDuff
 import android.os.AsyncTask
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.TabLayout
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatDelegate
 import android.support.v7.widget.SearchView
 import android.view.*
+import android.widget.TextView
+import android.widget.Toast
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.ThemedBottomSheetDialog
 import com.brit.swiftinstaller.ui.applist.AppItem
@@ -257,6 +261,21 @@ class OverlaysActivity : ThemeActivity() {
         uninstall.setOnClickListener {
             bottomSheetDialog.dismiss()
             uninstallProgressAction()
+
+            val toast = Toast.makeText(this, "This can take a lot of time, have patience!", Toast.LENGTH_LONG)
+            val view = toast.view
+
+            val text = view.findViewById<TextView>(android.R.id.message)
+            text.setTextColor(ContextCompat.getColor(this, R.color.minimal_green))
+
+            if (AppCompatDelegate.getDefaultNightMode()
+                == AppCompatDelegate.MODE_NIGHT_YES) {
+                view.setBackgroundResource(R.drawable.toast_black)
+            } else {
+                view.setBackgroundResource(R.drawable.toast_dark)
+            }
+
+            toast.show()
         }
 
         val cancel = sheetView.findViewById<View>(R.id.cancelUninstallTxt)
