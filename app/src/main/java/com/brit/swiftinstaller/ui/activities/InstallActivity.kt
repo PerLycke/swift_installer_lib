@@ -26,12 +26,15 @@ class InstallActivity : ThemeActivity() {
     private lateinit var mProgressPercent: TextView
 
     private var mUninstall = false
+    private var mFinish = false
 
     private lateinit var mApps: ArrayList<String>
 
     val errorMap: HashMap<String, String> = HashMap()
 
-    fun updateProgress(label: String?, progress: Int, max: Int, uninstall: Boolean) {
+    fun updateProgress(label: String?, prog: Int, maximum: Int, uninstall: Boolean) {
+        val max = maximum + 1
+        val progress = prog + 1
         if (mProgressBar.progress < progress) {
             mProgressBar.progress = progress
             mProgressBar.max = max
@@ -46,16 +49,14 @@ class InstallActivity : ThemeActivity() {
     }
 
     private fun installComplete(uninstall: Boolean) {
-        val intent = Intent(this, InstallSummaryActivity::class.java)
-        intent.putExtra("errorMap", Utils.mapToBundle(errorMap))
-        intent.putExtra("apps", mApps)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        RomInfo.getRomInfo(this).postInstall(uninstall, intent)
-        finish()
-    }
-
-    fun installFailed(reason: Int) {
-        // TODO
+        if (!uninstall) {
+            val intent = Intent(this, InstallSummaryActivity::class.java)
+            intent.putExtra("errorMap", Utils.mapToBundle(errorMap))
+            intent.putExtra("apps", mApps)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            RomInfo.getRomInfo(this).postInstall(uninstall, intent)
+            finish()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,34 +65,41 @@ class InstallActivity : ThemeActivity() {
         mApps = intent.getStringArrayListExtra("apps")
         mApps.forEach { Log.d("TEST", "install $it") }
 
+        val bottomSheetDialog = ThemedBottomSheetDialog(this)
+        val sheetView = View.inflate(this, R.layout.sheet_install_progress, null)
+        bottomSheetDialog.setContentView(sheetView)
+        bottomSheetDialog.setOnCancelListener {
+            finish()
+        }
+
+        if (mUninstall) {
+            sheetView.installProgressTxt.setText(R.string.uninstalling_overlays)
+        }
+
+        mProgressBar = sheetView.installProgressBar
+        mProgressBar.isIndeterminate = mUninstall
+        mProgressCount = sheetView.installProgressCount
+        mProgressPercent = sheetView.installProgressPercent
+
+        if (!mUninstall) {
+            updateProgress("", 0, mApps.size - 1, mUninstall)
+        } else {
+            mProgressCount.visibility = View.INVISIBLE
+            mProgressPercent.visibility = View.INVISIBLE
+        }
+        bottomSheetDialog.show()
+
         if (mUninstall && !ShellUtils.isRootAvailable) {
             mApps.forEach {
                 addAppToUninstall(this, it)
                 Log.d("TEST", "uninstall $it")
             }
-            RomInfo.getRomInfo(this).postInstall(true, null)
-            finish()
-            return
+            val intent = Intent(this, UninstallFinishedActivity::class.java)
+            RomInfo.getRomInfo(this).postInstall(true, intent)
+            mFinish = true
         }
 
-        val bottomSheetDialog = ThemedBottomSheetDialog(this)
-        val sheetView = View.inflate(this, R.layout.sheet_install_progress, null)
-        bottomSheetDialog.setContentView(sheetView)
-        bottomSheetDialog.show()
-        bottomSheetDialog.setOnCancelListener {
-            finish()
-        }
         InstallerServiceHelper.connectService(this)
-
-        if (mUninstall) {
-            sheetView.findViewById<TextView>(R.id.installProgressTxt).setText(R.string.uninstalling_overlays)
-        }
-
-        mProgressBar = sheetView.installProgressBar
-        mProgressCount = sheetView.installProgressCount
-        mProgressPercent = sheetView.installProgressPercent
-
-        updateProgress("", 0, mApps.size, mUninstall)
 
         InstallerServiceHelper.setInstallerCallback(object : IInstallerCallback.Stub() {
             override fun installComplete(uninstall: Boolean) {
@@ -109,16 +117,14 @@ class InstallActivity : ThemeActivity() {
             }
 
         })
-        if (mUninstall) {
-            InstallerServiceHelper.uninstall(mApps)
-        } else {
+        if (!mUninstall) {
             InstallerServiceHelper.install(mApps)
         }
     }
 
     override fun onResume() {
         super.onResume()
-        if (mUninstall)
+        if (mUninstall && mFinish)
             finish()
     }
 }

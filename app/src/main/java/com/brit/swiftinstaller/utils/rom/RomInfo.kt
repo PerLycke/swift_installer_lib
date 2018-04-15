@@ -74,7 +74,8 @@ class RomInfo internal constructor(var context: Context, var name: String,
                 appInstall.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 appInstall
             } else {
-                intent!!
+                intent!!.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent
             }
         })
 

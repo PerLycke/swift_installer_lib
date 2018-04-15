@@ -46,7 +46,7 @@ fun getAppVersions(context: Context): Bundle {
     val versions = Bundle()
     val vers = PreferenceManager.getDefaultSharedPreferences(context).getStringSet("overlay_versions", ArraySet<String>())
     for (v in vers) {
-        val split = v.split("\\|")
+        val split = v.split("|")
         versions.putInt(split[0], Integer.parseInt(split[1]))
     }
     return versions
