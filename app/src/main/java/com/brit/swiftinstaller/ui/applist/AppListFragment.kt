@@ -5,8 +5,10 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
+import android.support.v4.text.TextUtilsCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.util.Log
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
@@ -24,10 +26,12 @@ import kotlinx.android.synthetic.main.activity_app_list.*
 import kotlinx.android.synthetic.main.activity_app_list.view.*
 import kotlinx.android.synthetic.main.failed_info_card.view.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class AppListFragment : Fragment() {
 
     var mApps: ArrayList<AppItem> = ArrayList()
+    var mVisible: ArrayList<Int> = ArrayList()
     private val mHandler = Handler()
 
     private val mChecked = SparseBooleanArray()
@@ -67,6 +71,21 @@ class AppListFragment : Fragment() {
         return view
     }
 
+    fun querySearch(query: String) {
+        mVisible.clear()
+        if (query.isEmpty() || query.isBlank()) {
+            mApps.forEach { mVisible.add(mApps.indexOf(it)) }
+        } else {
+            mApps.forEach {
+                if (it.packageName.toLowerCase().contains(query.toLowerCase())
+                        || it.title.toLowerCase().contains(query.toLowerCase())) {
+                    mVisible.add(mApps.indexOf(it))
+                }
+            }
+        }
+        appListView.adapter.notifyDataSetChanged()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -94,10 +113,12 @@ class AppListFragment : Fragment() {
 
     fun setAppList(apps: ArrayList<AppItem>?) {
         mApps.clear()
+        mVisible.clear()
         mApps.addAll(apps!!)
         mApps.sortWith(Comparator { o1: AppItem, o2: AppItem ->
             o1.title.compareTo(o2.title)
         })
+        mApps.forEach { mVisible.add(mApps.indexOf(it)) }
         if (appListView != null && !appListView.isComputingLayout) {
             mHandler.post {
                 appListView.adapter.notifyDataSetChanged()
@@ -113,11 +134,11 @@ class AppListFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.bindAppItem(mApps[position])
+            holder.bindAppItem(mApps[mVisible[position]])
         }
 
         override fun getItemCount(): Int {
-            return mApps.size
+            return mVisible.size
         }
 
         inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {

@@ -13,6 +13,7 @@ import android.preference.PreferenceManager
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatDelegate
+import android.support.v7.widget.SearchView
 import android.view.*
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.ThemedBottomSheetDialog
@@ -64,6 +65,24 @@ class OverlaysActivity : ThemeActivity() {
             }
 
         })
+
+        search_view.setOnSearchClickListener {
+            mainContent.visibility = View.GONE
+        }
+        search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                mPagerAdapter!!.querySearch(container.currentItem, newText!!)
+                return true
+            }
+        })
+        search_view.setOnCloseListener {
+            mainContent.visibility = View.VISIBLE
+            false
+        }
 
         mViewPager = container
 
@@ -122,7 +141,7 @@ class OverlaysActivity : ThemeActivity() {
     }
 
     class AppLoader(context: Context, private val mCallback: Callback)
-        : AsyncTask<Void, AppLoader.Progress, Void>() {
+            : AsyncTask<Void, AppLoader.Progress, Void>() {
 
         private val mConRef: WeakReference<Context> = WeakReference(context)
 

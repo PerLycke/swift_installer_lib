@@ -108,6 +108,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <android.support.v7.widget.SearchView
+            android:id="@+id/search_view"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layoutDirection="rtl"
