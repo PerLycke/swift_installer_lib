@@ -88,7 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginTop="78dp"
+            android:layout_marginTop="84dp"
             app:layout_constraintEnd_toEndOf="@+id/installUpdatesTile"
             app:layout_constraintTop_toTopOf="@+id/installUpdatesTile">
 
@@ -213,7 +213,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginTop="78dp"
+            android:layout_marginTop="84dp"
             app:layout_constraintEnd_toEndOf="@+id/installTile"
             app:layout_constraintTop_toTopOf="@+id/installTile">
 
@@ -336,7 +336,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginTop="78dp"
+            android:layout_marginTop="84dp"
             app:layout_constraintEnd_toEndOf="@+id/accentTile"
             app:layout_constraintTop_toTopOf="@+id/accentTile">
 
