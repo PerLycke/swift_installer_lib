@@ -31,7 +31,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/disableDescLayout"
+        android:id="@+id/disableMsgLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
@@ -42,11 +42,11 @@
         app:layout_constraintTop_toBottomOf="@+id/disableTitleLayout">
 
         <TextView
-            android:id="@+id/disableDesc"
+            android:id="@+id/disableMsg"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:lineSpacingExtra="4dp"
-            android:text="@string/disable_notifications_desc"
+            android:text="@string/disable_notifications_msg"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -62,7 +62,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/disableDescLayout">
+        app:layout_constraintTop_toBottomOf="@+id/disableMsgLayout">
 
         <Button
             android:id="@+id/disableBtn"
@@ -71,6 +71,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed"
             android:text="@string/disable"
+            android:textAlignment="textEnd"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/keepEnabledBtn" />
 
@@ -81,6 +82,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed"
             android:text="@string/keep_enabled"
+            android:textAlignment="textEnd"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>

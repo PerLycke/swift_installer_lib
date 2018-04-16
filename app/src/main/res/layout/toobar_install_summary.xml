@@ -12,7 +12,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
         android:paddingTop="4dp"
-        android:text="@string/installation_summary"
+        android:text="@string/toolbar_title_installation_summary"
         android:textAppearance="@style/ToolbarTitle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

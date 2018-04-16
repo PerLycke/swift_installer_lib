@@ -20,7 +20,7 @@ class UninstallFinishedActivity: AppCompatActivity() {
         } else {
             AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
         }
-                .setTitle(R.string.reboot_uninstall)
+                .setTitle(R.string.reboot)
                 .setMessage(R.string.reboot_manually)
                 .setPositiveButton(R.string.reboot_later, { dialogInterface, i ->
                     dialogInterface.dismiss()

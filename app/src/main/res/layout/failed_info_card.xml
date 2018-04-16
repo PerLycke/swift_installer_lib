@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
             android:lineSpacingExtra="2sp"
-            android:text="@string/failed_info_card"
+            android:text="@string/info_card_failed_msg"
             android:textColor="@android:color/white"
             app:layout_constraintEnd_toStartOf="@+id/closeInfoCard"
             app:layout_constraintStart_toStartOf="parent"

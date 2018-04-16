@@ -80,7 +80,7 @@ class InstallActivity : ThemeActivity() {
         val dialog = builder.create()
 
         if (mUninstall) {
-            inflate.installProgressTxt.setText(R.string.uninstalling_overlays)
+            inflate.installProgressTxt.setText(R.string.progress_uninstalling_title)
         }
 
         mProgressBar = inflate.installProgressBar

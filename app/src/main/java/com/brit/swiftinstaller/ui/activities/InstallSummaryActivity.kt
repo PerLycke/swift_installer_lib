@@ -15,7 +15,6 @@ import android.os.PowerManager
 import android.preference.PreferenceManager
 import android.support.design.widget.TabLayout
 import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatDelegate
 import android.view.View
 import com.brit.swiftinstaller.BuildConfig
 import com.brit.swiftinstaller.R
@@ -83,8 +82,8 @@ class InstallSummaryActivity : AppCompatActivity() {
 
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("first_install", true)) {
             val builder = AlertDialog.Builder(this)
-                    .setTitle(R.string.reboot)
-                    .setMessage(R.string.examined_result)
+                    .setTitle(R.string.reboot_to_finish)
+                    .setMessage(R.string.examined_result_msg)
                     .setPositiveButton(R.string.got_it, { dialogInterface, i ->
                         dialogInterface.dismiss()
                     })

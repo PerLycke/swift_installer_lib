@@ -27,7 +27,7 @@
             android:layout_marginBottom="8dp"
             android:fontFamily="sans-serif-condensed"
             android:gravity="center_vertical"
-            android:text="@string/uninstalling_overlays"
+            android:text="@string/progress_uninstalling_title"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"

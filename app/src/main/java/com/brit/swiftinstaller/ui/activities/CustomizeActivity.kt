@@ -178,15 +178,15 @@ class CustomizeActivity : AppCompatActivity() {
 
     fun bgClick(view: View) {
         val builder = AlertDialog.Builder(this)
-                .setTitle(R.string.background_change_title)
-                .setMessage(R.string.background_change_msg)
-                .setPositiveButton(R.string.background_change_continue, { dialogInterface, i ->
+                .setTitle(R.string.changing_background_title)
+                .setMessage(R.string.changing_background_msg)
+                .setPositiveButton(R.string.ok, { dialogInterface, i ->
                     mBlackBackround = view.id == R.id.blackBgCircle
                     setBgIndicator()
                     recreate()
                     dialogInterface.dismiss()
                 })
-                .setNegativeButton(R.string.background_change_back, { dialogInterface, i ->
+                .setNegativeButton(R.string.cancel, { dialogInterface, i ->
                     dialogInterface.dismiss()
                 })
 

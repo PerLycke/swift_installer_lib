@@ -21,18 +21,18 @@ class TutorialActivity : TutorialActivity() {
             setIndicator(R.drawable.tutorial_indicator)
             setIndicatorSelected(R.drawable.tutorial_indicator_selected)
 
-            addFragment(Step.Builder().setTitle(resources.getString(R.string.tutorial_title))
+            addFragment(Step.Builder().setTitle(resources.getString(R.string.app_name))
                     .setContent(resources.getString(R.string.tutorial_guide))
                     .setBackgroundColor(ContextCompat.getColor(this, R.color.background_main))
                     .setDrawable(R.drawable.ic_tutorial_logo) // int top drawable
                     .build())
             addFragment(Step.Builder().setTitle(resources.getString(R.string.tutorial_customize_title))
-                    .setContent(resources.getString(R.string.tutorial_customize_desc))
+                    .setContent(resources.getString(R.string.tutorial_customize_content))
                     .setBackgroundColor(ContextCompat.getColor(this, R.color.background_main))
                     .setDrawable(R.drawable.ic_tutorial_customize) // int top drawable
                     .build())
-            addFragment(PermissionStep.Builder().setTitle(getString(R.string.permission_title))
-                    .setContent(getString(R.string.permission_detail))
+            addFragment(PermissionStep.Builder().setTitle(getString(R.string.tutorial_permission_title))
+                    .setContent(getString(R.string.tutorial_permission_content))
                     .setBackgroundColor(ContextCompat.getColor(this, R.color.background_main)) // int background color
                     .setDrawable(R.drawable.ic_tutorial_permission)
                     .setPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE))

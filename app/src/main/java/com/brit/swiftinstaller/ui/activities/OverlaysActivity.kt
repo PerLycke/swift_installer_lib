@@ -215,8 +215,8 @@ class OverlaysActivity : ThemeActivity() {
                 } else {
                     AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
                 }
-                        .setTitle(R.string.attention)
-                        .setMessage(R.string.time_consuming)
+                        .setTitle(R.string.installing_and_uninstalling_title)
+                        .setMessage(R.string.installing_and_uninstalling_msg)
                         .setPositiveButton(R.string.proceed, { dialogInterface, i ->
                             PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("first_time", false).apply()
                             dialogInterface.dismiss()
