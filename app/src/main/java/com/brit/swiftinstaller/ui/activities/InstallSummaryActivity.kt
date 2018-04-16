@@ -16,7 +16,6 @@ import android.preference.PreferenceManager
 import android.support.design.widget.TabLayout
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatDelegate
-import android.util.Log
 import android.view.View
 import com.brit.swiftinstaller.BuildConfig
 import com.brit.swiftinstaller.R
@@ -88,9 +87,9 @@ class InstallSummaryActivity : AppCompatActivity() {
             val builder: AlertDialog.Builder
             builder = if (AppCompatDelegate.getDefaultNightMode()
                     == AppCompatDelegate.MODE_NIGHT_YES) {
-                AlertDialog.Builder(this, R.style.AppAlertDialogTheme_Black)
+                AlertDialog.Builder(this, R.style.AppTheme_AlertDialog_Black)
             } else {
-                AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
+                AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
             }
             builder.setView(inflater)
             val dialog = builder.create()

@@ -72,9 +72,9 @@ class InstallActivity : ThemeActivity() {
         val builder: AlertDialog.Builder
         if (AppCompatDelegate.getDefaultNightMode()
                 == AppCompatDelegate.MODE_NIGHT_YES) {
-            builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme_Black)
+            builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog_Black)
         } else {
-            builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
+            builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
         }
         builder.setView(inflate)
         val dialog = builder.create()

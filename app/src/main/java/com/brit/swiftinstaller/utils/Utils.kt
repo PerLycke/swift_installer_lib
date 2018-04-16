@@ -2,7 +2,6 @@ package com.brit.swiftinstaller.utils
 
 import android.content.Context
 import android.content.pm.PackageManager
-import android.content.res.AssetManager
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -148,9 +147,9 @@ object Utils {
 
     fun getDialogTheme(context: Context): Int {
         if (useBlackBackground(context)) {
-            return R.style.AppAlertDialogTheme_Black
+            return R.style.AppTheme_AlertDialog_Black
         } else {
-            return R.style.AppAlertDialogTheme
+            return R.style.AppTheme_AlertDialog
         }
     }
 

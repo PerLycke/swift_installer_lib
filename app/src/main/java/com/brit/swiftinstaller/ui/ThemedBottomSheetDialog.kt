@@ -7,9 +7,9 @@ import com.brit.swiftinstaller.utils.useBlackBackground
 
 open class ThemedBottomSheetDialog(context: Context): BottomSheetDialog(context,
         if (useBlackBackground(context)) {
-            R.style.CustomBottomSheetDialogTheme_Black
+            R.style.AppTheme_BottomSheetDialog_Black
         } else {
-            R.style.CustomBottomSheetDialogTheme
+            R.style.AppTheme_BottomSheetDialog
         }) {
 
 }

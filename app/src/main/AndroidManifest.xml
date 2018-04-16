@@ -29,7 +29,7 @@
             android:configChanges="orientation|keyboardHidden"
             android:noHistory="true"
             android:screenOrientation="portrait"
-            android:theme="@style/CustomTutorialStyle">
+            android:theme="@style/AppTheme.TutorialStyle">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,7 +52,7 @@
             android:name=".ui.activities.InstallActivity"
             android:launchMode="singleInstance"
             android:configChanges="orientation|keyboardHidden"
-            android:theme="@style/CustomBottomSheetDialogTheme" />
+            android:theme="@style/AppTheme.BottomSheetDialog" />
         <activity android:name=".ui.activities.InstallSummaryActivity"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleInstance"
@@ -60,7 +60,7 @@
         <activity android:name=".ui.activities.UninstallFinishedActivity"
             android:launchMode="singleInstance"
             android:configChanges="orientation|keyboardHidden"
-            android:theme="@style/CustomBottomSheetDialogTheme" />
+            android:theme="@style/AppTheme.BottomSheetDialog" />
 
         <service android:name=".InstallerService" />
 

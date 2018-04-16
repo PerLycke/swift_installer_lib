@@ -179,28 +179,20 @@ class CustomizeActivity : AppCompatActivity() {
     }
 
     fun bgClick(view: View) {
-        val dialogView = View.inflate(this, R.layout.alert_dialog_background, null)
-        val builder: AlertDialog.Builder
-        if (AppCompatDelegate.getDefaultNightMode()
-                == AppCompatDelegate.MODE_NIGHT_YES) {
-            builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme_Black)
-        } else {
-            builder = AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
-        }
-        builder.setView(dialogView)
-        val dialog = builder.create()
-
-        dialogView.bgContinueBtn.setOnClickListener {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(R.string.background_change_title)
+        builder.setMessage(R.string.background_change_msg)
+        builder.setPositiveButton(R.string.background_change_continue, { dialogInterface, i ->
             mBlackBackround = view.id == R.id.blackBgCircle
             setBgIndicator()
             recreate()
-            dialog.dismiss()
-        }
+            dialogInterface.dismiss()
+        })
+        builder.setNegativeButton(R.string.background_change_back, { dialogInterface, i ->
+            dialogInterface.dismiss()
+        })
 
-        dialogView.bgBackBtn.setOnClickListener {
-            dialog.dismiss()
-        }
-
+        val dialog = builder.create()
         dialog.show()
     }
 

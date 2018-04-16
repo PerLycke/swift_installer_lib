@@ -134,9 +134,9 @@ class MainActivity : ThemeActivity() {
                 val dialogView = View.inflate(this, R.layout.dialog_disable_notifications, null)
                 val builder = if (AppCompatDelegate.getDefaultNightMode()
                         == AppCompatDelegate.MODE_NIGHT_YES) {
-                    AlertDialog.Builder(this, R.style.AppAlertDialogTheme_Black)
+                    AlertDialog.Builder(this, R.style.AppTheme_AlertDialog_Black)
                 } else {
-                    AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
+                    AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
                 }
                 builder.setView(dialogView)
                 val dialog = builder.create()
@@ -147,9 +147,9 @@ class MainActivity : ThemeActivity() {
                 val dialogView = View.inflate(this, R.layout.dialog_about, null)
                 val builder = if (AppCompatDelegate.getDefaultNightMode()
                         == AppCompatDelegate.MODE_NIGHT_YES) {
-                    AlertDialog.Builder(this, R.style.AppAlertDialogTheme_Black)
+                    AlertDialog.Builder(this, R.style.AppTheme_AlertDialog_Black)
                 } else {
-                    AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
+                    AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
                 }
                 builder.setView(dialogView)
                 val dialog = builder.create()
