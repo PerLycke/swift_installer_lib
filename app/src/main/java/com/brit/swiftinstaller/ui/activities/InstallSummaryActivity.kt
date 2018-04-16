@@ -28,7 +28,6 @@ import com.brit.swiftinstaller.utils.getAppVersion
 import com.brit.swiftinstaller.utils.setAppVersion
 import kotlin.collections.ArrayList
 import kotlinx.android.synthetic.main.activity_install_summary.*
-import kotlinx.android.synthetic.main.alert_dialog_reboot.view.*
 import kotlinx.android.synthetic.main.sheet_install_summary_fab.view.*
 import kotlinx.android.synthetic.main.tab_layout_install_summary.*
 import java.lang.ref.WeakReference
@@ -83,19 +82,14 @@ class InstallSummaryActivity : AppCompatActivity() {
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
 
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("first_install", true)) {
-            val inflater = View.inflate(this, R.layout.alert_dialog_reboot, null)
-            val builder: AlertDialog.Builder
-            builder = if (AppCompatDelegate.getDefaultNightMode()
-                    == AppCompatDelegate.MODE_NIGHT_YES) {
-                AlertDialog.Builder(this, R.style.AppTheme_AlertDialog_Black)
-            } else {
-                AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-            }
-            builder.setView(inflater)
+            val builder = AlertDialog.Builder(this)
+                    .setTitle(R.string.reboot)
+                    .setMessage(R.string.examined_result)
+                    .setPositiveButton(R.string.got_it, { dialogInterface, i ->
+                        dialogInterface.dismiss()
+                    })
+
             val dialog = builder.create()
-            inflater.rebootDialogBtn.setOnClickListener {
-                dialog.dismiss()
-            }
             dialog.show()
             PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("first_install", false).apply()
         }

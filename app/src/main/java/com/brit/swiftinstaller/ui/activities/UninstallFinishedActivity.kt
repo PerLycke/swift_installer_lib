@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AppCompatDelegate
-import android.view.View
 import com.brit.swiftinstaller.R
-import kotlinx.android.synthetic.main.alert_dialog_uninstall_reboot.view.*
 
 class UninstallFinishedActivity: AppCompatActivity() {
 
@@ -15,23 +13,23 @@ class UninstallFinishedActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val inflate = View.inflate(this, R.layout.alert_dialog_uninstall_reboot, null)
         val builder: AlertDialog.Builder
-        if (AppCompatDelegate.getDefaultNightMode()
+        builder = if (AppCompatDelegate.getDefaultNightMode()
                 == AppCompatDelegate.MODE_NIGHT_YES) {
-            builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog_Black)
+            AlertDialog.Builder(this, R.style.AppTheme_AlertDialog_Black)
         } else {
-            builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+            AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
         }
-        builder.setView(inflate)
+                .setTitle(R.string.reboot_uninstall)
+                .setMessage(R.string.reboot_manually)
+                .setPositiveButton(R.string.reboot_later, { dialogInterface, i ->
+                    dialogInterface.dismiss()
+                    finish()
+                })
+
         dialog = builder.create()
         dialog.setCancelable(false)
         dialog.setCanceledOnTouchOutside(false)
-
-        inflate.rebootUninstallBtn.setOnClickListener {
-            dialog.dismiss()
-            finish()
-        }
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {

@@ -130,19 +130,6 @@ class MainActivity : ThemeActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.disable_notifications -> {
-                val dialogView = View.inflate(this, R.layout.dialog_disable_notifications, null)
-                val builder = if (AppCompatDelegate.getDefaultNightMode()
-                        == AppCompatDelegate.MODE_NIGHT_YES) {
-                    AlertDialog.Builder(this, R.style.AppTheme_AlertDialog_Black)
-                } else {
-                    AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                }
-                builder.setView(dialogView)
-                val dialog = builder.create()
-                dialog.show()
-                true
-            }
             R.id.action_about -> {
                 val dialogView = View.inflate(this, R.layout.dialog_about, null)
                 val builder = if (AppCompatDelegate.getDefaultNightMode()

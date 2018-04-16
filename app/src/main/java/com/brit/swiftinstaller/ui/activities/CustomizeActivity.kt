@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AppCompatDelegate
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +18,6 @@ import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.CircleDrawable
 import com.brit.swiftinstaller.utils.*
 import kotlinx.android.synthetic.main.customize_accent.*
-import kotlinx.android.synthetic.main.alert_dialog_background.view.*
 import kotlinx.android.synthetic.main.customize_background.*
 import kotlinx.android.synthetic.main.customize_preview.*
 import kotlinx.android.synthetic.main.toolbar_customize.*
@@ -180,17 +178,17 @@ class CustomizeActivity : AppCompatActivity() {
 
     fun bgClick(view: View) {
         val builder = AlertDialog.Builder(this)
-        builder.setTitle(R.string.background_change_title)
-        builder.setMessage(R.string.background_change_msg)
-        builder.setPositiveButton(R.string.background_change_continue, { dialogInterface, i ->
-            mBlackBackround = view.id == R.id.blackBgCircle
-            setBgIndicator()
-            recreate()
-            dialogInterface.dismiss()
-        })
-        builder.setNegativeButton(R.string.background_change_back, { dialogInterface, i ->
-            dialogInterface.dismiss()
-        })
+                .setTitle(R.string.background_change_title)
+                .setMessage(R.string.background_change_msg)
+                .setPositiveButton(R.string.background_change_continue, { dialogInterface, i ->
+                    mBlackBackround = view.id == R.id.blackBgCircle
+                    setBgIndicator()
+                    recreate()
+                    dialogInterface.dismiss()
+                })
+                .setNegativeButton(R.string.background_change_back, { dialogInterface, i ->
+                    dialogInterface.dismiss()
+                })
 
         val dialog = builder.create()
         dialog.show()

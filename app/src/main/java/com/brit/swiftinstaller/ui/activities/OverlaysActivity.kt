@@ -30,7 +30,6 @@ import com.brit.swiftinstaller.utils.Utils.isOverlayInstalled
 import com.brit.swiftinstaller.utils.getAccentColor
 import com.brit.swiftinstaller.utils.getAppsToUpdate
 import kotlinx.android.synthetic.main.activity_overlays.*
-import kotlinx.android.synthetic.main.alert_dialog_time.view.*
 import kotlinx.android.synthetic.main.toolbar_overlays.*
 import kotlinx.android.synthetic.main.tab_layout_overlay.*
 import java.lang.ref.WeakReference
@@ -145,7 +144,7 @@ class OverlaysActivity : ThemeActivity() {
     }
 
     class AppLoader(context: Context, private val mCallback: Callback)
-            : AsyncTask<Void, AppLoader.Progress, Void>() {
+        : AsyncTask<Void, AppLoader.Progress, Void>() {
 
         private val mConRef: WeakReference<Context> = WeakReference(context)
 
@@ -209,15 +208,22 @@ class OverlaysActivity : ThemeActivity() {
                 installAction()
             } else {
                 bottomSheetDialog.dismiss()
-                val inflate = View.inflate(this, R.layout.alert_dialog_time, null)
-                val builder = AlertDialog.Builder(this, Utils.getDialogTheme(this))
-                builder.setView(inflate)
-                val dialog = builder.create()
-                inflate.timeDialogBtn.setOnClickListener {
-                    PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("first_time", false).apply()
-                    dialog.dismiss()
-                    installAction()
+                val builder: AlertDialog.Builder
+                builder = if (AppCompatDelegate.getDefaultNightMode()
+                        == AppCompatDelegate.MODE_NIGHT_YES) {
+                    AlertDialog.Builder(this, R.style.AppTheme_AlertDialog_Black)
+                } else {
+                    AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
                 }
+                        .setTitle(R.string.attention)
+                        .setMessage(R.string.time_consuming)
+                        .setPositiveButton(R.string.proceed, { dialogInterface, i ->
+                            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("first_time", false).apply()
+                            dialogInterface.dismiss()
+                            installAction()
+                        })
+
+                val dialog = builder.create()
                 dialog.show()
             }
         }
@@ -283,7 +289,7 @@ class OverlaysActivity : ThemeActivity() {
             text.setTextColor(ContextCompat.getColor(this, R.color.minimal_green))
 
             if (AppCompatDelegate.getDefaultNightMode()
-                == AppCompatDelegate.MODE_NIGHT_YES) {
+                    == AppCompatDelegate.MODE_NIGHT_YES) {
                 view.setBackgroundResource(R.drawable.toast_black)
             } else {
                 view.setBackgroundResource(R.drawable.toast_dark)
