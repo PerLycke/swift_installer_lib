@@ -80,18 +80,15 @@ class InstallSummaryActivity : AppCompatActivity() {
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
 
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("first_install", true)) {
-            val builder = AlertDialog.Builder(this)
-                    .setTitle(R.string.reboot_to_finish)
-                    .setMessage(R.string.examined_result_msg)
-                    .setPositiveButton(R.string.got_it, { dialogInterface, i ->
-                        dialogInterface.dismiss()
-                    })
+        val builder = AlertDialog.Builder(this)
+                .setTitle(R.string.reboot_to_finish)
+                .setMessage(R.string.examined_result_msg)
+                .setPositiveButton(R.string.got_it, { dialogInterface, i ->
+                    dialogInterface.dismiss()
+                })
 
-            val dialog = builder.create()
-            dialog.show()
-            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("first_install", false).apply()
-        }
+        val dialog = builder.create()
+        dialog.show()
     }
 
     override fun onAttachedToWindow() {
