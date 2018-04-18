@@ -47,10 +47,6 @@ class InstallSummaryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_install_summary)
 
-        if (intent.extras.containsKey("errorMap")) {
-            mErrorMap = Utils.bundleToMap(intent.getBundleExtra("errorMap"))
-        }
-
         if (mErrorMap.isNotEmpty()) {
             sendEmailLayout.visibility = View.VISIBLE
             sendEmailBtn.setOnClickListener {
@@ -104,6 +100,11 @@ class InstallSummaryActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         mApps = intent.getStringArrayListExtra("apps")
+        if (intent.extras.containsKey("errorMap")) {
+            mErrorMap = Utils.bundleToMap(intent.getBundleExtra("errorMap"))
+        } else {
+            mErrorMap.clear()
+        }
     }
 
     @Suppress("UNUSED_PARAMETER")
@@ -184,6 +185,7 @@ class InstallSummaryActivity : AppCompatActivity() {
             assert(mConRef.get() != null)
             val pm = mConRef.get()!!.packageManager
             val context = mConRef.get()
+            apps.addAll(errorMap.keys)
             for (pn: String in apps) {
                 var info: ApplicationInfo? = null
                 var pInfo: PackageInfo? = null

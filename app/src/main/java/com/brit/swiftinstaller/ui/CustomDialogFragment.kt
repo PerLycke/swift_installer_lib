@@ -1,4 +1,4 @@
-package com.swift.installer
+package com.brit.swiftinstaller.ui
 
 import android.app.Dialog
 import android.os.Bundle
@@ -29,13 +29,13 @@ class CustomDialogFragment : DialogFragment() {
             dialogFragment.show(activity.supportFragmentManager, "custom")
         }
 
-        internal fun showDialog(fragment: Fragment, creator: DialogCreator) {
+        fun showDialog(fragment: Fragment, creator: DialogCreator) {
             val dialogFragment = newInstance(creator)
             dialogFragment.setTargetFragment(fragment, 0)
             dialogFragment.show(fragment.fragmentManager, creator.toString())
         }
 
-        internal fun newInstance(creator: DialogCreator): CustomDialogFragment {
+        private fun newInstance(creator: DialogCreator): CustomDialogFragment {
             val fragment = CustomDialogFragment()
             fragment.mCreator = creator
             return fragment

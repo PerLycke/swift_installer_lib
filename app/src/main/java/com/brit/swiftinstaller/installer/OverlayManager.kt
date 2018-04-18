@@ -20,8 +20,8 @@ class OverlayManager(private val context: Context) {
         const val OVERLAY_UNINSTALLED = 3
 
         private const val KEEP_ALIVE_TIME: Long = 1
-        private const val CORE_POOL_SIZE = 2
-        private const val MAX_POOL_SIZE = 4
+        private const val CORE_POOL_SIZE = 1
+        private const val MAX_POOL_SIZE = 1
     }
 
     interface Callback {
@@ -63,9 +63,10 @@ class OverlayManager(private val context: Context) {
                     }
 
                     OVERLAY_INSTALLED -> {
-                        if (msg.arg1 == msg.arg2) {
+                        if (msg.arg1 == (msg.arg2 - 1)) {
                             if (callback != null) {
                                 callback!!.installFinished()
+                                Notifier.broadcastInstallFinished(context)
                             }
                         }
                         Notifier.broadcastOverlayInstalled(context, overlayTask.packageName, overlayTask.index, msg.arg2)
@@ -88,7 +89,7 @@ class OverlayManager(private val context: Context) {
     }
 
     fun installOverlays(apps: Array<String>) {
-        mMax = apps.size - 1
+        mMax = apps.size
         //mNotifier.broadcastInstallStarted(mMax)
         for (pn in apps) {
             installOverlay(pn, apps.indexOf(pn))
@@ -96,7 +97,7 @@ class OverlayManager(private val context: Context) {
     }
 
     fun uninstallOverlays(apps: Array<String>) {
-        mMax = apps.size - 1
+        mMax = apps.size
         //mNotifier.broadcastInstallStarted(mMax)
         for (pn in apps) {
             uninstallOverlay(pn, apps.indexOf(pn))
@@ -133,7 +134,6 @@ class OverlayManager(private val context: Context) {
     fun handleState(task: OverlayTask, state: Int) {
         when (state) {
             OVERLAY_INSTALLED -> {
-                //Notifier.broadcastOverlayInstalled(context, task.packageName, task.index, mMax)
                 val installed = mHandler.obtainMessage(state, task)
                 installed.arg1 = task.index
                 installed.arg2 = mMax

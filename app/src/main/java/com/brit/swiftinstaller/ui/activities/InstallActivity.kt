@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AppCompatDelegate
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -40,8 +41,7 @@ class InstallActivity : ThemeActivity() {
 
     private val errorMap: HashMap<String, String> = HashMap()
 
-    fun updateProgress(label: String?, prog: Int, maximum: Int, uninstall: Boolean) {
-        val max = maximum + 1
+    fun updateProgress(label: String?, prog: Int, max: Int, uninstall: Boolean) {
         val progress = prog + 1
         if (progressBar.progress < progress) {
             progressBar.progress = progress
@@ -52,15 +52,22 @@ class InstallActivity : ThemeActivity() {
         }
         Log.d("TEST", "progress - $progress/$max")
         if (progress == max) {
-            installComplete(uninstall)
+           // installComplete(uninstall)
         }
     }
 
     private fun installComplete(uninstall: Boolean) {
         if (!uninstall) {
+            LocalBroadcastManager.getInstance(applicationContext).unregisterReceiver(installListener)
             val intent = Intent(this, InstallSummaryActivity::class.java)
             intent.putExtra("errorMap", Utils.mapToBundle(errorMap))
-            errorMap.keys.forEach { if (apps.contains(it)) { apps.remove(it)}}
+            errorMap.keys.forEach {
+                Log.d("TEST", "looking for $it")
+                if (apps.contains(it)) {
+                    Log.d("TEST", "app contains $it")
+                    apps.remove(it)
+                }
+            }
             intent.putExtra("apps", apps)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             finish()
@@ -83,6 +90,8 @@ class InstallActivity : ThemeActivity() {
         }
         builder.setView(inflate)
         dialog = builder.create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(false)
 
         if (uninstall) {
             inflate.installProgressTxt.setText(R.string.progress_uninstalling_title)
@@ -90,6 +99,7 @@ class InstallActivity : ThemeActivity() {
 
         val filter = IntentFilter(Notifier.ACTION_FAILED)
         filter.addAction(Notifier.ACTION_INSTALLED)
+        filter.addAction(Notifier.ACTION_INSTALL_COMPLETE)
         LocalBroadcastManager.getInstance(applicationContext)
                 .registerReceiver(installListener, filter)
 
@@ -99,7 +109,7 @@ class InstallActivity : ThemeActivity() {
         progressPercent = inflate.installProgressPercent
 
         if (!uninstall) {
-            updateProgress("", 0, apps.size - 1, uninstall)
+            updateProgress("", -1, apps.size, uninstall)
         } else {
             progressCount.visibility = View.INVISIBLE
             progressPercent.visibility = View.INVISIBLE
@@ -132,9 +142,13 @@ class InstallActivity : ThemeActivity() {
         //super.recreate()
     }
 
+    override fun onBackPressed() {
+        // do nothing
+    }
+
     override fun finish() {
         super.finish()
-        dialog.cancel()
+        if (dialog.isShowing) dialog.cancel()
         Log.d("TEST", "finish")
     }
 
@@ -150,6 +164,8 @@ class InstallActivity : ThemeActivity() {
                 Log.d("TEST", "package failed - ${intent.getStringExtra(Notifier.EXTRA_PACKAGE_NAME)}")
                 errorMap[intent.getStringExtra(Notifier.EXTRA_PACKAGE_NAME)] =
                         intent.getStringExtra(Notifier.EXTRA_LOG)
+            } else if (intent.action == Notifier.ACTION_INSTALL_COMPLETE) {
+                installComplete(uninstall)
             }
         }
 

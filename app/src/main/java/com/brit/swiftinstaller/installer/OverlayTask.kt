@@ -42,6 +42,8 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         this.overlayPath = Utils.getOverlayPath(packageName)
         if (!File(overlayPath).parentFile.exists())
             File(overlayPath).parentFile.mkdirs()
+        if (File(overlayPath).exists())
+            File(overlayPath).delete()
         this.index = index
         this.uninstall = uninstall
     }
@@ -92,10 +94,14 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
                 packageInfo.versionCode, Utils.getThemeVersion(context, packageName))
     }
 
-    private fun checkAssetPath(am: AssetManager, path: String): Boolean {
+    private fun checkAssetPath(am: AssetManager, path: String, assetPaths: ArrayList<String>, black: Boolean) {
         val variants = am.list(path)
-        return !variants.contains("dark")
-                && !variants.contains("black") && !variants.contains("common")
+        if (!variants.contains("dark")
+                && !variants.contains("black") && !variants.contains("common")) {
+            addAssetPath(assetPaths, path)
+        } else {
+            parseOverlayAssetPath(am, path, assetPaths, black)
+        }
     }
 
     private fun addAssetPath(assetPaths: ArrayList<String>, asset: String) {
@@ -105,41 +111,29 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     private fun parseOverlayAssetPath(am: AssetManager, path: String, assetPaths: ArrayList<String>, black: Boolean) {
         val variants = am.list(path)
         if (variants.contains("common")) {
-            if (checkAssetPath(am, "$path/common")) {
-                addAssetPath(assetPaths, "$path/common")
-            } else {
-                parseOverlayAssetPath(am, "$path/common", assetPaths, black)
-            }
+            checkAssetPath(am, "$path/common", assetPaths, black)
         }
         for (variant in variants) {
             if (variant == "versions") {
-                parseOverlayVersions(am, assetPaths, "$path/versions")
+                parseOverlayVersions(am, assetPaths, "$path/versions", black)
             } else if (!black && variant == "dark") {
-                if (checkAssetPath(am, "$path/dark")) {
-                    addAssetPath(assetPaths, "$path/dark")
-                } else {
-                    parseOverlayAssetPath(am, "$path/dark", assetPaths, black)
-                }
+                checkAssetPath(am, "$path/dark", assetPaths, black)
             } else if (black && variant == "black") {
-                if (checkAssetPath(am, "$path/black")) {
-                    addAssetPath(assetPaths, "$path/black")
-                } else {
-                    parseOverlayAssetPath(am, "$path/black", assetPaths, black)
-                }
-            } else if (checkAssetPath(am, path)) {
-                addAssetPath(assetPaths, path)
+                checkAssetPath(am, "$path/black", assetPaths, black)
+            } else {
+                //checkAssetPath(am, path, assetPaths, black)
             }
         }
     }
 
-    private fun parseOverlayVersions(am: AssetManager, assetPaths: ArrayList<String>, path: String) {
+    private fun parseOverlayVersions(am: AssetManager, assetPaths: ArrayList<String>, path: String, black: Boolean) {
         val vers = am.list(path)
         if (vers.contains("common")) {
-            assetPaths.add("$path/common")
+            checkAssetPath(am,"$path/common", assetPaths, black)
         }
         for (ver in vers) {
             if (packageInfo.versionName.startsWith(ver)) {
-                assetPaths.add("$path/$ver")
+                checkAssetPath(am, "$path/$ver", assetPaths, black)
             }
         }
     }
