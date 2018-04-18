@@ -12,7 +12,6 @@ import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PowerManager
-import android.preference.PreferenceManager
 import android.support.design.widget.TabLayout
 import android.support.v7.app.AlertDialog
 import android.view.View
@@ -47,6 +46,10 @@ class InstallSummaryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_install_summary)
 
+        if (intent.extras.containsKey("errorMap")) {
+            mErrorMap = Utils.bundleToMap(intent.getBundleExtra("errorMap"))
+        }
+
         if (mErrorMap.isNotEmpty()) {
             sendEmailLayout.visibility = View.VISIBLE
             sendEmailBtn.setOnClickListener {
@@ -79,7 +82,7 @@ class InstallSummaryActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(this)
                 .setTitle(R.string.reboot_to_finish)
                 .setMessage(R.string.examined_result_msg)
-                .setPositiveButton(R.string.got_it, { dialogInterface, i ->
+                .setPositiveButton(R.string.got_it, { dialogInterface, _ ->
                     dialogInterface.dismiss()
                 })
 
