@@ -34,6 +34,8 @@ class InstallActivity : ThemeActivity() {
 
     private var uninstall = false
 
+    private lateinit var dialog: AlertDialog
+
     private lateinit var apps: ArrayList<String>
 
     private val errorMap: HashMap<String, String> = HashMap()
@@ -61,8 +63,8 @@ class InstallActivity : ThemeActivity() {
             errorMap.keys.forEach { if (apps.contains(it)) { apps.remove(it)}}
             intent.putExtra("apps", apps)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            RomInfo.getRomInfo(this).postInstall(uninstall, apps, intent)
             finish()
+            RomInfo.getRomInfo(this).postInstall(uninstall, apps, intent)
         }
     }
 
@@ -80,7 +82,7 @@ class InstallActivity : ThemeActivity() {
             AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
         }
         builder.setView(inflate)
-        val dialog = builder.create()
+        dialog = builder.create()
 
         if (uninstall) {
             inflate.installProgressTxt.setText(R.string.progress_uninstalling_title)
@@ -128,6 +130,12 @@ class InstallActivity : ThemeActivity() {
 
     override fun recreate() {
         //super.recreate()
+    }
+
+    override fun finish() {
+        super.finish()
+        dialog.cancel()
+        Log.d("TEST", "finish")
     }
 
     inner class InstallListener : BroadcastReceiver() {

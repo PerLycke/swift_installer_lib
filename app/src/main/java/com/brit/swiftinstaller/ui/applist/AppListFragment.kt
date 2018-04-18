@@ -78,8 +78,7 @@ class AppListFragment : Fragment() {
             mApps.forEach { mVisible.add(mApps.indexOf(it)) }
         } else {
             mApps.forEach {
-                if (it.packageName.toLowerCase().contains(query.toLowerCase())
-                        || it.title.toLowerCase().contains(query.toLowerCase())) {
+                if (it.title.toLowerCase().contains(query.toLowerCase())) {
                     mVisible.add(mApps.indexOf(it))
                 }
             }
@@ -157,7 +156,7 @@ class AppListFragment : Fragment() {
                 }
 
                 appCheckBox.setOnCheckedChangeListener({ _: CompoundButton, checked: Boolean ->
-                    mChecked.put(adapterPosition, checked)
+                    mChecked.put(mVisible[adapterPosition], checked)
                     Log.d("TEST", "checked - $mChecked")
                 })
             }
@@ -165,7 +164,7 @@ class AppListFragment : Fragment() {
             fun bindAppItem(item: AppItem) {
                 appName.text = item.title
                 appIcon.setImageDrawable(item.icon)
-                appCheckBox.isChecked = mChecked.get(adapterPosition, false)
+                appCheckBox.isChecked = mChecked.get(mVisible[adapterPosition], false)
 //                    packageName.text = item.packageName
 
                 if (mSummary) {

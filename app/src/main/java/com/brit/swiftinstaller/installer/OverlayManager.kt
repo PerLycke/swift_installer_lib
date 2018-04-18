@@ -68,7 +68,7 @@ class OverlayManager(private val context: Context) {
                                 callback!!.installFinished()
                             }
                         }
-                        Notifier.broadcastOverlayInstalled(context, overlayTask.packageName, msg.arg1, msg.arg2)
+                        Notifier.broadcastOverlayInstalled(context, overlayTask.packageName, overlayTask.index, msg.arg2)
                     }
 
                     OVERLAY_UNINSTALLED -> {
