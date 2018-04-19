@@ -6,6 +6,7 @@
         android:id="@+id/disable_notifications"
         android:orderInCategory="100"
         android:title="@string/overflow_disable_notifications"
+        android:visible="false"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_about"
