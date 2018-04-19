@@ -121,18 +121,18 @@ class CustomizeActivity : AppCompatActivity() {
 
     private fun setBgIndicator() {
         if (mBlackBackround) {
-            blackBgIndicator.visibility = View.VISIBLE
-            darkBgIndicator.visibility = View.GONE
+            flatThemeIndicator.visibility = View.VISIBLE
+            materialThemeIndicator.visibility = View.GONE
             val settingsBg = ContextCompat.getDrawable(this, R.drawable.settings_preview)
             settingsPreview.setImageDrawable(settingsBg)
         } else {
-            darkBgIndicator.visibility = View.VISIBLE
-            blackBgIndicator.visibility = View.GONE
+            materialThemeIndicator.visibility = View.VISIBLE
+            flatThemeIndicator.visibility = View.GONE
             val settingsBg = ContextCompat.getDrawable(this, R.drawable.settings_preview)
             settingsPreview.setImageDrawable(settingsBg)
         }
-        darkBgIndicator.invalidate()
-        blackBgIndicator.invalidate()
+        materialThemeIndicator.invalidate()
+        flatThemeIndicator.invalidate()
     }
 
     fun updateColor(color: Int) {
@@ -181,7 +181,7 @@ class CustomizeActivity : AppCompatActivity() {
                 .setTitle(R.string.changing_background_title)
                 .setMessage(R.string.changing_background_msg)
                 .setPositiveButton(R.string.ok, { dialogInterface, i ->
-                    mBlackBackround = view.id == R.id.blackBgCircle
+                    mBlackBackround = view.id == R.id.flatThemeCircle
                     setBgIndicator()
                     recreate()
                     dialogInterface.dismiss()

@@ -60,4 +60,14 @@
     <string name="tutorial_guide">This guide will explain what Swift Installer is and what it does</string>
     <string name="tutorial_permission_content">A theme contain overlays, and it\'s the overlay that applies on top of an app and themes it. Overlays gets installed as APK\'s on your device. By pressing \'Give\' you acknowledge and accept this. \n\n We also need storage permission as we temporarily place the APK on the storage before installing it. Press \'Give\' to grant the permission.</string>
     <string name="tutorial_permission_title">Permissions</string>
+    <string name="bg_nature">Nature</string>
+    <string name="bg_ocean">Ocean</string>
+    <string name="base_theme">Base theme</string>
+    <string name="custom_background">Custom background</string>
+    <string name="material">Material</string>
+    <string name="flat">Flat</string>
+    <string name="swift_dark">Dark</string>
+    <string name="swift_black">Black</string>
+    <string name="night">Night</string>
+    <string name="swift_style">Style</string>
 </resources>
