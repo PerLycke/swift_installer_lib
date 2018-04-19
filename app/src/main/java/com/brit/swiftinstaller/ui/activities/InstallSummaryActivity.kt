@@ -9,7 +9,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Build
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PowerManager
 import android.support.design.widget.TabLayout
@@ -30,7 +29,7 @@ import kotlinx.android.synthetic.main.sheet_install_summary_fab.view.*
 import kotlinx.android.synthetic.main.tab_layout_install_summary.*
 import java.lang.ref.WeakReference
 
-class InstallSummaryActivity : AppCompatActivity() {
+class InstallSummaryActivity : ThemeActivity() {
 
     companion object {
         private const val SUCCESS_TAB = 0

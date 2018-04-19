@@ -34,7 +34,7 @@ class RomInfo internal constructor(var context: Context, var name: String,
         }
     }
 
-    fun postInstall(uninstall: Boolean, apps: ArrayList<String>, intent: Intent?) {
+    fun postInstall(uninstall: Boolean, apps: ArrayList<String>, oppositeApps: ArrayList<String>?, intent: Intent?) {
         Log.d("TEST", "apps - $apps")
         Log.d("TEST", Log.getStackTraceString(Exception()))
         val extraIntent = intent != null
@@ -45,13 +45,10 @@ class RomInfo internal constructor(var context: Context, var name: String,
                 val appInstall = Intent()
                 if (uninstall) {
                     appInstall.action = Intent.ACTION_UNINSTALL_PACKAGE
-                } else {
-                    appInstall.action = Intent.ACTION_VIEW
-                }
-                if (uninstall) {
                     appInstall.data = Uri.fromParts("package",
                             Utils.getOverlayPackageName(apps.elementAt(index)), null)
                 } else {
+                    appInstall.action = Intent.ACTION_INSTALL_PACKAGE
                     appInstall.data = FileProvider.getUriForFile(context,
                             BuildConfig.APPLICATION_ID + ".myprovider",
                             File(Utils.getOverlayPath(apps.elementAt(index))))
@@ -68,6 +65,26 @@ class RomInfo internal constructor(var context: Context, var name: String,
         if (!intents.isEmpty()) {
             intents.forEach { Log.d("TEST", "data = ${it.data}") }
             context.startActivities(intents)
+        }
+
+        if (oppositeApps != null && !oppositeApps.isEmpty()) {
+            val oppositeIntents = Array(oppositeApps.size, {
+                val appInstall = Intent()
+                if (!uninstall) {
+                    appInstall.action = Intent.ACTION_UNINSTALL_PACKAGE
+                    appInstall.data = Uri.fromParts("package",
+                            Utils.getOverlayPackageName(oppositeApps[it]), null)
+                } else {
+                    appInstall.action = Intent.ACTION_INSTALL_PACKAGE
+                    appInstall.data = FileProvider.getUriForFile(context,
+                            BuildConfig.APPLICATION_ID + ".myprovider",
+                            File(Utils.getOverlayPath(oppositeApps[it])))
+                }
+                appInstall.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                appInstall.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                appInstall
+            })
+            context.startActivities(oppositeIntents)
         }
 
         clearAppsToUninstall(context)

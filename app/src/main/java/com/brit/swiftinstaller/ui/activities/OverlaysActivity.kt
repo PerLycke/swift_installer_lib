@@ -2,7 +2,6 @@ package com.brit.swiftinstaller.ui.activities
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
@@ -23,12 +22,10 @@ import com.brit.swiftinstaller.ui.ThemedBottomSheetDialog
 import com.brit.swiftinstaller.ui.applist.AppItem
 import com.brit.swiftinstaller.ui.applist.AppListFragment
 import com.brit.swiftinstaller.ui.applist.AppsTabPagerAdapter
-import com.brit.swiftinstaller.utils.Utils
+import com.brit.swiftinstaller.utils.*
 import com.brit.swiftinstaller.utils.Utils.getOverlayPackageName
 import com.brit.swiftinstaller.utils.Utils.isOverlayEnabled
 import com.brit.swiftinstaller.utils.Utils.isOverlayInstalled
-import com.brit.swiftinstaller.utils.getAccentColor
-import com.brit.swiftinstaller.utils.getAppsToUpdate
 import kotlinx.android.synthetic.main.activity_overlays.*
 import kotlinx.android.synthetic.main.toolbar_overlays.*
 import kotlinx.android.synthetic.main.tab_layout_overlay.*
@@ -61,7 +58,7 @@ class OverlaysActivity : ThemeActivity() {
                                 "\nCurrent Version: ${packageInfo.versionName}" +
                                 "\nAvailable Versions: ${Utils.getAvailableOverlayVersions(
                                         this@OverlaysActivity, appItem.packageName)}")
-                        .setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, i: Int ->
+                        .setPositiveButton(android.R.string.ok) { dialogInterface, _ ->
                             dialogInterface.dismiss()
                         }
                 dialog.show()
@@ -124,6 +121,11 @@ class OverlaysActivity : ThemeActivity() {
         currentAccent.setTextColor(getAccentColor(this))
         currentAccent.text = getString(R.string.hex_string,
                 String.format("%06x", getAccentColor(this)).substring(2))
+        currentBg.text = if (useBlackBackground(this)) {
+            getString(R.string.black)
+        } else {
+            getString(R.string.dark)
+        }
 
         mPagerAdapter!!.clearApps()
 
@@ -170,8 +172,8 @@ class OverlaysActivity : ThemeActivity() {
             val context = mConRef.get()
             val updates = getAppsToUpdate(context!!)
             for (pn: String in mConRef.get()!!.assets.list("overlays")) {
-                var info: ApplicationInfo? = null
-                var pInfo: PackageInfo? = null
+                var info: ApplicationInfo?
+                var pInfo: PackageInfo?
                 try {
                     info = pm.getApplicationInfo(pn, PackageManager.GET_META_DATA)
                     pInfo = pm.getPackageInfo(pn, 0)
@@ -231,7 +233,7 @@ class OverlaysActivity : ThemeActivity() {
                 }
                         .setTitle(R.string.installing_and_uninstalling_title)
                         .setMessage(R.string.installing_and_uninstalling_msg)
-                        .setPositiveButton(R.string.proceed, { dialogInterface, i ->
+                        .setPositiveButton(R.string.proceed, { dialogInterface, _ ->
                             PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("first_time", false).apply()
                             dialogInterface.dismiss()
                             installAction()
@@ -269,7 +271,7 @@ class OverlaysActivity : ThemeActivity() {
                         updatesAvailable = updates.contains(it.packageName)
                 }
             }
-            container.visibility == UPDATE_TAB -> install.visibility == View.GONE
+            container.currentItem == UPDATE_TAB -> install.visibility == View.GONE
         }
     }
 
@@ -333,10 +335,22 @@ class OverlaysActivity : ThemeActivity() {
         if (checked.isEmpty()) {
             return
         }
+        UpdateChecker(this, object : UpdateChecker.Callback() {
+            override fun finished(installedCount: Int, updates: ArrayList<String>) {
+                mPagerAdapter!!.clearApps()
+                AppLoader(this@OverlaysActivity, object : Callback {
+                    override fun updateApps(tab: Int, item: AppItem) {
+                        mPagerAdapter!!.addApp(tab, item)
+                    }
+                }).execute()
+            }
+
+        }).execute()
         val intent = Intent(this, InstallActivity::class.java)
         val apps = ArrayList<String>()
         checked.mapTo(apps) { it.packageName }
         intent.putStringArrayListExtra("apps", apps)
+        intent.putExtra("update", true)
         startActivity(intent)
     }
 

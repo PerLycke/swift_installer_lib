@@ -9,17 +9,14 @@ import android.os.Bundle
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AppCompatDelegate
 import android.util.Log
-import android.view.KeyEvent
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
-import com.brit.swiftinstaller.IInstallerCallback
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.installer.Notifier
 import com.brit.swiftinstaller.utils.InstallerServiceHelper
 import com.brit.swiftinstaller.utils.ShellUtils
 import com.brit.swiftinstaller.utils.Utils
-import com.brit.swiftinstaller.utils.addAppToUninstall
 import com.brit.swiftinstaller.utils.rom.RomInfo
 import kotlinx.android.synthetic.main.progress_dialog_install.view.*
 import java.util.ArrayList
@@ -34,10 +31,12 @@ class InstallActivity : ThemeActivity() {
     private val installListener = InstallListener()
 
     private var uninstall = false
+    private var update = false
 
     private lateinit var dialog: AlertDialog
 
     private lateinit var apps: ArrayList<String>
+    private val updateAppsToUninstall = ArrayList<String>()
 
     private val errorMap: HashMap<String, String> = HashMap()
 
@@ -71,13 +70,14 @@ class InstallActivity : ThemeActivity() {
             intent.putExtra("apps", apps)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             finish()
-            RomInfo.getRomInfo(this).postInstall(uninstall, apps, intent)
+            RomInfo.getRomInfo(this).postInstall(uninstall, apps, updateAppsToUninstall, intent)
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        uninstall = intent.extras.getBoolean("uninstall", false)
+        uninstall = intent.getBooleanExtra("uninstall", false)
+        update = intent.getBooleanExtra("update", false)
         apps = intent.getStringArrayListExtra("apps")
         apps.forEach { Log.d("TEST", "install $it") }
 
@@ -131,7 +131,7 @@ class InstallActivity : ThemeActivity() {
                     }
                 }
             }, intentfilter)
-            RomInfo.getRomInfo(this).postInstall(true, apps, null)
+            RomInfo.getRomInfo(this).postInstall(true, apps, null, null)
         }
         if (!uninstall) {
             InstallerServiceHelper.install(this, apps)
@@ -164,6 +164,9 @@ class InstallActivity : ThemeActivity() {
                 Log.d("TEST", "package failed - ${intent.getStringExtra(Notifier.EXTRA_PACKAGE_NAME)}")
                 errorMap[intent.getStringExtra(Notifier.EXTRA_PACKAGE_NAME)] =
                         intent.getStringExtra(Notifier.EXTRA_LOG)
+                if (update) {
+                    updateAppsToUninstall.add(intent.getStringExtra(Notifier.EXTRA_PACKAGE_NAME))
+                }
             } else if (intent.action == Notifier.ACTION_INSTALL_COMPLETE) {
                 installComplete(uninstall)
             }
