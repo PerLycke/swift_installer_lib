@@ -42,93 +42,115 @@
                     app:layout_constraintTop_toTopOf="@+id/baseThemeTitle"
                     android:contentDescription="@string/image" />
 
-                <android.support.constraint.ConstraintLayout
-                    android:id="@+id/baseThemeLayout"
-                    android:layout_width="0dp"
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/baseThemeLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                app:layout_constraintBottom_toBottomOf="@+id/baseLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/baseThemeTitle"
+                app:layout_constraintVertical_bias="0.0">
+
+                <RadioButton
+                    android:id="@+id/radioButton"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/baseLayout"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
+                    android:checked="true"
+                    android:text="Material"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <RadioButton
+                    android:id="@+id/radioButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Flat"
+                    app:layout_constraintStart_toStartOf="@+id/radioButton"
+                    app:layout_constraintTop_toBottomOf="@+id/radioButton" />
+
+                <ImageView
+                    android:id="@+id/materialThemeCircle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="32dp"
+                    android:contentDescription="@string/image"
+                    android:onClick="bgClick"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toStartOf="@+id/flatThemeCircle"
+                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/baseThemeTitle"
-                    app:layout_constraintVertical_bias="0.0">
+                    app:srcCompat="@drawable/bg_circle_dark" />
 
-                        <ImageView
-                            android:id="@+id/materialThemeCircle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="32dp"
-                            android:contentDescription="@string/image"
-                            android:onClick="bgClick"
-                            app:layout_constraintEnd_toStartOf="@+id/flatThemeCircle"
-                            app:layout_constraintHorizontal_bias="0.5"
-                            app:layout_constraintHorizontal_chainStyle="packed"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:srcCompat="@drawable/bg_circle_dark" />
+                <ImageView
+                    android:id="@+id/materialThemeIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/image"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/materialThemeCircle"
+                    app:layout_constraintEnd_toEndOf="@+id/materialThemeCircle"
+                    app:layout_constraintStart_toStartOf="@+id/materialThemeCircle"
+                    app:layout_constraintTop_toTopOf="@+id/materialThemeCircle"
+                    app:srcCompat="@drawable/bg_circle_active_stroke" />
 
-                        <ImageView
-                            android:id="@+id/materialThemeIndicator"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/image"
-                            android:visibility="gone"
-                            app:layout_constraintBottom_toBottomOf="@+id/materialThemeCircle"
-                            app:layout_constraintEnd_toEndOf="@+id/materialThemeCircle"
-                            app:layout_constraintStart_toStartOf="@+id/materialThemeCircle"
-                            app:layout_constraintTop_toTopOf="@+id/materialThemeCircle"
-                            app:srcCompat="@drawable/bg_circle_active_stroke" />
+                <TextView
+                    android:id="@+id/materialThemeTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@string/material"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@+id/materialThemeCircle"
+                    app:layout_constraintStart_toStartOf="@+id/materialThemeCircle"
+                    app:layout_constraintTop_toBottomOf="@+id/materialThemeCircle" />
 
-                        <TextView
-                            android:id="@+id/materialThemeTxt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="8dp"
-                            android:fontFamily="sans-serif-condensed"
-                            android:text="@string/material"
-                            app:layout_constraintEnd_toEndOf="@+id/materialThemeCircle"
-                            app:layout_constraintStart_toStartOf="@+id/materialThemeCircle"
-                            app:layout_constraintTop_toBottomOf="@+id/materialThemeCircle" />
+                <ImageView
+                    android:id="@+id/flatThemeCircle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:contentDescription="@string/image"
+                    android:onClick="bgClick"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/materialThemeCircle"
+                    app:srcCompat="@drawable/bg_circle_black" />
 
-                        <ImageView
-                            android:id="@+id/flatThemeCircle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="32dp"
-                            android:contentDescription="@string/image"
-                            android:onClick="bgClick"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.5"
-                            app:layout_constraintStart_toEndOf="@+id/materialThemeCircle"
-                            app:srcCompat="@drawable/bg_circle_black" />
+                <ImageView
+                    android:id="@+id/flatThemeIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/image"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/flatThemeCircle"
+                    app:layout_constraintEnd_toEndOf="@+id/flatThemeCircle"
+                    app:layout_constraintStart_toStartOf="@+id/flatThemeCircle"
+                    app:layout_constraintTop_toTopOf="@+id/flatThemeCircle"
+                    app:srcCompat="@drawable/bg_circle_active_stroke" />
 
-                        <ImageView
-                            android:id="@+id/flatThemeIndicator"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/image"
-                            android:visibility="gone"
-                            app:layout_constraintBottom_toBottomOf="@+id/flatThemeCircle"
-                            app:layout_constraintEnd_toEndOf="@+id/flatThemeCircle"
-                            app:layout_constraintStart_toStartOf="@+id/flatThemeCircle"
-                            app:layout_constraintTop_toTopOf="@+id/flatThemeCircle"
-                            app:srcCompat="@drawable/bg_circle_active_stroke" />
+                <TextView
+                    android:id="@+id/flatThemeTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@string/flat"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@+id/flatThemeCircle"
+                    app:layout_constraintStart_toStartOf="@+id/flatThemeCircle"
+                    app:layout_constraintTop_toBottomOf="@+id/flatThemeCircle" />
 
-                        <TextView
-                            android:id="@+id/flatThemeTxt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:fontFamily="sans-serif-condensed"
-                            android:text="@string/flat"
-                            app:layout_constraintEnd_toEndOf="@+id/flatThemeCircle"
-                            app:layout_constraintStart_toStartOf="@+id/flatThemeCircle"
-                            app:layout_constraintTop_toBottomOf="@+id/flatThemeCircle" />
-
-                </android.support.constraint.ConstraintLayout>
+            </android.support.constraint.ConstraintLayout>
 
         </android.support.constraint.ConstraintLayout>
 

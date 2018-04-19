@@ -121,12 +121,12 @@ class CustomizeActivity : AppCompatActivity() {
 
     private fun setBgIndicator() {
         if (mBlackBackround) {
-            flatThemeIndicator.visibility = View.VISIBLE
+            flatThemeIndicator.visibility = View.GONE
             materialThemeIndicator.visibility = View.GONE
             val settingsBg = ContextCompat.getDrawable(this, R.drawable.settings_preview)
             settingsPreview.setImageDrawable(settingsBg)
         } else {
-            materialThemeIndicator.visibility = View.VISIBLE
+            materialThemeIndicator.visibility = View.GONE
             flatThemeIndicator.visibility = View.GONE
             val settingsBg = ContextCompat.getDrawable(this, R.drawable.settings_preview)
             settingsPreview.setImageDrawable(settingsBg)
