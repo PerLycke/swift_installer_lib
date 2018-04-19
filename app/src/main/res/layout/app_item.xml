@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="64dp">
+    android:layout_height="72dp">
 
     <TextView
         android:id="@+id/appItemName"
@@ -12,25 +12,37 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="72dp"
         android:fontFamily="sans-serif-condensed"
-        android:gravity="center_vertical"
         android:textColor="@android:color/white"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/appItemImage"
+        app:layout_constraintBottom_toTopOf="@+id/appName"
         app:layout_constraintEnd_toStartOf="@+id/appItemCheckBox"
         app:layout_constraintStart_toEndOf="@+id/appItemImage"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/appItemImage"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="App Name"
         tools:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/appName"
+        android:layout_width="0dp"
+        android:layout_height="21dp"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="?android:textColorSecondary"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/appItemName"
+        app:layout_constraintStart_toStartOf="@+id/appItemName"
+        app:layout_constraintTop_toBottomOf="@+id/appItemName"
+        tools:text="package.name" />
 
     <ImageView
         android:id="@+id/appItemImage"
         android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_height="match_parent"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:scaleType="centerCrop"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

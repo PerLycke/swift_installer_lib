@@ -138,7 +138,7 @@ class AppListFragment : Fragment() {
 
         inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
             private var appName: TextView = view.findViewById(R.id.appItemName)
-            //                var packageName: TextView = view.findViewById(R.id.appName)
+            private var packageName: TextView = view.findViewById(R.id.appName)
             private var appIcon: ImageView = view.findViewById(R.id.appItemImage)
             private var appCheckBox: CheckBox = view.findViewById(R.id.appItemCheckBox)
             private var alertIcon: ImageView = view.findViewById(R.id.alertIcon)
@@ -157,7 +157,7 @@ class AppListFragment : Fragment() {
                 appName.text = item.title
                 appIcon.setImageDrawable(item.icon)
                 appCheckBox.isChecked = mChecked.get(mVisible[adapterPosition], false)
-//                    packageName.text = item.packageName
+                packageName.text = item.packageName
 
                 if (mSummary) {
                     appCheckBox.visibility = View.INVISIBLE
