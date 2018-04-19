@@ -21,7 +21,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/settings_preview_dark" />
+            app:srcCompat="@drawable/settings_preview" />
 
         <ImageView
             android:id="@+id/connectionsIcon"

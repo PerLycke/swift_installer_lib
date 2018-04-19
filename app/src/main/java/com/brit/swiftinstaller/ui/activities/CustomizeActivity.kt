@@ -123,12 +123,12 @@ class CustomizeActivity : AppCompatActivity() {
         if (mBlackBackround) {
             blackBgIndicator.visibility = View.VISIBLE
             darkBgIndicator.visibility = View.GONE
-            val settingsBg = ContextCompat.getDrawable(this, R.drawable.settings_preview_black)
+            val settingsBg = ContextCompat.getDrawable(this, R.drawable.settings_preview)
             settingsPreview.setImageDrawable(settingsBg)
         } else {
             darkBgIndicator.visibility = View.VISIBLE
             blackBgIndicator.visibility = View.GONE
-            val settingsBg = ContextCompat.getDrawable(this, R.drawable.settings_preview_dark)
+            val settingsBg = ContextCompat.getDrawable(this, R.drawable.settings_preview)
             settingsPreview.setImageDrawable(settingsBg)
         }
         darkBgIndicator.invalidate()
