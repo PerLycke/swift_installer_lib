@@ -2,7 +2,6 @@
 <resources>
     <string name="app_name">Swift Installer</string>
     <string name="apply">Apply</string>
-    <string name="background">Background</string>
     <string name="big_tile_install_msg">Install separate or all overlays here</string>
     <string name="big_tile_install_title">Install / Uninstall overlays</string>
     <string name="big_tile_install_updates">Install updates</string>
@@ -16,13 +15,9 @@
     <string name="category_icons">Icons</string>
     <string name="changing_background_msg">Changing background requires all overlays to be re-installed. This will take some time and the process will start once you click confirm on the previous screen.</string>
     <string name="changing_background_title">Changing background info</string>
-    <string name="close">Close</string>
     <string name="confirm">Confirm</string>
     <string name="credits_msg">Credits to Projekt Development Team &amp; SlimRoms Ltd for the encryption implementation</string>
     <string name="dark">Dark</string>
-    <string name="disable">Disable</string>
-    <string name="disable_notifications_msg">Notifications reminds you about updating the overlays for apps you update in Play Store. Are you sure you want to disable them?</string>
-    <string name="disable_notifications_title">Disable notifications?</string>
     <string name="email_log">Email error log &amp; reboot</string>
     <string name="examined_result_msg">After you examined the result, and optionally sent an error log if something failed, you need to manually reboot to finish the installation!\n\nYou don\'t need to reboot if all overlays failed to install.</string>
     <string name="got_it">Got it!</string>
@@ -34,7 +29,6 @@
     <string name="install_count">%1$d / %2$d</string>
     <string name="installing_and_uninstalling_msg">1. Installing and uninstalling can take a lot of time. Even though it seems stuck, just wait and it\'ll finish.\n\n2. When installing or uninstalling Android overlay some apps might crash. This is expected, and normal. Everything will work fine once you rebooted.</string>
     <string name="installing_and_uninstalling_title">Please note that:</string>
-    <string name="keep_enabled">Keep enabled</string>
     <string name="ok">OK</string>
     <string name="overflow_about">About</string>
     <string name="overflow_disable_notifications">Disable notifications</string>
@@ -47,7 +41,6 @@
     <string name="proceed">Proceed</string>
     <string name="progress_installing_title">Installing overlays…</string>
     <string name="progress_uninstalling_title">Uninstalling overlays…</string>
-    <string name="progress_updating_title">Updating overlays…</string>
     <string name="reboot">Reboot</string>
     <string name="reboot_later">Reboot later</string>
     <string name="reboot_manually">You need to reboot manually to finish uninstall.</string>

@@ -3,15 +3,12 @@
     <color name="background_main">#16161c</color>
     <color name="bg_circle_dark">#1b1b21</color>
     <color name="big_tile_pressed_tint">#202026</color>
-    <color name="big_tile_tint">@color/background_main</color>
     <color name="colorAccent">#47AE84</color>
     <color name="colorPrimary">@color/background_main</color>
     <color name="colorPrimaryDark">@color/background_main</color>
     <color name="dialog_bg_tint">@color/background_main</color>
-    <color name="dialog_stroke">#232329</color>
     <color name="divider">#37373d</color>
     <color name="light_grey">#dedede</color>
-    <color name="small_info_tint">#1b1b21</color>
     <color name="stroke">#202026</color>
     <color name="tab_underline">#232329</color>
 
