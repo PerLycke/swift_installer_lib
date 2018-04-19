@@ -153,9 +153,13 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     }
 
     private fun compileOverlay() {
+        var assets: String? = null
+        if (assetDir.exists() && assetDir.isDirectory && !assetDir.list().isEmpty()) {
+            assets = assetDir.absolutePath
+        }
         val output = ShellUtils.compileOverlay(context, BuildConfig.APPLICATION_ID, resDir.absolutePath,
                 overlayDir.absolutePath + "/AndroidManifest.xml",
-                overlayPath, null, appInfo)
+                overlayPath, assets, appInfo)
         if (output.exitCode == 0) {
             RomInfo.getRomInfo(context).installOverlay(context, packageName, overlayPath)
         } else {
