@@ -16,7 +16,7 @@ import com.brit.swiftinstaller.installer.Notifier
 import com.brit.swiftinstaller.utils.InstallerServiceHelper
 import com.brit.swiftinstaller.utils.ShellUtils
 import com.brit.swiftinstaller.utils.Utils
-import com.brit.swiftinstaller.utils.rom.RomInfo
+import com.brit.swiftinstaller.installer.rom.RomInfo
 import kotlinx.android.synthetic.main.progress_dialog_install.view.*
 import java.util.ArrayList
 

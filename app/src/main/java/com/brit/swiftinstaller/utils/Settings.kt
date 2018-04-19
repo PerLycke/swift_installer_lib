@@ -6,7 +6,7 @@ import android.preference.PreferenceManager
 import android.text.TextUtils
 import android.util.ArraySet
 import com.brit.swiftinstaller.R
-import com.brit.swiftinstaller.utils.rom.RomInfo
+import com.brit.swiftinstaller.installer.rom.RomInfo
 
 fun getAccentColor(context: Context): Int {
     return PreferenceManager.getDefaultSharedPreferences(context).getInt("accent_color", RomInfo.getRomInfo(context).defaultAccent)

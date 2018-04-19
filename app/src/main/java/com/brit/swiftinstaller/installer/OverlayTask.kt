@@ -7,7 +7,7 @@ import android.content.res.AssetManager
 import android.os.Environment
 import com.brit.swiftinstaller.BuildConfig
 import com.brit.swiftinstaller.utils.*
-import com.brit.swiftinstaller.utils.rom.RomInfo
+import com.brit.swiftinstaller.installer.rom.RomInfo
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
