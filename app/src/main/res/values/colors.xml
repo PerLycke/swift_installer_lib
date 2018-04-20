@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
     <color name="background_main">#16161c</color>
-    <color name="bg_circle_dark">#1b1b21</color>
+    <color name="bg_circle_dark">#202021</color>
     <color name="big_tile_pressed_tint">#202026</color>
     <color name="colorAccent">#47AE84</color>
     <color name="colorPrimary">@color/background_main</color>

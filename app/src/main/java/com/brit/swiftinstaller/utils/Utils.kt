@@ -129,7 +129,7 @@ object Utils {
     }
 
     fun getDialogTheme(context: Context): Int {
-        return if (useBlackBackground(context)) {
+        return if (getBackgroundColor(context) == 0x000000) {
             R.style.AppTheme_AlertDialog_Black
         } else {
             R.style.AppTheme_AlertDialog

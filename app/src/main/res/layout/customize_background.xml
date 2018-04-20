@@ -55,7 +55,7 @@
                 app:layout_constraintVertical_bias="0.0">
 
                 <RadioButton
-                    android:id="@+id/radioButton"
+                    android:id="@+id/materialBackground"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
@@ -64,13 +64,13 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <RadioButton
-                    android:id="@+id/radioButton2"
+                    android:id="@+id/flatBackground"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Flat"
-                    app:layout_constraintStart_toStartOf="@+id/radioButton"
-                    app:layout_constraintTop_toBottomOf="@+id/radioButton" />
+                    app:layout_constraintStart_toStartOf="@+id/materialBackground"
+                    app:layout_constraintTop_toBottomOf="@+id/materialBackground" />
 
                 <ImageView
                     android:id="@+id/materialThemeCircle"

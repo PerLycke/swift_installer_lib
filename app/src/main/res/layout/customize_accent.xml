@@ -19,12 +19,12 @@
         android:fontFamily="sans-serif"
         android:text="@string/hashtag"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/hexInput"
-        app:layout_constraintEnd_toStartOf="@+id/hexInput"
-        app:layout_constraintTop_toTopOf="@+id/hexInput" />
+        app:layout_constraintBottom_toBottomOf="@+id/accentHexInput"
+        app:layout_constraintEnd_toStartOf="@+id/accentHexInput"
+        app:layout_constraintTop_toTopOf="@+id/accentHexInput" />
 
     <EditText
-        android:id="@+id/hexInput"
+        android:id="@+id/accentHexInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -49,7 +49,7 @@
         android:text="@string/apply"
         android:textStyle="bold"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/hexInput"
-        app:layout_constraintTop_toTopOf="@+id/hexInput" />
+        app:layout_constraintBottom_toBottomOf="@+id/accentHexInput"
+        app:layout_constraintTop_toTopOf="@+id/accentHexInput" />
 
 </android.support.constraint.ConstraintLayout>

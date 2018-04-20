@@ -121,11 +121,8 @@ class OverlaysActivity : ThemeActivity() {
         currentAccent.setTextColor(getAccentColor(this))
         currentAccent.text = getString(R.string.hex_string,
                 String.format("%06x", getAccentColor(this)).substring(2))
-        currentBg.text = if (useBlackBackground(this)) {
-            getString(R.string.black)
-        } else {
-            getString(R.string.dark)
-        }
+        currentBg.text = getString(R.string.hex_string,
+                String.format("$06x", getBackgroundColor(this)).substring(2))
 
         mPagerAdapter!!.clearApps()
 

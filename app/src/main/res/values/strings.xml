@@ -70,4 +70,6 @@
     <string name="swift_black">Black</string>
     <string name="night">Night</string>
     <string name="swift_style">Style</string>
+    <string name="no_internet_faq">Please connect to internet to show the FAQ</string>
+
 </resources>

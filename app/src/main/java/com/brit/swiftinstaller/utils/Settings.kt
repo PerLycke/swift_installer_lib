@@ -16,12 +16,20 @@ fun setAccentColor(context: Context, color: Int) {
     PreferenceManager.getDefaultSharedPreferences(context).edit().putInt("accent_color", color).apply()
 }
 
-fun useBlackBackground(context: Context): Boolean {
-    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("black_background", false)
+fun getBackgroundColor(context: Context): Int {
+    return PreferenceManager.getDefaultSharedPreferences(context).getInt("background_color", context.getColor(R.color.bg_circle_dark))
 }
 
-fun setUseBlackBackground(context: Context, black: Boolean) {
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("black_background", black).apply()
+fun setBackgroundColor(context: Context, color: Int) {
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putInt("background_color", color).apply()
+}
+
+fun useBackgroundPalette(context: Context): Boolean {
+    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("background_palette", true)
+}
+
+fun setUseBackgroundPalette(context: Context, use: Boolean) {
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("background_palette", use).apply()
 }
 
 fun setHideFailedInfoCard(context: Context, hide: Boolean) {

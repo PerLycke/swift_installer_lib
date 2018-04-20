@@ -77,7 +77,6 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     }
 
     private fun extractResources() {
-        val black = useBlackBackground(context)
         if (resDir.exists())
             deleteFileShell(resDir.absolutePath)
 
@@ -86,8 +85,8 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         val am = context.assets
         val resourcePaths = ArrayList<String>()
         val assetPaths = ArrayList<String>()
-        parseOverlayResourcePath(am, "overlays/$packageName", resourcePaths, black)
-        parseOverlayAssetPath(am, "overlays/$packageName", assetPaths, black)
+        parseOverlayResourcePath(am, "overlays/$packageName", resourcePaths)
+        parseOverlayAssetPath(am, "overlays/$packageName", assetPaths)
         for (path in resourcePaths) {
             AssetHelper.copyAssetFolder(am, path, resDir.absolutePath, null)
         }
@@ -96,18 +95,19 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         }
         if (packageName == "android") {
             applyAccent()
+            applyBackground()
         }
         generateManifest(overlayDir.absolutePath, packageName, packageInfo.versionName,
                 packageInfo.versionCode, Utils.getThemeVersion(context, packageName))
     }
 
-    private fun checkResourcePath(am: AssetManager, path: String, resourcePaths: ArrayList<String>, black: Boolean) {
+    private fun checkResourcePath(am: AssetManager, path: String, resourcePaths: ArrayList<String>) {
         val variants = am.list(path)
         if (!variants.contains("dark")
                 && !variants.contains("black") && !variants.contains("common")) {
             addResourcePath(resourcePaths, path)
         } else {
-            parseOverlayResourcePath(am, path, resourcePaths, black)
+            parseOverlayResourcePath(am, path, resourcePaths)
         }
     }
 
@@ -115,42 +115,33 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         resourcePaths.add(path)
     }
 
-    private fun parseOverlayAssetPath(am: AssetManager, path: String, assetPaths: ArrayList<String>, black: Boolean) {
+    private fun parseOverlayAssetPath(am: AssetManager, path: String, assetPaths: ArrayList<String>) {
         val variants = am.list("$path/assets")
         if (variants.contains("common")) {
             assetPaths.add("$path/assets/common")
         }
-        if (variants.contains("black") && black) {
-            assetPaths.add("$path/assets/black")
-        } else if (variants.contains("dark") && !black) {
-            assetPaths.add("$path/assets/dark")
-        }
     }
 
-    private fun parseOverlayResourcePath(am: AssetManager, path: String, resourcePaths: ArrayList<String>, black: Boolean) {
+    private fun parseOverlayResourcePath(am: AssetManager, path: String, resourcePaths: ArrayList<String>) {
         val variants = am.list(path)
         if (variants.contains("common")) {
-            checkResourcePath(am, "$path/common", resourcePaths, black)
+            checkResourcePath(am, "$path/common", resourcePaths)
         }
         for (variant in variants) {
             if (variant == "versions") {
-                parseOverlayVersions(am, resourcePaths, "$path/versions", black)
-            } else if (!black && variant == "dark") {
-                checkResourcePath(am, "$path/dark", resourcePaths, black)
-            } else if (black && variant == "black") {
-                checkResourcePath(am, "$path/black", resourcePaths, black)
+                parseOverlayVersions(am, resourcePaths, "$path/versions")
             }
         }
     }
 
-    private fun parseOverlayVersions(am: AssetManager, resourcePaths: ArrayList<String>, path: String, black: Boolean) {
+    private fun parseOverlayVersions(am: AssetManager, resourcePaths: ArrayList<String>, path: String) {
         val vers = am.list(path)
         if (vers.contains("common")) {
-            checkResourcePath(am,"$path/common", resourcePaths, black)
+            checkResourcePath(am,"$path/common", resourcePaths)
         }
         for (ver in vers) {
             if (packageInfo.versionName.startsWith(ver)) {
-                checkResourcePath(am, "$path/$ver", resourcePaths, black)
+                checkResourcePath(am, "$path/$ver", resourcePaths)
             }
         }
     }
@@ -205,11 +196,19 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         file.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
         file.append("<resources>\n")
         file.append("<color name=\"background_material_dark\">#${toHexString(background)}</color>\n")
-        file.append("<color name=\"background_floating_material_dark\">#${toHexString(background - 0xfcfcfd)}</color>\n")
-        file.append("<color name=\"button_material_dark\">#${toHexString(background - 0xefeff0)}</color>\n")
-        file.append("<color name=\"legacy_primary\">#${toHexString(background - 0x050505)}</color>\n")
-        file.append("<color name=\"legacy_green\">#${toHexString(background - 0xf7f7f8)}</color>\n")
-        file.append("<color name=\"legacy_orange\">#${toHexString(background - 0xe8e8e9)}</color>\n")
+        if (useBackgroundPalette(context)) {
+            file.append("<color name=\"background_floating_material_dark\">#${toHexString(background - 0xfcfcfd)}</color>\n")
+            file.append("<color name=\"button_material_dark\">#${toHexString(background - 0xefeff0)}</color>\n")
+            file.append("<color name=\"legacy_primary\">#${toHexString(background - 0x050505)}</color>\n")
+            file.append("<color name=\"legacy_green\">#${toHexString(background - 0xf7f7f8)}</color>\n")
+            file.append("<color name=\"legacy_orange\">#${toHexString(background - 0xe8e8e9)}</color>\n")
+        } else {
+            file.append("<color name=\"background_floating_material_dark\">#${toHexString(background)}</color>\n")
+            file.append("<color name=\"button_material_dark\">#${toHexString(background)}</color>\n")
+            file.append("<color name=\"legacy_primary\">#${toHexString(background)}</color>\n")
+            file.append("<color name=\"legacy_green\">#${toHexString(background - 0xebebec)}</color>\n")
+            file.append("<color name=\"legacy_orange\">#${toHexString(background)}</color>\n")
+        }
         file.append("</resources>")
 
         val values = File(resDir, "/values")
