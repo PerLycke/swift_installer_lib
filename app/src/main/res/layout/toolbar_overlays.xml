@@ -31,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
+            android:fontFamily="sans-serif-condensed"
             android:paddingTop="4dp"
             android:text="@string/overlays"
             android:textAppearance="@style/ToolbarTitle"

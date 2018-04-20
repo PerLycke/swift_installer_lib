@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
+        android:fontFamily="sans-serif-condensed"
         android:paddingTop="4dp"
         android:text="@string/toolbar_title_installation_summary"
         android:textAppearance="@style/ToolbarTitle"

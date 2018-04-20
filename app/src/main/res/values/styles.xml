@@ -84,7 +84,7 @@
         <item name="android:textSize">17.0dip</item>
         <item name="android:textColor">#d9ffffff</item>
         <item name="android:maxLines">1</item>
-        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textStyle">bold</item>
     </style>
