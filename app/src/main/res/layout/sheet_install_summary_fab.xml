@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sheet_install_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="8dp"
@@ -18,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/rebootIcon"
+            android:id="@+id/reboot_icon"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:contentDescription="@string/image"
@@ -28,7 +29,7 @@
             app:srcCompat="@drawable/ic_reboot" />
 
         <TextView
-            android:id="@+id/rebootDesc"
+            android:id="@+id/reboot_desc"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginStart="32dp"
@@ -38,13 +39,13 @@
             android:textColor="@android:color/white"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/rebootIcon"
-            app:layout_constraintTop_toTopOf="@+id/rebootIcon" />
+            app:layout_constraintStart_toEndOf="@+id/reboot_icon"
+            app:layout_constraintTop_toTopOf="@+id/reboot_icon" />
 
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/sendLog"
+        android:id="@+id/send_log"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,7 +53,7 @@
         app:layout_constraintTop_toBottomOf="@+id/reboot">
 
         <ImageView
-            android:id="@+id/sendIcon"
+            android:id="@+id/send_icon"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:contentDescription="@string/image"
@@ -61,7 +62,7 @@
             app:srcCompat="@drawable/ic_email" />
 
         <TextView
-            android:id="@+id/sendDesc"
+            android:id="@+id/send_desc"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginStart="32dp"
@@ -71,20 +72,20 @@
             android:textColor="@android:color/white"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/sendIcon"
-            app:layout_constraintTop_toTopOf="@+id/sendIcon" />
+            app:layout_constraintStart_toEndOf="@+id/send_icon"
+            app:layout_constraintTop_toTopOf="@+id/send_icon" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/rebootLater"
+        android:id="@+id/reboot_later"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sendLog">
+        app:layout_constraintTop_toBottomOf="@+id/send_log">
 
         <ImageView
-            android:id="@+id/rebootLaterIcon"
+            android:id="@+id/reboot_later_icon"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:contentDescription="@string/image"
@@ -93,7 +94,7 @@
             app:srcCompat="@drawable/ic_later" />
 
         <TextView
-            android:id="@+id/rebootLaterDesc"
+            android:id="@+id/reboot_later_desc"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginStart="32dp"
@@ -103,7 +104,7 @@
             android:textColor="@android:color/white"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/rebootLaterIcon"
+            app:layout_constraintStart_toEndOf="@+id/reboot_later_icon"
             app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>

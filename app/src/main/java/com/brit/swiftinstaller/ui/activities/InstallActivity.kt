@@ -86,7 +86,7 @@ class InstallActivity : ThemeActivity() {
         dialog.setCancelable(false)
 
         if (uninstall) {
-            inflate.installProgressTxt.setText(R.string.progress_uninstalling_title)
+            inflate.install_progress_txt.setText(R.string.progress_uninstalling_title)
         }
 
         val filter = IntentFilter(Notifier.ACTION_FAILED)
@@ -95,10 +95,10 @@ class InstallActivity : ThemeActivity() {
         LocalBroadcastManager.getInstance(applicationContext)
                 .registerReceiver(installListener, filter)
 
-        progressBar = inflate.installProgressBar
+        progressBar = inflate.install_progress_bar
         progressBar.isIndeterminate = uninstall
-        progressCount = inflate.installProgressCount
-        progressPercent = inflate.installProgressPercent
+        progressCount = inflate.install_progress_count
+        progressPercent = inflate.install_progress_percent
 
         if (!uninstall) {
             updateProgress("", -1, apps.size, uninstall)

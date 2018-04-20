@@ -67,7 +67,7 @@ class OverlaysActivity : ThemeActivity() {
         })
 
         search_view.setOnSearchClickListener {
-            mainContent.visibility = View.GONE
+            toolbar_overlays_main_content.visibility = View.GONE
         }
         search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -80,13 +80,13 @@ class OverlaysActivity : ThemeActivity() {
             }
         })
         search_view.setOnCloseListener {
-            mainContent.visibility = View.VISIBLE
+            toolbar_overlays_main_content.visibility = View.VISIBLE
             false
         }
 
         mViewPager = container
 
-        selectAllBtn.setOnClickListener {
+        select_all_btn.setOnClickListener {
             val checked = mPagerAdapter!!.getCheckedCount(container.currentItem)
             val check = checked < (mPagerAdapter!!.getAppsCount(container.currentItem) / 2)
             mPagerAdapter!!.selectAll(container.currentItem, check)
@@ -94,8 +94,8 @@ class OverlaysActivity : ThemeActivity() {
         }
 
         container.adapter = mPagerAdapter
-        container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
-        tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
+        container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs_overlays_root))
+        tabs_overlays_root.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
         container.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
             }
@@ -105,7 +105,7 @@ class OverlaysActivity : ThemeActivity() {
 
             override fun onPageSelected(position: Int) {
                 val checked = mPagerAdapter!!.getCheckedCount(position)
-                selectAllBtn.isChecked =
+                select_all_btn.isChecked =
                         checked == mPagerAdapter!!.getAppsCount(position) && checked > 0
             }
 
@@ -118,10 +118,10 @@ class OverlaysActivity : ThemeActivity() {
 
     override fun onResume() {
         super.onResume()
-        currentAccent.setTextColor(getAccentColor(this))
-        currentAccent.text = getString(R.string.hex_string,
+        toolbar_subtitle_current_accent.setTextColor(getAccentColor(this))
+        toolbar_subtitle_current_accent.text = getString(R.string.hex_string,
                 String.format("%06x", getAccentColor(this)).substring(2))
-        currentBg.text = getString(R.string.hex_string,
+        toolbar_subtitle_current_bg.text = getString(R.string.hex_string,
                 String.format("$06x", getBackgroundColor(this)).substring(2))
 
         mPagerAdapter!!.clearApps()
@@ -293,7 +293,7 @@ class OverlaysActivity : ThemeActivity() {
         bottomSheetDialog.setContentView(sheetView)
         bottomSheetDialog.show()
 
-        val uninstall = sheetView.findViewById<View>(R.id.confirmUninstallTxt)
+        val uninstall = sheetView.findViewById<View>(R.id.confirm_uninstall_txt)
         uninstall.setOnClickListener {
             bottomSheetDialog.dismiss()
             uninstallProgressAction()
@@ -314,7 +314,7 @@ class OverlaysActivity : ThemeActivity() {
             toast.show()
         }
 
-        val cancel = sheetView.findViewById<View>(R.id.cancelUninstallTxt)
+        val cancel = sheetView.findViewById<View>(R.id.cancel_uninstall_txt)
         cancel.setOnClickListener {
             bottomSheetDialog.dismiss()
         }

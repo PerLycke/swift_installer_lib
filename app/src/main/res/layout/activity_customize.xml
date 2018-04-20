@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/customize_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -28,7 +29,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <android.support.constraint.ConstraintLayout
-            android:id="@+id/mainLayout"
+            android:id="@+id/main_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
@@ -62,7 +63,7 @@
             </android.support.constraint.ConstraintLayout>
 
             <android.support.constraint.ConstraintLayout
-                android:id="@+id/customizeLayout"
+                android:id="@+id/customize_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -90,7 +91,7 @@
                         app:layout_constraintGuide_percent="0.85" />
 
                     <TextView
-                        android:id="@+id/accentTitle"
+                        android:id="@+id/toolbar_subtitle_accent_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -105,17 +106,17 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
-                        android:id="@+id/accentCategoryDivider"
+                        android:id="@+id/accent_category_divider"
                         android:layout_width="0dp"
                         android:layout_height="2dp"
                         android:layout_marginEnd="32dp"
                         android:layout_marginStart="8dp"
                         android:background="@color/divider"
                         android:contentDescription="@string/image"
-                        app:layout_constraintBottom_toBottomOf="@+id/accentTitle"
+                        app:layout_constraintBottom_toBottomOf="@+id/toolbar_subtitle_accent_title"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/accentTitle"
-                        app:layout_constraintTop_toTopOf="@+id/accentTitle" />
+                        app:layout_constraintStart_toEndOf="@+id/toolbar_subtitle_accent_title"
+                        app:layout_constraintTop_toTopOf="@+id/toolbar_subtitle_accent_title" />
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/constraintLayout"
@@ -124,14 +125,14 @@
                         android:layout_marginTop="20dp"
                         app:layout_constraintEnd_toStartOf="@+id/guideline2"
                         app:layout_constraintStart_toStartOf="@+id/guideline1"
-                        app:layout_constraintTop_toBottomOf="@+id/accentTitle">
+                        app:layout_constraintTop_toBottomOf="@+id/toolbar_subtitle_accent_title">
 
                         <include layout="@layout/customize_accent" />
 
                     </android.support.constraint.ConstraintLayout>
 
                     <TextView
-                        android:id="@+id/backgroundCategory"
+                        android:id="@+id/bg_category"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -146,17 +147,17 @@
                         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
                     <ImageView
-                        android:id="@+id/backgroundCategoryDivider"
+                        android:id="@+id/bg_category_divider"
                         android:layout_width="0dp"
                         android:layout_height="2dp"
                         android:layout_marginEnd="32dp"
                         android:layout_marginStart="8dp"
                         android:background="@color/divider"
                         android:contentDescription="@string/image"
-                        app:layout_constraintBottom_toBottomOf="@+id/backgroundCategory"
+                        app:layout_constraintBottom_toBottomOf="@+id/bg_category"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/backgroundCategory"
-                        app:layout_constraintTop_toTopOf="@+id/backgroundCategory" />
+                        app:layout_constraintStart_toEndOf="@+id/bg_category"
+                        app:layout_constraintTop_toTopOf="@+id/bg_category" />
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/constraintLayout2"
@@ -165,7 +166,7 @@
                         android:layout_marginTop="20dp"
                         app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
                         app:layout_constraintStart_toStartOf="@+id/constraintLayout"
-                        app:layout_constraintTop_toBottomOf="@+id/backgroundCategory">
+                        app:layout_constraintTop_toBottomOf="@+id/bg_category">
 
                         <include
                             layout="@layout/customize_background"
@@ -176,7 +177,7 @@
                     </android.support.constraint.ConstraintLayout>
 
                     <TextView
-                        android:id="@+id/iconsCategoryTitle"
+                        android:id="@+id/icons_category_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -192,7 +193,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
                     <ImageView
-                        android:id="@+id/iconsCategoryDivider"
+                        android:id="@+id/icons_category_divider"
                         android:layout_width="0dp"
                         android:layout_height="2dp"
                         android:layout_marginEnd="32dp"
@@ -200,13 +201,13 @@
                         android:background="@color/divider"
                         android:contentDescription="@string/image"
                         android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="@+id/iconsCategoryTitle"
+                        app:layout_constraintBottom_toBottomOf="@+id/icons_category_title"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/iconsCategoryTitle"
-                        app:layout_constraintTop_toTopOf="@+id/iconsCategoryTitle" />
+                        app:layout_constraintStart_toEndOf="@+id/icons_category_title"
+                        app:layout_constraintTop_toTopOf="@+id/icons_category_title" />
 
                     <RadioButton
-                        android:id="@+id/aospIcons"
+                        android:id="@+id/aosp_icons"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
@@ -216,10 +217,10 @@
                         android:textSize="16sp"
                         android:visibility="gone"
                         app:layout_constraintStart_toStartOf="@+id/guideline1"
-                        app:layout_constraintTop_toBottomOf="@+id/iconsCategoryTitle" />
+                        app:layout_constraintTop_toBottomOf="@+id/icons_category_title" />
 
                     <RadioButton
-                        android:id="@+id/stockIcons"
+                        android:id="@+id/stock_icons"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
@@ -229,8 +230,8 @@
                         android:textSize="16sp"
                         android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/aospIcons"
-                        app:layout_constraintTop_toBottomOf="@+id/aospIcons" />
+                        app:layout_constraintStart_toStartOf="@+id/aosp_icons"
+                        app:layout_constraintTop_toBottomOf="@+id/aosp_icons" />
 
                 </android.support.constraint.ConstraintLayout>
 

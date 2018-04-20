@@ -2,11 +2,12 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_item_root"
     android:layout_width="match_parent"
     android:layout_height="76dp">
 
     <TextView
-        android:id="@+id/appItemName"
+        android:id="@+id/app_item_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -14,9 +15,9 @@
         android:fontFamily="sans-serif"
         android:textColor="@android:color/white"
         android:textSize="17sp"
-        app:layout_constraintBottom_toTopOf="@+id/appName"
-        app:layout_constraintEnd_toStartOf="@+id/appItemCheckBox"
-        app:layout_constraintStart_toEndOf="@+id/appItemImage"
+        app:layout_constraintBottom_toTopOf="@+id/app_name"
+        app:layout_constraintEnd_toStartOf="@+id/app_item_checkbox"
+        app:layout_constraintStart_toEndOf="@+id/app_item_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
@@ -24,20 +25,20 @@
         tools:textColor="@android:color/white" />
 
     <TextView
-        android:id="@+id/appName"
+        android:id="@+id/app_name"
         android:layout_width="0dp"
         android:layout_height="21dp"
         android:fontFamily="sans-serif"
         android:textColor="#979797"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/appItemName"
-        app:layout_constraintStart_toStartOf="@+id/appItemName"
-        app:layout_constraintTop_toBottomOf="@+id/appItemName"
+        app:layout_constraintEnd_toEndOf="@+id/app_item_name"
+        app:layout_constraintStart_toStartOf="@+id/app_item_name"
+        app:layout_constraintTop_toBottomOf="@+id/app_item_name"
         tools:text="package.name" />
 
     <ImageView
-        android:id="@+id/appItemImage"
+        android:id="@+id/app_item_image"
         android:layout_width="32dp"
         android:layout_height="match_parent"
         android:layout_marginBottom="8dp"
@@ -51,7 +52,7 @@
         tools:srcCompat="@mipmap/ic_launcher" />
 
     <CheckBox
-        android:id="@+id/appItemCheckBox"
+        android:id="@+id/app_item_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -63,15 +64,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/alertIcon"
+        android:id="@+id/alert_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/image"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/appItemCheckBox"
-        app:layout_constraintEnd_toEndOf="@+id/appItemCheckBox"
-        app:layout_constraintStart_toStartOf="@+id/appItemCheckBox"
-        app:layout_constraintTop_toTopOf="@+id/appItemCheckBox"
+        app:layout_constraintBottom_toBottomOf="@+id/app_item_checkbox"
+        app:layout_constraintEnd_toEndOf="@+id/app_item_checkbox"
+        app:layout_constraintStart_toStartOf="@+id/app_item_checkbox"
+        app:layout_constraintTop_toTopOf="@+id/app_item_checkbox"
         app:srcCompat="@drawable/ic_alert" />
 
     <ImageView

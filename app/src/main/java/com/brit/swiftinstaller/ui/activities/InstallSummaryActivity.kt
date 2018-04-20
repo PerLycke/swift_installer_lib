@@ -50,8 +50,8 @@ class InstallSummaryActivity : ThemeActivity() {
         }
 
         if (mErrorMap.isNotEmpty()) {
-            sendEmailLayout.visibility = View.VISIBLE
-            sendEmailBtn.setOnClickListener {
+            send_email_layout.visibility = View.VISIBLE
+            send_email_btn.setOnClickListener {
                 sendErrorLog()
             }
         }
@@ -75,8 +75,8 @@ class InstallSummaryActivity : ThemeActivity() {
         })
 
         container.adapter = mPagerAdapter
-        container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
-        tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
+        container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tab_install_summary_root))
+        tab_install_summary_root.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
 
         val builder = AlertDialog.Builder(this)
                 .setTitle(R.string.reboot_to_finish)
@@ -115,9 +115,9 @@ class InstallSummaryActivity : ThemeActivity() {
         val sheetView = View.inflate(this, R.layout.sheet_install_summary_fab, null)
 
         if (mErrorMap.isEmpty()) {
-            sheetView.sendLog.visibility = View.GONE
+            sheetView.send_log.visibility = View.GONE
         } else {
-            sheetView.sendLog.visibility = View.VISIBLE
+            sheetView.send_log.visibility = View.VISIBLE
         }
 
         sheetView.reboot.setOnClickListener {
@@ -126,11 +126,11 @@ class InstallSummaryActivity : ThemeActivity() {
             pm.reboot(null)
         }
 
-        sheetView.sendLog.setOnClickListener {
+        sheetView.send_log.setOnClickListener {
             sendErrorLog()
         }
 
-        sheetView.rebootLater.setOnClickListener {
+        sheetView.reboot_later.setOnClickListener {
             bottomSheetDialog.dismiss()
             finish()
         }

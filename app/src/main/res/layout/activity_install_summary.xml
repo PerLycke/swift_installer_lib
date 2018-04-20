@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/installation_summary_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.activities.InstallSummaryActivity">
@@ -31,7 +32,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/tabUnderline"
+        android:id="@+id/tab_underline"
         android:layout_width="0dp"
         android:layout_height="0.5dp"
         android:layout_marginEnd="16dp"
@@ -49,10 +50,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabUnderline" />
+        app:layout_constraintTop_toBottomOf="@+id/tab_underline" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/resultFab"
+        android:id="@+id/result_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -64,7 +65,7 @@
         app:srcCompat="@drawable/ic_reboot" />
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/sendEmailLayout"
+        android:id="@+id/send_email_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
@@ -74,7 +75,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
-            android:id="@+id/btnDivider"
+            android:id="@+id/btn_divider"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:background="@color/tab_underline"
@@ -83,7 +84,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/sendEmailBtn"
+            android:id="@+id/send_email_btn"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -38,9 +38,9 @@ class MainActivity : ThemeActivity() {
             if (key == "overlays_to_update") {
                 val apps = getAppsToUpdate(this)
                 if (apps.isEmpty()) {
-                    installUpdatesTile.visibility = View.GONE
+                    install_updates_tile.visibility = View.GONE
                 } else {
-                    installUpdatesTile.visibility = View.VISIBLE
+                    install_updates_tile.visibility = View.VISIBLE
                 }
             }
         }
@@ -72,17 +72,17 @@ class MainActivity : ThemeActivity() {
             }
         }
 
-        installTile.setOnClickListener {
+        install_tile.setOnClickListener {
             startActivity(Intent(this, OverlaysActivity::class.java))
         }
 
-        updateTileLayout.setOnClickListener {
+        update_tile_layout.setOnClickListener {
             val intent = Intent(this, OverlaysActivity::class.java)
             intent.putExtra("tab", OverlaysActivity.UPDATE_TAB)
             startActivity(intent)
         }
 
-        accentTile.setOnClickListener {
+        accent_tile.setOnClickListener {
             val intent = Intent(this, CustomizeActivity::class.java)
             startActivity(intent)
         }
@@ -107,18 +107,18 @@ class MainActivity : ThemeActivity() {
 
     override fun onResume() {
         super.onResume()
-        currentAccent.setTextColor(getAccentColor(this))
-        currentAccent.text = getString(R.string.hex_string,
+        toolbar_subtitle_current_accent.setTextColor(getAccentColor(this))
+        toolbar_subtitle_current_accent.text = getString(R.string.hex_string,
                 String.format("%06x", getAccentColor(this)).substring(2))
 
         UpdateChecker(this, object : UpdateChecker.Callback() {
             override fun finished(installedCount: Int, updates: ArrayList<String>) {
-                activeCount.text = String.format("%d", installedCount)
+                active_count.text = String.format("%d", installedCount)
                 if (updates.isEmpty()) {
-                    updateTileLayout.visibility = View.GONE
+                    update_tile_layout.visibility = View.GONE
                 } else {
-                    updatesCount.text = String.format("%d", updates.size)
-                    updateTileLayout.visibility = View.VISIBLE
+                    updates_count.text = String.format("%d", updates.size)
+                    update_tile_layout.visibility = View.VISIBLE
                 }
             }
 
@@ -147,7 +147,7 @@ class MainActivity : ThemeActivity() {
                 builder.setView(dialogView)
                 val dialog = builder.create()
 
-                dialogView.aboutOkBtn.setOnClickListener {
+                dialogView.about_ok_btn.setOnClickListener {
                     dialog.dismiss()
                 }
                 dialog.show()

@@ -2,13 +2,14 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dialog_about_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="8dp"
     android:paddingTop="8dp">
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/aboutDialogTitleLayout"
+        android:id="@+id/about_dialog_title_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
@@ -19,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/aboutDialogTitle"
+            android:id="@+id/about_dialog_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
@@ -30,7 +31,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/aboutMsgLayout"
+        android:id="@+id/about_msg_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
@@ -39,36 +40,36 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/aboutDialogTitleLayout">
+        app:layout_constraintTop_toBottomOf="@+id/about_dialog_title_layout">
 
         <TextView
-            android:id="@+id/aboutDialogMsg"
+            android:id="@+id/about_dialog_msg"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:lineSpacingExtra="4sp"
             android:text="@string/credits_msg"
             android:textAppearance="@android:style/TextAppearance.Material.Subhead"
-            app:layout_constraintBottom_toTopOf="@+id/subsLink"
+            app:layout_constraintBottom_toTopOf="@+id/subs_link"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/subsLink"
+            android:id="@+id/subs_link"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:autoLink="web"
             android:text="https://github.com/substratum/template"
             android:textAppearance="@android:style/TextAppearance.Material.Subhead"
-            app:layout_constraintBottom_toTopOf="@+id/slimLink"
+            app:layout_constraintBottom_toTopOf="@+id/slim_link"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/slimLink"
+            android:id="@+id/slim_link"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:autoLink="web"
@@ -80,7 +81,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/aboutDialogBtnLayout"
+        android:id="@+id/about_dialog_btn_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -89,10 +90,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/aboutMsgLayout">
+        app:layout_constraintTop_toBottomOf="@+id/about_msg_layout">
 
         <Button
-            android:id="@+id/aboutOkBtn"
+            android:id="@+id/about_ok_btn"
             style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
             android:layout_width="wrap_content"
             android:layout_height="48dp"

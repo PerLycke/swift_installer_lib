@@ -2,11 +2,12 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/toolbar_customize_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/customizeToolbarBg"
+        android:id="@+id/customize_toolbar_bg"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:contentDescription="@string/image"
@@ -16,7 +17,7 @@
         app:srcCompat="?android:colorBackground" />
 
     <Button
-        android:id="@+id/customizeCancelBtn"
+        android:id="@+id/customize_cancel_btn"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -26,9 +27,9 @@
         android:onClick="cancelBtnClick"
         android:text="@string/cancel"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/customizeToolbarBg"
+        app:layout_constraintBottom_toBottomOf="@+id/customize_toolbar_bg"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
-        app:layout_constraintStart_toStartOf="@+id/customizeToolbarBg"
+        app:layout_constraintStart_toStartOf="@+id/customize_toolbar_bg"
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.constraint.Guideline
@@ -39,7 +40,7 @@
         app:layout_constraintGuide_percent="0.5" />
 
     <Button
-        android:id="@+id/customizeConfirmBtn"
+        android:id="@+id/customize_confirm_btn"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -48,13 +49,13 @@
         android:fontFamily="sans-serif-condensed"
         android:text="@string/confirm"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/customizeToolbarBg"
-        app:layout_constraintEnd_toEndOf="@+id/customizeToolbarBg"
+        app:layout_constraintBottom_toBottomOf="@+id/customize_toolbar_bg"
+        app:layout_constraintEnd_toEndOf="@+id/customize_toolbar_bg"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toTopOf="@+id/customizeToolbarBg" />
+        app:layout_constraintTop_toTopOf="@+id/customize_toolbar_bg" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/customize_toolbar_underline"
         android:layout_width="0dp"
         android:layout_height="0.5dp"
         android:layout_marginEnd="16dp"
@@ -62,7 +63,7 @@
         android:background="#202026"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/customizeToolbarBg" />
+        app:layout_constraintTop_toBottomOf="@+id/customize_toolbar_bg" />
 
 
 </android.support.constraint.ConstraintLayout>

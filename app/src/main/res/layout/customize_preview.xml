@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/customize_preview_root"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/previewLayout"
+        android:id="@+id/preview_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
@@ -13,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/settingsPreview"
+            android:id="@+id/settings_preview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/image"
@@ -24,46 +25,46 @@
             app:srcCompat="@drawable/settings_preview" />
 
         <ImageView
-            android:id="@+id/connectionsIcon"
+            android:id="@+id/connections_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="14dp"
             android:contentDescription="@string/image"
             android:scaleX="0.8"
             android:scaleY="0.8"
-            app:layout_constraintBottom_toBottomOf="@+id/connectionDesc"
-            app:layout_constraintEnd_toStartOf="@+id/connectionsTitle"
-            app:layout_constraintTop_toTopOf="@+id/connectionsTitle"
+            app:layout_constraintBottom_toBottomOf="@+id/connections_desc"
+            app:layout_constraintEnd_toStartOf="@+id/connections_title"
+            app:layout_constraintTop_toTopOf="@+id/connections_title"
             app:srcCompat="@drawable/ic_settings_connections" />
 
         <ImageView
-            android:id="@+id/soundIcon"
+            android:id="@+id/sound_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="14dp"
             android:contentDescription="@string/image"
             android:scaleX="0.8"
             android:scaleY="0.8"
-            app:layout_constraintBottom_toBottomOf="@+id/soundsDesc"
-            app:layout_constraintEnd_toStartOf="@+id/soundsTitle"
-            app:layout_constraintTop_toTopOf="@+id/soundsTitle"
+            app:layout_constraintBottom_toBottomOf="@+id/sounds_desc"
+            app:layout_constraintEnd_toStartOf="@+id/sounds_title"
+            app:layout_constraintTop_toTopOf="@+id/sounds_title"
             app:srcCompat="@drawable/ic_settings_sound" />
 
         <ImageView
-            android:id="@+id/notificationsIcon"
+            android:id="@+id/notifications_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="14dp"
             android:contentDescription="@string/image"
             android:scaleX="0.8"
             android:scaleY="0.8"
-            app:layout_constraintBottom_toBottomOf="@+id/notificationsDesc"
-            app:layout_constraintEnd_toStartOf="@+id/notificationsTitle"
-            app:layout_constraintTop_toTopOf="@+id/notificationsTitle"
+            app:layout_constraintBottom_toBottomOf="@+id/notifications_desc"
+            app:layout_constraintEnd_toStartOf="@+id/notifications_title"
+            app:layout_constraintTop_toTopOf="@+id/notifications_title"
             app:srcCompat="@drawable/ic_settings_notifications" />
 
         <TextView
-            android:id="@+id/connectionsTitle"
+            android:id="@+id/connections_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -72,27 +73,27 @@
             android:text="Connections"
             android:textColor="@android:color/white"
             android:textSize="12sp"
-            app:layout_constraintBottom_toTopOf="@+id/connectionDesc"
+            app:layout_constraintBottom_toTopOf="@+id/connections_desc"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed" />
 
         <TextView
-            android:id="@+id/connectionDesc"
+            android:id="@+id/connections_desc"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="Wi-Fi, Bluetooth, Data usage, Flight mode"
             android:textColor="@android:color/white"
             android:textSize="9sp"
-            app:layout_constraintBottom_toTopOf="@+id/soundsTitle"
+            app:layout_constraintBottom_toTopOf="@+id/sounds_title"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/connectionsTitle"
-            app:layout_constraintTop_toBottomOf="@+id/connectionsTitle" />
+            app:layout_constraintStart_toStartOf="@+id/connections_title"
+            app:layout_constraintTop_toBottomOf="@+id/connections_title" />
 
         <TextView
-            android:id="@+id/soundsTitle"
+            android:id="@+id/sounds_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -101,26 +102,26 @@
             android:text="Sound and vibration"
             android:textColor="@android:color/white"
             android:textSize="12sp"
-            app:layout_constraintBottom_toTopOf="@+id/soundsDesc"
+            app:layout_constraintBottom_toTopOf="@+id/sounds_desc"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/settingsPreview"
-            app:layout_constraintTop_toBottomOf="@+id/connectionDesc" />
+            app:layout_constraintStart_toStartOf="@+id/settings_preview"
+            app:layout_constraintTop_toBottomOf="@+id/connections_desc" />
 
         <TextView
-            android:id="@+id/soundsDesc"
+            android:id="@+id/sounds_desc"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="Sounds, Vibration, Do not disturb"
             android:textColor="@android:color/white"
             android:textSize="9sp"
-            app:layout_constraintBottom_toTopOf="@+id/notificationsTitle"
+            app:layout_constraintBottom_toTopOf="@+id/notifications_title"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/soundsTitle"
-            app:layout_constraintTop_toBottomOf="@+id/soundsTitle" />
+            app:layout_constraintStart_toStartOf="@+id/sounds_title"
+            app:layout_constraintTop_toBottomOf="@+id/sounds_title" />
 
         <TextView
-            android:id="@+id/notificationsTitle"
+            android:id="@+id/notifications_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -129,13 +130,13 @@
             android:text="Notifications"
             android:textColor="@android:color/white"
             android:textSize="12sp"
-            app:layout_constraintBottom_toTopOf="@+id/notificationsDesc"
+            app:layout_constraintBottom_toTopOf="@+id/notifications_desc"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/settingsPreview"
-            app:layout_constraintTop_toBottomOf="@+id/soundsDesc" />
+            app:layout_constraintStart_toStartOf="@+id/settings_preview"
+            app:layout_constraintTop_toBottomOf="@+id/sounds_desc" />
 
         <TextView
-            android:id="@+id/notificationsDesc"
+            android:id="@+id/notifications_desc"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -145,8 +146,8 @@
             android:textSize="9sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/notificationsTitle"
-            app:layout_constraintTop_toBottomOf="@+id/notificationsTitle" />
+            app:layout_constraintStart_toStartOf="@+id/notifications_title"
+            app:layout_constraintTop_toBottomOf="@+id/notifications_title" />
 
 
     </android.support.constraint.ConstraintLayout>

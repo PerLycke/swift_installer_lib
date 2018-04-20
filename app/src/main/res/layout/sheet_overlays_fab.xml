@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sheet_overlays_fab_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:backgroundTint="@color/dialog_bg_tint"
@@ -20,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/dialogInstallIcon"
+            android:id="@+id/dialog_install_icon"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:contentDescription="@string/image"
@@ -30,7 +31,7 @@
             app:srcCompat="@drawable/ic_install" />
 
         <TextView
-            android:id="@+id/installTxt"
+            android:id="@+id/install_txt"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="32dp"
@@ -41,7 +42,7 @@
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/dialogInstallIcon"
+            app:layout_constraintStart_toEndOf="@+id/dialog_install_icon"
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
@@ -55,7 +56,7 @@
         app:layout_constraintTop_toBottomOf="@+id/install">
 
         <ImageView
-            android:id="@+id/dialogUninstallIcon"
+            android:id="@+id/dialog_uninstall_icon"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:contentDescription="@string/image"
@@ -65,7 +66,7 @@
             app:srcCompat="@drawable/ic_uninstall" />
 
         <TextView
-            android:id="@+id/uninstallTxt"
+            android:id="@+id/uninstall_txt"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginStart="32dp"
@@ -76,7 +77,7 @@
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/dialogUninstallIcon"
+            app:layout_constraintStart_toEndOf="@+id/dialog_uninstall_icon"
             app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
@@ -92,7 +93,7 @@
         app:layout_constraintTop_toBottomOf="@+id/uninstall">
 
         <ImageView
-            android:id="@+id/dialogUpdateIcon"
+            android:id="@+id/dialog_update_icon"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:contentDescription="@string/image"
@@ -103,7 +104,7 @@
             app:srcCompat="@drawable/ic_updates" />
 
         <TextView
-            android:id="@+id/updateTxt"
+            android:id="@+id/update_txt"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginStart="32dp"
@@ -114,7 +115,7 @@
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/dialogUpdateIcon"
+            app:layout_constraintStart_toEndOf="@+id/dialog_update_icon"
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 

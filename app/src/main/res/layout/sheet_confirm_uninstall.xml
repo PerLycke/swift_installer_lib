@@ -2,20 +2,21 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sheet_confirm_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:backgroundTint="@color/dialog_bg_tint"
     tools:layout_editor_absoluteY="25dp">
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/confirmLayout"
+        android:id="@+id/confirm_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="8dp"
         android:paddingTop="8dp">
 
         <ImageView
-            android:id="@+id/confirmUninstallIcon"
+            android:id="@+id/confirm_uninstall_icon"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_marginStart="16dp"
@@ -25,7 +26,7 @@
             app:srcCompat="@drawable/ic_confirm" />
 
         <TextView
-            android:id="@+id/confirmUninstallTxt"
+            android:id="@+id/confirm_uninstall_txt"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginEnd="16dp"
@@ -36,22 +37,22 @@
             android:textColor="@android:color/white"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/confirmUninstallIcon"
-            app:layout_constraintTop_toTopOf="@+id/confirmUninstallIcon" />
+            app:layout_constraintStart_toEndOf="@+id/confirm_uninstall_icon"
+            app:layout_constraintTop_toTopOf="@+id/confirm_uninstall_icon" />
 
         <ImageView
-            android:id="@+id/cancelUninstallIcon"
+            android:id="@+id/cancel_uninstall_icon"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_marginStart="16dp"
             android:contentDescription="@string/image"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/confirmUninstallIcon"
+            app:layout_constraintTop_toBottomOf="@+id/confirm_uninstall_icon"
             app:srcCompat="@drawable/ic_cancel" />
 
         <TextView
-            android:id="@+id/cancelUninstallTxt"
+            android:id="@+id/cancel_uninstall_txt"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginEnd="16dp"
@@ -63,8 +64,8 @@
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cancelUninstallIcon"
-            app:layout_constraintTop_toBottomOf="@+id/confirmUninstallTxt" />
+            app:layout_constraintStart_toEndOf="@+id/cancel_uninstall_icon"
+            app:layout_constraintTop_toBottomOf="@+id/confirm_uninstall_txt" />
 
     </android.support.constraint.ConstraintLayout>
 

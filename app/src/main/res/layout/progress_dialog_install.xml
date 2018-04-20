@@ -2,7 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_content"
+    android:id="@+id/progress_dialog_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="8dp"
@@ -10,7 +10,7 @@
     tools:layout_editor_absoluteY="25dp">
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/installingTitle"
+        android:id="@+id/installing_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/installProgressTxt"
+            android:id="@+id/install_progress_txt"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginBottom="8dp"
@@ -37,7 +37,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/installingProgress"
+        android:id="@+id/installing_progress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -47,10 +47,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/installingTitle">
+        app:layout_constraintTop_toBottomOf="@+id/installing_title">
 
         <ProgressBar
-            android:id="@+id/installProgressBar"
+            android:id="@+id/install_progress_bar"
             style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="12dp"
@@ -62,7 +62,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/installProgressPercent"
+            android:id="@+id/install_progress_percent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -71,11 +71,11 @@
             android:textColor="@android:color/white"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/installProgressBar"
-            app:layout_constraintTop_toBottomOf="@+id/installProgressBar" />
+            app:layout_constraintStart_toStartOf="@+id/install_progress_bar"
+            app:layout_constraintTop_toBottomOf="@+id/install_progress_bar" />
 
         <TextView
-            android:id="@+id/installProgressCount"
+            android:id="@+id/install_progress_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -83,8 +83,8 @@
             android:text="24 / 200"
             android:textColor="@android:color/white"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@+id/installProgressBar"
-            app:layout_constraintTop_toBottomOf="@+id/installProgressBar" />
+            app:layout_constraintEnd_toEndOf="@+id/install_progress_bar"
+            app:layout_constraintTop_toBottomOf="@+id/install_progress_bar" />
 
     </android.support.constraint.ConstraintLayout>
 

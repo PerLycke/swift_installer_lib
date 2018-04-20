@@ -60,7 +60,7 @@ class AppListFragment : Fragment() {
             view.failed_info.visibility = View.GONE
         }
         selectAll(false)
-        view.failed_info.closeInfoCard.setOnClickListener {
+        view.failed_info.close_info_card_btn.setOnClickListener {
             view.failed_info.visibility = View.GONE
             setHideFailedInfoCard(context!!, true)
         }
@@ -78,16 +78,16 @@ class AppListFragment : Fragment() {
                 }
             }
         }
-        if (appListView != null && !appListView.isComputingLayout) {
-            appListView.adapter.notifyDataSetChanged()
+        if (app_list_view != null && !app_list_view.isComputingLayout) {
+            app_list_view.adapter.notifyDataSetChanged()
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        appListView.adapter = AppAdapter()
-        appListView.layoutManager = LinearLayoutManager(activity)
+        app_list_view.adapter = AppAdapter()
+        app_list_view.layoutManager = LinearLayoutManager(activity)
     }
 
     fun getCheckedItems(): ArrayList<AppItem> {
@@ -114,9 +114,9 @@ class AppListFragment : Fragment() {
             o1.title.compareTo(o2.title)
         })
         mApps.forEach { mVisible.add(mApps.indexOf(it)) }
-        if (appListView != null && !appListView.isComputingLayout) {
+        if (app_list_view != null && !app_list_view.isComputingLayout) {
             mHandler.post {
-                appListView.adapter.notifyDataSetChanged()
+                app_list_view.adapter.notifyDataSetChanged()
             }
         }
     }
@@ -137,11 +137,11 @@ class AppListFragment : Fragment() {
         }
 
         inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-            private var appName: TextView = view.findViewById(R.id.appItemName)
-            private var packageName: TextView = view.findViewById(R.id.appName)
-            private var appIcon: ImageView = view.findViewById(R.id.appItemImage)
-            private var appCheckBox: CheckBox = view.findViewById(R.id.appItemCheckBox)
-            private var alertIcon: ImageView = view.findViewById(R.id.alertIcon)
+            private var appName: TextView = view.findViewById(R.id.app_item_name)
+            private var packageName: TextView = view.findViewById(R.id.app_name)
+            private var appIcon: ImageView = view.findViewById(R.id.app_item_image)
+            private var appCheckBox: CheckBox = view.findViewById(R.id.app_item_checkbox)
+            private var alertIcon: ImageView = view.findViewById(R.id.alert_icon)
 
             init {
                 view.setOnClickListener {

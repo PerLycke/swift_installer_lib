@@ -2,11 +2,12 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/toolbar_overlays_root"
     android:layout_width="match_parent"
     android:layout_height="64dp">
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/mainContent"
+        android:id="@+id/toolbar_overlays_main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -52,7 +53,7 @@
             app:layout_constraintTop_toBottomOf="@+id/title">
 
             <TextView
-                android:id="@+id/bgTitle"
+                android:id="@+id/toolbar_subtitle_bg_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-condensed"
@@ -63,29 +64,29 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/currentAccent"
+                android:id="@+id/toolbar_subtitle_current_accent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="#ff0000"
                 android:textAppearance="@style/ToolbarSubtitle"
-                app:layout_constraintStart_toEndOf="@+id/accentTitle"
-                app:layout_constraintTop_toTopOf="@+id/accentTitle" />
+                app:layout_constraintStart_toEndOf="@+id/toolbar_subtitle_accent_title"
+                app:layout_constraintTop_toTopOf="@+id/toolbar_subtitle_accent_title" />
 
             <TextView
-                android:id="@+id/currentBg"
+                android:id="@+id/toolbar_subtitle_current_bg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="Dark"
                 android:textAppearance="@style/ToolbarSubtitle"
-                app:layout_constraintStart_toEndOf="@+id/bgTitle"
-                app:layout_constraintTop_toTopOf="@+id/bgTitle" />
+                app:layout_constraintStart_toEndOf="@+id/toolbar_subtitle_bg_title"
+                app:layout_constraintTop_toTopOf="@+id/toolbar_subtitle_bg_title" />
 
             <TextView
-                android:id="@+id/accentTitle"
+                android:id="@+id/toolbar_subtitle_accent_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -93,13 +94,13 @@
                 android:text="@string/overlays_toolbar_accent"
                 android:textAppearance="@style/ToolbarSubtitle"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/currentBg"
-                app:layout_constraintTop_toTopOf="@+id/currentBg" />
+                app:layout_constraintStart_toEndOf="@+id/toolbar_subtitle_current_bg"
+                app:layout_constraintTop_toTopOf="@+id/toolbar_subtitle_current_bg" />
         </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/searchView"
+        android:id="@+id/search_view_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -108,7 +109,7 @@
         android:layout_marginTop="8dp"
         android:paddingEnd="72dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/mainContent"
+        app:layout_constraintEnd_toEndOf="@+id/toolbar_overlays_main_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -131,30 +132,30 @@
         android:layout_height="match_parent">
 
         <ToggleButton
-            android:id="@+id/selectAllBtn"
+            android:id="@+id/select_all_btn"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/select_all_btn"
             android:contentDescription="@string/image"
-            android:textOff=""
-            android:textOn=""
             android:focusable="false"
             android:focusableInTouchMode="false"
+            android:textOff=""
+            android:textOn=""
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/customizeBtn"
+            android:id="@+id/customize_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:contentDescription="@string/image"
             android:onClick="customizeBtnClick"
-            app:layout_constraintBottom_toBottomOf="@+id/selectAllBtn"
-            app:layout_constraintEnd_toStartOf="@+id/selectAllBtn"
-            app:layout_constraintTop_toTopOf="@+id/selectAllBtn"
+            app:layout_constraintBottom_toBottomOf="@+id/select_all_btn"
+            app:layout_constraintEnd_toStartOf="@+id/select_all_btn"
+            app:layout_constraintTop_toTopOf="@+id/select_all_btn"
             app:srcCompat="@drawable/ic_accent_new" />
     </android.support.constraint.ConstraintLayout>
 

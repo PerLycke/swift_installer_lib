@@ -36,26 +36,26 @@ class CustomizeActivity : AppCompatActivity() {
         setupAccentSheet()
         updateColor(accentColor, backgroundColor)
 
-        customDarkBg.setOnClickListener {
+        custom_dark_bg.setOnClickListener {
             updateColor(accentColor, Utils.convertToColorInt("202021"))
         }
-        customBlackBg.setOnClickListener {
+        custom_black_bg.setOnClickListener {
             updateColor(accentColor, Utils.convertToColorInt("000000"))
         }
-        customStyleBg.setOnClickListener {
+        custom_style_bg.setOnClickListener {
             updateColor(accentColor, Utils.convertToColorInt("202833"))
         }
-        customNatureBg.setOnClickListener {
+        custom_nature_bg.setOnClickListener {
             updateColor(accentColor, Utils.convertToColorInt("1C3B3A"))
         }
-        customOceanBg.setOnClickListener {
+        custom_ocean_bg.setOnClickListener {
             updateColor(accentColor, Utils.convertToColorInt("173145"))
         }
-        customNightBg.setOnClickListener {
+        custom_night_bg.setOnClickListener {
             updateColor(accentColor, Utils.convertToColorInt("363844"))
         }
 
-        customizeConfirmBtn.setOnClickListener {
+        customize_confirm_btn.setOnClickListener {
             var recompile = false
             if (getAccentColor(this) != accentColor) {
                 setAccentColor(this, accentColor)
@@ -83,7 +83,7 @@ class CustomizeActivity : AppCompatActivity() {
             }
         }
 
-        accentHexInput.addTextChangedListener(object: TextWatcher {
+        accent_hex_input.addTextChangedListener(object: TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
 
@@ -96,7 +96,7 @@ class CustomizeActivity : AppCompatActivity() {
             }
         })
 
-        hexInputBg.addTextChangedListener(object : TextWatcher {
+        hex_input_bg.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
 
@@ -111,18 +111,18 @@ class CustomizeActivity : AppCompatActivity() {
         })
 
         val listener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
-            if (compoundButton.id == R.id.materialBackground) {
-                materialBackground.isChecked = b
-                flatBackground.isChecked = !b
+            if (compoundButton.id == R.id.material_theme) {
+                material_theme.isChecked = b
+                flat_theme.isChecked = !b
             } else {
-                materialBackground.isChecked = !b
-                flatBackground.isChecked = b
+                material_theme.isChecked = !b
+                flat_theme.isChecked = b
             }
-            setUseBackgroundPalette(this, materialBackground.isChecked)
+            setUseBackgroundPalette(this, material_theme.isChecked)
             updateColor(accentColor, backgroundColor)
         }
-        materialBackground.setOnCheckedChangeListener(listener)
-        flatBackground.setOnCheckedChangeListener(listener)
+        material_theme.setOnCheckedChangeListener(listener)
+        flat_theme.setOnCheckedChangeListener(listener)
     }
 
     override fun onResume() {
@@ -132,43 +132,43 @@ class CustomizeActivity : AppCompatActivity() {
 
     private fun setupAccentSheet() {
         palette.adapter = PaletteAdapter(resources.getIntArray(R.array.accent_colors))
-        settingsIcons[0] = connectionsIcon
-        settingsIcons[1] = soundIcon
-        settingsIcons[2] = notificationsIcon
+        settingsIcons[0] = connections_icon
+        settingsIcons[1] = sound_icon
+        settingsIcons[2] = notifications_icon
     }
 
     private fun setBgIndicator() {
-        customDarkBgIndicator.visibility = if (backgroundColor == Utils.convertToColorInt("202021")) {
+        custom_dark_bg_indicator.visibility = if (backgroundColor == Utils.convertToColorInt("202021")) {
             View.VISIBLE
         } else {
             View.GONE
         }
-        customBlackBgIndicator.visibility = if(backgroundColor == Utils.convertToColorInt("000000")) {
+        custom_black_bg_indicator.visibility = if(backgroundColor == Utils.convertToColorInt("000000")) {
             View.VISIBLE
         } else {
             View.GONE
         }
-        customStyleBgIndicator.visibility = if (backgroundColor == Utils.convertToColorInt("202833")) {
+        custom_style_bg_indicator.visibility = if (backgroundColor == Utils.convertToColorInt("202833")) {
             View.VISIBLE
         } else {
             View.GONE
         }
-        customNatureBgIndicator.visibility = if (backgroundColor == Utils.convertToColorInt("1C3B3A")) {
+        custom_nature_bg_indicator.visibility = if (backgroundColor == Utils.convertToColorInt("1C3B3A")) {
             View.VISIBLE
         } else {
             View.GONE
         }
-        customOceanBgIndicator.visibility = if (backgroundColor == Utils.convertToColorInt("173145")) {
+        custom_ocean_bg_indicator.visibility = if (backgroundColor == Utils.convertToColorInt("173145")) {
             View.VISIBLE
         } else {
             View.GONE
         }
-        customNightBgIndicator.visibility = if (backgroundColor == Utils.convertToColorInt("363844")) {
+        custom_night_bg_indicator.visibility = if (backgroundColor == Utils.convertToColorInt("363844")) {
             View.VISIBLE
         } else {
             View.GONE
         }
-        val back = settingsPreview.drawable as LayerDrawable
+        val back = settings_preview.drawable as LayerDrawable
         //back.setTintMode(PorterDuff.Mode.SRC_ATOP)
         back.findDrawableByLayerId(R.id.settings_preview_background).setTint(backgroundColor)
         if (useBackgroundPalette(this)) {
@@ -184,9 +184,9 @@ class CustomizeActivity : AppCompatActivity() {
         for (icon: ImageView? in settingsIcons) {
             icon!!.setColorFilter(accentColor)
         }
-        accentHexInput.background.setTint(accentColor)
-        accentHexInput.setText(Integer.toHexString(accentColor).substring(2), TextView.BufferType.EDITABLE)
-        hexInputBg.setText(Integer.toHexString(backgroundColor).substring(2), TextView.BufferType.EDITABLE)
+        accent_hex_input.background.setTint(accentColor)
+        accent_hex_input.setText(Integer.toHexString(accentColor).substring(2), TextView.BufferType.EDITABLE)
+        hex_input_bg.setText(Integer.toHexString(backgroundColor).substring(2), TextView.BufferType.EDITABLE)
 
         setBgIndicator()
     }
