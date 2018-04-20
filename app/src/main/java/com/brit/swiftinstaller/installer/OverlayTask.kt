@@ -4,8 +4,11 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.res.AssetManager
+import android.graphics.Color
 import android.os.Environment
+import android.support.annotation.IntegerRes
 import com.brit.swiftinstaller.BuildConfig
+import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.*
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import java.io.BufferedWriter
@@ -92,7 +95,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
             AssetHelper.copyAssetFolder(am, path, resDir.absolutePath, null)
         }
         if (packageName == "android") {
-            applyAccent(resDir)
+            applyAccent()
         }
         generateManifest(overlayDir.absolutePath, packageName, packageInfo.versionName,
                 packageInfo.versionCode, Utils.getThemeVersion(context, packageName))
@@ -168,7 +171,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         }
     }
 
-    private fun applyAccent(resDir: File) {
+    private fun applyAccent() {
         val accent = getAccentColor(context)
         val file = StringBuilder()
         file.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
@@ -194,6 +197,49 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
                 e.printStackTrace()
             }
         }
+    }
+
+    private fun applyBackground() {
+        val background = context.getColor(R.color.background_main)
+        val file = StringBuilder()
+        file.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
+        file.append("<resources>\n")
+        file.append("<color name=\"background_material_dark\">#${toHexString(background)}</color>\n")
+        file.append("<color name=\"background_floating_material_dark\">#${toHexString(background - 0xfcfcfd)}</color>\n")
+        file.append("<color name=\"button_material_dark\">#${toHexString(background - 0xefeff0)}</color>\n")
+        file.append("<color name=\"legacy_primary\">#${toHexString(background - 0x050505)}</color>\n")
+        file.append("<color name=\"legacy_green\">#${toHexString(background - 0xf7f7f8)}</color>\n")
+        file.append("<color name=\"legacy_orange\">#${toHexString(background - 0xe8e8e9)}</color>\n")
+        file.append("</resources>")
+
+        val values = File(resDir, "/values")
+        values.mkdirs()
+        var writer: BufferedWriter? = null
+        try {
+            writer = BufferedWriter(FileWriter(resDir.absolutePath + "/values/background.xml"))
+            writer.write(file.toString())
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } finally {
+            try {
+                if (writer != null) {
+                    writer.close()
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun toHexString(color: Int): String {
+        return Integer.toHexString(removeAlpha(color))
+    }
+
+    fun removeAlpha(color: Int): Int {
+        val r = Color.red(color)
+        val g = Color.green(color)
+        val b = Color.blue(color)
+        return Color.rgb(r, g, b)
     }
 
     private fun generateManifest(path: String, targetPackage: String,

@@ -1,8 +1,11 @@
 package com.brit.swiftinstaller.ui.activities
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v4.app.ActivityCompat
@@ -13,6 +16,9 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import android.widget.Toast
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.UpdateChecker
 import com.brit.swiftinstaller.utils.getAccentColor
@@ -148,6 +154,25 @@ class MainActivity : ThemeActivity() {
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun isNetworkAvailable(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(ConnectivityManager::class.java)
+        return connectivityManager.activeNetworkInfo != null && connectivityManager.activeNetworkInfo.isConnected
+    }
+
+    fun faq(item: MenuItem) {
+        if (!isNetworkAvailable(this)) {
+            Toast.makeText(this, R.string.no_internet_faq, Toast.LENGTH_LONG).show()
+        } else {
+            val alert = AlertDialog.Builder(this, R.style.dialogNoTitle)
+            val wv = WebView(this)
+            wv.setBackgroundColor(Color.TRANSPARENT)
+            wv.loadUrl("https://goo.gl/KoB1xi")
+            wv.webViewClient = WebViewClient()
+            alert.setView(wv)
+            alert.show()
         }
     }
 }

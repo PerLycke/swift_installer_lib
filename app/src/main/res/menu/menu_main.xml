@@ -13,4 +13,9 @@
         android:orderInCategory="100"
         android:title="@string/overflow_about"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_faq"
+        android:title="FAQ"
+        android:onClick="faq"
+        app:showAsAction="never" />
 </menu>
