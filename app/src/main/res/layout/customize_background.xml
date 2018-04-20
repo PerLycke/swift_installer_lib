@@ -278,17 +278,17 @@
                             app:layout_constraintTop_toBottomOf="@+id/customDarkBgTxt"
                             app:srcCompat="@drawable/bg_circle_nature" />
 
-                        <ImageView
-                            android:id="@+id/customNatureBgIndicator"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/image"
-                            android:visibility="gone"
-                            app:layout_constraintBottom_toTopOf="@+id/customNatureBgTxt"
-                            app:layout_constraintEnd_toEndOf="@+id/customNatureBg"
-                            app:layout_constraintStart_toStartOf="@+id/customNatureBg"
-                            app:layout_constraintTop_toTopOf="@+id/customNatureBg"
-                            app:srcCompat="@drawable/bg_circle_active_stroke" />
+                    <ImageView
+                        android:id="@+id/customNatureBgIndicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/image"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/customNatureBg"
+                        app:layout_constraintEnd_toEndOf="@+id/customNatureBg"
+                        app:layout_constraintStart_toStartOf="@+id/customNatureBg"
+                        app:layout_constraintTop_toTopOf="@+id/customNatureBg"
+                        app:srcCompat="@drawable/bg_circle_active_stroke" />
 
                         <TextView
                             android:id="@+id/customNatureBgTxt"
@@ -313,17 +313,17 @@
                             app:layout_constraintTop_toBottomOf="@+id/customBlackBgTxt"
                             app:srcCompat="@drawable/bg_circle_ocean" />
 
-                        <ImageView
-                            android:id="@+id/customOceanBgIndicator"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/image"
-                            android:visibility="gone"
-                            app:layout_constraintBottom_toTopOf="@+id/customOceanBgTxt"
-                            app:layout_constraintEnd_toEndOf="@+id/customOceanBg"
-                            app:layout_constraintStart_toStartOf="@+id/customOceanBg"
-                            app:layout_constraintTop_toTopOf="@+id/customOceanBg"
-                            app:srcCompat="@drawable/bg_circle_active_stroke" />
+                    <ImageView
+                        android:id="@+id/customOceanBgIndicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/image"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/customOceanBg"
+                        app:layout_constraintEnd_toEndOf="@+id/customOceanBg"
+                        app:layout_constraintStart_toStartOf="@+id/customOceanBg"
+                        app:layout_constraintTop_toTopOf="@+id/customOceanBg"
+                        app:srcCompat="@drawable/bg_circle_active_stroke" />
 
                         <TextView
                             android:id="@+id/customOceanBgTxt"
