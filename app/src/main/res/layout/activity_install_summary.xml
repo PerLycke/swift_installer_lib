@@ -90,7 +90,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
-            android:fontFamily="sans-serif-condensed"
+            android:fontFamily="sans-serif"
             android:text="Send error log"
             android:textColor="@color/minimal_red"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -9,7 +9,7 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
+        android:fontFamily="sans-serif"
         android:text="@string/tab_update"
         android:textAllCaps="true"
         android:textColor="@android:color/tab_indicator_text"

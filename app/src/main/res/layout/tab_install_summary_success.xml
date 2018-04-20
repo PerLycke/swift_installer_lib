@@ -8,7 +8,7 @@
         android:id="@+id/resultSuccessfulTabTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
+        android:fontFamily="sans-serif"
         android:text="@string/successful"
         android:textAllCaps="true"
         android:textColor="@color/minimal_green"

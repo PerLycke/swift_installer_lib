@@ -94,8 +94,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="20dp"
-                        android:fontFamily="sans-serif-condensed"
+                        android:layout_marginTop="24dp"
+                        android:fontFamily="sans-serif"
                         android:text="@string/category_accent"
                         android:textAllCaps="true"
                         android:textColor="?android:attr/textColorSecondary"
@@ -136,7 +136,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="18dp"
-                        android:fontFamily="sans-serif-condensed"
+                        android:fontFamily="sans-serif"
                         android:text="@string/category_background"
                         android:textAllCaps="true"
                         android:textColor="?android:attr/textColorSecondary"
@@ -167,7 +167,11 @@
                         app:layout_constraintStart_toStartOf="@+id/constraintLayout"
                         app:layout_constraintTop_toBottomOf="@+id/backgroundCategory">
 
-                        <include layout="@layout/customize_background" />
+                        <include
+                            layout="@layout/customize_background"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                     </android.support.constraint.ConstraintLayout>
 
@@ -177,7 +181,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="28dp"
-                        android:fontFamily="sans-serif-condensed"
+                        android:fontFamily="sans-serif"
                         android:text="@string/category_icons"
                         android:textAllCaps="true"
                         android:textColor="?android:attr/textColorSecondary"
@@ -207,7 +211,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:checked="true"
-                        android:fontFamily="sans-serif-condensed"
+                        android:fontFamily="sans-serif"
                         android:text="AOSP style with accent support"
                         android:textSize="16sp"
                         android:visibility="gone"
@@ -220,7 +224,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
                         android:layout_marginTop="6dp"
-                        android:fontFamily="sans-serif-condensed"
+                        android:fontFamily="sans-serif"
                         android:text="Stock without accent support"
                         android:textSize="16sp"
                         android:visibility="gone"

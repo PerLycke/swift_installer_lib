@@ -43,7 +43,7 @@
         <item name="android:paddingEnd">-4dp</item>
     </style>
     <style name="AppTheme.AlertDialog.Title">
-        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:fontFamily">sans-serif</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
         <item name="android:layout_marginTop">6dp</item>
         <item name="android:layout_marginBottom">6dp</item>
@@ -77,18 +77,18 @@
         <item name="android:textSize">12.0dip</item>
         <item name="android:textColor">#d9ffffff</item>
         <item name="android:maxLines">1</item>
-        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:fontFamily">sans-serif</item>
         <item name="android:textAllCaps">true</item>
     </style>
     <style name="ToolbarTitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">17.0dip</item>
         <item name="android:textColor">#d9ffffff</item>
         <item name="android:maxLines">1</item>
-        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:fontFamily">sans-serif</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textStyle">bold</item>
     </style>
     <style name="Widget.AppCompat.Button.Borderless.Colored" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
-        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:fontFamily">sans-serif</item>
     </style>
 </resources>
