@@ -71,5 +71,6 @@
     <string name="night">Night</string>
     <string name="swift_style">Style</string>
     <string name="no_internet_faq">Please connect to internet to show the FAQ</string>
-
+    <string name="tutorial_apps">You can theme more than 200 apps with Swift Installer. Follow every instruction carefully throughout the installer app.</string>
+    <string name="tutorial_apps_title">164 themed apps</string>
 </resources>

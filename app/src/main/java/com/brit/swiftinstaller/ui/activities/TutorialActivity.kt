@@ -26,6 +26,11 @@ class TutorialActivity : TutorialActivity() {
                     .setBackgroundColor(ContextCompat.getColor(this, R.color.background_main))
                     .setDrawable(R.drawable.ic_tutorial_logo) // int top drawable
                     .build())
+            addFragment(Step.Builder().setTitle(resources.getString(R.string.tutorial_apps_title))
+                    .setContent(resources.getString(R.string.tutorial_apps))
+                    .setBackgroundColor(ContextCompat.getColor(this, R.color.background_main))
+                    .setDrawable(R.drawable.ic_apps) // int top drawable
+                    .build())
             addFragment(Step.Builder().setTitle(resources.getString(R.string.tutorial_customize_title))
                     .setContent(resources.getString(R.string.tutorial_customize_content))
                     .setBackgroundColor(ContextCompat.getColor(this, R.color.background_main))
