@@ -9,12 +9,16 @@
     tools:layout_editor_absoluteY="25dp"
     tools:showIn="@layout/activity_main">
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="60dp" />
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat"
+        app:subtitleTextAppearance="@style/ToolbarSubtitle"
+        app:title="Swift Installer"
+        app:titleTextAppearance="@style/ToolbarTitle" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/update_tile_layout"
@@ -26,7 +30,7 @@
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guideline">
+        app:layout_constraintTop_toBottomOf="@+id/my_toolbar">
 
         <ImageView
             android:id="@+id/install_updates_tile"

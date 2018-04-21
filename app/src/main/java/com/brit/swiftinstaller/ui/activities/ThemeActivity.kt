@@ -28,7 +28,6 @@ open class ThemeActivity: AppCompatActivity() {
         backgroundIDs.add(R.id.app_list_root)
         backgroundIDs.add(R.id.customize_root)
         backgroundIDs.add(R.id.installation_summary_root)
-        backgroundIDs.add(R.id.my_toolbar)
         backgroundIDs.add(R.id.overlays_root)
         backgroundIDs.add(R.id.app_item_root)
         backgroundIDs.add(R.id.content_main_root)

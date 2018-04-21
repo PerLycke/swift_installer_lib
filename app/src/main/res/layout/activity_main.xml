@@ -6,18 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.brit.swiftinstaller.ui.activities.MainActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/my_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="1dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat"
-        app:subtitleTextAppearance="@style/ToolbarSubtitle"
-        app:title="Swift Installer"
-        app:titleTextAppearance="@style/ToolbarTitle" />
-
     <include layout="@layout/content_main" />
 
 </android.support.constraint.ConstraintLayout>
