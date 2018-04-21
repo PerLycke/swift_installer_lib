@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.customize_background.*
 import kotlinx.android.synthetic.main.customize_preview.*
 import kotlinx.android.synthetic.main.toolbar_customize.*
 
-class CustomizeActivity : AppCompatActivity() {
+class CustomizeActivity : ThemeActivity() {
 
     private var settingsIcons: Array<ImageView?> = arrayOfNulls(3)
 

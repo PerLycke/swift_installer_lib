@@ -7,10 +7,11 @@
     <color name="colorPrimary">@color/background_main</color>
     <color name="colorPrimaryDark">@color/background_main</color>
     <color name="dialog_bg_tint">@color/background_main</color>
-    <color name="divider">#37373d</color>
+    <color name="divider">#14ffffff</color>
     <color name="light_grey">#dedede</color>
     <color name="stroke">#202026</color>
-    <color name="tab_underline">#232329</color>
+    <color name="tab_underline">#14ffffff</color>
+    <color name="ripple">#14ffffff</color>
 
     <!-- Minimal palette -->
     <color name="minimal_blue">#4A7CA5</color>

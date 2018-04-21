@@ -30,6 +30,7 @@ open class ThemeActivity: AppCompatActivity() {
         backgroundIDs.add(R.id.installation_summary_root)
         backgroundIDs.add(R.id.overlays_root)
         backgroundIDs.add(R.id.app_item_root)
+        backgroundIDs.add(R.id.my_toolbar)
         backgroundIDs.add(R.id.content_main_root)
         backgroundIDs.add(R.id.customize_accent_root)
         backgroundIDs.add(R.id.customize_bg_root)
@@ -68,13 +69,13 @@ open class ThemeActivity: AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         val palette = MaterialPalette.createPalette(getBackgroundColor(this), useBackgroundPalette(this))
-        window.statusBarColor = palette.darkBackgroundColor
+        window.statusBarColor = palette.backgroundColor
         window.navigationBarColor = palette.backgroundColor
         for (id in backgroundIDs) {
             val v = findViewById<View>(id)
             if (v != null) {
                 if (v is Toolbar) {
-                    v.background = ColorDrawable(palette.darkBackgroundColor)
+                    v.background = ColorDrawable(palette.backgroundColor)
                 } else {
                     v.background = ColorDrawable(palette.backgroundColor)
                 }
@@ -98,7 +99,7 @@ open class ThemeActivity: AppCompatActivity() {
                         //(v as ImageView).drawable.setTint(getBackgroundColor(this) - 0xf7f7f8)
                     } else if (iv.drawable is LayerDrawable) {
                         val draw = iv.drawable as LayerDrawable
-                        draw.findDrawableByLayerId(R.id.background).setTint(palette.cardBackgroud)
+                        draw.findDrawableByLayerId(R.id.background).setTint(palette.backgroundColor)
                         //draw.findDrawableByLayerId(R.id.stroke).setTint(getBackgroundColor(this) - 0xf7f7f8)
                     }
                 }
