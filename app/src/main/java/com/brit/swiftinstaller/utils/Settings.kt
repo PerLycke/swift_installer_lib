@@ -17,7 +17,7 @@ fun setAccentColor(context: Context, color: Int) {
 }
 
 fun getBackgroundColor(context: Context): Int {
-    return PreferenceManager.getDefaultSharedPreferences(context).getInt("background_color", context.getColor(R.color.bg_circle_dark))
+    return PreferenceManager.getDefaultSharedPreferences(context).getInt("background_color", context.getColor(R.color.background_main))
 }
 
 fun setBackgroundColor(context: Context, color: Int) {
