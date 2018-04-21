@@ -18,7 +18,6 @@ import android.view.MenuItem
 import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.PopupMenu
 import android.widget.Toast
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.UpdateChecker
@@ -32,6 +31,8 @@ class MainActivity : ThemeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val myToolbar = findViewById<Toolbar>(R.id.my_toolbar)
+        setSupportActionBar(myToolbar)
 
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener { _, key ->
             if (key == "overlays_to_update") {
@@ -173,11 +174,5 @@ class MainActivity : ThemeActivity() {
             alert.setView(wv)
             alert.show()
         }
-    }
-
-    fun menuClick(view: View) {
-        val popup = PopupMenu(this, view)
-        popup.menuInflater.inflate(R.menu.menu_main, popup.menu)
-        popup.show()
     }
 }
