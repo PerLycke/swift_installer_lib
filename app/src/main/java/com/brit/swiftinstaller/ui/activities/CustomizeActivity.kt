@@ -122,6 +122,14 @@ class CustomizeActivity : AppCompatActivity() {
             }
         })
 
+        if (useBackgroundPalette(this)) {
+            material_theme.isChecked = true
+            flat_theme.isChecked = false
+        } else {
+            material_theme.isChecked = false
+            flat_theme.isChecked = true
+        }
+
         val listener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
             if (compoundButton.id == R.id.material_theme) {
                 material_theme.isChecked = b
@@ -204,7 +212,7 @@ class CustomizeActivity : AppCompatActivity() {
                 accent_hex_input.setText(Integer.toHexString(accentColor).substring(2), TextView.BufferType.EDITABLE)
         }
         if (this.backgroundColor != backgroundColor) {
-            materialPalette = MaterialPalette.createPalette(backgroundColor)
+            materialPalette = MaterialPalette.createPalette(backgroundColor, useBackgroundPalette(this))
             Log.d("TEST", "MaterialPalette : $materialPalette")
             this.backgroundColor = backgroundColor
             if (updateHex && hex_input_bg.text.toString() != Integer.toHexString(backgroundColor).substring(2))

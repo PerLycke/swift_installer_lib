@@ -12,8 +12,10 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.utils.MaterialPalette
 import com.brit.swiftinstaller.utils.getAccentColor
 import com.brit.swiftinstaller.utils.getBackgroundColor
+import com.brit.swiftinstaller.utils.useBackgroundPalette
 
 @SuppressLint("Registered")
 open class ThemeActivity: AppCompatActivity() {
@@ -65,13 +67,16 @@ open class ThemeActivity: AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        val palette = MaterialPalette.createPalette(getBackgroundColor(this), useBackgroundPalette(this))
+        window.statusBarColor = palette.darkBackgroundColor
+        window.navigationBarColor = palette.backgroundColor
         for (id in backgroundIDs) {
             val v = findViewById<View>(id)
             if (v != null) {
                 if (v is Toolbar) {
-                    v.background = ColorDrawable(getBackgroundColor(this) - 0x050505)
+                    v.background = ColorDrawable(palette.darkBackgroundColor)
                 } else {
-                    v.background = ColorDrawable(getBackgroundColor(this))
+                    v.background = ColorDrawable(palette.backgroundColor)
                 }
             }
         }
@@ -82,18 +87,18 @@ open class ThemeActivity: AppCompatActivity() {
             val v = findViewById<View>(id)
             if (v != null) {
                 if (v.background != null) {
-                    v.background.setTint(getBackgroundColor(this) - 0xf7f7f8)
+                    v.background.setTint(palette.cardBackgroud)
                 } else if (v is ImageView && (v as ImageView).drawable != null) {
                     val iv = v as ImageView
                     Log.d("TEST", "class - " + iv.drawable.javaClass.name)
                     if (iv.drawable is StateListDrawable) {
                         val draw = iv.drawable as StateListDrawable
                         //draw.state[0]
-                        draw.current.setTint(getBackgroundColor(this) - 0xf7f7f8)
+                        draw.current.setTint(palette.cardBackgroud)
                         //(v as ImageView).drawable.setTint(getBackgroundColor(this) - 0xf7f7f8)
                     } else if (iv.drawable is LayerDrawable) {
                         val draw = iv.drawable as LayerDrawable
-                        draw.findDrawableByLayerId(R.id.background).setTint(getBackgroundColor(this) - 0xf7f7f8)
+                        draw.findDrawableByLayerId(R.id.background).setTint(palette.cardBackgroud)
                         //draw.findDrawableByLayerId(R.id.stroke).setTint(getBackgroundColor(this) - 0xf7f7f8)
                     }
                 }

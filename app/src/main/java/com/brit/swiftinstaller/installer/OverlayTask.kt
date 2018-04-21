@@ -7,7 +7,6 @@ import android.content.res.AssetManager
 import android.graphics.Color
 import android.os.Environment
 import com.brit.swiftinstaller.BuildConfig
-import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.*
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import java.io.BufferedWriter
@@ -190,24 +189,16 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     }
 
     private fun applyBackground() {
-        val background = getBackgroundColor(context)
+        val palette = MaterialPalette.createPalette(getBackgroundColor(context), useBackgroundPalette(context))
         val file = StringBuilder()
         file.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
         file.append("<resources>\n")
-        file.append("<color name=\"background_material_dark\">#${toHexString(background)}</color>\n")
-        if (useBackgroundPalette(context)) {
-            file.append("<color name=\"background_floating_material_dark\">#${toHexString(background - 0xfcfcfd)}</color>\n")
-            file.append("<color name=\"button_material_dark\">#${toHexString(background - 0xefeff0)}</color>\n")
-            file.append("<color name=\"legacy_primary\">#${toHexString(background - 0x050505)}</color>\n")
-            file.append("<color name=\"legacy_green\">#${toHexString(background - 0xf7f7f8)}</color>\n")
-            file.append("<color name=\"legacy_orange\">#${toHexString(background - 0xe8e8e9)}</color>\n")
-        } else {
-            file.append("<color name=\"background_floating_material_dark\">#${toHexString(background)}</color>\n")
-            file.append("<color name=\"button_material_dark\">#${toHexString(background)}</color>\n")
-            file.append("<color name=\"legacy_primary\">#${toHexString(background)}</color>\n")
-            file.append("<color name=\"legacy_green\">#${toHexString(background - 0xebebec)}</color>\n")
-            file.append("<color name=\"legacy_orange\">#${toHexString(background)}</color>\n")
-        }
+        file.append("<color name=\"background_material_dark\">#${toHexString(palette.backgroundColor)}</color>\n")
+        file.append("<color name=\"background_floating_material_dark\">#${toHexString(palette.floatingBackground)}</color>\n")
+        file.append("<color name=\"button_material_dark\">#${toHexString(palette.buttonBackground)}</color>\n")
+        file.append("<color name=\"legacy_primary\">#${toHexString(palette.darkBackgroundColor)}</color>\n")
+        file.append("<color name=\"legacy_green\">#${toHexString(palette.cardBackgroud)}</color>\n")
+        file.append("<color name=\"legacy_orange\">#${toHexString(palette.otherBackground)}</color>\n")
         file.append("</resources>")
 
         val values = File(resDir, "/values")
