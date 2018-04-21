@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,32 +28,32 @@ class CustomizeActivity : AppCompatActivity() {
 
     private var finish = false
 
+    private lateinit var materialPalette: MaterialPalette
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        accentColor = getAccentColor(this)
-        backgroundColor = getBackgroundColor(this)
 
         setContentView(R.layout.activity_customize)
         setupAccentSheet()
-        updateColor(accentColor, backgroundColor)
+        updateColor(getAccentColor(this), getBackgroundColor(this), true)
 
         custom_dark_bg.setOnClickListener {
-            updateColor(accentColor, Utils.convertToColorInt("202021"))
+            updateColor(accentColor, Utils.convertToColorInt("202026"), true)
         }
         custom_black_bg.setOnClickListener {
-            updateColor(accentColor, Utils.convertToColorInt("000000"))
+            updateColor(accentColor, Utils.convertToColorInt("000000"), true)
         }
         custom_style_bg.setOnClickListener {
-            updateColor(accentColor, Utils.convertToColorInt("202833"))
+            updateColor(accentColor, Utils.convertToColorInt("202833"), true)
         }
         custom_nature_bg.setOnClickListener {
-            updateColor(accentColor, Utils.convertToColorInt("1C3B3A"))
+            updateColor(accentColor, Utils.convertToColorInt("1C3B3A"), true)
         }
         custom_ocean_bg.setOnClickListener {
-            updateColor(accentColor, Utils.convertToColorInt("173145"))
+            updateColor(accentColor, Utils.convertToColorInt("173145"), true)
         }
         custom_night_bg.setOnClickListener {
-            updateColor(accentColor, Utils.convertToColorInt("363844"))
+            updateColor(accentColor, Utils.convertToColorInt("363844"), true)
         }
 
         customize_confirm_btn.setOnClickListener {
@@ -91,8 +92,14 @@ class CustomizeActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (count >= 3 && Integer.toHexString(accentColor).substring(2) != s.toString())
-                    updateColor(Utils.convertToColorInt(s.toString()), backgroundColor)
+                if (s?.length == 3 || s?.length == 6) {
+                    if (Utils.checkAccentColor(Utils.convertToColorInt(s.toString()))) {
+                        updateColor(Utils.convertToColorInt(s.toString()), backgroundColor, false)
+                    } else {
+                        Toast.makeText(this@CustomizeActivity, R.string.invalid_accent,
+                                Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         })
 
@@ -104,8 +111,13 @@ class CustomizeActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (count >= 3 && (Integer.toHexString(backgroundColor).substring(2) != s.toString())) {
-                    updateColor(accentColor, Utils.convertToColorInt(s.toString()))
+                if (s?.length == 3 || s?.length == 6) {
+                    if (Utils.checkBackgroundColor(Utils.convertToColorInt(s.toString()))) {
+                        updateColor(accentColor, Utils.convertToColorInt(s.toString()), false)
+                    } else {
+                        Toast.makeText(this@CustomizeActivity,
+                                R.string.invalid_background, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         })
@@ -119,7 +131,7 @@ class CustomizeActivity : AppCompatActivity() {
                 flat_theme.isChecked = b
             }
             setUseBackgroundPalette(this, material_theme.isChecked)
-            updateColor(accentColor, backgroundColor)
+            updateColor(accentColor, backgroundColor, false)
         }
         material_theme.setOnCheckedChangeListener(listener)
         flat_theme.setOnCheckedChangeListener(listener)
@@ -138,7 +150,7 @@ class CustomizeActivity : AppCompatActivity() {
     }
 
     private fun setBgIndicator() {
-        custom_dark_bg_indicator.visibility = if (backgroundColor == Utils.convertToColorInt("202021")) {
+        custom_dark_bg_indicator.visibility = if (backgroundColor == Utils.convertToColorInt("202026")) {
             View.VISIBLE
         } else {
             View.GONE
@@ -170,25 +182,35 @@ class CustomizeActivity : AppCompatActivity() {
         }
         val back = settings_preview.drawable as LayerDrawable
         //back.setTintMode(PorterDuff.Mode.SRC_ATOP)
-        back.findDrawableByLayerId(R.id.settings_preview_background).setTint(backgroundColor)
+        back.findDrawableByLayerId(R.id.settings_preview_background).setTint(materialPalette.backgroundColor)
         if (useBackgroundPalette(this)) {
-            back.findDrawableByLayerId(R.id.settings_preview_frame).setTint(backgroundColor - 0xf7f7f8)
+            back.findDrawableByLayerId(R.id.settings_preview_frame).setTint(materialPalette.cardBackgroud)
         } else {
-            back.findDrawableByLayerId(R.id.settings_preview_frame).setTint(backgroundColor)
+            back.findDrawableByLayerId(R.id.settings_preview_frame).setTint(materialPalette.backgroundColor)
         }
     }
 
-    fun updateColor(accentColor: Int, backgroundColor: Int) {
-        this.accentColor = accentColor
-        this.backgroundColor = backgroundColor
-        for (icon: ImageView? in settingsIcons) {
-            icon!!.setColorFilter(accentColor)
+    fun updateColor(accentColor: Int, backgroundColor: Int, updateHex: Boolean) {
+        Log.d("TEST", "accent - ${Integer.toHexString(accentColor)}")
+        Log.d("TEST", "background - ${Integer.toHexString(backgroundColor)}")
+        if (this.accentColor != accentColor) {
+            this.accentColor = accentColor
+            for (icon: ImageView? in settingsIcons) {
+                icon!!.setColorFilter(accentColor)
+            }
+            accent_hex_input.background.setTint(accentColor)
+            hex_input_bg.background.setTint(accentColor)
+            if (updateHex && accent_hex_input.text.toString() != Integer.toHexString(accentColor).substring(2))
+                accent_hex_input.setText(Integer.toHexString(accentColor).substring(2), TextView.BufferType.EDITABLE)
         }
-        accent_hex_input.background.setTint(accentColor)
-        accent_hex_input.setText(Integer.toHexString(accentColor).substring(2), TextView.BufferType.EDITABLE)
-        hex_input_bg.setText(Integer.toHexString(backgroundColor).substring(2), TextView.BufferType.EDITABLE)
-
-        setBgIndicator()
+        if (this.backgroundColor != backgroundColor) {
+            materialPalette = MaterialPalette.createPalette(backgroundColor)
+            Log.d("TEST", "MaterialPalette : $materialPalette")
+            this.backgroundColor = backgroundColor
+            if (updateHex && hex_input_bg.text.toString() != Integer.toHexString(backgroundColor).substring(2))
+                hex_input_bg.setText(Integer.toHexString(backgroundColor).substring(2), TextView.BufferType.EDITABLE)
+            setBgIndicator()
+        }
     }
 
     inner class PaletteAdapter constructor(private val mColors: IntArray) : BaseAdapter() {
@@ -215,7 +237,7 @@ class CustomizeActivity : AppCompatActivity() {
             iv.background = CircleDrawable(mColors[position])
             mainView.tag = mColors[position]
             mainView.setOnClickListener {
-                updateColor(mColors[position], backgroundColor)
+                updateColor(mColors[position], backgroundColor, true)
             }
             return mainView
         }

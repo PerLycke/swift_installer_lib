@@ -73,4 +73,6 @@
     <string name="no_internet_faq">Please connect to internet to show the FAQ</string>
     <string name="tutorial_apps">You can theme more than 200 apps with Swift Installer. Follow every instruction carefully throughout the installer app.</string>
     <string name="tutorial_apps_title">164 themed apps</string>
+    <string name="invalid_accent">Invalid Accent</string>
+    <string name="invalid_background">Invalid Background</string>
 </resources>

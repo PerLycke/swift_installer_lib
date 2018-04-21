@@ -227,7 +227,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/small_info_bg" />
+                app:srcCompat="@drawable/big_tile_bg" />
 
             <TextView
                 android:id="@+id/active_txt"
@@ -343,13 +343,13 @@
 
             <ImageView
                 android:id="@+id/accent_info"
-                android:layout_width="98dp"
+                android:layout_width="110dp"
                 android:layout_height="30dp"
                 android:contentDescription="@string/image"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/small_info_bg" />
+                app:srcCompat="@drawable/big_tile_bg" />
 
             <TextView
                 android:id="@+id/current_txt"

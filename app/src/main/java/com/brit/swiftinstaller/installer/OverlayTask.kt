@@ -6,7 +6,6 @@ import android.content.pm.PackageInfo
 import android.content.res.AssetManager
 import android.graphics.Color
 import android.os.Environment
-import android.support.annotation.IntegerRes
 import com.brit.swiftinstaller.BuildConfig
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.*
@@ -191,7 +190,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     }
 
     private fun applyBackground() {
-        val background = context.getColor(R.color.background_main)
+        val background = getBackgroundColor(context)
         val file = StringBuilder()
         file.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
         file.append("<resources>\n")

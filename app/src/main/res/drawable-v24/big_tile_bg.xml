@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_pressed="true">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/background">
         <shape android:shape="rectangle">
             <!--<stroke android:width="4.0px" android:color="@color/stroke_red" />-->
             <solid android:color="@color/big_tile_pressed_tint" />
             <corners android:radius="4dp" />
         </shape>
     </item>
-    <item android:state_pressed="false">
+    <item android:id="@+id/stroke">
         <shape android:shape="rectangle">
             <!--<stroke android:width="4.0px" android:color="@color/stroke_red" />-->
-            <solid android:color="?android:colorBackground" />
             <corners android:radius="4dp" />
-            <stroke android:color="#232329" android:width="1dp" />
+            <stroke android:color="#14ffffff" android:width="1dp" />
         </shape>
     </item>
-</selector>
+</layer-list>

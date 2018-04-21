@@ -122,7 +122,7 @@ class OverlaysActivity : ThemeActivity() {
         toolbar_subtitle_current_accent.text = getString(R.string.hex_string,
                 String.format("%06x", getAccentColor(this)).substring(2))
         toolbar_subtitle_current_bg.text = getString(R.string.hex_string,
-                String.format("$06x", getBackgroundColor(this)).substring(2))
+                String.format("%06x", getBackgroundColor(this)).substring(2))
 
         mPagerAdapter!!.clearApps()
 
