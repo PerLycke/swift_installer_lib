@@ -13,11 +13,11 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatDelegate
 import android.support.v7.widget.Toolbar
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.PopupMenu
+import android.widget.PopupWindow
 import android.widget.Toast
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.UpdateChecker
@@ -124,36 +124,47 @@ class MainActivity : ThemeActivity() {
         }).execute()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
+//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        menuInflater.inflate(R.menu.menu_main, menu)
+//        return true
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        return when (item.itemId) {
+//            R.id.action_about -> {
+//                val dialogView = View.inflate(this, R.layout.dialog_about, null)
+//                val builder = if (AppCompatDelegate.getDefaultNightMode()
+//                        == AppCompatDelegate.MODE_NIGHT_YES) {
+//                    AlertDialog.Builder(this, R.style.AppTheme_AlertDialog_Black)
+//                } else {
+//                    AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+//                }
+//                builder.setView(dialogView)
+//                val dialog = builder.create()
+//
+//                dialogView.about_ok_btn.setOnClickListener {
+//                    dialog.dismiss()
+//                }
+//                dialog.show()
+//                true
+//            }
+//            else -> super.onOptionsItemSelected(item)
+//        }
+//    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_about -> {
-                val dialogView = View.inflate(this, R.layout.dialog_about, null)
-                val builder = if (AppCompatDelegate.getDefaultNightMode()
-                        == AppCompatDelegate.MODE_NIGHT_YES) {
-                    AlertDialog.Builder(this, R.style.AppTheme_AlertDialog_Black)
-                } else {
-                    AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                }
-                builder.setView(dialogView)
-                val dialog = builder.create()
-
-                dialogView.about_ok_btn.setOnClickListener {
-                    dialog.dismiss()
-                }
-                dialog.show()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
+    fun overflowClick(view: View) {
+        val mPopup = PopupWindow(view)
+        val mView = LayoutInflater.from(this).inflate(R.layout.popup_menu, null)
+        mPopup.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.popup_bg))
+        mPopup.contentView = mView
+        mPopup.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
+        mPopup.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
+        mPopup.isFocusable = true
+        mPopup.showAtLocation(view, Gravity.TOP or Gravity.RIGHT, 0, 0)
     }
 
     private fun isNetworkAvailable(context: Context): Boolean {
