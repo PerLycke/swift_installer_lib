@@ -53,7 +53,6 @@ open class ThemeActivity: AppCompatActivity() {
         cardIDs.add(R.id.accent_tile)
         cardIDs.add(R.id.update_info)
         cardIDs.add(R.id.installed_info)
-        cardIDs.add(R.id.accent_info)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,16 +89,12 @@ open class ThemeActivity: AppCompatActivity() {
                 if (v.background != null) {
                     v.background.setTint(palette.cardBackgroud)
                 } else if (v is ImageView && v.drawable != null) {
-                    Log.d("TEST", "class - " + v.drawable.javaClass.name)
                     if (v.drawable is StateListDrawable) {
                         val draw = v.drawable as StateListDrawable
-                        //draw.state[0]
                         draw.current.setTint(palette.cardBackgroud)
-                        //(v as ImageView).drawable.setTint(getBackgroundColor(this) - 0xf7f7f8)
                     } else if (v.drawable is LayerDrawable) {
                         val draw = v.drawable as LayerDrawable
                         draw.findDrawableByLayerId(R.id.background).setTint(palette.cardBackgroud)
-                        //draw.findDrawableByLayerId(R.id.stroke).setTint(getBackgroundColor(this) - 0xf7f7f8)
                     }
                 }
             }

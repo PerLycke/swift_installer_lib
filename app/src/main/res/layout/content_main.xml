@@ -12,8 +12,8 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:layout_height="?actionBarSize"
+        android:background="?colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat"
         app:subtitleTextAppearance="@style/ToolbarSubtitle"
@@ -132,7 +132,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
                 android:fontFamily="sans-serif-condensed"
-                android:text="0"
                 android:textColor="@color/minimal_orange"
                 android:textSize="12sp"
                 android:textStyle="bold"
@@ -140,7 +139,8 @@
                 app:layout_constraintEnd_toEndOf="@+id/update_info"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/updates_txt"
-                app:layout_constraintTop_toTopOf="@+id/update_info" />
+                app:layout_constraintTop_toTopOf="@+id/update_info"
+                tools:text="0"/>
         </android.support.constraint.ConstraintLayout>
 
     </android.support.constraint.ConstraintLayout>
@@ -256,7 +256,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
                 android:fontFamily="sans-serif-condensed"
-                android:text="0"
                 android:textColor="@color/minimal_green"
                 android:textSize="12sp"
                 android:textStyle="bold"
@@ -264,7 +263,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/active_txt"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="0"/>
 
         </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
@@ -313,7 +313,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="16dp"
             android:fontFamily="sans-serif"
-            android:text="@string/big_tile_modify_accent_title"
+            android:text="@string/big_tile_personalize_title"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -329,65 +329,12 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="16dp"
-            android:text="@string/big_tile_modify_accent_msg"
+            android:text="@string/big_tile_personalize_msg"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/accent_tile"
             app:layout_constraintEnd_toEndOf="@+id/accent_tile"
             app:layout_constraintStart_toEndOf="@+id/accent_icon"
             app:layout_constraintTop_toBottomOf="@+id/accent_category_title" />
-
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/accent_info_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="84dp"
-            app:layout_constraintEnd_toEndOf="@+id/accent_tile"
-            app:layout_constraintTop_toTopOf="@+id/accent_tile">
-
-            <ImageView
-                android:id="@+id/accent_info"
-                android:layout_width="110dp"
-                android:layout_height="30dp"
-                android:contentDescription="@string/image"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/big_tile_bg" />
-
-            <TextView
-                android:id="@+id/current_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="2dp"
-                android:fontFamily="sans-serif-condensed"
-                android:text="@string/small_info_current"
-                android:textColor="@android:color/white"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/toolbar_subtitle_current_accent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toEndOf="@+id/accent_info"
-                app:layout_constraintStart_toStartOf="@+id/accent_info"
-                app:layout_constraintTop_toTopOf="@+id/accent_info" />
-
-            <TextView
-                android:id="@+id/toolbar_subtitle_current_accent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-condensed"
-                android:text="Accent"
-                android:textColor="#47AE84"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/accent_info"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/current_txt"
-                app:layout_constraintTop_toTopOf="@+id/accent_info" />
-        </android.support.constraint.ConstraintLayout>
 
     </android.support.constraint.ConstraintLayout>
 

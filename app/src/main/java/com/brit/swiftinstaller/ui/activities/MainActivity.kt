@@ -23,8 +23,10 @@ import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.UpdateChecker
 import com.brit.swiftinstaller.utils.getAccentColor
 import com.brit.swiftinstaller.utils.getAppsToUpdate
+import com.brit.swiftinstaller.utils.getBackgroundColor
 import kotlinx.android.synthetic.main.dialog_about.view.*
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.toolbar_overlays.*
 
 class MainActivity : ThemeActivity() {
 
@@ -107,9 +109,6 @@ class MainActivity : ThemeActivity() {
 
     override fun onResume() {
         super.onResume()
-        toolbar_subtitle_current_accent.setTextColor(getAccentColor(this))
-        toolbar_subtitle_current_accent.text = getString(R.string.hex_string,
-                String.format("%06x", getAccentColor(this)).substring(2))
 
         UpdateChecker(this, object : UpdateChecker.Callback() {
             override fun finished(installedCount: Int, updates: ArrayList<String>) {

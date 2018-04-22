@@ -5,8 +5,8 @@
     <string name="big_tile_install_msg">Install separate or all overlays here</string>
     <string name="big_tile_install_title">Install / Uninstall overlays</string>
     <string name="big_tile_install_updates">Install updates</string>
-    <string name="big_tile_modify_accent_msg">Modify accent color for already installed overlays</string>
-    <string name="big_tile_modify_accent_title">Accent</string>
+    <string name="big_tile_personalize_msg">Change background and accent color</string>
+    <string name="big_tile_personalize_title">Personalize</string>
     <string name="big_tile_update_msg">Some overlays were updated. Install them.</string>
     <string name="black">Black</string>
     <string name="cancel">Cancel</string>
@@ -47,7 +47,6 @@
     <string name="reboot_now">Reboot now to finish installation</string>
     <string name="reboot_to_finish">Manually reboot!</string>
     <string name="small_info_active">Active :</string>
-    <string name="small_info_current">Current :</string>
     <string name="small_info_updates">Updates :</string>
     <string name="successful">Successful</string>
     <string name="tab_active">Active</string>
