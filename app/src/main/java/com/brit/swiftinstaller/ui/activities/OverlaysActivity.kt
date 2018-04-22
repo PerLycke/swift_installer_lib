@@ -354,7 +354,7 @@ class OverlaysActivity : ThemeActivity() {
         startActivity(intent)
     }
 
-    fun overlaysBackClick(view: View) {
+    fun overlaysBackClick(@Suppress("UNUSED_PARAMETER") view: View) {
         onBackPressed()
     }
 }

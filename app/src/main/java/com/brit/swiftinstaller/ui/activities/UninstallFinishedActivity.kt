@@ -22,7 +22,7 @@ class UninstallFinishedActivity: AppCompatActivity() {
         }
                 .setTitle(R.string.reboot)
                 .setMessage(R.string.reboot_manually)
-                .setPositiveButton(R.string.reboot_later, { dialogInterface, i ->
+                .setPositiveButton(R.string.reboot_later, { dialogInterface, _ ->
                     dialogInterface.dismiss()
                     finish()
                 })

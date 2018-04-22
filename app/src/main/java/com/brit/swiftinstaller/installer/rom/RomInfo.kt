@@ -96,6 +96,7 @@ class RomInfo internal constructor(var context: Context, var name: String,
         }
     }
 
+    @Suppress("unused")
     companion object {
 
         @SuppressLint("StaticFieldLeak")
@@ -113,7 +114,7 @@ class RomInfo internal constructor(var context: Context, var name: String,
         private val isTouchwiz: Boolean
             get() = File("/system/framework/touchwiz.jar").exists()
 
-        @Suppress("DEPRECATION")
+        @Suppress("DEPRECATION", "unused")
         private fun isOMS(context: Context): Boolean {
             val am = context.getSystemService(ActivityManager::class.java)!!
             val services = am.getRunningServices(Integer.MAX_VALUE)
@@ -125,7 +126,7 @@ class RomInfo internal constructor(var context: Context, var name: String,
             return false
         }
 
-        fun isSupported(context: Context): Boolean {
+        fun isSupported(@Suppress("UNUSED_PARAMETER") context: Context): Boolean {
             return true
         }
     }

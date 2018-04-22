@@ -14,6 +14,9 @@ import android.widget.*
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.CircleDrawable
 import com.brit.swiftinstaller.utils.*
+import com.brit.swiftinstaller.utils.ColorUtils.checkAccentColor
+import com.brit.swiftinstaller.utils.ColorUtils.checkBackgroundColor
+import com.brit.swiftinstaller.utils.ColorUtils.convertToColorInt
 import kotlinx.android.synthetic.main.customize_accent.*
 import kotlinx.android.synthetic.main.customize_background.*
 import kotlinx.android.synthetic.main.customize_preview.*
@@ -38,22 +41,22 @@ class CustomizeActivity : ThemeActivity() {
         updateColor(getAccentColor(this), getBackgroundColor(this), true)
 
         custom_dark_bg.setOnClickListener {
-            updateColor(accentColor, Utils.convertToColorInt("202026"), true)
+            updateColor(accentColor, convertToColorInt("202026"), true)
         }
         custom_black_bg.setOnClickListener {
-            updateColor(accentColor, Utils.convertToColorInt("000000"), true)
+            updateColor(accentColor, convertToColorInt("000000"), true)
         }
         custom_style_bg.setOnClickListener {
-            updateColor(accentColor, Utils.convertToColorInt("202833"), true)
+            updateColor(accentColor, convertToColorInt("202833"), true)
         }
         custom_nature_bg.setOnClickListener {
-            updateColor(accentColor, Utils.convertToColorInt("1C3B3A"), true)
+            updateColor(accentColor, convertToColorInt("1C3B3A"), true)
         }
         custom_ocean_bg.setOnClickListener {
-            updateColor(accentColor, Utils.convertToColorInt("173145"), true)
+            updateColor(accentColor, convertToColorInt("173145"), true)
         }
         custom_night_bg.setOnClickListener {
-            updateColor(accentColor, Utils.convertToColorInt("363844"), true)
+            updateColor(accentColor, convertToColorInt("363844"), true)
         }
 
         customize_confirm_btn.setOnClickListener {
@@ -93,8 +96,8 @@ class CustomizeActivity : ThemeActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s?.length == 3 || s?.length == 6) {
-                    if (Utils.checkAccentColor(Utils.convertToColorInt(s.toString()))) {
-                        updateColor(Utils.convertToColorInt(s.toString()), backgroundColor, false)
+                    if (checkAccentColor(convertToColorInt(s.toString()))) {
+                        updateColor(convertToColorInt(s.toString()), backgroundColor, false)
                     } else {
                         Toast.makeText(this@CustomizeActivity, R.string.invalid_accent,
                                 Toast.LENGTH_SHORT).show()
@@ -112,8 +115,8 @@ class CustomizeActivity : ThemeActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s?.length == 3 || s?.length == 6) {
-                    if (Utils.checkBackgroundColor(Utils.convertToColorInt(s.toString()))) {
-                        updateColor(accentColor, Utils.convertToColorInt(s.toString()), false)
+                    if (checkBackgroundColor(convertToColorInt(s.toString()))) {
+                        updateColor(accentColor, convertToColorInt(s.toString()), false)
                     } else {
                         Toast.makeText(this@CustomizeActivity,
                                 R.string.invalid_background, Toast.LENGTH_SHORT).show()
@@ -158,32 +161,32 @@ class CustomizeActivity : ThemeActivity() {
     }
 
     private fun setBgIndicator() {
-        custom_dark_bg_indicator.visibility = if (backgroundColor == Utils.convertToColorInt("202026")) {
+        custom_dark_bg_indicator.visibility = if (backgroundColor == convertToColorInt("202026")) {
             View.VISIBLE
         } else {
             View.GONE
         }
-        custom_black_bg_indicator.visibility = if(backgroundColor == Utils.convertToColorInt("000000")) {
+        custom_black_bg_indicator.visibility = if(backgroundColor == convertToColorInt("000000")) {
             View.VISIBLE
         } else {
             View.GONE
         }
-        custom_style_bg_indicator.visibility = if (backgroundColor == Utils.convertToColorInt("202833")) {
+        custom_style_bg_indicator.visibility = if (backgroundColor == convertToColorInt("202833")) {
             View.VISIBLE
         } else {
             View.GONE
         }
-        custom_nature_bg_indicator.visibility = if (backgroundColor == Utils.convertToColorInt("1C3B3A")) {
+        custom_nature_bg_indicator.visibility = if (backgroundColor == convertToColorInt("1C3B3A")) {
             View.VISIBLE
         } else {
             View.GONE
         }
-        custom_ocean_bg_indicator.visibility = if (backgroundColor == Utils.convertToColorInt("173145")) {
+        custom_ocean_bg_indicator.visibility = if (backgroundColor == convertToColorInt("173145")) {
             View.VISIBLE
         } else {
             View.GONE
         }
-        custom_night_bg_indicator.visibility = if (backgroundColor == Utils.convertToColorInt("363844")) {
+        custom_night_bg_indicator.visibility = if (backgroundColor == convertToColorInt("363844")) {
             View.VISIBLE
         } else {
             View.GONE

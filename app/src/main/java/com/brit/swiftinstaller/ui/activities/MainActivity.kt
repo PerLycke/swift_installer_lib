@@ -12,7 +12,6 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatDelegate
-import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -162,7 +161,7 @@ class MainActivity : ThemeActivity() {
         return connectivityManager.activeNetworkInfo != null && connectivityManager.activeNetworkInfo.isConnected
     }
 
-    fun faq(item: MenuItem) {
+    fun faq(@Suppress("UNUSED_PARAMETER") item: MenuItem) {
         if (!isNetworkAvailable(this)) {
             Toast.makeText(this, R.string.no_internet_faq, Toast.LENGTH_LONG).show()
         } else {

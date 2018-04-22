@@ -1,5 +1,7 @@
 package com.brit.swiftinstaller.utils
 
+import com.brit.swiftinstaller.utils.ColorUtils.handleColor
+
 class MaterialPalette {
     var backgroundColor = 0
     var cardBackgroud = 0
@@ -15,26 +17,22 @@ class MaterialPalette {
             val p = MaterialPalette()
             if (palette) {
                 p.backgroundColor = color
-                p.cardBackgroud = (color - 0xf7f7f8)
-                p.floatingBackground = (color - 0xfcfcfd)
-                p.darkBackgroundColor = (color - 0x050505)
-                p.darkerBackgroundColor = (color - 0x0a0a0a)
-                p.lighterBackgroundColor = (color - 0xebebec)
-                p.buttonBackground = (color - 0xefeff0)
-                p.otherBackground = (color - 0xe8e8e9)
+                p.cardBackgroud = handleColor(color, 8)
+                p.floatingBackground = handleColor(color, 3)
+                p.darkBackgroundColor = handleColor(color, -5)
+                p.darkerBackgroundColor = handleColor(color, -10)
+                p.lighterBackgroundColor = handleColor(color, 20)
+                p.buttonBackground = handleColor(color, 16)
+                p.otherBackground = handleColor(color, 23)
             } else {
                 p.backgroundColor = color
-                if (Integer.toHexString(color).substring(2) == "000000") {
-                    p.cardBackgroud = (color - 0xebebec)
-                } else {
-                    p.cardBackgroud = (color - 0xf7f7f8)
-                }
+                p.cardBackgroud = color
                 p.floatingBackground = color
                 p.darkBackgroundColor = color
                 p.darkerBackgroundColor = color
                 p.lighterBackgroundColor = color
-                p.buttonBackground = color
-                p.otherBackground = color
+                p.buttonBackground = handleColor(color, 20)
+                p.otherBackground = handleColor(color, 33)
             }
             return p
         }
