@@ -1,5 +1,6 @@
 package com.brit.swiftinstaller.utils
 
+import android.content.Context
 import com.brit.swiftinstaller.utils.ColorUtils.handleColor
 
 class MaterialPalette {
@@ -13,6 +14,10 @@ class MaterialPalette {
     var otherBackground = 0
 
     companion object {
+        fun get(context: Context): MaterialPalette {
+            return createPalette(getBackgroundColor(context), useBackgroundPalette(context))
+        }
+
         fun createPalette(color: Int, palette: Boolean): MaterialPalette {
             val p = MaterialPalette()
             if (palette) {
