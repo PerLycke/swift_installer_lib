@@ -199,6 +199,11 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         file.append("<color name=\"legacy_primary\">#${toHexString(palette.darkBackgroundColor)}</color>\n")
         file.append("<color name=\"legacy_green\">#${toHexString(palette.cardBackgroud)}</color>\n")
         file.append("<color name=\"legacy_orange\">#${toHexString(palette.otherBackground)}</color>\n")
+        if (useSenderNameFix(context)) {
+            file.append("<color name=\"legacy_control_normal\">#${toHexString(Color.WHITE)}</color>\n")
+        } else {
+            file.append("<color name=\"legacy_control_normal\">#${toHexString(Color.TRANSPARENT)}</color>\n")
+        }
         file.append("</resources>")
 
         val values = File(resDir, "/values")

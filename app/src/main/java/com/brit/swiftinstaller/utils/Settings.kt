@@ -32,6 +32,14 @@ fun setUseBackgroundPalette(context: Context, use: Boolean) {
     PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("background_palette", use).apply()
 }
 
+fun useSenderNameFix(context: Context): Boolean {
+    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("sender_name_fix", false)
+}
+
+fun setUseSenderNameFix(context: Context, use: Boolean) {
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("sender_name_fix", use).apply()
+}
+
 fun setHideFailedInfoCard(context: Context, hide: Boolean) {
     PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("hide_failed_info", hide).apply()
 }
