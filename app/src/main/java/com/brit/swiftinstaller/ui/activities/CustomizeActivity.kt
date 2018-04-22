@@ -3,7 +3,6 @@ package com.brit.swiftinstaller.ui.activities
 import android.content.Intent
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -30,6 +29,7 @@ class CustomizeActivity : ThemeActivity() {
     private var backgroundColor = 0
 
     private var finish = false
+    private var usePalette = false
 
     private lateinit var materialPalette: MaterialPalette
 
@@ -75,7 +75,8 @@ class CustomizeActivity : ThemeActivity() {
                 }
             }
 
-            if (recompile) {
+            if (recompile || (usePalette != useBackgroundPalette(this))) {
+                setUseBackgroundPalette(this, usePalette)
                 finish = true
                 val apps = ArrayList<String>()
                 apps.add("android")
@@ -125,7 +126,8 @@ class CustomizeActivity : ThemeActivity() {
             }
         })
 
-        if (useBackgroundPalette(this)) {
+        usePalette = useBackgroundPalette(this)
+        if (usePalette) {
             material_theme.isChecked = true
             flat_theme.isChecked = false
         } else {
@@ -141,7 +143,7 @@ class CustomizeActivity : ThemeActivity() {
                 material_theme.isChecked = !b
                 flat_theme.isChecked = b
             }
-            setUseBackgroundPalette(this, material_theme.isChecked)
+            usePalette = material_theme.isChecked
             updateColor(accentColor, backgroundColor, false)
         }
         material_theme.setOnCheckedChangeListener(listener)
@@ -194,7 +196,7 @@ class CustomizeActivity : ThemeActivity() {
         val back = settings_preview.drawable as LayerDrawable
         //back.setTintMode(PorterDuff.Mode.SRC_ATOP)
         back.findDrawableByLayerId(R.id.settings_preview_background).setTint(materialPalette.backgroundColor)
-        if (useBackgroundPalette(this)) {
+        if (usePalette) {
             back.findDrawableByLayerId(R.id.settings_preview_frame).setTint(materialPalette.cardBackgroud)
         } else {
             back.findDrawableByLayerId(R.id.settings_preview_frame).setTint(materialPalette.backgroundColor)
@@ -215,7 +217,7 @@ class CustomizeActivity : ThemeActivity() {
                 accent_hex_input.setText(Integer.toHexString(accentColor).substring(2), TextView.BufferType.EDITABLE)
         }
         if (this.backgroundColor != backgroundColor) {
-            materialPalette = MaterialPalette.createPalette(backgroundColor, useBackgroundPalette(this))
+            materialPalette = MaterialPalette.createPalette(backgroundColor, usePalette)
             Log.d("TEST", "MaterialPalette : $materialPalette")
             this.backgroundColor = backgroundColor
             if (updateHex && hex_input_bg.text.toString() != Integer.toHexString(backgroundColor).substring(2))
@@ -254,7 +256,7 @@ class CustomizeActivity : ThemeActivity() {
         }
     }
 
-    fun cancelBtnClick(view: View) {
+    fun cancelBtnClick(@Suppress("UNUSED_PARAMETER") view: View) {
         finish()
     }
 }

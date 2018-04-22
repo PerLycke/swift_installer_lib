@@ -25,7 +25,7 @@ fun setBackgroundColor(context: Context, color: Int) {
 }
 
 fun useBackgroundPalette(context: Context): Boolean {
-    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("background_palette", true)
+    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("background_palette", false)
 }
 
 fun setUseBackgroundPalette(context: Context, use: Boolean) {
