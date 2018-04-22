@@ -75,6 +75,15 @@
         <item name="android:popupElevation">2.0dip</item>
         <item name="android:dropDownWidth">24dp</item>
     </style>
+    <style name="PopupWindow" parent="Widget.AppCompat.PopupWindow">
+        <item name="android:popupBackground">@drawable/popup_bg</item>
+        <item name="android:windowEnterAnimation">@anim/popup_open</item>
+        <item name="android:windowExitAnimation">@anim/popup_open</item>
+    </style>
+    <style name="PopupWindowAnimation" parent="Widget.AppCompat.PopupWindow">
+        <item name="android:windowEnterAnimation">@anim/popup_open</item>
+        <item name="android:windowExitAnimation">@anim/popup_close</item>
+    </style>
     <style name="ToolbarSubtitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
         <item name="android:textSize">12.0dip</item>
         <item name="android:textColor">#d9ffffff</item>

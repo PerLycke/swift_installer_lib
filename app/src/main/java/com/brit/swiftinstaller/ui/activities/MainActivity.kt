@@ -157,12 +157,10 @@ class MainActivity : ThemeActivity() {
 //    }
 
     fun overflowClick(view: View) {
-        val mPopup = PopupWindow(view)
+        val mPopup = PopupWindow(this, null, 0, R.style.PopupWindow)
         val mView = LayoutInflater.from(this).inflate(R.layout.popup_menu, null)
-        mPopup.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.popup_bg))
+        mPopup.setAnimationStyle(R.style.PopupWindowAnimation)
         mPopup.contentView = mView
-        mPopup.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT)
-        mPopup.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
         mPopup.isFocusable = true
         mPopup.showAtLocation(view, Gravity.TOP or Gravity.RIGHT, 0, 0)
     }
