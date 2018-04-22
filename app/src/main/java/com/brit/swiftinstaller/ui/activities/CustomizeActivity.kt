@@ -30,6 +30,7 @@ class CustomizeActivity : ThemeActivity() {
 
     private var finish = false
     private var usePalette = false
+    private var useAospIcons = false
 
     private lateinit var materialPalette: MaterialPalette
 
@@ -61,10 +62,12 @@ class CustomizeActivity : ThemeActivity() {
 
         customize_confirm_btn.setOnClickListener {
             var recompile = false
+            val apps = ArrayList<String>()
             if (getAccentColor(this) != accentColor) {
                 setAccentColor(this, accentColor)
                 if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
                     recompile = true
+                    apps.add("android")
                 }
             }
 
@@ -72,14 +75,29 @@ class CustomizeActivity : ThemeActivity() {
                 setBackgroundColor(this, backgroundColor)
                 if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
                     recompile = true
+                    if (!apps.contains("android"))
+                        apps.add("android")
                 }
             }
 
-            if (recompile || (usePalette != useBackgroundPalette(this))) {
+            if (usePalette != useBackgroundPalette(this)) {
                 setUseBackgroundPalette(this, usePalette)
+                recompile = true
+                if (!apps.contains("android"))
+                    apps.add("android")
+            }
+
+            if (useAospIcons != com.brit.swiftinstaller.utils.useAospIcons(this)) {
+                setUseAospIcons(this, useAospIcons)
+                recompile = true
+                apps.add("com.samsung.android.lool")
+                apps.add("com.samsung.android.themestore")
+                apps.add("com.android.settings")
+                apps.add("com.android.systemui")
+            }
+
+            if (recompile && apps.isNotEmpty()) {
                 finish = true
-                val apps = ArrayList<String>()
-                apps.add("android")
                 val intent = Intent(this, InstallActivity::class.java)
                 intent.putStringArrayListExtra("apps", apps)
                 startActivity(intent)

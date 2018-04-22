@@ -130,6 +130,9 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
                 parseOverlayVersions(am, resourcePaths, "$path/versions")
             }
         }
+        if (variants.contains("icons") && useAospIcons(context)) {
+            checkResourcePath(am, "$path/icons", resourcePaths)
+        }
     }
 
     private fun parseOverlayVersions(am: AssetManager, resourcePaths: ArrayList<String>, path: String) {

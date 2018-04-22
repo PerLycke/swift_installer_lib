@@ -40,6 +40,14 @@ fun setUseSenderNameFix(context: Context, use: Boolean) {
     PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("sender_name_fix", use).apply()
 }
 
+fun useAospIcons(context: Context): Boolean {
+    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("use_aosp_icons", false)
+}
+
+fun setUseAospIcons(context: Context, use: Boolean) {
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("use_aosp_icons", use).apply()
+}
+
 fun setHideFailedInfoCard(context: Context, hide: Boolean) {
     PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("hide_failed_info", hide).apply()
 }
