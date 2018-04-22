@@ -10,6 +10,4 @@ open class ThemedBottomSheetDialog(context: Context): BottomSheetDialog(context,
             R.style.AppTheme_BottomSheetDialog_Black
         } else {
             R.style.AppTheme_BottomSheetDialog
-        }) {
-
-}
+        })

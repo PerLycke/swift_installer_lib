@@ -133,7 +133,7 @@ class OverlaysActivity : ThemeActivity() {
         }).execute()
     }
 
-    fun customizeBtnClick(view: View) {
+    fun customizeBtnClick(@Suppress("UNUSED_PARAMETER") view: View) {
         val intent = Intent(this, CustomizeActivity::class.java)
         startActivity(intent)
     }
@@ -208,7 +208,7 @@ class OverlaysActivity : ThemeActivity() {
 
     }
 
-    fun fabClick(view: View) {
+    fun fabClick(@Suppress("UNUSED_PARAMETER") view: View) {
         val bottomSheetDialog = ThemedBottomSheetDialog(this)
         val sheetView = View.inflate(this, R.layout.sheet_overlays_fab, null)
         bottomSheetDialog.setContentView(sheetView)

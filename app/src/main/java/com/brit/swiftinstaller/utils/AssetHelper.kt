@@ -15,14 +15,14 @@ class AssetHelper {
                 val files = am!!.list(assetPath)
                 val f = File(path)
                 if (!f.exists() && !f.mkdirs()) {
-                    throw RuntimeException("cannot create directory: " + path)
+                    throw RuntimeException("cannot create directory: $path")
                 }
                 var res = true
                 for (file in files) {
-                    res = if (am.list(assetPath + "/" + file).isEmpty()) {
-                        res and copyAsset(am, assetPath + "/" + file, path + "/" + file, cipher)
+                    res = if (am.list("$assetPath/$file").isEmpty()) {
+                        res and copyAsset(am, "$assetPath/$file", "$path/$file", cipher)
                     } else {
-                        res and copyAssetFolder(am, assetPath + "/" + file, path + "/" + file, cipher)
+                        res and copyAssetFolder(am, "$assetPath/$file", "$path/$file", cipher)
                     }
                 }
                 return res

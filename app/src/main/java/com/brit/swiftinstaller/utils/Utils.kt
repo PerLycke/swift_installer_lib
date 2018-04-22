@@ -2,16 +2,15 @@ package com.brit.swiftinstaller.utils
 
 import android.content.Context
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import com.brit.swiftinstaller.R
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 
+@Suppress("unused")
 object Utils {
 
     fun getOverlayPackageName(pack: String): String {
