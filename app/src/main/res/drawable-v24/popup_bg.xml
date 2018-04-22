@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:left="8.0dip" android:right="8.0dip" android:bottom="8.0dip" android:top="8.0dip">
+    <item android:id="@+id/backgroundPopup"
+        android:left="8.0dip" android:right="8.0dip" android:bottom="8.0dip" android:top="8.0dip">
         <shape android:shape="rectangle">
-            <stroke android:width="2.0px" android:color="#232329" />
-            <corners android:radius="4.0dip" />
-            <solid android:color="?android:colorBackgroundFloating" />
+            <!--<stroke android:width="4.0px" android:color="@color/stroke_red" />-->
+            <solid android:color="@color/big_tile_pressed_tint" />
+            <corners android:radius="4dp" />
+        </shape>
+    </item>
+    <item android:id="@+id/strokePopup"
+        android:left="8.0dip" android:right="8.0dip" android:bottom="8.0dip" android:top="8.0dip">
+        <shape android:shape="rectangle">
+            <!--<stroke android:width="4.0px" android:color="@color/stroke_red" />-->
+            <corners android:radius="4dp" />
+            <stroke android:color="#14ffffff" android:width="1dp" />
         </shape>
     </item>
 </layer-list>

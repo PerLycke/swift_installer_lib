@@ -6,6 +6,7 @@ import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.StateListDrawable
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.util.Log
@@ -47,6 +48,7 @@ open class ThemeActivity: AppCompatActivity() {
         backgroundIDs.add(R.id.toolbar_install_summary_root)
         backgroundIDs.add(R.id.toolbar_customize_root)
         backgroundIDs.add(R.id.toolbar_overlays_root)
+        cardIDs.add(R.id.popup_menu_root)
 
         cardIDs.add(R.id.install_updates_tile)
         cardIDs.add(R.id.install_tile)
@@ -98,6 +100,8 @@ open class ThemeActivity: AppCompatActivity() {
                     }
                 }
             }
+            val popup = ContextCompat.getDrawable(this, R.drawable.popup_bg) as LayerDrawable
+            popup.findDrawableByLayerId(R.id.backgroundPopup).setTint(palette.cardBackgroud)
         }
     }
 }
