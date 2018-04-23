@@ -5,7 +5,6 @@
     android:id="@+id/customize_bg_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/background_frame"
     android:paddingBottom="8dp"
     android:paddingTop="8dp"
     tools:layout_editor_absoluteY="25dp">
