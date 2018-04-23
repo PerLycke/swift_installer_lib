@@ -8,52 +8,64 @@ import android.util.ArraySet
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.installer.rom.RomInfo
 
+const val KEY_ACCENT_COLOR = "accent_color"
+const val KEY_BACKGROUND_COLOR = "background_color"
+const val KEY_BACKGROUND_PALETTE = "background_palette"
+const val KEY_SENDER_NAME_FIX = "sender_name_fix"
+const val KEY_USE_AOSP_ICONS = "use_aosp_icons"
+const val KEY_HIDE_INFO_CARD = "hide_failed_info"
+const val KEY_OVERLAY_VERSIONS = "overlay_versions"
+const val KEY_USER_ACCENTS = "user_accents"
+const val KEY_OVERLAY_UPDATES = "overlays_to_update"
+const val KEY_OVERLAYS_TO_INSTALL = "overlays_to_install"
+const val KEY_OVERLAYS_TO_UNINSTALL = "overlays_to_uninstall"
+
 fun getAccentColor(context: Context): Int {
-    return PreferenceManager.getDefaultSharedPreferences(context).getInt("accent_color", RomInfo.getRomInfo(context).defaultAccent)
+    return PreferenceManager.getDefaultSharedPreferences(context).getInt(KEY_ACCENT_COLOR, RomInfo.getRomInfo(context).defaultAccent)
 }
 
 fun setAccentColor(context: Context, color: Int) {
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putInt("accent_color", color).apply()
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putInt(KEY_ACCENT_COLOR, color).apply()
 }
 
 fun getBackgroundColor(context: Context): Int {
-    return PreferenceManager.getDefaultSharedPreferences(context).getInt("background_color", context.getColor(R.color.background_main))
+    return PreferenceManager.getDefaultSharedPreferences(context).getInt(KEY_BACKGROUND_COLOR, context.getColor(R.color.background_main))
 }
 
 fun setBackgroundColor(context: Context, color: Int) {
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putInt("background_color", color).apply()
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putInt(KEY_BACKGROUND_COLOR, color).apply()
 }
 
 fun useBackgroundPalette(context: Context): Boolean {
-    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("background_palette", false)
+    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_BACKGROUND_PALETTE, false)
 }
 
 fun setUseBackgroundPalette(context: Context, use: Boolean) {
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("background_palette", use).apply()
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(KEY_BACKGROUND_PALETTE, use).apply()
 }
 
 fun useSenderNameFix(context: Context): Boolean {
-    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("sender_name_fix", false)
+    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_SENDER_NAME_FIX, false)
 }
 
 fun setUseSenderNameFix(context: Context, use: Boolean) {
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("sender_name_fix", use).apply()
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(KEY_SENDER_NAME_FIX, use).apply()
 }
 
 fun useAospIcons(context: Context): Boolean {
-    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("use_aosp_icons", false)
+    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_USE_AOSP_ICONS, false)
 }
 
 fun setUseAospIcons(context: Context, use: Boolean) {
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("use_aosp_icons", use).apply()
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(KEY_USE_AOSP_ICONS, use).apply()
 }
 
 fun setHideFailedInfoCard(context: Context, hide: Boolean) {
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("hide_failed_info", hide).apply()
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(KEY_HIDE_INFO_CARD, hide).apply()
 }
 
 fun getHideFailedInfoCard(context: Context): Boolean {
-    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean("hide_failed_info", false)
+    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_HIDE_INFO_CARD, false)
 }
 
 fun setAppVersion(context: Context, packageName: String, version: Int) {
@@ -68,7 +80,7 @@ fun getAppVersion(context: Context, packageName: String): Int {
 
 fun getAppVersions(context: Context): Bundle {
     val versions = Bundle()
-    val vers = PreferenceManager.getDefaultSharedPreferences(context).getStringSet("overlay_versions", ArraySet<String>())
+    val vers = PreferenceManager.getDefaultSharedPreferences(context).getStringSet(KEY_OVERLAY_VERSIONS, ArraySet<String>())
     for (v in vers) {
         val split = v.split("|")
         versions.putInt(split[0], Integer.parseInt(split[1]))
@@ -81,11 +93,11 @@ fun setAppVersions(context: Context, versions: Bundle) {
     for (key in versions.keySet()) {
         set.add("$key|${versions.getInt(key)}")
     }
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet("overlay_versions", set).apply()
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet(KEY_OVERLAY_VERSIONS, set).apply()
 }
 
 fun getUserAccents(context: Context): IntArray {
-    val temp = PreferenceManager.getDefaultSharedPreferences(context).getString("accents", "")
+    val temp = PreferenceManager.getDefaultSharedPreferences(context).getString(KEY_USER_ACCENTS, "")
     if (TextUtils.isEmpty(temp)) {
         return IntArray(0)
     }
@@ -98,42 +110,42 @@ fun getUserAccents(context: Context): IntArray {
 }
 
 fun getAppsToUpdate(context: Context): Set<String> {
-    return PreferenceManager.getDefaultSharedPreferences(context).getStringSet("overlays_to_update", ArraySet<String>())
+    return PreferenceManager.getDefaultSharedPreferences(context).getStringSet(KEY_OVERLAY_UPDATES, ArraySet<String>())
 }
 
 fun addAppToUpdate(context: Context, packageName: String) {
     val apps = getAppsToUpdate(context)
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet("overlays_to_update", apps.plus(packageName)).apply()
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet(KEY_OVERLAY_UPDATES, apps.plus(packageName)).apply()
 }
 
 fun clearAppsToUpdate(context: Context) {
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet("overlays_to_update", ArraySet<String>()).apply()
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet(KEY_OVERLAY_UPDATES, ArraySet<String>()).apply()
 }
 
 fun getAppsToInstall(context: Context): Set<String> {
-    return PreferenceManager.getDefaultSharedPreferences(context).getStringSet("overlays_to_install", ArraySet<String>())
+    return PreferenceManager.getDefaultSharedPreferences(context).getStringSet(KEY_OVERLAYS_TO_INSTALL, ArraySet<String>())
 }
 
 fun addAppToInstall(context: Context, packageName: String) {
     val apps = getAppsToInstall(context)
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet("overlays_to_install", apps.plus(packageName)).apply()
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet(KEY_OVERLAYS_TO_INSTALL, apps.plus(packageName)).apply()
 }
 
 fun clearAppsToInstall(context: Context) {
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet("overlays_to_install", ArraySet<String>()).apply()
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet(KEY_OVERLAYS_TO_INSTALL, ArraySet<String>()).apply()
 }
 
 fun getAppsToUninstall(context: Context): Set<String> {
-    return PreferenceManager.getDefaultSharedPreferences(context).getStringSet("overlays_to_uninstall", ArraySet<String>())
+    return PreferenceManager.getDefaultSharedPreferences(context).getStringSet(KEY_OVERLAYS_TO_UNINSTALL, ArraySet<String>())
 }
 
 fun addAppToUninstall(context: Context, packageName: String) {
     val apps = getAppsToUninstall(context)
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet("overlays_to_uninstall", apps + packageName).apply()
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet(KEY_OVERLAYS_TO_UNINSTALL, apps + packageName).apply()
 }
 
 fun clearAppsToUninstall(context: Context) {
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet("overlays_to_uninstall", ArraySet<String>()).apply()
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet(KEY_OVERLAYS_TO_UNINSTALL, ArraySet<String>()).apply()
 }
 
 fun setUserAccents(context: Context, colors: IntArray) {
@@ -143,7 +155,7 @@ fun setUserAccents(context: Context, colors: IntArray) {
         if (i > 0) builder.append(",")
         builder.append(colors[i])
     }
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putString("accents", builder.toString()).apply()
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putString(KEY_USER_ACCENTS, builder.toString()).apply()
 }
 
 @Suppress("unused")

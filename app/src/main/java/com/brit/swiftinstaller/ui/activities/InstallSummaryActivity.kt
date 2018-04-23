@@ -12,6 +12,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
 import android.support.design.widget.TabLayout
+import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AlertDialog
 import android.view.View
 import com.brit.swiftinstaller.BuildConfig
@@ -34,6 +35,8 @@ class InstallSummaryActivity : ThemeActivity() {
     companion object {
         private const val SUCCESS_TAB = 0
         const val FAILED_TAB = 1
+
+        const val ACTION_INSTALL_CANCELLED = "com.brit.swiftinstaller.action.INSTALL_CANCELLED"
     }
 
     private lateinit var mPagerAdapter: AppsTabPagerAdapter
@@ -212,6 +215,7 @@ class InstallSummaryActivity : ThemeActivity() {
                         onProgressUpdate(Progress(SUCCESS_TAB, item))
                     } else {
                         errorMap[pn] = "Install Cancelled"
+                        LocalBroadcastManager.getInstance(context.applicationContext).sendBroadcast(Intent(ACTION_INSTALL_CANCELLED))
                         onProgressUpdate(Progress(FAILED_TAB, item))
                     }
                 }

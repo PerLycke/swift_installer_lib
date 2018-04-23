@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.StateListDrawable
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
@@ -13,10 +14,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import com.brit.swiftinstaller.R
-import com.brit.swiftinstaller.utils.MaterialPalette
-import com.brit.swiftinstaller.utils.getAccentColor
-import com.brit.swiftinstaller.utils.getBackgroundColor
-import com.brit.swiftinstaller.utils.useBackgroundPalette
+import com.brit.swiftinstaller.utils.*
 
 @SuppressLint("Registered")
 open class ThemeActivity: AppCompatActivity() {
@@ -62,10 +60,19 @@ open class ThemeActivity: AppCompatActivity() {
             setTheme(R.style.AppTheme)
         }
         super.onCreate(savedInstanceState)
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
+            if (key == KEY_ACCENT_COLOR || key == KEY_BACKGROUND_COLOR || key == KEY_BACKGROUND_PALETTE) {
+                updateColors()
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
+        updateColors()
+    }
+
+    private fun updateColors() {
         val palette = MaterialPalette.createPalette(getBackgroundColor(this), useBackgroundPalette(this))
         window.statusBarColor = palette.darkBackgroundColor
         window.navigationBarColor = palette.backgroundColor

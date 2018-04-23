@@ -1,8 +1,12 @@
 package com.brit.swiftinstaller.ui.activities
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
+import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
@@ -70,7 +74,13 @@ class CustomizeActivity : ThemeActivity() {
         customize_confirm_btn.setOnClickListener {
             var recompile = false
             val apps = ArrayList<String>()
-            if (getAccentColor(this) != accentColor) {
+
+            val oldAccent = getAccentColor(this)
+            val oldBackground = getBackgroundColor(this)
+            val oldPalette = useBackgroundPalette(this)
+            val oldIcons = useAospIcons(this)
+
+            if (oldAccent != accentColor) {
                 setAccentColor(this, accentColor)
                 if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
                     recompile = true
@@ -78,7 +88,7 @@ class CustomizeActivity : ThemeActivity() {
                 }
             }
 
-            if (getBackgroundColor(this) != backgroundColor) {
+            if (oldBackground != backgroundColor) {
                 setBackgroundColor(this, backgroundColor)
                 if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
                     recompile = true
@@ -87,14 +97,14 @@ class CustomizeActivity : ThemeActivity() {
                 }
             }
 
-            if (usePalette != useBackgroundPalette(this)) {
+            if (usePalette != oldPalette) {
                 setUseBackgroundPalette(this, usePalette)
                 recompile = true
                 if (!apps.contains("android"))
                     apps.add("android")
             }
 
-            if (useAospIcons != com.brit.swiftinstaller.utils.useAospIcons(this)) {
+            if (useAospIcons != oldIcons) {
                 setUseAospIcons(this, useAospIcons)
                 recompile = true
                 apps.add("com.samsung.android.lool")
@@ -104,6 +114,30 @@ class CustomizeActivity : ThemeActivity() {
             }
 
             if (recompile && apps.isNotEmpty()) {
+
+                val receiver = object: BroadcastReceiver() {
+                    override fun onReceive(context: Context, intent: Intent) {
+                        if (intent.action == InstallSummaryActivity.ACTION_INSTALL_CANCELLED) {
+                            if (oldAccent != getAccentColor(context)) {
+                                setAccentColor(context, oldAccent)
+                            }
+                            if (oldBackground != getBackgroundColor(context)) {
+                                setBackgroundColor(context, oldBackground)
+                            }
+                            if (oldPalette != useBackgroundPalette(context)) {
+                                setUseBackgroundPalette(context, oldPalette)
+                            }
+                            if (oldIcons != com.brit.swiftinstaller.utils.useAospIcons(context)) {
+                                setUseAospIcons(context, oldIcons)
+                            }
+                            LocalBroadcastManager.getInstance(context.applicationContext)
+                                    .unregisterReceiver(this)
+                        }
+                    }
+                }
+                LocalBroadcastManager.getInstance(applicationContext).registerReceiver(receiver,
+                        IntentFilter(InstallSummaryActivity.ACTION_INSTALL_CANCELLED))
+
                 finish = true
                 val intent = Intent(this, InstallActivity::class.java)
                 intent.putStringArrayListExtra("apps", apps)
