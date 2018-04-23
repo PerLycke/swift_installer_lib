@@ -1,5 +1,6 @@
 package com.brit.swiftinstaller.ui.activities
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
@@ -20,6 +21,8 @@ import kotlinx.android.synthetic.main.customize_accent.*
 import kotlinx.android.synthetic.main.customize_background.*
 import kotlinx.android.synthetic.main.customize_preview.*
 import kotlinx.android.synthetic.main.toolbar_customize.*
+import android.support.v4.view.PagerAdapter
+import kotlinx.android.synthetic.main.activity_customize.*
 
 class CustomizeActivity : ThemeActivity() {
 
@@ -144,6 +147,8 @@ class CustomizeActivity : ThemeActivity() {
             }
         })
 
+        preview_pager.adapter = PreviewPagerAdapter(this)
+
         usePalette = useBackgroundPalette(this)
         if (usePalette) {
             material_theme.isChecked = true
@@ -211,14 +216,10 @@ class CustomizeActivity : ThemeActivity() {
         } else {
             View.GONE
         }
-        val back = settings_preview.drawable as LayerDrawable
+        val back = settings_preview?.drawable as LayerDrawable
         //back.setTintMode(PorterDuff.Mode.SRC_ATOP)
         back.findDrawableByLayerId(R.id.settings_preview_background).setTint(materialPalette.backgroundColor)
-        if (usePalette) {
-            back.findDrawableByLayerId(R.id.settings_preview_frame).setTint(materialPalette.cardBackgroud)
-        } else {
-            back.findDrawableByLayerId(R.id.settings_preview_frame).setTint(materialPalette.backgroundColor)
-        }
+        back.findDrawableByLayerId(R.id.settings_preview_frame).setTint(materialPalette.cardBackgroud)
     }
 
     fun updateColor(accentColor: Int, backgroundColor: Int, updateHex: Boolean) {
@@ -227,7 +228,7 @@ class CustomizeActivity : ThemeActivity() {
         if (this.accentColor != accentColor) {
             this.accentColor = accentColor
             for (icon: ImageView? in settingsIcons) {
-                icon!!.setColorFilter(accentColor)
+                icon?.setColorFilter(accentColor)
             }
             accent_hex_input.background.setTint(accentColor)
             hex_input_bg.background.setTint(accentColor)
@@ -276,5 +277,29 @@ class CustomizeActivity : ThemeActivity() {
 
     fun cancelBtnClick(@Suppress("UNUSED_PARAMETER") view: View) {
         finish()
+    }
+
+    inner class PreviewPagerAdapter(private val context: Context) : PagerAdapter() {
+
+        override fun instantiateItem(collection: ViewGroup, position: Int): Any {
+            return findViewById(R.id.settings_preview_page)
+        }
+
+        override fun destroyItem(collection: ViewGroup, position: Int, view: Any) {
+            collection.removeView(view as View)
+        }
+
+        override fun getCount(): Int {
+            return 1
+        }
+
+        override fun isViewFromObject(view: View, `object`: Any): Boolean {
+            return view === `object`
+        }
+
+        override fun getPageTitle(position: Int): CharSequence? {
+            return ""
+        }
+
     }
 }

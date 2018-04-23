@@ -43,7 +43,19 @@
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-        <include layout="@layout/customize_preview" />
+        <android.support.v4.view.ViewPager
+            android:id="@+id/preview_pager"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" >
+
+            <include android:id="@+id/settings_preview_page"
+                layout="@layout/customize_preview" />
+
+            <!--<include android:id="@+id/systemui_preview_page"
+                layout="@layout/customize_preview" />-->
+
+        </android.support.v4.view.ViewPager>
+
     </android.support.constraint.ConstraintLayout>
 
     <ImageView
