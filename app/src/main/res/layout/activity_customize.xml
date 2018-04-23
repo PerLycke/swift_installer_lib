@@ -51,8 +51,8 @@
             <include android:id="@+id/settings_preview_page"
                 layout="@layout/customize_preview" />
 
-            <!--<include android:id="@+id/systemui_preview_page"
-                layout="@layout/customize_preview" />-->
+            <include android:id="@+id/systemui_preview_page"
+                layout="@layout/customize_preview_sysui" />
 
         </android.support.v4.view.ViewPager>
 

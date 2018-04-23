@@ -2,7 +2,13 @@
 <layer-list
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/settings_preview_background">
-        <bitmap android:src="@drawable/preview_background" android:tint="#ffffff" />
+        <bitmap android:src="@drawable/preview_background" android:tint="#16161c" />
+    </item>
+    <item android:id="@+id/settings_preview_search">
+        <bitmap android:src="@drawable/preview_searchbar" />
+    </item>
+    <item>
+        <bitmap android:src="@drawable/preview_searchbar_text_icons" />
     </item>
     <item android:id="@+id/settings_preview_frame">
         <bitmap android:src="@drawable/preview_frame" />

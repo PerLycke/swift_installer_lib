@@ -1,6 +1,5 @@
 package com.brit.swiftinstaller.ui.activities
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
@@ -23,10 +22,11 @@ import kotlinx.android.synthetic.main.customize_preview.*
 import kotlinx.android.synthetic.main.toolbar_customize.*
 import android.support.v4.view.PagerAdapter
 import kotlinx.android.synthetic.main.activity_customize.*
+import kotlinx.android.synthetic.main.customize_preview_sysui.*
 
 class CustomizeActivity : ThemeActivity() {
 
-    private var settingsIcons: Array<ImageView?> = arrayOfNulls(3)
+    private var settingsIcons: Array<ImageView?> = arrayOfNulls(9)
 
     private var accentColor = 0
     private var backgroundColor = 0
@@ -42,25 +42,26 @@ class CustomizeActivity : ThemeActivity() {
 
         setContentView(R.layout.activity_customize)
         setupAccentSheet()
-        updateColor(getAccentColor(this), getBackgroundColor(this), true)
+        usePalette = useBackgroundPalette(this)
+        updateColor(getAccentColor(this), getBackgroundColor(this), true, false)
 
         custom_dark_bg.setOnClickListener {
-            updateColor(accentColor, convertToColorInt("202026"), true)
+            updateColor(accentColor, convertToColorInt("202026"), true, false)
         }
         custom_black_bg.setOnClickListener {
-            updateColor(accentColor, convertToColorInt("000000"), true)
+            updateColor(accentColor, convertToColorInt("000000"), true, false)
         }
         custom_style_bg.setOnClickListener {
-            updateColor(accentColor, convertToColorInt("202833"), true)
+            updateColor(accentColor, convertToColorInt("202833"), true, false)
         }
         custom_nature_bg.setOnClickListener {
-            updateColor(accentColor, convertToColorInt("1C3B3A"), true)
+            updateColor(accentColor, convertToColorInt("1C3B3A"), true, false)
         }
         custom_ocean_bg.setOnClickListener {
-            updateColor(accentColor, convertToColorInt("173145"), true)
+            updateColor(accentColor, convertToColorInt("173145"), true, false)
         }
         custom_night_bg.setOnClickListener {
-            updateColor(accentColor, convertToColorInt("363844"), true)
+            updateColor(accentColor, convertToColorInt("363844"), true, false)
         }
 
         customize_confirm_btn.setOnClickListener {
@@ -119,7 +120,7 @@ class CustomizeActivity : ThemeActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s?.length == 3 || s?.length == 6) {
                     if (checkAccentColor(convertToColorInt(s.toString()))) {
-                        updateColor(convertToColorInt(s.toString()), backgroundColor, false)
+                        updateColor(convertToColorInt(s.toString()), backgroundColor, false, false)
                     } else {
                         Toast.makeText(this@CustomizeActivity, R.string.invalid_accent,
                                 Toast.LENGTH_SHORT).show()
@@ -138,7 +139,7 @@ class CustomizeActivity : ThemeActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s?.length == 3 || s?.length == 6) {
                     if (checkBackgroundColor(convertToColorInt(s.toString()))) {
-                        updateColor(accentColor, convertToColorInt(s.toString()), false)
+                        updateColor(accentColor, convertToColorInt(s.toString()), false, false)
                     } else {
                         Toast.makeText(this@CustomizeActivity,
                                 R.string.invalid_background, Toast.LENGTH_SHORT).show()
@@ -147,9 +148,8 @@ class CustomizeActivity : ThemeActivity() {
             }
         })
 
-        preview_pager.adapter = PreviewPagerAdapter(this)
+        preview_pager.adapter = PreviewPagerAdapter()
 
-        usePalette = useBackgroundPalette(this)
         if (usePalette) {
             material_theme.isChecked = true
             flat_theme.isChecked = false
@@ -167,7 +167,7 @@ class CustomizeActivity : ThemeActivity() {
                 flat_theme.isChecked = b
             }
             usePalette = material_theme.isChecked
-            updateColor(accentColor, backgroundColor, false)
+            updateColor(accentColor, backgroundColor, false, true)
         }
         material_theme.setOnCheckedChangeListener(listener)
         flat_theme.setOnCheckedChangeListener(listener)
@@ -183,6 +183,12 @@ class CustomizeActivity : ThemeActivity() {
         settingsIcons[0] = connections_icon
         settingsIcons[1] = sound_icon
         settingsIcons[2] = notifications_icon
+        settingsIcons[3] = preview_sysui_icon1
+        settingsIcons[4] = preview_sysui_icon2
+        settingsIcons[5] = preview_sysui_icon3
+        settingsIcons[6] = preview_sysui_icon4
+        settingsIcons[7] = preview_sysui_icon5
+        settingsIcons[8] = preview_sysui_icon6
     }
 
     private fun setBgIndicator() {
@@ -216,16 +222,18 @@ class CustomizeActivity : ThemeActivity() {
         } else {
             View.GONE
         }
-        val back = settings_preview?.drawable as LayerDrawable
+        val settingsBackground = settings_preview?.drawable as LayerDrawable
+        val systemUIBackground = preview_sysui_frame.drawable as LayerDrawable
         //back.setTintMode(PorterDuff.Mode.SRC_ATOP)
-        back.findDrawableByLayerId(R.id.settings_preview_background).setTint(materialPalette.backgroundColor)
-        back.findDrawableByLayerId(R.id.settings_preview_frame).setTint(materialPalette.cardBackgroud)
+        settingsBackground.findDrawableByLayerId(R.id.settings_preview_background).setTint(materialPalette.backgroundColor)
+        settingsBackground.findDrawableByLayerId(R.id.settings_preview_search).setTint(materialPalette.cardBackgroud)
+        systemUIBackground.findDrawableByLayerId(R.id.systemui_preview_background).setTint(materialPalette.backgroundColor)
     }
 
-    fun updateColor(accentColor: Int, backgroundColor: Int, updateHex: Boolean) {
+    fun updateColor(accentColor: Int, backgroundColor: Int, updateHex: Boolean, force: Boolean) {
         Log.d("TEST", "accent - ${Integer.toHexString(accentColor)}")
         Log.d("TEST", "background - ${Integer.toHexString(backgroundColor)}")
-        if (this.accentColor != accentColor) {
+        if (force || this.accentColor != accentColor) {
             this.accentColor = accentColor
             for (icon: ImageView? in settingsIcons) {
                 icon?.setColorFilter(accentColor)
@@ -235,7 +243,7 @@ class CustomizeActivity : ThemeActivity() {
             if (updateHex && accent_hex_input.text.toString() != Integer.toHexString(accentColor).substring(2))
                 accent_hex_input.setText(Integer.toHexString(accentColor).substring(2), TextView.BufferType.EDITABLE)
         }
-        if (this.backgroundColor != backgroundColor) {
+        if (force || this.backgroundColor != backgroundColor) {
             materialPalette = MaterialPalette.createPalette(backgroundColor, usePalette)
             Log.d("TEST", "MaterialPalette : $materialPalette")
             this.backgroundColor = backgroundColor
@@ -269,7 +277,7 @@ class CustomizeActivity : ThemeActivity() {
             iv.background = CircleDrawable(mColors[position])
             mainView.tag = mColors[position]
             mainView.setOnClickListener {
-                updateColor(mColors[position], backgroundColor, true)
+                updateColor(mColors[position], backgroundColor, true, false)
             }
             return mainView
         }
@@ -279,10 +287,14 @@ class CustomizeActivity : ThemeActivity() {
         finish()
     }
 
-    inner class PreviewPagerAdapter(private val context: Context) : PagerAdapter() {
+    inner class PreviewPagerAdapter : PagerAdapter() {
 
         override fun instantiateItem(collection: ViewGroup, position: Int): Any {
-            return findViewById(R.id.settings_preview_page)
+            return if (position == 0) {
+                findViewById(R.id.settings_preview_page)
+            } else {
+                findViewById(R.id.systemui_preview_page)
+            }
         }
 
         override fun destroyItem(collection: ViewGroup, position: Int, view: Any) {
@@ -290,7 +302,7 @@ class CustomizeActivity : ThemeActivity() {
         }
 
         override fun getCount(): Int {
-            return 1
+            return 2
         }
 
         override fun isViewFromObject(view: View, `object`: Any): Boolean {

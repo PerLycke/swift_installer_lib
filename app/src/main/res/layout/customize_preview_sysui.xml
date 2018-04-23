@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/preview_frame" />
+            app:srcCompat="@drawable/systemui_preview" />
 
         <TextView
             android:id="@+id/preview_sysui_date"
@@ -143,12 +143,14 @@
             android:id="@+id/preview_sysui_whatsapp_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
             android:text="WhatsApp"
             android:textColor="#075e55"
             android:textSize="10sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/preview_sysui_whatsapp"
             app:layout_constraintTop_toTopOf="@+id/preview_sysui_whatsapp"
+            app:layout_constraintStart_toEndOf="@id/preview_sysui_whatsapp"
             tools:layout_editor_absoluteX="38dp" />
 
         <TextView
