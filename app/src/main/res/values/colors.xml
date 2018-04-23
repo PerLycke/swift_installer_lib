@@ -12,6 +12,11 @@
     <color name="stroke">#202026</color>
     <color name="tab_underline">#14ffffff</color>
     <color name="ripple">#14ffffff</color>
+    <color name="search_frame_bg">#12ffffff</color>
+    <color name="search_frame_stroke">#0Dffffff</color>
+    <color name="preview_searchbar_icon">#BFffffff</color>
+    <color name="preview_searchbar_text">#BFffffff</color>
+    <color name="preview_stroke">#14ffffff</color>
 
     <!-- Minimal palette -->
     <color name="minimal_blue">#4A7CA5</color>

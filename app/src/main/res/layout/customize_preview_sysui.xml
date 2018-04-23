@@ -13,26 +13,44 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/preview_sysui_frame"
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="201dp" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="253dp" />
+
+        <ImageView
+            android:id="@+id/preview_sysui_bg"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/systemui_preview" />
+            app:srcCompat="@drawable/preview_bg" />
 
         <TextView
             android:id="@+id/preview_sysui_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="18dp"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="24dp"
             android:fontFamily="sans-serif-condensed"
             android:text="22:20  |  Sun 19 April"
             android:textColor="#ccffffff"
             android:textSize="8sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/preview_sysui_frame" />
+            app:layout_constraintTop_toTopOf="@+id/preview_sysui_bg" />
 
         <ImageView
             android:id="@+id/preview_sysui_gear"
@@ -40,7 +58,7 @@
             android:layout_height="14dp"
             android:layout_marginEnd="24dp"
             app:layout_constraintBottom_toBottomOf="@+id/preview_sysui_date"
-            app:layout_constraintEnd_toEndOf="@+id/preview_sysui_frame"
+            app:layout_constraintEnd_toEndOf="@+id/preview_sysui_bg"
             app:layout_constraintTop_toTopOf="@+id/preview_sysui_date"
             app:srcCompat="@drawable/ic_gear" />
 
@@ -48,11 +66,11 @@
             android:id="@+id/preview_sysui_icon1"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toStartOf="@+id/preview_sysui_icon2"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toEndOf="@+id/preview_sysui_frame"
+            app:layout_constraintStart_toEndOf="@+id/preview_sysui_bg"
             app:layout_constraintStart_toStartOf="@+id/preview_sysui_date"
             app:layout_constraintTop_toBottomOf="@+id/preview_sysui_date"
             app:srcCompat="@drawable/ic_settings_connections" />
@@ -81,6 +99,8 @@
             android:id="@+id/preview_sysui_icon4"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:scaleX="0.9"
+            android:scaleY="0.9"
             app:layout_constraintEnd_toStartOf="@+id/preview_sysui_icon5"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/preview_sysui_icon3"
@@ -135,7 +155,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:tint="#075e55"
-            app:layout_constraintStart_toStartOf="@+id/preview_sysui_frame"
+            app:layout_constraintStart_toStartOf="@+id/preview_sysui_bg"
             app:layout_constraintTop_toBottomOf="@+id/preview_sysui_divider"
             app:srcCompat="@drawable/ic_whatsapp" />
 
@@ -149,8 +169,8 @@
             android:textSize="10sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/preview_sysui_whatsapp"
-            app:layout_constraintTop_toTopOf="@+id/preview_sysui_whatsapp"
             app:layout_constraintStart_toEndOf="@id/preview_sysui_whatsapp"
+            app:layout_constraintTop_toTopOf="@+id/preview_sysui_whatsapp"
             tools:layout_editor_absoluteX="38dp" />
 
         <TextView

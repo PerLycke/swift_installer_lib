@@ -1,28 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/customize_preview_root"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/preview_layout"
+        android:id="@+id/preview_settings_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/settings_preview"
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="201dp" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="253dp" />
+
+        <ImageView
+            android:id="@+id/settings_preview"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:contentDescription="@string/image"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/settings_preview" />
+            app:srcCompat="@drawable/preview_bg" />
+
+        <ImageView
+            android:id="@+id/searchbar_bg"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="13dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="25dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/settings_preview"
+            app:srcCompat="@drawable/search_frame_bg" />
+
+        <ImageView
+            android:id="@+id/searchbar_search_icon"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/searchbar_bg"
+            app:layout_constraintStart_toStartOf="@+id/searchbar_bg"
+            app:layout_constraintTop_toTopOf="@+id/searchbar_bg"
+            app:srcCompat="@drawable/ic_search_preview" />
+
+        <TextView
+            android:id="@+id/searchbar_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@android:string/search_go"
+            android:textColor="#73ffffff"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/searchbar_bg"
+            app:layout_constraintStart_toEndOf="@+id/searchbar_search_icon"
+            app:layout_constraintTop_toTopOf="@+id/searchbar_bg" />
+
+        <ImageView
+            android:id="@+id/searchbar_mic"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/searchbar_bg"
+            app:layout_constraintEnd_toEndOf="@+id/searchbar_bg"
+            app:layout_constraintTop_toTopOf="@+id/searchbar_bg"
+            app:srcCompat="@drawable/ic_mic_preview" />
 
         <ImageView
             android:id="@+id/connections_icon"
@@ -151,4 +211,5 @@
 
 
     </android.support.constraint.ConstraintLayout>
+
 </android.support.constraint.ConstraintLayout>

@@ -18,10 +18,10 @@ import com.brit.swiftinstaller.utils.ColorUtils.checkBackgroundColor
 import com.brit.swiftinstaller.utils.ColorUtils.convertToColorInt
 import kotlinx.android.synthetic.main.customize_accent.*
 import kotlinx.android.synthetic.main.customize_background.*
-import kotlinx.android.synthetic.main.customize_preview.*
+import kotlinx.android.synthetic.main.customize_preview_settings.*
 import kotlinx.android.synthetic.main.toolbar_customize.*
 import android.support.v4.view.PagerAdapter
-import kotlinx.android.synthetic.main.activity_customize.*
+import android.support.v4.view.ViewPager
 import kotlinx.android.synthetic.main.customize_preview_sysui.*
 
 class CustomizeActivity : ThemeActivity() {
@@ -148,7 +148,10 @@ class CustomizeActivity : ThemeActivity() {
             }
         })
 
-        preview_pager.adapter = PreviewPagerAdapter()
+        val viewpager: ViewPager = findViewById(R.id.preview_pager)
+        viewpager.setPageMargin(64)
+        val adapter = PreviewPagerAdapter()
+        viewpager.setAdapter(adapter)
 
         if (usePalette) {
             material_theme.isChecked = true
@@ -223,11 +226,10 @@ class CustomizeActivity : ThemeActivity() {
             View.GONE
         }
         val settingsBackground = settings_preview?.drawable as LayerDrawable
-        val systemUIBackground = preview_sysui_frame.drawable as LayerDrawable
+        val systemUIBackground = preview_sysui_bg.drawable as LayerDrawable
         //back.setTintMode(PorterDuff.Mode.SRC_ATOP)
-        settingsBackground.findDrawableByLayerId(R.id.settings_preview_background).setTint(materialPalette.backgroundColor)
-        settingsBackground.findDrawableByLayerId(R.id.settings_preview_search).setTint(materialPalette.cardBackgroud)
-        systemUIBackground.findDrawableByLayerId(R.id.systemui_preview_background).setTint(materialPalette.backgroundColor)
+        settingsBackground.findDrawableByLayerId(R.id.preview_background).setTint(materialPalette.backgroundColor)
+        systemUIBackground.findDrawableByLayerId(R.id.preview_background).setTint(materialPalette.backgroundColor)
     }
 
     fun updateColor(accentColor: Int, backgroundColor: Int, updateHex: Boolean, force: Boolean) {

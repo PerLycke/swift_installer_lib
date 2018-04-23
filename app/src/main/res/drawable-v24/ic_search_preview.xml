@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="100dp"
+    android:height="100dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+
+    <path
+        android:fillColor="@color/preview_searchbar_icon"
+        android:pathData="M86.9,83.6L86.9,83.6L67.7,64.4c4.8-5.5,7.6-12.7,7.6-20.5c0-17.3-14.1-31.4-31.4-31.4c-17.3,0-31.4,14.1-31.4,31.4 s14.1,31.4,31.4,31.4c7.8,0,15-2.9,20.5-7.6l19.2,19.2c0.5,0.5,1.1,0.7,1.6,0.7c0.6,0,1.2-0.2,1.6-0.7C87.8,86,87.8,84.5,86.9,83.6z M43.9,70.7c-14.8,0-26.8-12-26.8-26.8c0-14.8,12-26.8,26.8-26.8c14.8,0,26.8,12,26.8,26.8C70.7,58.6,58.6,70.7,43.9,70.7z" />
+</vector>
