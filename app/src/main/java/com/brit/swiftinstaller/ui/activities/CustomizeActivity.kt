@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Color
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.support.v4.content.LocalBroadcastManager
@@ -26,6 +27,7 @@ import kotlinx.android.synthetic.main.customize_preview_settings.*
 import kotlinx.android.synthetic.main.toolbar_customize.*
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
+import kotlinx.android.synthetic.main.customize_notifications.*
 import kotlinx.android.synthetic.main.customize_preview_sysui.*
 
 class CustomizeActivity : ThemeActivity() {
@@ -38,6 +40,7 @@ class CustomizeActivity : ThemeActivity() {
     private var finish = false
     private var usePalette = false
     private var useAospIcons = false
+    private var notifShadow = false
 
     private lateinit var materialPalette: MaterialPalette
 
@@ -47,6 +50,8 @@ class CustomizeActivity : ThemeActivity() {
         setContentView(R.layout.activity_customize)
         setupAccentSheet()
         usePalette = useBackgroundPalette(this)
+        useAospIcons = com.brit.swiftinstaller.utils.useAospIcons(this)
+        notifShadow = useSenderNameFix(this)
         updateColor(getAccentColor(this), getBackgroundColor(this), true, false)
 
         custom_dark_bg.setOnClickListener {
@@ -76,6 +81,7 @@ class CustomizeActivity : ThemeActivity() {
             val oldBackground = getBackgroundColor(this)
             val oldPalette = useBackgroundPalette(this)
             val oldIcons = useAospIcons(this)
+            val oldShadow = useSenderNameFix(this)
 
             if (oldAccent != accentColor) {
                 setAccentColor(this, accentColor)
@@ -96,6 +102,13 @@ class CustomizeActivity : ThemeActivity() {
 
             if (usePalette != oldPalette) {
                 setUseBackgroundPalette(this, usePalette)
+                recompile = true
+                if (!apps.contains("android"))
+                    apps.add("android")
+            }
+
+            if (notifShadow != oldShadow) {
+                setUseSenderNameFix(this, notifShadow)
                 recompile = true
                 if (!apps.contains("android"))
                     apps.add("android")
@@ -208,6 +221,20 @@ class CustomizeActivity : ThemeActivity() {
         }
         material_theme.setOnCheckedChangeListener(listener)
         flat_theme.setOnCheckedChangeListener(listener)
+
+        val notifListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+            if (buttonView.id == R.id.disabled) {
+                disabled.isChecked = isChecked
+                enabled.isChecked = !isChecked
+            } else {
+                disabled.isChecked = !isChecked
+                enabled.isChecked = isChecked
+            }
+            notifShadow = enabled.isChecked
+            updateColor(accentColor, backgroundColor, false, true)
+        }
+        disabled.setOnCheckedChangeListener(notifListener)
+        enabled.setOnCheckedChangeListener(notifListener)
     }
 
     override fun onResume() {
@@ -288,6 +315,16 @@ class CustomizeActivity : ThemeActivity() {
             if (updateHex && hex_input_bg.text.toString() != Integer.toHexString(backgroundColor).substring(2))
                 hex_input_bg.setText(Integer.toHexString(backgroundColor).substring(2), TextView.BufferType.EDITABLE)
             setBgIndicator()
+        }
+
+        if (notifShadow) {
+            preview_sysui_whatsapp_title.setShadowLayer(2.0f, 0.0f, 0.0f, Color.WHITE)
+            preview_sysui_whatsapp_sender.setTextColor(Color.BLACK)
+            preview_sysui_whatsapp_sender.setShadowLayer(2.0f, 0.0f, 0.0f, Color.WHITE)
+        } else {
+            preview_sysui_whatsapp_title.setShadowLayer(2.0f, 0.0f, 0.0f, Color.TRANSPARENT)
+            preview_sysui_whatsapp_sender.setTextColor(Color.WHITE)
+            preview_sysui_whatsapp_sender.setShadowLayer(2.0f, 0.0f, 0.0f, Color.TRANSPARENT)
         }
     }
 
