@@ -7,7 +7,6 @@ import android.content.IntentFilter
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.support.v4.content.LocalBroadcastManager
-import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -27,8 +26,6 @@ import kotlinx.android.synthetic.main.customize_preview_settings.*
 import kotlinx.android.synthetic.main.toolbar_customize.*
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
-import android.view.WindowManager
-import kotlinx.android.synthetic.main.activity_customize.*
 import kotlinx.android.synthetic.main.customize_preview_sysui.*
 
 class CustomizeActivity : ThemeActivity() {
@@ -268,19 +265,12 @@ class CustomizeActivity : ThemeActivity() {
         settingsBackground.findDrawableByLayerId(R.id.preview_background).setTint(materialPalette.backgroundColor)
         systemUIBackground.findDrawableByLayerId(R.id.preview_background).setTint(materialPalette.backgroundColor)
 
-        val customBackground = customize_bg_src?.drawable as LayerDrawable
-        customBackground.findDrawableByLayerId(R.id.customization_bg).setTint(materialPalette.backgroundColor)
-
-        val window = getWindow()
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window.setStatusBarColor(materialPalette.backgroundColor)
-        window.setNavigationBarColor(materialPalette.backgroundColor)
     }
 
     fun updateColor(accentColor: Int, backgroundColor: Int, updateHex: Boolean, force: Boolean) {
         Log.d("TEST", "accent - ${Integer.toHexString(accentColor)}")
         Log.d("TEST", "background - ${Integer.toHexString(backgroundColor)}")
+        updateColors(accentColor, backgroundColor, usePalette)
         if (force || this.accentColor != accentColor) {
             this.accentColor = accentColor
             for (icon: ImageView? in settingsIcons) {

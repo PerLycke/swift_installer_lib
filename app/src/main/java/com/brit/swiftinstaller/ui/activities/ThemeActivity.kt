@@ -25,11 +25,14 @@ open class ThemeActivity: AppCompatActivity() {
 
     init {
         backgroundIDs.add(R.id.app_list_root)
+        backgroundIDs.add(R.id.customize_root)
         backgroundIDs.add(R.id.installation_summary_root)
         backgroundIDs.add(R.id.overlays_root)
         backgroundIDs.add(R.id.app_item_root)
         backgroundIDs.add(R.id.my_toolbar)
         backgroundIDs.add(R.id.content_main_root)
+        backgroundIDs.add(R.id.customize_bg_root)
+        backgroundIDs.add(R.id.customize_accent_root)
         backgroundIDs.add(R.id.customize_preview_root)
         backgroundIDs.add(R.id.dialog_about_root)
         backgroundIDs.add(R.id.failed_info_card_root)
@@ -62,18 +65,18 @@ open class ThemeActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
             if (key == KEY_ACCENT_COLOR || key == KEY_BACKGROUND_COLOR || key == KEY_BACKGROUND_PALETTE) {
-                updateColors()
+                updateColors(getAccentColor(this), getBackgroundColor(this), useBackgroundPalette(this))
             }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        updateColors()
+        updateColors(getAccentColor(this), getBackgroundColor(this), useBackgroundPalette(this))
     }
 
-    private fun updateColors() {
-        val palette = MaterialPalette.createPalette(getBackgroundColor(this), useBackgroundPalette(this))
+    fun updateColors(accentColor: Int, backgroundColor: Int, usePalette: Boolean) {
+        val palette = MaterialPalette.createPalette(backgroundColor, usePalette)
         window.statusBarColor = palette.darkBackgroundColor
         window.navigationBarColor = palette.backgroundColor
         for (id in backgroundIDs) {
