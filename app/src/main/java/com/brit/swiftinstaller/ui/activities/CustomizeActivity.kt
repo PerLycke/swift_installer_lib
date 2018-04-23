@@ -323,7 +323,7 @@ class CustomizeActivity : ThemeActivity() {
             preview_sysui_whatsapp_sender.setShadowLayer(2.0f, 0.0f, 0.0f, Color.WHITE)
         } else {
             preview_sysui_whatsapp_title.setShadowLayer(2.0f, 0.0f, 0.0f, Color.TRANSPARENT)
-            preview_sysui_whatsapp_sender.setTextColor(Color.WHITE)
+            preview_sysui_whatsapp_sender.setTextColor(Color.BLACK)
             preview_sysui_whatsapp_sender.setShadowLayer(2.0f, 0.0f, 0.0f, Color.TRANSPARENT)
         }
     }

@@ -95,7 +95,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/connections_desc"
             app:layout_constraintEnd_toStartOf="@+id/connections_title"
             app:layout_constraintTop_toTopOf="@+id/connections_title"
-            app:srcCompat="@drawable/ic_settings_connections" />
+            app:srcCompat="@drawable/ic_settings_aosp_connections" />
 
         <ImageView
             android:id="@+id/sound_icon"
@@ -108,7 +108,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/sounds_desc"
             app:layout_constraintEnd_toStartOf="@+id/sounds_title"
             app:layout_constraintTop_toTopOf="@+id/sounds_title"
-            app:srcCompat="@drawable/ic_settings_sound" />
+            app:srcCompat="@drawable/ic_settings_aosp_sound" />
 
         <ImageView
             android:id="@+id/notifications_icon"
@@ -121,7 +121,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/notifications_desc"
             app:layout_constraintEnd_toStartOf="@+id/notifications_title"
             app:layout_constraintTop_toTopOf="@+id/notifications_title"
-            app:srcCompat="@drawable/ic_settings_notifications" />
+            app:srcCompat="@drawable/ic_settings_aosp_notifications" />
 
         <TextView
             android:id="@+id/connections_title"

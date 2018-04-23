@@ -73,7 +73,7 @@
             app:layout_constraintStart_toEndOf="@+id/preview_sysui_bg"
             app:layout_constraintStart_toStartOf="@+id/preview_sysui_date"
             app:layout_constraintTop_toBottomOf="@+id/preview_sysui_date"
-            app:srcCompat="@drawable/ic_settings_connections" />
+            app:srcCompat="@drawable/ic_systemui_aosp_wifi" />
 
         <ImageView
             android:id="@+id/preview_sysui_icon2"
@@ -83,7 +83,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/preview_sysui_icon1"
             app:layout_constraintTop_toTopOf="@+id/preview_sysui_icon1"
-            app:srcCompat="@drawable/ic_settings_notifications" />
+            app:srcCompat="@drawable/ic_systemui_aosp_sound" />
 
         <ImageView
             android:id="@+id/preview_sysui_icon3"
@@ -93,7 +93,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/preview_sysui_icon2"
             app:layout_constraintTop_toTopOf="@+id/preview_sysui_icon2"
-            app:srcCompat="@drawable/ic_settings_sound" />
+            app:srcCompat="@drawable/ic_systemui_aosp_bluetooth" />
 
         <ImageView
             android:id="@+id/preview_sysui_icon4"
@@ -105,7 +105,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/preview_sysui_icon3"
             app:layout_constraintTop_toTopOf="@+id/preview_sysui_icon3"
-            app:srcCompat="@drawable/ic_settings_rotation" />
+            app:srcCompat="@drawable/ic_systemui_aosp_rotation" />
 
         <ImageView
             android:id="@+id/preview_sysui_icon5"
@@ -115,7 +115,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/preview_sysui_icon4"
             app:layout_constraintTop_toTopOf="@+id/preview_sysui_icon4"
-            app:srcCompat="@drawable/ic_settings_airplane" />
+            app:srcCompat="@drawable/ic_systemui_aosp_flashlight" />
 
         <ImageView
             android:id="@+id/preview_sysui_icon6"
@@ -125,7 +125,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/preview_sysui_icon5"
             app:layout_constraintTop_toTopOf="@+id/preview_sysui_icon5"
-            app:srcCompat="@drawable/ic_settings_bluetooth" />
+            app:srcCompat="@drawable/ic_systemui_aosp_airplane" />
 
         <ImageView
             android:id="@+id/preview_sysui_handle"
