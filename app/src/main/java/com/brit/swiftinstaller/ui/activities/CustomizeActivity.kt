@@ -183,9 +183,9 @@ class CustomizeActivity : ThemeActivity() {
         })
 
         val viewpager: ViewPager = findViewById(R.id.preview_pager)
-        viewpager.setPageMargin(64)
+        viewpager.pageMargin = 64
         val adapter = PreviewPagerAdapter()
-        viewpager.setAdapter(adapter)
+        viewpager.adapter = adapter
 
         if (usePalette) {
             material_theme.isChecked = true
