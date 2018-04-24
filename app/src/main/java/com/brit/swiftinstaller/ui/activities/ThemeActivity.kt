@@ -46,8 +46,10 @@ open class ThemeActivity: AppCompatActivity() {
         backgroundIDs.add(R.id.toolbar_install_summary_root)
         backgroundIDs.add(R.id.toolbar_customize_root)
         backgroundIDs.add(R.id.toolbar_overlays_root)
-        cardIDs.add(R.id.popup_menu_root)
 
+        cardIDs.add(R.id.failed_info_card_layout)
+        cardIDs.add(R.id.send_email_layout)
+        cardIDs.add(R.id.popup_menu_root)
         cardIDs.add(R.id.install_updates_tile)
         cardIDs.add(R.id.install_tile)
         cardIDs.add(R.id.accent_tile)
@@ -112,7 +114,11 @@ open class ThemeActivity: AppCompatActivity() {
                 Log.d("TEST", "null")
             }
             val popup = ContextCompat.getDrawable(this, R.drawable.popup_bg) as LayerDrawable
-            popup.findDrawableByLayerId(R.id.backgroundPopup).setTint(palette.cardBackgroud)
+            popup.findDrawableByLayerId(R.id.background_popup).setTint(palette.cardBackgroud)
+            val bottomSheet = ContextCompat.getDrawable(this, R.drawable.bottom_sheet_bg) as LayerDrawable
+            bottomSheet.findDrawableByLayerId(R.id.background_bottom_sheet).setTint(palette.cardBackgroud)
+            val failedInfoCard = ContextCompat.getDrawable(this, R.drawable.failed_info_card_bg) as LayerDrawable
+            failedInfoCard.findDrawableByLayerId(R.id.background_failed_info_card).setTint(palette.cardBackgroud)
         }
     }
 }

@@ -60,7 +60,7 @@ class AppListFragment : Fragment() {
             view.failed_info.visibility = View.GONE
         }
         selectAll(false)
-        view.failed_info.close_info_card_btn.setOnClickListener {
+        view.failed_info.failed_info_card_close.setOnClickListener {
             view.failed_info.visibility = View.GONE
             setHideFailedInfoCard(context!!, true)
         }

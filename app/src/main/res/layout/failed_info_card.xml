@@ -11,9 +11,10 @@
     android:paddingTop="12dp">
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/failed_info_card_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/info_card_bg"
+        android:background="@drawable/failed_info_card_bg"
         android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/close_info_card_btn"
+            android:id="@+id/failed_info_card_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/image"
@@ -31,14 +32,14 @@
             app:srcCompat="@drawable/ic_close_round" />
 
         <TextView
-            android:id="@+id/info_card_desc"
+            android:id="@+id/failed_info_card_desc"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
             android:lineSpacingExtra="2sp"
             android:text="@string/info_card_failed_msg"
             android:textColor="@android:color/white"
-            app:layout_constraintEnd_toStartOf="@+id/close_info_card_btn"
+            app:layout_constraintEnd_toStartOf="@+id/failed_info_card_close"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>

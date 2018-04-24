@@ -17,7 +17,6 @@ import android.support.v7.widget.Toolbar
 import android.view.*
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.PopupMenu
 import android.widget.PopupWindow
 import android.widget.Toast
 import com.brit.swiftinstaller.R
@@ -25,7 +24,6 @@ import com.brit.swiftinstaller.utils.*
 import kotlinx.android.synthetic.main.dialog_about.view.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.popup_menu.view.*
-import kotlinx.android.synthetic.main.toolbar_overlays.*
 
 class MainActivity : ThemeActivity() {
 
@@ -163,7 +161,7 @@ class MainActivity : ThemeActivity() {
         popup.isFocusable = true
 
         val b = popupView.background as LayerDrawable
-        b.findDrawableByLayerId(R.id.backgroundPopup).setTint(MaterialPalette.get(this).cardBackgroud)
+        b.findDrawableByLayerId(R.id.background_popup).setTint(MaterialPalette.get(this).cardBackgroud)
 
         popupView.popup_faq_item.setOnClickListener {
             faq()
