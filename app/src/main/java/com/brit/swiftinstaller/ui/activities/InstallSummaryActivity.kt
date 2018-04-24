@@ -14,6 +14,7 @@ import android.os.PowerManager
 import android.support.design.widget.TabLayout
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AlertDialog
+import android.util.Log
 import android.view.View
 import com.brit.swiftinstaller.BuildConfig
 import com.brit.swiftinstaller.R
@@ -27,6 +28,7 @@ import com.brit.swiftinstaller.utils.setAppVersion
 import kotlin.collections.ArrayList
 import kotlinx.android.synthetic.main.activity_install_summary.*
 import kotlinx.android.synthetic.main.tab_layout_install_summary.*
+import org.bouncycastle.jce.provider.PBE
 import java.lang.ref.WeakReference
 
 class InstallSummaryActivity : ThemeActivity() {
@@ -101,8 +103,19 @@ class InstallSummaryActivity : ThemeActivity() {
         }).execute()
     }
 
+    override fun onResume() {
+        super.onResume()
+        mApps = intent.getStringArrayListExtra("apps")
+        if (intent.extras.containsKey("errorMap")) {
+            mErrorMap = Utils.bundleToMap(intent.getBundleExtra("errorMap"))
+        } else {
+            mErrorMap.clear()
+        }
+    }
+
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+        Log.d("TEST", "onNewIntent")
         mApps = intent.getStringArrayListExtra("apps")
         if (intent.extras.containsKey("errorMap")) {
             mErrorMap = Utils.bundleToMap(intent.getBundleExtra("errorMap"))

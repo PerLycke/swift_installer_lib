@@ -113,7 +113,7 @@ class AppListFragment : Fragment() {
         mApps.sortWith(Comparator { o1: AppItem, o2: AppItem ->
             o1.title.compareTo(o2.title)
         })
-        mApps.forEach { mVisible.add(mApps.indexOf(it)) }
+        mVisible.addAll(mApps.indices)
         if (app_list_view != null && !app_list_view.isComputingLayout) {
             mHandler.post {
                 app_list_view.adapter.notifyDataSetChanged()

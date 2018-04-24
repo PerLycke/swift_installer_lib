@@ -71,7 +71,7 @@ object Utils {
                 runCommand("cmd overlay").output!!.contains(packageName)
     }
 
-    private fun isSamsungOreo(context: Context): Boolean {
+    fun isSamsungOreo(context: Context): Boolean {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
                 context.packageManager.hasSystemFeature("com.samsung.feature.samsung_experience_mobile")
     }
