@@ -62,9 +62,7 @@
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
-    <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@color/background_main</item>
-    </style>
+    <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal" />
     <style name="CustomBottomSheetStyle.Black" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@android:color/black</item>
     </style>

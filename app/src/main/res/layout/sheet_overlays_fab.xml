@@ -5,7 +5,6 @@
     android:id="@+id/sheet_overlays_fab_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:backgroundTint="@color/dialog_bg_tint"
     android:paddingBottom="8dp"
     android:paddingEnd="16dp"
     android:paddingStart="16dp"

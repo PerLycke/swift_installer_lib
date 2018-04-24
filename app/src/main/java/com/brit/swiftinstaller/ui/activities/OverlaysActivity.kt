@@ -212,6 +212,7 @@ class OverlaysActivity : ThemeActivity() {
         val bottomSheetDialog = ThemedBottomSheetDialog(this)
         val sheetView = View.inflate(this, R.layout.sheet_overlays_fab, null)
         bottomSheetDialog.setContentView(sheetView)
+        bottomSheetDialog.window.decorView .findViewById<View>(R.id.design_bottom_sheet) .setBackgroundColor(getBackgroundColor(this))
         bottomSheetDialog.show()
 
         val install = sheetView.findViewById<View>(R.id.install)
@@ -291,6 +292,7 @@ class OverlaysActivity : ThemeActivity() {
         val bottomSheetDialog = ThemedBottomSheetDialog(this)
         val sheetView = View.inflate(this, R.layout.sheet_confirm_uninstall, null)
         bottomSheetDialog.setContentView(sheetView)
+        bottomSheetDialog.window.decorView .findViewById<View>(R.id.design_bottom_sheet) .setBackgroundColor(getBackgroundColor(this))
         bottomSheetDialog.show()
 
         val uninstall = sheetView.findViewById<View>(R.id.confirm_uninstall_txt)

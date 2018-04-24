@@ -39,7 +39,6 @@ open class ThemeActivity: AppCompatActivity() {
         backgroundIDs.add(R.id.palette_view_root)
         backgroundIDs.add(R.id.progress_dialog_root)
         backgroundIDs.add(R.id.sheet_confirm_root)
-        backgroundIDs.add(R.id.sheet_install_root)
         backgroundIDs.add(R.id.sheet_overlays_fab_root)
         backgroundIDs.add(R.id.tab_install_summary_root)
         backgroundIDs.add(R.id.tabs_overlays_root)

@@ -26,7 +26,6 @@ import com.brit.swiftinstaller.utils.getAppVersion
 import com.brit.swiftinstaller.utils.setAppVersion
 import kotlin.collections.ArrayList
 import kotlinx.android.synthetic.main.activity_install_summary.*
-import kotlinx.android.synthetic.main.sheet_install_summary_fab.view.*
 import kotlinx.android.synthetic.main.tab_layout_install_summary.*
 import java.lang.ref.WeakReference
 
@@ -110,36 +109,6 @@ class InstallSummaryActivity : ThemeActivity() {
         } else {
             mErrorMap.clear()
         }
-    }
-
-    @Suppress("UNUSED_PARAMETER")
-    fun rebootActions(view: View) {
-        val bottomSheetDialog = ThemedBottomSheetDialog(this)
-        val sheetView = View.inflate(this, R.layout.sheet_install_summary_fab, null)
-
-        if (mErrorMap.isEmpty()) {
-            sheetView.send_log.visibility = View.GONE
-        } else {
-            sheetView.send_log.visibility = View.VISIBLE
-        }
-
-        sheetView.reboot.setOnClickListener {
-            val pm = getSystemService(PowerManager::class.java)
-            bottomSheetDialog.dismiss()
-            pm.reboot(null)
-        }
-
-        sheetView.send_log.setOnClickListener {
-            sendErrorLog()
-        }
-
-        sheetView.reboot_later.setOnClickListener {
-            bottomSheetDialog.dismiss()
-            finish()
-        }
-
-        bottomSheetDialog.setContentView(sheetView)
-        bottomSheetDialog.show()
     }
 
     private fun sendErrorLog() {
