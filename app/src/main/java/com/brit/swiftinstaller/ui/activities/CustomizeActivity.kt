@@ -27,12 +27,14 @@ import kotlinx.android.synthetic.main.customize_preview_settings.*
 import kotlinx.android.synthetic.main.toolbar_customize.*
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
+import kotlinx.android.synthetic.main.customize_icons.*
 import kotlinx.android.synthetic.main.customize_notifications.*
 import kotlinx.android.synthetic.main.customize_preview_sysui.*
 
 class CustomizeActivity : ThemeActivity() {
 
-    private var settingsIcons: Array<ImageView?> = arrayOfNulls(9)
+    private var settingsIcons: Array<ImageView?> = arrayOfNulls(3)
+    private var systemUiIcons: Array<ImageView?> = arrayOfNulls(6)
 
     private var accentColor = 0
     private var backgroundColor = 0
@@ -53,6 +55,7 @@ class CustomizeActivity : ThemeActivity() {
         useAospIcons = com.brit.swiftinstaller.utils.useAospIcons(this)
         notifShadow = useSenderNameFix(this)
         updateColor(getAccentColor(this), getBackgroundColor(this), true, false)
+        updateIcons()
 
         custom_dark_bg.setOnClickListener {
             updateColor(accentColor, convertToColorInt("202026"), true, false)
@@ -200,13 +203,8 @@ class CustomizeActivity : ThemeActivity() {
         val adapter = PreviewPagerAdapter()
         viewpager.adapter = adapter
 
-        if (usePalette) {
-            material_theme.isChecked = true
-            flat_theme.isChecked = false
-        } else {
-            material_theme.isChecked = false
-            flat_theme.isChecked = true
-        }
+        material_theme.isChecked = usePalette
+        flat_theme.isChecked = !usePalette
 
         val listener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
             if (compoundButton.id == R.id.material_theme) {
@@ -222,6 +220,9 @@ class CustomizeActivity : ThemeActivity() {
         material_theme.setOnCheckedChangeListener(listener)
         flat_theme.setOnCheckedChangeListener(listener)
 
+        disabled.isChecked = !notifShadow
+        enabled.isChecked = notifShadow
+
         val notifListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
             if (buttonView.id == R.id.disabled) {
                 disabled.isChecked = isChecked
@@ -235,6 +236,23 @@ class CustomizeActivity : ThemeActivity() {
         }
         disabled.setOnCheckedChangeListener(notifListener)
         enabled.setOnCheckedChangeListener(notifListener)
+
+        aosp_icons.isChecked = useAospIcons
+        stock_icons.isChecked = !useAospIcons
+
+        val iconListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+            if (buttonView.id == R.id.aosp_icons) {
+                aosp_icons.isChecked = isChecked
+                stock_icons.isChecked = !isChecked
+            } else {
+                aosp_icons.isChecked = !isChecked
+                stock_icons.isChecked = isChecked
+            }
+            useAospIcons = aosp_icons.isChecked
+            updateIcons()
+        }
+        aosp_icons.setOnCheckedChangeListener(iconListener)
+        stock_icons.setOnCheckedChangeListener(iconListener)
     }
 
     override fun onResume() {
@@ -244,15 +262,17 @@ class CustomizeActivity : ThemeActivity() {
 
     private fun setupAccentSheet() {
         palette.adapter = PaletteAdapter(resources.getIntArray(R.array.accent_colors))
-        settingsIcons[0] = connections_icon
-        settingsIcons[1] = sound_icon
-        settingsIcons[2] = notifications_icon
-        settingsIcons[3] = preview_sysui_icon1
-        settingsIcons[4] = preview_sysui_icon2
-        settingsIcons[5] = preview_sysui_icon3
-        settingsIcons[6] = preview_sysui_icon4
-        settingsIcons[7] = preview_sysui_icon5
-        settingsIcons[8] = preview_sysui_icon6
+        settingsIcons[0] = settings_connections_icon
+        settingsIcons[1] = settings_sound_icon
+        settingsIcons[2] = settings_notifications_icon
+        systemUiIcons[0] = systemui_wifi_icon
+        systemUiIcons[1] = systemui_airplane_icon
+        systemUiIcons[2] = systemui_bluetooth_icon
+        systemUiIcons[3] = systemui_flashlight_icon
+        systemUiIcons[4] = systemui_sound_icon
+        systemUiIcons[5] = systemui_rotation_icon
+
+        Log.d("TEST", "name - ${resources.getResourceEntryName(R.id.settings_connections_icon)}")
     }
 
     private fun setBgIndicator() {
@@ -291,7 +311,27 @@ class CustomizeActivity : ThemeActivity() {
         //back.setTintMode(PorterDuff.Mode.SRC_ATOP)
         settingsBackground.findDrawableByLayerId(R.id.preview_background).setTint(materialPalette.backgroundColor)
         systemUIBackground.findDrawableByLayerId(R.id.preview_background).setTint(materialPalette.backgroundColor)
+    }
 
+    private fun updateIcons() {
+        for (icon in settingsIcons) {
+            if (icon != null) {
+                val idName = "ic_${resources.getResourceEntryName(icon.id)}_${if (useAospIcons) {"aosp"} else {"stock"}}"
+                val id = resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName", null, null)
+                if (id > 0) {
+                    icon.setImageDrawable(getDrawable(id))
+                }
+            }
+        }
+        for (icon in systemUiIcons) {
+            if (icon != null) {
+                val idName = "ic_${resources.getResourceEntryName(icon.id)}_${if (useAospIcons) {"aosp"} else {"stock"}}"
+                val id = resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName", null, null)
+                if (id > 0) {
+                    icon.setImageDrawable(getDrawable(id))
+                }
+            }
+        }
     }
 
     fun updateColor(accentColor: Int, backgroundColor: Int, updateHex: Boolean, force: Boolean) {
@@ -301,6 +341,13 @@ class CustomizeActivity : ThemeActivity() {
         if (force || this.accentColor != accentColor) {
             this.accentColor = accentColor
             for (icon: ImageView? in settingsIcons) {
+                if (useAospIcons) {
+                    icon?.setColorFilter(accentColor)
+                } else {
+                    icon?.clearColorFilter()
+                }
+            }
+            for (icon: ImageView? in systemUiIcons) {
                 icon?.setColorFilter(accentColor)
             }
             accent_hex_input.background.setTint(accentColor)

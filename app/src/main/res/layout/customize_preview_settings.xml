@@ -85,7 +85,7 @@
             app:srcCompat="@drawable/ic_mic_preview" />
 
         <ImageView
-            android:id="@+id/connections_icon"
+            android:id="@+id/settings_connections_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="14dp"
@@ -95,10 +95,10 @@
             app:layout_constraintBottom_toBottomOf="@+id/connections_desc"
             app:layout_constraintEnd_toStartOf="@+id/connections_title"
             app:layout_constraintTop_toTopOf="@+id/connections_title"
-            app:srcCompat="@drawable/ic_settings_aosp_connections" />
+            app:srcCompat="@drawable/ic_settings_connections_icon_aosp" />
 
         <ImageView
-            android:id="@+id/sound_icon"
+            android:id="@+id/settings_sound_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="14dp"
@@ -108,10 +108,10 @@
             app:layout_constraintBottom_toBottomOf="@+id/sounds_desc"
             app:layout_constraintEnd_toStartOf="@+id/sounds_title"
             app:layout_constraintTop_toTopOf="@+id/sounds_title"
-            app:srcCompat="@drawable/ic_settings_aosp_sound" />
+            app:srcCompat="@drawable/ic_settings_sound_icon_aosp" />
 
         <ImageView
-            android:id="@+id/notifications_icon"
+            android:id="@+id/settings_notifications_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="14dp"
@@ -121,7 +121,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/notifications_desc"
             app:layout_constraintEnd_toStartOf="@+id/notifications_title"
             app:layout_constraintTop_toTopOf="@+id/notifications_title"
-            app:srcCompat="@drawable/ic_settings_aosp_notifications" />
+            app:srcCompat="@drawable/ic_settings_notifications_icon_aosp" />
 
         <TextView
             android:id="@+id/connections_title"

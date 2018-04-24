@@ -37,7 +37,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/preview_bg" />
+            app:srcCompat="@drawable/preview_bg"
+            android:contentDescription="@null" />
 
         <TextView
             android:id="@+id/preview_sysui_date"
@@ -46,11 +47,12 @@
             android:layout_marginStart="18dp"
             android:layout_marginTop="24dp"
             android:fontFamily="sans-serif-condensed"
-            android:text="22:20  |  Sun 19 April"
+            android:text="@string/preview_time_string"
             android:textColor="#ccffffff"
             android:textSize="8sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/preview_sysui_bg" />
+            app:layout_constraintTop_toTopOf="@+id/preview_sysui_bg"
+            tools:ignore="SmallSp" />
 
         <ImageView
             android:id="@+id/preview_sysui_gear"
@@ -60,72 +62,79 @@
             app:layout_constraintBottom_toBottomOf="@+id/preview_sysui_date"
             app:layout_constraintEnd_toEndOf="@+id/preview_sysui_bg"
             app:layout_constraintTop_toTopOf="@+id/preview_sysui_date"
-            app:srcCompat="@drawable/ic_gear" />
+            app:srcCompat="@drawable/ic_gear"
+            android:contentDescription="@null" />
 
         <ImageView
-            android:id="@+id/preview_sysui_icon1"
+            android:id="@+id/systemui_wifi_icon"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toStartOf="@+id/preview_sysui_icon2"
+            app:layout_constraintEnd_toStartOf="@+id/systemui_sound_icon"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toEndOf="@+id/preview_sysui_bg"
             app:layout_constraintStart_toStartOf="@+id/preview_sysui_date"
             app:layout_constraintTop_toBottomOf="@+id/preview_sysui_date"
-            app:srcCompat="@drawable/ic_systemui_aosp_wifi" />
+            app:srcCompat="@drawable/ic_systemui_wifi_icon_aosp"
+            android:contentDescription="@null" />
 
         <ImageView
-            android:id="@+id/preview_sysui_icon2"
+            android:id="@+id/systemui_sound_icon"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            app:layout_constraintEnd_toStartOf="@+id/preview_sysui_icon3"
+            app:layout_constraintEnd_toStartOf="@+id/systemui_bluetooth_icon"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/preview_sysui_icon1"
-            app:layout_constraintTop_toTopOf="@+id/preview_sysui_icon1"
-            app:srcCompat="@drawable/ic_systemui_aosp_sound" />
+            app:layout_constraintStart_toEndOf="@+id/systemui_wifi_icon"
+            app:layout_constraintTop_toTopOf="@+id/systemui_wifi_icon"
+            app:srcCompat="@drawable/ic_systemui_sound_icon_aosp"
+            android:contentDescription="@null" />
 
         <ImageView
-            android:id="@+id/preview_sysui_icon3"
+            android:id="@+id/systemui_bluetooth_icon"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            app:layout_constraintEnd_toStartOf="@+id/preview_sysui_icon4"
+            app:layout_constraintEnd_toStartOf="@+id/systemui_rotation_icon"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/preview_sysui_icon2"
-            app:layout_constraintTop_toTopOf="@+id/preview_sysui_icon2"
-            app:srcCompat="@drawable/ic_systemui_aosp_bluetooth" />
+            app:layout_constraintStart_toEndOf="@+id/systemui_sound_icon"
+            app:layout_constraintTop_toTopOf="@+id/systemui_sound_icon"
+            app:srcCompat="@drawable/ic_systemui_bluetooth_icon_aosp"
+            android:contentDescription="@null" />
 
         <ImageView
-            android:id="@+id/preview_sysui_icon4"
+            android:id="@+id/systemui_rotation_icon"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:scaleX="0.9"
             android:scaleY="0.9"
-            app:layout_constraintEnd_toStartOf="@+id/preview_sysui_icon5"
+            app:layout_constraintEnd_toStartOf="@+id/systemui_flashlight_icon"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/preview_sysui_icon3"
-            app:layout_constraintTop_toTopOf="@+id/preview_sysui_icon3"
-            app:srcCompat="@drawable/ic_systemui_aosp_rotation" />
+            app:layout_constraintStart_toEndOf="@+id/systemui_bluetooth_icon"
+            app:layout_constraintTop_toTopOf="@+id/systemui_bluetooth_icon"
+            app:srcCompat="@drawable/ic_systemui_rotation_icon_aosp"
+            android:contentDescription="@null" />
 
         <ImageView
-            android:id="@+id/preview_sysui_icon5"
+            android:id="@+id/systemui_flashlight_icon"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            app:layout_constraintEnd_toStartOf="@+id/preview_sysui_icon6"
+            app:layout_constraintEnd_toStartOf="@+id/systemui_airplane_icon"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/preview_sysui_icon4"
-            app:layout_constraintTop_toTopOf="@+id/preview_sysui_icon4"
-            app:srcCompat="@drawable/ic_systemui_aosp_flashlight" />
+            app:layout_constraintStart_toEndOf="@+id/systemui_rotation_icon"
+            app:layout_constraintTop_toTopOf="@+id/systemui_rotation_icon"
+            app:srcCompat="@drawable/ic_systemui_flashlight_icon_aosp"
+            android:contentDescription="@null" />
 
         <ImageView
-            android:id="@+id/preview_sysui_icon6"
+            android:id="@+id/systemui_airplane_icon"
             android:layout_width="20dp"
             android:layout_height="20dp"
             app:layout_constraintEnd_toEndOf="@+id/preview_sysui_gear"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/preview_sysui_icon5"
-            app:layout_constraintTop_toTopOf="@+id/preview_sysui_icon5"
-            app:srcCompat="@drawable/ic_systemui_aosp_airplane" />
+            app:layout_constraintStart_toEndOf="@+id/systemui_flashlight_icon"
+            app:layout_constraintTop_toTopOf="@+id/systemui_flashlight_icon"
+            app:srcCompat="@drawable/ic_systemui_airplane_icon_aosp"
+            android:contentDescription="@null" />
 
         <ImageView
             android:id="@+id/preview_sysui_handle"
@@ -134,8 +143,9 @@
             android:layout_marginTop="12dp"
             app:layout_constraintEnd_toEndOf="@+id/preview_sysui_divider"
             app:layout_constraintStart_toStartOf="@+id/preview_sysui_divider"
-            app:layout_constraintTop_toBottomOf="@+id/preview_sysui_icon1"
-            app:srcCompat="@drawable/ic_drag_handle" />
+            app:layout_constraintTop_toBottomOf="@+id/systemui_wifi_icon"
+            app:srcCompat="@drawable/ic_drag_handle"
+            android:contentDescription="@null" />
 
         <ImageView
             android:id="@+id/preview_sysui_divider"
@@ -146,7 +156,8 @@
             android:background="#26000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/preview_sysui_handle" />
+            app:layout_constraintTop_toBottomOf="@+id/preview_sysui_handle"
+            android:contentDescription="@null" />
 
         <ImageView
             android:id="@+id/preview_sysui_whatsapp"
@@ -157,42 +168,46 @@
             android:tint="#075e55"
             app:layout_constraintStart_toStartOf="@+id/preview_sysui_bg"
             app:layout_constraintTop_toBottomOf="@+id/preview_sysui_divider"
-            app:srcCompat="@drawable/ic_whatsapp" />
+            app:srcCompat="@drawable/ic_whatsapp"
+            android:contentDescription="@null" />
 
         <TextView
             android:id="@+id/preview_sysui_whatsapp_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
-            android:text="WhatsApp"
+            android:text="@string/whatsapp_title"
             android:textColor="#075e55"
             android:textSize="10sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/preview_sysui_whatsapp"
             app:layout_constraintStart_toEndOf="@id/preview_sysui_whatsapp"
             app:layout_constraintTop_toTopOf="@+id/preview_sysui_whatsapp"
-            tools:layout_editor_absoluteX="38dp" />
+            tools:layout_editor_absoluteX="38dp"
+            tools:ignore="SmallSp" />
 
         <TextView
             android:id="@+id/preview_sysui_whatsapp_sender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Michael"
+            android:text="@string/sender_name_preview"
             android:textSize="10sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/preview_sysui_whatsapp"
-            app:layout_constraintTop_toBottomOf="@+id/preview_sysui_whatsapp" />
+            app:layout_constraintTop_toBottomOf="@+id/preview_sysui_whatsapp"
+            tools:ignore="SmallSp" />
 
         <TextView
             android:id="@+id/preview_sysui_whatsapp_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="Notification fix makes all notifications visible"
+            android:text="@string/notification_fix_summary"
             android:textSize="10sp"
             app:layout_constraintStart_toStartOf="@+id/preview_sysui_whatsapp_sender"
-            app:layout_constraintTop_toBottomOf="@+id/preview_sysui_whatsapp_sender" />
+            app:layout_constraintTop_toBottomOf="@+id/preview_sysui_whatsapp_sender"
+            tools:ignore="SmallSp" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>
