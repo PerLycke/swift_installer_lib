@@ -78,7 +78,7 @@
     <string name="whatsapp_title">WhatsApp</string>
     <string name="sender_name_preview">Michael</string>
     <string name="notification_fix_summary">Notification fix makes all notifications visible</string>
-    <string name="notif_fix_desc_summary">Some notification texts are hardcoded black, e.g. WhatsApp notifications. This fix adds a shadow around all text, making black text visible. You can see how it looks in the preview above.</string>
+    <string name="notif_fix_desc_summary">When using dark notifications: Some notification texts are hardcoded black, e.g. WhatsApp notifications. This fix adds a shadow around all text, making black text visible. You can see how it looks in the preview above.</string>
     <string name="disable">Disable</string>
     <string name="enable_shadow_title">Enable shadow around text</string>
 </resources>

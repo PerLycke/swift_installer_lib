@@ -11,7 +11,6 @@
         android:checked="true"
         android:fontFamily="sans-serif"
         android:text="Google icons"
-        android:textSize="16sp"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="@+id/guideline1"
         app:layout_constraintTop_toBottomOf="@+id/icons_category_title" />
@@ -23,7 +22,6 @@
         android:layout_marginTop="16dp"
         android:fontFamily="sans-serif"
         android:text="Samsung icons"
-        android:textSize="16sp"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/aosp_icons" />

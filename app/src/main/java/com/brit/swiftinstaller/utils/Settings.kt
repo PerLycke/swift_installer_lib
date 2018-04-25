@@ -19,6 +19,7 @@ const val KEY_USER_ACCENTS = "user_accents"
 const val KEY_OVERLAY_UPDATES = "overlays_to_update"
 const val KEY_OVERLAYS_TO_INSTALL = "overlays_to_install"
 const val KEY_OVERLAYS_TO_UNINSTALL = "overlays_to_uninstall"
+const val KEY_DARK_NOTIF_BG = "dark_notif_bg"
 
 fun getAccentColor(context: Context): Int {
     return PreferenceManager.getDefaultSharedPreferences(context).getInt(KEY_ACCENT_COLOR, RomInfo.getRomInfo(context).defaultAccent)
@@ -42,6 +43,14 @@ fun useBackgroundPalette(context: Context): Boolean {
 
 fun setUseBackgroundPalette(context: Context, use: Boolean) {
     PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(KEY_BACKGROUND_PALETTE, use).apply()
+}
+
+fun useDarkNotifBg(context: Context): Boolean {
+    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_DARK_NOTIF_BG, false)
+}
+
+fun setUseDarkNotifBg(context: Context, use: Boolean) {
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(KEY_DARK_NOTIF_BG, use).apply()
 }
 
 fun useSenderNameFix(context: Context): Boolean {

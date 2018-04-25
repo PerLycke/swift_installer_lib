@@ -82,7 +82,7 @@
         app:srcCompat="@drawable/top_shadow" />
 
     <ScrollView
-        android:id="@+id/scrollView2"
+        android:id="@+id/customizations_scrollview"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -117,10 +117,10 @@
                 android:id="@+id/customize_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintVertical_bias="0.215">
+                app:layout_constraintStart_toStartOf="parent">
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
@@ -284,7 +284,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="32dp"
                         android:fontFamily="sans-serif"
-                        android:text="Optional notifications fix"
+                        android:text="Notification tweaks"
                         android:textAllCaps="true"
                         android:textColor="?android:attr/textColorSecondary"
                         android:textSize="14sp"
@@ -310,6 +310,8 @@
                     <android.support.constraint.ConstraintLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
                         android:layout_marginTop="20dp"
                         app:layout_constraintEnd_toStartOf="@+id/guideline2"
                         app:layout_constraintStart_toStartOf="@+id/guideline1"

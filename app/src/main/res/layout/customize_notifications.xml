@@ -2,41 +2,71 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/notif_fix_desc"
+    <RadioButton
+        android:id="@+id/white_notifications"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/notif_fix_desc_summary"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:checked="true"
+        android:text="White notifications"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <RadioButton
-        android:id="@+id/disabled"
+        android:id="@+id/dark_notifications"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:checked="true"
-        android:fontFamily="sans-serif"
-        android:text="@string/disable"
-        android:textSize="16sp"
-        android:visibility="visible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/notif_fix_desc" />
+        android:text="Dark notifications"
+        app:layout_constraintStart_toStartOf="@+id/white_notifications"
+        app:layout_constraintTop_toBottomOf="@+id/white_notifications" />
 
-    <RadioButton
-        android:id="@+id/enabled"
-        android:layout_width="wrap_content"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/shadowFixLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
-        android:fontFamily="sans-serif"
-        android:text="@string/enable_shadow_title"
-        android:textSize="16sp"
-        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/disabled" />
+        app:layout_constraintTop_toBottomOf="@+id/dark_notifications">
+
+        <RadioButton
+            android:id="@+id/shadow_enabled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif"
+            android:text="@string/enable_shadow_title"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="@+id/shadow_disabled"
+            app:layout_constraintTop_toBottomOf="@+id/shadow_disabled" />
+
+        <RadioButton
+            android:id="@+id/shadow_disabled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:checked="true"
+            android:fontFamily="sans-serif"
+            android:text="@string/disable"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="@+id/notif_fix_desc"
+            app:layout_constraintTop_toBottomOf="@+id/notif_fix_desc" />
+
+        <TextView
+            android:id="@+id/notif_fix_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="12dp"
+            android:text="@string/notif_fix_desc_summary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/dark_notifications"
+            app:layout_constraintTop_toBottomOf="@+id/dark_notifications" />
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

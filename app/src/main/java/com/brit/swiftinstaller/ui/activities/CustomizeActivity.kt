@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.text.Editable
 import android.text.TextWatcher
@@ -27,6 +28,7 @@ import kotlinx.android.synthetic.main.customize_preview_settings.*
 import kotlinx.android.synthetic.main.toolbar_customize.*
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
+import kotlinx.android.synthetic.main.activity_customize.*
 import kotlinx.android.synthetic.main.customize_icons.*
 import kotlinx.android.synthetic.main.customize_notifications.*
 import kotlinx.android.synthetic.main.customize_preview_sysui.*
@@ -43,6 +45,7 @@ class CustomizeActivity : ThemeActivity() {
     private var usePalette = false
     private var useAospIcons = false
     private var notifShadow = false
+    private var darkNotif = false
 
     private lateinit var materialPalette: MaterialPalette
 
@@ -54,6 +57,7 @@ class CustomizeActivity : ThemeActivity() {
         usePalette = useBackgroundPalette(this)
         useAospIcons = com.brit.swiftinstaller.utils.useAospIcons(this)
         notifShadow = useSenderNameFix(this)
+        darkNotif = useDarkNotifBg(this)
         updateColor(getAccentColor(this), getBackgroundColor(this), true, false)
         updateIcons()
 
@@ -85,6 +89,7 @@ class CustomizeActivity : ThemeActivity() {
             val oldPalette = useBackgroundPalette(this)
             val oldIcons = useAospIcons(this)
             val oldShadow = useSenderNameFix(this)
+            val oldNotifbg = useDarkNotifBg(this)
 
             if (oldAccent != accentColor) {
                 setAccentColor(this, accentColor)
@@ -108,6 +113,10 @@ class CustomizeActivity : ThemeActivity() {
                 recompile = true
                 if (!apps.contains("android"))
                     apps.add("android")
+            }
+
+            if (darkNotif != oldNotifbg) {
+                setUseDarkNotifBg(this, darkNotif)
             }
 
             if (notifShadow != oldShadow) {
@@ -220,22 +229,49 @@ class CustomizeActivity : ThemeActivity() {
         material_theme.setOnCheckedChangeListener(listener)
         flat_theme.setOnCheckedChangeListener(listener)
 
-        disabled.isChecked = !notifShadow
-        enabled.isChecked = notifShadow
+        white_notifications.isChecked = !darkNotif
+        dark_notifications.isChecked = darkNotif
 
-        val notifListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
-            if (buttonView.id == R.id.disabled) {
-                disabled.isChecked = isChecked
-                enabled.isChecked = !isChecked
+        if (darkNotif) {
+            shadowFixLayout.visibility = View.VISIBLE
+        } else {
+            shadowFixLayout.visibility = View.GONE
+        }
+
+        val notifBglistener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
+            if (compoundButton.id == R.id.dark_notifications) {
+                dark_notifications.isChecked = b
+                white_notifications.isChecked = !b
+                shadowFixLayout.visibility = View.VISIBLE
+                customizations_scrollview.postDelayed(Runnable { customizations_scrollview.fullScroll(ScrollView.FOCUS_DOWN) }, 200)
             } else {
-                disabled.isChecked = !isChecked
-                enabled.isChecked = isChecked
+                dark_notifications.isChecked = !b
+                white_notifications.isChecked = b
+                shadowFixLayout.visibility = View.GONE
             }
-            notifShadow = enabled.isChecked
+            darkNotif = dark_notifications.isChecked
             updateColor(accentColor, backgroundColor, false, true)
         }
-        disabled.setOnCheckedChangeListener(notifListener)
-        enabled.setOnCheckedChangeListener(notifListener)
+
+        dark_notifications.setOnCheckedChangeListener(notifBglistener)
+        white_notifications.setOnCheckedChangeListener(notifBglistener)
+
+        shadow_disabled.isChecked = !notifShadow
+        shadow_enabled.isChecked = notifShadow
+
+        val notifListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+            if (buttonView.id == R.id.shadow_disabled) {
+                shadow_disabled.isChecked = isChecked
+                shadow_enabled.isChecked = !isChecked
+            } else {
+                shadow_disabled.isChecked = !isChecked
+                shadow_enabled.isChecked = isChecked
+            }
+            notifShadow = shadow_enabled.isChecked
+            updateColor(accentColor, backgroundColor, false, true)
+        }
+        shadow_disabled.setOnCheckedChangeListener(notifListener)
+        shadow_enabled.setOnCheckedChangeListener(notifListener)
 
         aosp_icons.isChecked = useAospIcons
         stock_icons.isChecked = !useAospIcons
@@ -310,7 +346,7 @@ class CustomizeActivity : ThemeActivity() {
         val systemUIBackground = preview_sysui_bg.drawable as LayerDrawable
         //back.setTintMode(PorterDuff.Mode.SRC_ATOP)
         settingsBackground.findDrawableByLayerId(R.id.preview_background).setTint(materialPalette.backgroundColor)
-        systemUIBackground.findDrawableByLayerId(R.id.preview_background).setTint(materialPalette.backgroundColor)
+        systemUIBackground.findDrawableByLayerId(R.id.preview_background_sysui).setTint(materialPalette.backgroundColor)
     }
 
     private fun updateIcons() {
@@ -341,11 +377,7 @@ class CustomizeActivity : ThemeActivity() {
         if (force || this.accentColor != accentColor) {
             this.accentColor = accentColor
             for (icon: ImageView? in settingsIcons) {
-                if (useAospIcons) {
-                    icon?.setColorFilter(accentColor)
-                } else {
-                    icon?.clearColorFilter()
-                }
+                icon?.setColorFilter(accentColor)
             }
             for (icon: ImageView? in systemUiIcons) {
                 icon?.setColorFilter(accentColor)
@@ -372,6 +404,14 @@ class CustomizeActivity : ThemeActivity() {
             preview_sysui_whatsapp_title.setShadowLayer(2.0f, 0.0f, 0.0f, Color.TRANSPARENT)
             preview_sysui_whatsapp_sender.setTextColor(Color.BLACK)
             preview_sysui_whatsapp_sender.setShadowLayer(2.0f, 0.0f, 0.0f, Color.TRANSPARENT)
+        }
+
+        if (darkNotif) {
+            notif_bg_layout.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.notif_bg_dark))
+            preview_sysui_whatsapp_msg.setTextColor(Color.WHITE)
+        } else {
+            notif_bg_layout.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.notif_bg_white))
+            preview_sysui_whatsapp_msg.setTextColor(Color.BLACK)
         }
     }
 
