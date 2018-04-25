@@ -37,7 +37,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/preview_bg_sysui" />
+            app:srcCompat="@drawable/preview_bg" />
 
         <ImageView
             android:id="@+id/notif_bg_layout"
@@ -50,7 +50,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/preview_sysui_divider"
-            tools:srcCompat="@drawable/notif_bg_white" />
+            app:srcCompat="@drawable/notif_bg" />
 
         <TextView
             android:id="@+id/preview_sysui_date"

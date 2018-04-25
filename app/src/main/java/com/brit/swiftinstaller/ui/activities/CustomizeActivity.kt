@@ -235,12 +235,6 @@ class CustomizeActivity : ThemeActivity() {
         white_notifications.isChecked = !darkNotif
         dark_notifications.isChecked = darkNotif
 
-        if (darkNotif) {
-            shadowFixLayout.visibility = View.VISIBLE
-        } else {
-            shadowFixLayout.visibility = View.GONE
-        }
-
         val notifBglistener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
             if (compoundButton.id == R.id.dark_notifications) {
                 dark_notifications.isChecked = b
@@ -349,7 +343,7 @@ class CustomizeActivity : ThemeActivity() {
         val systemUIBackground = preview_sysui_bg.drawable as LayerDrawable
         //back.setTintMode(PorterDuff.Mode.SRC_ATOP)
         settingsBackground.findDrawableByLayerId(R.id.preview_background).setTint(materialPalette.backgroundColor)
-        systemUIBackground.findDrawableByLayerId(R.id.preview_background_sysui).setTint(materialPalette.backgroundColor)
+        systemUIBackground.findDrawableByLayerId(R.id.preview_background).setTint(materialPalette.backgroundColor)
     }
 
     private fun updateIcons() {
@@ -410,11 +404,13 @@ class CustomizeActivity : ThemeActivity() {
         }
 
         if (darkNotif) {
-            notif_bg_layout.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.notif_bg_dark))
+            notif_bg_layout.drawable.setTint(Color.TRANSPARENT)
             preview_sysui_whatsapp_msg.setTextColor(Color.parseColor("#b3ffffff"))
+            shadowFixLayout.visibility = View.VISIBLE
         } else {
-            notif_bg_layout.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.notif_bg_white))
+            notif_bg_layout.drawable.setTint(Color.parseColor("#f5f5f5"))
             preview_sysui_whatsapp_msg.setTextColor(Color.parseColor("#8a000000"))
+            shadowFixLayout.visibility = View.GONE
         }
     }
 
