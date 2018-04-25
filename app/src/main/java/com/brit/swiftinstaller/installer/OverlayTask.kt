@@ -207,6 +207,23 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         } else {
             file.append("<integer name=\"leanback_setup_alpha_activity_in_bkg_delay\">0</integer>\n")
         }
+        if (useDarkNotifBg(context)) {
+            file.append("<color name=\"legacy_selected_highlight\">@*android:color/background_material_dark</color>\n")
+            file.append("<color name=\"legacy_light_button_pressed\">@*android:color/background_material_dark</color>\n")
+            file.append("<color name=\"legacy_pressed_highlight\">@*android:color/white</color>\n")
+            file.append("<color name=\"legacy_light_button_normal\">#cfcfcf</color>\n")
+            file.append("<color name=\"legacy_light_control_normal\">@*android:color/transparent</color>\n")
+            file.append("<color name=\"legacy_light_primary\">@*android:color/background_material_dark</color>\n")
+            file.append("<color name=\"legacy_light_primary_dark\">@*android:color/white</color>\n")
+        } else {
+            file.append("<color name=\"legacy_selected_highlight\">@*android:color/white</color>\n")
+            file.append("<color name=\"legacy_light_button_pressed\">#eeeeee</color>\n")
+            file.append("<color name=\"legacy_pressed_highlight\">#de000000</color>\n")
+            file.append("<color name=\"legacy_light_button_normal\">#8a000000</color>\n")
+            file.append("<color name=\"legacy_light_control_normal\">@*android:color/white</color>\n")
+            file.append("<color name=\"legacy_light_primary\">@null</color>\n")
+            file.append("<color name=\"legacy_light_primary_dark\">#eeeeee</color>\n")
+        }
         file.append("</resources>")
 
         val values = File(resDir, "/values")

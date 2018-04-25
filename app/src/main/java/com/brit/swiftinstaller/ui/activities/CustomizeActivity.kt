@@ -117,6 +117,9 @@ class CustomizeActivity : ThemeActivity() {
 
             if (darkNotif != oldNotifbg) {
                 setUseDarkNotifBg(this, darkNotif)
+                recompile = true
+                if (!apps.contains("android"))
+                    apps.add("android")
             }
 
             if (notifShadow != oldShadow) {
@@ -397,7 +400,7 @@ class CustomizeActivity : ThemeActivity() {
         }
 
         if (notifShadow) {
-            preview_sysui_whatsapp_title.setShadowLayer(2.0f, 0.0f, 0.0f, Color.WHITE)
+            preview_sysui_whatsapp_title.setShadowLayer(1.0f, 0.0f, 0.0f, Color.WHITE)
             preview_sysui_whatsapp_sender.setTextColor(Color.BLACK)
             preview_sysui_whatsapp_sender.setShadowLayer(2.0f, 0.0f, 0.0f, Color.WHITE)
         } else {
@@ -408,10 +411,10 @@ class CustomizeActivity : ThemeActivity() {
 
         if (darkNotif) {
             notif_bg_layout.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.notif_bg_dark))
-            preview_sysui_whatsapp_msg.setTextColor(Color.WHITE)
+            preview_sysui_whatsapp_msg.setTextColor(Color.parseColor("#b3ffffff"))
         } else {
             notif_bg_layout.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.notif_bg_white))
-            preview_sysui_whatsapp_msg.setTextColor(Color.BLACK)
+            preview_sysui_whatsapp_msg.setTextColor(Color.parseColor("#8a000000"))
         }
     }
 

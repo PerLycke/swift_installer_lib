@@ -43,14 +43,13 @@
             android:id="@+id/notif_bg_layout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginBottom="18dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginBottom="14dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginStart="3dp"
             app:layout_constraintBottom_toBottomOf="@+id/preview_sysui_bg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/preview_sysui_handle"
+            app:layout_constraintTop_toBottomOf="@+id/preview_sysui_divider"
             tools:srcCompat="@drawable/notif_bg_white" />
 
         <TextView
@@ -151,10 +150,11 @@
 
         <ImageView
             android:id="@+id/preview_sysui_handle"
-            android:layout_width="16dp"
+            android:layout_width="22dp"
             android:layout_height="16dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="16dp"
             android:contentDescription="@null"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="@+id/preview_sysui_divider"
             app:layout_constraintStart_toStartOf="@+id/preview_sysui_divider"
             app:layout_constraintTop_toBottomOf="@+id/systemui_wifi_icon"
@@ -162,8 +162,10 @@
 
         <ImageView
             android:id="@+id/preview_sysui_divider"
-            android:layout_width="245dp"
+            android:layout_width="0dp"
             android:layout_height="2dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginStart="3dp"
             android:background="#26000000"
             android:contentDescription="@null"
             app:layout_constraintEnd_toEndOf="parent"
@@ -175,7 +177,7 @@
             android:layout_width="15dp"
             android:layout_height="15dp"
             android:layout_marginStart="17dp"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="10dp"
             android:contentDescription="@null"
             android:tint="#ff0f665c"
             app:layout_constraintStart_toStartOf="parent"
@@ -200,7 +202,7 @@
             android:id="@+id/preview_sysui_whatsapp_sender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="9dp"
+            android:layout_marginTop="6dp"
             android:text="@string/sender_name_preview"
             android:textSize="12sp"
             android:textStyle="bold"
@@ -211,15 +213,20 @@
 
         <TextView
             android:id="@+id/preview_sysui_whatsapp_msg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="2dp"
+            android:fontFamily="sans-serif"
             android:text="@string/notification_fix_summary"
-            android:textSize="10sp"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/notif_bg_layout"
+            app:layout_constraintEnd_toEndOf="@+id/notif_bg_layout"
             app:layout_constraintStart_toStartOf="@+id/preview_sysui_whatsapp_sender"
             app:layout_constraintTop_toBottomOf="@+id/preview_sysui_whatsapp_sender"
             tools:ignore="SmallSp"
-            tools:textColor="@android:color/black" />
+            tools:textColor="#8a000000" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>
