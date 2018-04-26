@@ -165,22 +165,26 @@ class AppListFragment : Fragment() {
             fun bindAppItem(item: AppItem) {
                 appName.text = item.title
                 appIcon.setImageDrawable(item.icon)
-                required.visibility = View.GONE
                 if (requiredApps.contains(item.packageName)) {
                     appCheckBox.setOnCheckedChangeListener(null)
                     view.setOnClickListener(null)
                     appCheckBox.isChecked = true
                     appCheckBox.isClickable = false
-                    packageName.setTextColor(Color.parseColor("#4dffffff"))
+                    view.isEnabled = false
                     required.visibility = View.VISIBLE
+                    appCheckBox.buttonTintList = ColorStateList(arrayOf<IntArray>(appCheckBox.drawableState),
+                            intArrayOf(Color.parseColor("#4dffffff")))
 
-                    val states = arrayOf<IntArray>(intArrayOf(android.R.attr.state_checked))
-                    val colors = intArrayOf(Color.parseColor("#4dffffff"))
-                    appCheckBox.setButtonTintList(ColorStateList(states, colors))
+                    //val states = arrayOf<IntArray>(intArrayOf(android.R.attr.state_checked))
+                    //val colors = intArrayOf(Color.parseColor("#4dffffff"))
+                    //appCheckBox.setButtonTintList(ColorStateList(states, colors))
                 } else {
                     appCheckBox.setOnCheckedChangeListener(checkListener)
                     appCheckBox.isChecked = mChecked.get(mVisible[adapterPosition], false)
                     view.setOnClickListener(clickListener)
+                    view.isEnabled = true
+                    required.visibility = View.GONE
+                    appCheckBox.buttonTintList = null
                 }
                 packageName.text = item.packageName
 
