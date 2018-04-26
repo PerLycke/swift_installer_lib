@@ -7,6 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.support.v4.content.FileProvider
+import android.util.Log
 import com.brit.swiftinstaller.BuildConfig
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.*
@@ -39,6 +40,12 @@ class RomInfo internal constructor(var context: Context, var name: String,
     fun postInstall(uninstall: Boolean, apps: ArrayList<String>, oppositeApps: ArrayList<String>?, intent: Intent?) {
         val extraIntent = intent != null
 
+        if (apps.contains("com.google.android.packageinstaller")) {
+            val index = apps.indexOf("com.google.android.packageinstaller")
+            apps.removeAt(index)
+            apps.add(0, "com.google.android.packageinstaller")
+        }
+
         val intents = Array(if (!extraIntent) { apps.size } else { apps.size + 1 }, { i ->
             val index = if (extraIntent) { i - 1 } else { i }
             if (!extraIntent || i > 0) {
@@ -62,8 +69,12 @@ class RomInfo internal constructor(var context: Context, var name: String,
             }
         })
 
+        intents.forEach {
+            Log.d("TEST", "data - ${it.data}")
+        }
+
         if (!intents.isEmpty()) {
-            context.startActivities(intents)
+         //   context.startActivities(intents)
         }
 
         if (oppositeApps != null && !oppositeApps.isEmpty()) {

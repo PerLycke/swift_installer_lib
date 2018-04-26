@@ -69,7 +69,7 @@ open class ThemeActivity: AppCompatActivity() {
     }
 
     fun themeDialog() {
-        val dialogBg = ContextCompat.getDrawable(this, R.drawable.dialog_bg) as LayerDrawable
+        val dialogBg = getDrawable(R.drawable.dialog_bg) as LayerDrawable
         dialogBg.findDrawableByLayerId(R.id.dialog_bg).setTint(getBackgroundColor(this))
     }
 
