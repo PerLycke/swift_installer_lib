@@ -7,7 +7,6 @@ import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.text.Editable
 import android.text.TextWatcher
@@ -370,7 +369,7 @@ class CustomizeActivity : ThemeActivity() {
     fun updateColor(accentColor: Int, backgroundColor: Int, updateHex: Boolean, force: Boolean) {
         Log.d("TEST", "accent - ${Integer.toHexString(accentColor)}")
         Log.d("TEST", "background - ${Integer.toHexString(backgroundColor)}")
-        updateColors(accentColor, backgroundColor, usePalette)
+        updateColors(backgroundColor, usePalette)
         if (force || this.accentColor != accentColor) {
             this.accentColor = accentColor
             for (icon: ImageView? in settingsIcons) {

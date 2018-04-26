@@ -166,14 +166,15 @@ class MainActivity : ThemeActivity() {
         popupView.popup_faq_item.setOnClickListener {
             faq()
         }
+
         popupView.popup_menu_about.setOnClickListener {
+            popup.dismiss()
+
             val dialogView = View.inflate(this, R.layout.dialog_about, null)
-            val builder = if (AppCompatDelegate.getDefaultNightMode()
-                        == AppCompatDelegate.MODE_NIGHT_YES) {
-                AlertDialog.Builder(this, R.style.AppTheme_AlertDialog_Black)
-            } else {
-                AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-            }
+            val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+
+            themeDialog()
+
             builder.setView(dialogView)
             val dialog = builder.create()
 

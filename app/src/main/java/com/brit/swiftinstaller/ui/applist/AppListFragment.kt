@@ -1,5 +1,7 @@
 package com.brit.swiftinstaller.ui.applist
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
@@ -145,6 +147,7 @@ class AppListFragment : Fragment() {
             private var appIcon: ImageView = view.findViewById(R.id.app_item_image)
             private var appCheckBox: CheckBox = view.findViewById(R.id.app_item_checkbox)
             private var alertIcon: ImageView = view.findViewById(R.id.alert_icon)
+            private var required: TextView = view.findViewById(R.id.required)
 
             private val checkListener : (CompoundButton, Boolean) -> Unit
             private val clickListener : (View) -> Unit
@@ -162,11 +165,18 @@ class AppListFragment : Fragment() {
             fun bindAppItem(item: AppItem) {
                 appName.text = item.title
                 appIcon.setImageDrawable(item.icon)
+                required.visibility = View.GONE
                 if (requiredApps.contains(item.packageName)) {
                     appCheckBox.setOnCheckedChangeListener(null)
                     view.setOnClickListener(null)
                     appCheckBox.isChecked = true
                     appCheckBox.isClickable = false
+                    packageName.setTextColor(Color.parseColor("#4dffffff"))
+                    required.visibility = View.VISIBLE
+
+                    val states = arrayOf<IntArray>(intArrayOf(android.R.attr.state_checked))
+                    val colors = intArrayOf(Color.parseColor("#4dffffff"))
+                    appCheckBox.setButtonTintList(ColorStateList(states, colors))
                 } else {
                     appCheckBox.setOnCheckedChangeListener(checkListener)
                     appCheckBox.isChecked = mChecked.get(mVisible[adapterPosition], false)
@@ -196,6 +206,8 @@ class AppListFragment : Fragment() {
                     if (Utils.isOverlayInstalled(context!!, item.packageName)
                             && getAppsToUpdate(context!!).contains(item.packageName)) {
                         appName.setTextColor(context!!.getColor(R.color.minimal_orange))
+                    } else if (requiredApps.contains(item.packageName)) {
+                        appName.setTextColor(Color.parseColor("#4dffffff"))
                     } else {
                         appName.setTextColor(context!!.getColor(android.R.color.white))
                     }

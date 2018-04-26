@@ -6,24 +6,26 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.graphics.drawable.LayerDrawable
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
 import android.support.design.widget.TabLayout
+import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.View
 import com.brit.swiftinstaller.BuildConfig
 import com.brit.swiftinstaller.R
-import com.brit.swiftinstaller.ui.ThemedBottomSheetDialog
 import com.brit.swiftinstaller.ui.applist.AppItem
 import com.brit.swiftinstaller.ui.applist.AppListFragment
 import com.brit.swiftinstaller.ui.applist.AppsTabPagerAdapter
 import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.utils.getAppVersion
+import com.brit.swiftinstaller.utils.getBackgroundColor
 import com.brit.swiftinstaller.utils.setAppVersion
 import kotlin.collections.ArrayList
 import kotlinx.android.synthetic.main.activity_install_summary.*
@@ -65,14 +67,16 @@ class InstallSummaryActivity : ThemeActivity() {
         mPagerAdapter = AppsTabPagerAdapter(supportFragmentManager, true, SUCCESS_TAB, FAILED_TAB)
         mPagerAdapter.setAlertIconClickListener(object : AppListFragment.AlertIconClickListener {
             override fun onAlertIconClick(appItem: AppItem) {
-                val dialog = AlertDialog.Builder(this@InstallSummaryActivity,
-                        Utils.getDialogTheme(this@InstallSummaryActivity))
-                        .setTitle(appItem.title)
-                        .setIcon(appItem.icon)
-                        .setMessage(mErrorMap[appItem.packageName])
-                        .setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, _: Int ->
-                            dialogInterface.dismiss()
-                        }
+                val dialog = AlertDialog.Builder(this@InstallSummaryActivity, R.style.AppTheme_AlertDialog)
+
+                themeDialog()
+
+                dialog.setTitle(appItem.title)
+                dialog.setIcon(appItem.icon)
+                dialog.setMessage(mErrorMap[appItem.packageName])
+                dialog.setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, _: Int ->
+                    dialogInterface.dismiss()
+                }
                 dialog.show()
             }
 
@@ -83,11 +87,14 @@ class InstallSummaryActivity : ThemeActivity() {
         tab_install_summary_root.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
 
         val builder = AlertDialog.Builder(this)
-                .setTitle(R.string.reboot_to_finish)
-                .setMessage(R.string.examined_result_msg)
-                .setPositiveButton(R.string.got_it, { dialogInterface, _ ->
-                    dialogInterface.dismiss()
-                })
+
+        themeDialog()
+
+        builder.setTitle(R.string.reboot_to_finish)
+        builder.setMessage(R.string.examined_result_msg)
+        builder.setPositiveButton(R.string.got_it, { dialogInterface, _ ->
+            dialogInterface.dismiss()
+        })
 
         val dialog = builder.create()
         dialog.show()

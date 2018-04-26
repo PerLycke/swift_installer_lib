@@ -2,9 +2,6 @@
 <layer-list
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/background_bottom_sheet">
-        <shape android:shape="rectangle">
-            <!--<stroke android:width="4.0px" android:color="@color/stroke_red" />-->
-            <solid android:color="@color/big_tile_pressed_tint" />
-        </shape>
+        <shape android:shape="rectangle" />
     </item>
 </layer-list>

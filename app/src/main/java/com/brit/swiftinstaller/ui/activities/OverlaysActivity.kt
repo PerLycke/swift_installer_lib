@@ -6,9 +6,11 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.graphics.drawable.LayerDrawable
 import android.os.AsyncTask
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.support.design.widget.BottomSheetDialog
 import android.support.design.widget.TabLayout
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
@@ -18,7 +20,6 @@ import android.view.*
 import android.widget.TextView
 import android.widget.Toast
 import com.brit.swiftinstaller.R
-import com.brit.swiftinstaller.ui.ThemedBottomSheetDialog
 import com.brit.swiftinstaller.ui.applist.AppItem
 import com.brit.swiftinstaller.ui.applist.AppListFragment
 import com.brit.swiftinstaller.ui.applist.AppsTabPagerAdapter
@@ -38,29 +39,30 @@ class OverlaysActivity : ThemeActivity() {
         private const val ACTIVE_TAB = 1
         const val UPDATE_TAB = 2
 
-        private val requiredApps = Array(21, {
+        private val requiredApps = Array(22, {
             when (it) {
                 0 -> "android"
                 1 -> "com.android.systemui"
                 2 -> "com.amazon.clouddrive.photos"
-                3 -> "com.android.systemui"
-                4 -> "com.anydo"
-                5 -> "com.apple.android.music"
-                6 -> "com.ebay.mobile"
-                7 -> "com.embermitre.pixolor.app"
-                8 -> "com.google.android.apps.genie.geniewidget"
-                9 -> "com.google.android.apps.inbox"
-                10 -> "com.google.android.apps.messaging"
-                11 -> "com.google.android.app.gm"
-                12 -> "com.google.android.talk"
-                13 -> "com.mxtech.videoplayer.ad"
-                14 -> "com.mxtech.videoplayer.pro"
-                15 -> "com.pandora.android"
-                16 -> "com.simplecity.amp.pro"
-                17 -> "com.Slack"
-                18 -> "com.samsung.android.incallui"
-                19 -> "com.twitter.android"
-                20 -> "com.samsung.android.contacts"
+                3 -> "com.android.settings"
+                4 -> "com.android.systemui"
+                5 -> "com.anydo"
+                6 -> "com.apple.android.music"
+                7 -> "com.ebay.mobile"
+                8 -> "com.embermitre.pixolor.app"
+                9 -> "com.google.android.apps.genie.geniewidget"
+                10 -> "com.google.android.apps.inbox"
+                11 -> "com.google.android.apps.messaging"
+                12 -> "com.google.android.app.gm"
+                13 -> "com.google.android.talk"
+                14 -> "com.mxtech.videoplayer.ad"
+                15 -> "com.mxtech.videoplayer.pro"
+                16 -> "com.pandora.android"
+                17 -> "com.simplecity.amp.pro"
+                18 -> "com.Slack"
+                19 -> "com.samsung.android.incallui"
+                20 -> "com.twitter.android"
+                21 -> "com.samsung.android.contacts"
                 else -> ""
             }
         })
@@ -79,15 +81,18 @@ class OverlaysActivity : ThemeActivity() {
             override fun onAlertIconClick(appItem: AppItem) {
                 val packageInfo = packageManager.getPackageInfo(appItem.packageName, 0)
                 val dialog = AlertDialog.Builder(this@OverlaysActivity)
-                        .setTitle(appItem.title)
-                        .setIcon(appItem.icon)
-                        .setMessage("Version Unsupported." +
-                                "\nCurrent Version: ${packageInfo.versionName}" +
-                                "\nAvailable Versions: ${Utils.getAvailableOverlayVersions(
-                                        this@OverlaysActivity, appItem.packageName)}")
-                        .setPositiveButton(android.R.string.ok) { dialogInterface, _ ->
-                            dialogInterface.dismiss()
-                        }
+
+                themeDialog()
+
+                dialog.setTitle(appItem.title)
+                dialog.setIcon(appItem.icon)
+                dialog.setMessage("Version Unsupported." +
+                        "\nCurrent Version: ${packageInfo.versionName}" +
+                        "\nAvailable Versions: ${Utils.getAvailableOverlayVersions(
+                                this@OverlaysActivity, appItem.packageName)}")
+                dialog.setPositiveButton(android.R.string.ok) { dialogInterface, _ ->
+                    dialogInterface.dismiss()
+                }
                 dialog.show()
             }
         })
@@ -236,7 +241,7 @@ class OverlaysActivity : ThemeActivity() {
     }
 
     fun fabClick(@Suppress("UNUSED_PARAMETER") view: View) {
-        val bottomSheetDialog = ThemedBottomSheetDialog(this)
+        val bottomSheetDialog = BottomSheetDialog(this)
         val sheetView = View.inflate(this, R.layout.sheet_overlays_fab, null)
         bottomSheetDialog.setContentView(sheetView)
         bottomSheetDialog.window.decorView .findViewById<View>(R.id.design_bottom_sheet) .setBackgroundColor(getBackgroundColor(this))
@@ -249,20 +254,17 @@ class OverlaysActivity : ThemeActivity() {
                 installAction()
             } else {
                 bottomSheetDialog.dismiss()
-                val builder: AlertDialog.Builder
-                builder = if (AppCompatDelegate.getDefaultNightMode()
-                        == AppCompatDelegate.MODE_NIGHT_YES) {
-                    AlertDialog.Builder(this, R.style.AppTheme_AlertDialog_Black)
-                } else {
-                    AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                }
-                        .setTitle(R.string.installing_and_uninstalling_title)
-                        .setMessage(R.string.installing_and_uninstalling_msg)
-                        .setPositiveButton(R.string.proceed, { dialogInterface, _ ->
-                            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("first_time", false).apply()
-                            dialogInterface.dismiss()
-                            installAction()
-                        })
+                val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+
+                themeDialog()
+
+                builder.setTitle(R.string.installing_and_uninstalling_title)
+                builder.setMessage(R.string.installing_and_uninstalling_msg)
+                builder.setPositiveButton(R.string.proceed, { dialogInterface, _ ->
+                    PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("first_time", false).apply()
+                    dialogInterface.dismiss()
+                    installAction()
+                })
 
                 val dialog = builder.create()
                 dialog.show()
@@ -316,7 +318,7 @@ class OverlaysActivity : ThemeActivity() {
     }
 
     private fun uninstallAction() {
-        val bottomSheetDialog = ThemedBottomSheetDialog(this)
+        val bottomSheetDialog = BottomSheetDialog(this)
         val sheetView = View.inflate(this, R.layout.sheet_confirm_uninstall, null)
         bottomSheetDialog.setContentView(sheetView)
         bottomSheetDialog.window.decorView .findViewById<View>(R.id.design_bottom_sheet) .setBackgroundColor(getBackgroundColor(this))

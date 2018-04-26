@@ -34,10 +34,8 @@ open class ThemeActivity: AppCompatActivity() {
         backgroundIDs.add(R.id.customize_bg_root)
         backgroundIDs.add(R.id.customize_accent_root)
         backgroundIDs.add(R.id.customize_preview_root)
-        backgroundIDs.add(R.id.dialog_about_root)
         backgroundIDs.add(R.id.failed_info_card_root)
         backgroundIDs.add(R.id.palette_view_root)
-        backgroundIDs.add(R.id.progress_dialog_root)
         backgroundIDs.add(R.id.sheet_confirm_root)
         backgroundIDs.add(R.id.sheet_overlays_fab_root)
         backgroundIDs.add(R.id.tab_install_summary_root)
@@ -57,26 +55,25 @@ open class ThemeActivity: AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        mBlackBackground = getBackgroundColor(this) == 0x000000
-        if (mBlackBackground) {
-            setTheme(R.style.AppTheme_Black)
-        } else {
-            setTheme(R.style.AppTheme)
-        }
         super.onCreate(savedInstanceState)
-        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener { _, key ->
             if (key == KEY_ACCENT_COLOR || key == KEY_BACKGROUND_COLOR || key == KEY_BACKGROUND_PALETTE) {
-                updateColors(getAccentColor(this), getBackgroundColor(this), useBackgroundPalette(this))
+                updateColors(getBackgroundColor(this), useBackgroundPalette(this))
             }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        updateColors(getAccentColor(this), getBackgroundColor(this), useBackgroundPalette(this))
+        updateColors(getBackgroundColor(this), useBackgroundPalette(this))
     }
 
-    fun updateColors(accentColor: Int, backgroundColor: Int, usePalette: Boolean) {
+    fun themeDialog() {
+        val dialogBg = ContextCompat.getDrawable(this, R.drawable.dialog_bg) as LayerDrawable
+        dialogBg.findDrawableByLayerId(R.id.dialog_bg).setTint(getBackgroundColor(this))
+    }
+
+    fun updateColors(backgroundColor: Int, usePalette: Boolean) {
         val palette = MaterialPalette.createPalette(backgroundColor, usePalette)
         window.statusBarColor = palette.darkBackgroundColor
         window.navigationBarColor = palette.backgroundColor

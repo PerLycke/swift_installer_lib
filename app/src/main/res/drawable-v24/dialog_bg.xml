@@ -1,10 +1,18 @@
-<inset android:insetLeft="18.0dip" android:insetRight="18.0dip"
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <shape android:shape="rectangle"
-        xmlns:android="http://schemas.android.com/apk/res/android">
-        <solid android:color="@color/dialog_bg_tint" />
-        <stroke android:width="2.0px" android:color="#232329" />
-        <corners android:radius="4dp" />
-    </shape>
-</inset>
+    <item android:id="@+id/dialog_bg">
+        <inset android:insetLeft="18.0dip" android:insetRight="18.0dip">
+        <shape android:shape="rectangle">
+            <corners android:radius="4dp" />
+        </shape>
+        </inset>
+    </item>
+    <item android:id="@+id/dialog_stroke">
+        <shape android:shape="rectangle">
+            <corners android:radius="4dp" />
+            <stroke android:color="#14ffffff" android:width="2dp" />
+        </shape>
+    </item>
+</layer-list>
 

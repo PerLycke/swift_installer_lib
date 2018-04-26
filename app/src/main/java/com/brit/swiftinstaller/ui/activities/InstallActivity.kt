@@ -5,18 +5,22 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AppCompatDelegate
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.R.id.palette
 import com.brit.swiftinstaller.installer.Notifier
 import com.brit.swiftinstaller.utils.InstallerServiceHelper
 import com.brit.swiftinstaller.utils.ShellUtils
 import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.installer.rom.RomInfo
+import com.brit.swiftinstaller.utils.getBackgroundColor
 import kotlinx.android.synthetic.main.progress_dialog_install.view.*
 import java.util.ArrayList
 
@@ -74,12 +78,10 @@ class InstallActivity : ThemeActivity() {
         apps = intent.getStringArrayListExtra("apps")
 
         val inflate = View.inflate(this, R.layout.progress_dialog_install, null)
-        val builder: AlertDialog.Builder = if (AppCompatDelegate.getDefaultNightMode()
-                == AppCompatDelegate.MODE_NIGHT_YES) {
-            AlertDialog.Builder(this, R.style.AppTheme_AlertDialog_Black)
-        } else {
-            AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-        }
+        val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+
+        themeDialog()
+
         builder.setView(inflate)
         dialog = builder.create()
         dialog.setCanceledOnTouchOutside(false)
