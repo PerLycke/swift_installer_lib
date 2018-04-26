@@ -37,6 +37,33 @@ class OverlaysActivity : ThemeActivity() {
         private const val INSTALL_TAB = 0
         private const val ACTIVE_TAB = 1
         const val UPDATE_TAB = 2
+
+        private val requiredApps = Array(21, {
+            when (it) {
+                0 -> "android"
+                1 -> "com.android.systemui"
+                2 -> "com.amazon.clouddrive.photos"
+                3 -> "com.android.systemui"
+                4 -> "com.anydo"
+                5 -> "com.apple.android.music"
+                6 -> "com.ebay.mobile"
+                7 -> "com.embermitre.pixolor.app"
+                8 -> "com.google.android.apps.genie.geniewidget"
+                9 -> "com.google.android.apps.inbox"
+                10 -> "com.google.android.apps.messaging"
+                11 -> "com.google.android.app.gm"
+                12 -> "com.google.android.talk"
+                13 -> "com.mxtech.videoplayer.ad"
+                14 -> "com.mxtech.videoplayer.pro"
+                15 -> "com.pandora.android"
+                16 -> "com.simplecity.amp.pro"
+                17 -> "com.Slack"
+                18 -> "com.samsung.android.incallui"
+                19 -> "com.twitter.android"
+                20 -> "com.samsung.android.contacts"
+                else -> ""
+            }
+        })
     }
 
     private var mPagerAdapter: AppsTabPagerAdapter? = null
@@ -63,8 +90,8 @@ class OverlaysActivity : ThemeActivity() {
                         }
                 dialog.show()
             }
-
         })
+        mPagerAdapter!!.setRequiredApps(INSTALL_TAB, requiredApps)
 
         search_view.setOnSearchClickListener {
             toolbar_overlays_main_content.visibility = View.GONE

@@ -11,6 +11,8 @@ class AppsTabPagerAdapter(fm: FragmentManager, val summary: Boolean, vararg tabs
 
     private var mFragments: ArrayList<AppListFragment> = ArrayList()
 
+    private val requiredApps = HashMap<Int, Array<String>>()
+
     init {
         for(index in tabs) {
             mFragments.add(AppListFragment.instance(summary,
@@ -31,6 +33,11 @@ class AppsTabPagerAdapter(fm: FragmentManager, val summary: Boolean, vararg tabs
 
     fun addApp(tab: Int, app: AppItem) {
         mApps[tab]!!.add(app)
+        notifyFragmentDataSetChanged(tab)
+    }
+
+    fun setRequiredApps(tab: Int, apps: Array<String>) {
+        requiredApps[tab] = apps
         notifyFragmentDataSetChanged(tab)
     }
 
@@ -68,6 +75,9 @@ class AppsTabPagerAdapter(fm: FragmentManager, val summary: Boolean, vararg tabs
 
     fun notifyFragmentDataSetChanged(position: Int) {
         mFragments[position].setAppList(mApps[position])
+        if (requiredApps[position] != null) {
+            mFragments[position].setRequiredAppList(requiredApps[position]!!)
+        }
     }
 
     override fun getCount(): Int {

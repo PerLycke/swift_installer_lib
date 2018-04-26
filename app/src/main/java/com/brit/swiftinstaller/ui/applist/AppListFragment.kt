@@ -9,10 +9,7 @@ import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.CompoundButton
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.utils.getAppsToUpdate
@@ -29,6 +26,8 @@ class AppListFragment : Fragment() {
     var mApps: ArrayList<AppItem> = ArrayList()
     var mVisible: ArrayList<Int> = ArrayList()
     private val mHandler = Handler()
+
+    var requiredApps: Array<String> = emptyArray()
 
     private val mChecked = SparseBooleanArray()
 
@@ -93,7 +92,7 @@ class AppListFragment : Fragment() {
     fun getCheckedItems(): ArrayList<AppItem> {
         val apps = ArrayList<AppItem>()
         for (i in mApps.indices) {
-            if (mChecked.get(i)) {
+            if (mChecked.get(i) || requiredApps.contains(mApps[i].packageName)) {
                 apps.add(mApps[i])
             }
         }
@@ -121,6 +120,10 @@ class AppListFragment : Fragment() {
         }
     }
 
+    fun setRequiredAppList(apps: Array<String>) {
+        requiredApps = apps
+    }
+
     inner class AppAdapter : RecyclerView.Adapter<AppAdapter.ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -143,21 +146,35 @@ class AppListFragment : Fragment() {
             private var appCheckBox: CheckBox = view.findViewById(R.id.app_item_checkbox)
             private var alertIcon: ImageView = view.findViewById(R.id.alert_icon)
 
+            private val checkListener : (CompoundButton, Boolean) -> Unit
+            private val clickListener : (View) -> Unit
+
             init {
-                view.setOnClickListener {
+                clickListener = {
                     appCheckBox.toggle()
                 }
 
-                appCheckBox.setOnCheckedChangeListener({ _: CompoundButton, checked: Boolean ->
+                checkListener = { _: CompoundButton, checked: Boolean ->
                     mChecked.put(mVisible[adapterPosition], checked)
-                })
+                }
             }
 
             fun bindAppItem(item: AppItem) {
                 appName.text = item.title
                 appIcon.setImageDrawable(item.icon)
-                appCheckBox.isChecked = mChecked.get(mVisible[adapterPosition], false)
+                if (requiredApps.contains(item.packageName)) {
+                    appCheckBox.setOnCheckedChangeListener(null)
+                    view.setOnClickListener(null)
+                    appCheckBox.isChecked = true
+                    appCheckBox.isClickable = false
+                } else {
+                    appCheckBox.setOnCheckedChangeListener(checkListener)
+                    appCheckBox.isChecked = mChecked.get(mVisible[adapterPosition], false)
+                    view.setOnClickListener(clickListener)
+                }
                 packageName.text = item.packageName
+
+                appCheckBox.setOnCheckedChangeListener(checkListener)
 
                 if (mSummary) {
                     appCheckBox.visibility = View.INVISIBLE
