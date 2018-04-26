@@ -46,7 +46,7 @@ fun setUseBackgroundPalette(context: Context, use: Boolean) {
 }
 
 fun useDarkNotifBg(context: Context): Boolean {
-    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_DARK_NOTIF_BG, false)
+    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_DARK_NOTIF_BG, true)
 }
 
 fun setUseDarkNotifBg(context: Context, use: Boolean) {

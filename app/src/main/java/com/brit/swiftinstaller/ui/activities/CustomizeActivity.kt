@@ -393,21 +393,34 @@ class CustomizeActivity : ThemeActivity() {
         }
 
         if (notifShadow) {
-            preview_sysui_whatsapp_title.setShadowLayer(1.0f, 0.0f, 0.0f, Color.WHITE)
+            preview_sysui_whatsapp_sender.setText(getString(R.string.dark_notifications))
+            preview_sysui_whatsapp_msg.setText(getString(R.string.dark_notifications_preview))
+            preview_sysui_whatsapp_msg.setText(R.string.notification_fix_summary)
+            preview_sysui_whatsapp_title.setShadowLayer(2.0f, 0.0f, 0.0f, Color.WHITE)
             preview_sysui_whatsapp_sender.setTextColor(Color.BLACK)
             preview_sysui_whatsapp_sender.setShadowLayer(2.0f, 0.0f, 0.0f, Color.WHITE)
         } else {
-            preview_sysui_whatsapp_title.setShadowLayer(2.0f, 0.0f, 0.0f, Color.TRANSPARENT)
-            preview_sysui_whatsapp_sender.setTextColor(Color.BLACK)
-            preview_sysui_whatsapp_sender.setShadowLayer(2.0f, 0.0f, 0.0f, Color.TRANSPARENT)
+            preview_sysui_whatsapp_sender.setText(R.string.dark_notifications)
+            preview_sysui_whatsapp_msg.setText(getString(R.string.dark_notifications_preview_normal))
+            preview_sysui_whatsapp_title.setShadowLayer(0.0f, 0.0f, 0.0f, Color.TRANSPARENT)
+            preview_sysui_whatsapp_sender.setTextColor(Color.WHITE)
+            preview_sysui_whatsapp_sender.setShadowLayer(0.0f, 0.0f, 0.0f, Color.TRANSPARENT)
         }
 
         if (darkNotif) {
             notif_bg_layout.drawable.setTint(Color.TRANSPARENT)
+            if (notifShadow) {
+                preview_sysui_whatsapp_sender.setTextColor(Color.BLACK)
+            } else {
+                preview_sysui_whatsapp_sender.setTextColor(Color.WHITE)
+            }
             preview_sysui_whatsapp_msg.setTextColor(Color.parseColor("#b3ffffff"))
             shadowFixLayout.visibility = View.VISIBLE
         } else {
+            preview_sysui_whatsapp_sender.setText(getString(R.string.white_notifications))
+            preview_sysui_whatsapp_msg.setText(getString(R.string.white_notifications_preview))
             notif_bg_layout.drawable.setTint(Color.parseColor("#f5f5f5"))
+            preview_sysui_whatsapp_sender.setTextColor(Color.BLACK)
             preview_sysui_whatsapp_msg.setTextColor(Color.parseColor("#8a000000"))
             shadowFixLayout.visibility = View.GONE
         }
