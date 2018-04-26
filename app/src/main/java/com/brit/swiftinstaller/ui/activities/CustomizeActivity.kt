@@ -109,32 +109,40 @@ class CustomizeActivity : ThemeActivity() {
 
             if (usePalette != oldPalette) {
                 setUseBackgroundPalette(this, usePalette)
-                recompile = true
-                if (!apps.contains("android"))
-                    apps.add("android")
+                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
+                    recompile = true
+                    if (!apps.contains("android"))
+                        apps.add("android")
+                }
             }
 
             if (darkNotif != oldNotifbg) {
                 setUseDarkNotifBg(this, darkNotif)
-                recompile = true
-                if (!apps.contains("android"))
-                    apps.add("android")
+                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
+                    recompile = true
+                    if (!apps.contains("android"))
+                        apps.add("android")
+                }
             }
 
             if (notifShadow != oldShadow) {
                 setUseSenderNameFix(this, notifShadow)
-                recompile = true
-                if (!apps.contains("android"))
-                    apps.add("android")
+                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
+                    recompile = true
+                    if (!apps.contains("android"))
+                        apps.add("android")
+                }
             }
 
             if (useAospIcons != oldIcons) {
                 setUseAospIcons(this, useAospIcons)
+                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
                 recompile = true
                 apps.add("com.samsung.android.lool")
                 apps.add("com.samsung.android.themestore")
                 apps.add("com.android.settings")
                 apps.add("com.android.systemui")
+                }
             }
 
             if (recompile && apps.isNotEmpty()) {
