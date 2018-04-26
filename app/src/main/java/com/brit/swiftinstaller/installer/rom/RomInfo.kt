@@ -74,7 +74,7 @@ class RomInfo internal constructor(var context: Context, var name: String,
         }
 
         if (!intents.isEmpty()) {
-         //   context.startActivities(intents)
+            context.startActivities(intents)
         }
 
         if (oppositeApps != null && !oppositeApps.isEmpty()) {
