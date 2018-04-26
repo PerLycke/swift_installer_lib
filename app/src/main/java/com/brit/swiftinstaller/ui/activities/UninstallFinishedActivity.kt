@@ -9,13 +9,15 @@ import android.support.v7.app.AppCompatDelegate
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.getBackgroundColor
 
-class UninstallFinishedActivity: AppCompatActivity() {
+class UninstallFinishedActivity: ThemeActivity() {
 
     lateinit var dialog: AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+
+        themeDialog()
 
         builder.setTitle(R.string.reboot)
         builder.setMessage(R.string.reboot_manually)
