@@ -15,10 +15,7 @@ class UninstallFinishedActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val themeActivity = ThemeActivity()
         val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-
-        themeActivity.themeDialog()
 
         builder.setTitle(R.string.reboot)
         builder.setMessage(R.string.reboot_manually)
