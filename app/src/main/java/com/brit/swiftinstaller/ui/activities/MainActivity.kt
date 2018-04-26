@@ -164,6 +164,7 @@ class MainActivity : ThemeActivity() {
         b.findDrawableByLayerId(R.id.background_popup).setTint(MaterialPalette.get(this).cardBackgroud)
 
         popupView.popup_faq_item.setOnClickListener {
+            popup.dismiss()
             faq()
         }
 
