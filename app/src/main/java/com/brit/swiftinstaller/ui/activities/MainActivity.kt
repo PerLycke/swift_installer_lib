@@ -174,8 +174,6 @@ class MainActivity : ThemeActivity() {
             val dialogView = View.inflate(this, R.layout.dialog_about, null)
             val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
 
-            themeDialog()
-
             builder.setView(dialogView)
             val dialog = builder.create()
 
