@@ -8,10 +8,7 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.LayerDrawable
 import android.net.Uri
-import android.os.AsyncTask
-import android.os.Build
-import android.os.Bundle
-import android.os.PowerManager
+import android.os.*
 import android.support.design.widget.TabLayout
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
@@ -172,6 +169,7 @@ class InstallSummaryActivity : ThemeActivity() {
             AsyncTask<Void, AppLoader.Progress, Void>() {
 
         private val mConRef: WeakReference<Context> = WeakReference(context)
+        private val mHandler = Handler()
 
         class Progress(val tab: Int, val item: AppItem)
 
@@ -214,7 +212,8 @@ class InstallSummaryActivity : ThemeActivity() {
 
         override fun onProgressUpdate(vararg progress: Progress?) {
             super.onProgressUpdate(*progress)
-            mCallback.updateApps(progress[0]!!.tab, progress[0]!!.item)
+            mHandler.post {
+                mCallback.updateApps(progress[0]!!.tab, progress[0]!!.item) }
         }
 
     }
