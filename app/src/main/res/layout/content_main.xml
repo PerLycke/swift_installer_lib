@@ -24,10 +24,10 @@
         android:id="@+id/update_tile_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
-        android:visibility="visible"
+        android:layout_marginEnd="16dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/my_toolbar">
@@ -36,8 +36,8 @@
             android:id="@+id/install_updates_tile"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:contentDescription="@string/image"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -49,9 +49,9 @@
             android:id="@+id/install_updates_icon"
             android:layout_width="44dp"
             android:layout_height="44dp"
-            android:layout_marginBottom="32dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
             android:contentDescription="@string/image"
             app:layout_constraintBottom_toBottomOf="@+id/install_updates_tile"
             app:layout_constraintStart_toStartOf="@+id/install_updates_tile"
@@ -62,8 +62,8 @@
             android:id="@+id/install_updates_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
             android:fontFamily="sans-serif"
             android:text="@string/big_tile_install_updates"
             android:textColor="@android:color/white"
@@ -79,8 +79,8 @@
             android:id="@+id/install_updates_desc"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:text="@string/big_tile_update_msg"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/install_updates_tile"
@@ -92,8 +92,8 @@
             android:id="@+id/update_info_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginTop="84dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="@+id/install_updates_tile"
             app:layout_constraintTop_toTopOf="@+id/install_updates_tile">
 
@@ -140,7 +140,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/updates_txt"
                 app:layout_constraintTop_toTopOf="@+id/update_info"
-                tools:text="0"/>
+                tools:text="0" />
         </android.support.constraint.ConstraintLayout>
 
     </android.support.constraint.ConstraintLayout>
