@@ -7,7 +7,6 @@ import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
@@ -111,7 +110,6 @@ class AppListFragment : Fragment() {
     fun setAppList(apps: ArrayList<AppItem>?) {
         mApps.clear()
         mVisible.clear()
-        mChecked.clear()
         mApps.addAll(apps!!)
         mApps.sortWith(Comparator { o1: AppItem, o2: AppItem ->
             o1.title.compareTo(o2.title)
@@ -136,7 +134,7 @@ class AppListFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.bindAppItem(mApps[mVisible[position]], position)
+            holder.bindAppItem(mApps[mVisible[position]])
         }
 
         override fun getItemCount(): Int {
@@ -164,7 +162,7 @@ class AppListFragment : Fragment() {
                 }
             }
 
-            fun bindAppItem(item: AppItem, position: Int) {
+            fun bindAppItem(item: AppItem) {
                 appName.text = item.title
                 appIcon.setImageDrawable(item.icon)
                 if (requiredApps.contains(item.packageName)) {
@@ -182,11 +180,7 @@ class AppListFragment : Fragment() {
                     //appCheckBox.setButtonTintList(ColorStateList(states, colors))
                 } else {
                     appCheckBox.setOnCheckedChangeListener(checkListener)
-                    Log.d("TEST", "mVisible.size == ${mVisible.size}")
-                    Log.d("TEST", "mChecked.size == ${mChecked.size()}")
-                    Log.d("TEST", "position - $position")
-                    Log.d("TEST", "adapterPosition - $adapterPosition")
-                    appCheckBox.isChecked = mChecked.get(mVisible[position], false)
+                    appCheckBox.isChecked = mChecked.get(mVisible[adapterPosition], false)
                     view.setOnClickListener(clickListener)
                     view.isEnabled = true
                     required.visibility = View.GONE
