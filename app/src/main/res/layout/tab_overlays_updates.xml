@@ -19,12 +19,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/active_tab_indicator"
+        android:id="@+id/update_tab_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
         android:layout_marginStart="3dp"
+        android:layout_marginBottom="15dp"
         android:contentDescription="@string/image"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/update_tab_txt"
         app:layout_constraintStart_toEndOf="@+id/update_tab_txt"
         app:srcCompat="@drawable/ic_dot_orange" />

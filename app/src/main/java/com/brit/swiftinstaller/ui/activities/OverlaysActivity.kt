@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.graphics.drawable.LayerDrawable
 import android.os.AsyncTask
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -16,7 +15,8 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatDelegate
 import android.support.v7.widget.SearchView
-import android.view.*
+import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import com.brit.swiftinstaller.R
@@ -28,8 +28,9 @@ import com.brit.swiftinstaller.utils.Utils.getOverlayPackageName
 import com.brit.swiftinstaller.utils.Utils.isOverlayEnabled
 import com.brit.swiftinstaller.utils.Utils.isOverlayInstalled
 import kotlinx.android.synthetic.main.activity_overlays.*
-import kotlinx.android.synthetic.main.toolbar_overlays.*
 import kotlinx.android.synthetic.main.tab_layout_overlay.*
+import kotlinx.android.synthetic.main.tab_overlays_updates.*
+import kotlinx.android.synthetic.main.toolbar_overlays.*
 import java.lang.ref.WeakReference
 
 class OverlaysActivity : ThemeActivity() {
@@ -97,6 +98,17 @@ class OverlaysActivity : ThemeActivity() {
             }
         })
         mPagerAdapter!!.setRequiredApps(INSTALL_TAB, requiredApps)
+
+        UpdateChecker(this, object : UpdateChecker.Callback() {
+            override fun finished(installedCount: Int, updates: ArrayList<String>) {
+                if (updates.isEmpty()) {
+                    update_tab_indicator.visibility = View.GONE
+                } else {
+                    update_tab_indicator.visibility = View.VISIBLE
+                }
+            }
+
+        }).execute()
 
         search_view.setOnSearchClickListener {
             toolbar_overlays_main_content.visibility = View.GONE
