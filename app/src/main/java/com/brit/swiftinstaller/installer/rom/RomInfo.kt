@@ -40,6 +40,12 @@ class RomInfo internal constructor(var context: Context, var name: String,
     fun postInstall(uninstall: Boolean, apps: ArrayList<String>, oppositeApps: ArrayList<String>?, intent: Intent?) {
         val extraIntent = intent != null
 
+
+        if (apps.contains("android")) {
+            val index = apps.indexOf("android")
+            apps.removeAt(index)
+            apps.add(0, "android")
+        }
         if (apps.contains("com.google.android.packageinstaller")) {
             val index = apps.indexOf("com.google.android.packageinstaller")
             apps.removeAt(index)
