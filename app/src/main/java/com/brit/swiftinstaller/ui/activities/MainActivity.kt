@@ -121,38 +121,6 @@ class MainActivity : ThemeActivity() {
         }).execute()
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        menuInflater.inflate(R.menu.menu_main, menu)
-//        return true
-//    }
-//
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        return when (item.itemId) {
-//            R.id.action_about -> {
-//                val dialogView = View.inflate(this, R.layout.dialog_about, null)
-//                val builder = if (AppCompatDelegate.getDefaultNightMode()
-//                        == AppCompatDelegate.MODE_NIGHT_YES) {
-//                    AlertDialog.Builder(this, R.style.AppTheme_AlertDialog_Black)
-//                } else {
-//                    AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-//                }
-//                builder.setView(dialogView)
-//                val dialog = builder.create()
-//
-//                dialogView.about_ok_btn.setOnClickListener {
-//                    dialog.dismiss()
-//                }
-//                dialog.show()
-//                true
-//            }
-//            else -> super.onOptionsItemSelected(item)
-//        }
-//    }
-
     fun overflowClick(view: View) {
         val popup = PopupWindow(this, null, 0, R.style.PopupWindow)
         val popupView = LayoutInflater.from(this).inflate(R.layout.popup_menu, null)
@@ -173,8 +141,9 @@ class MainActivity : ThemeActivity() {
 
             val dialogView = View.inflate(this, R.layout.dialog_about, null)
             val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-
             builder.setView(dialogView)
+            themeDialog()
+
             val dialog = builder.create()
 
             dialogView.about_ok_btn.setOnClickListener {
