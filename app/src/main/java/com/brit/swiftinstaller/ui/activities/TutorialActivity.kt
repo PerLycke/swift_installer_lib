@@ -41,6 +41,11 @@ class TutorialActivity : TutorialActivity() {
                     .setBackgroundColor(ContextCompat.getColor(this, R.color.background_main))
                     .setDrawable(R.drawable.ic_tutorial_hand) // int top drawable
                     .build())
+            addFragment(Step.Builder().setTitle(getString(R.string.tutorial_more_usage_title))
+                    .setContent(getString(R.string.tutorial_more_usage_info))
+                    .setBackgroundColor(ContextCompat.getColor(this, R.color.background_main))
+                    .setDrawable(R.drawable.ic_tutorial_clicks) // int top drawable
+                    .build())
             addFragment(PermissionStep.Builder().setTitle(getString(R.string.tutorial_permission_title))
                     .setContent(getString(R.string.tutorial_permission_content))
                     .setBackgroundColor(ContextCompat.getColor(this, R.color.background_main)) // int background color

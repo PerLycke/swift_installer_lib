@@ -54,10 +54,10 @@
     <string name="tab_inactive">Inactive</string>
     <string name="tab_update">Update</string>
     <string name="toolbar_title_installation_summary">Installation summary</string>
-    <string name="tutorial_basic_usage_content">The best way to keep all overlays working over time is to disable automatic updates in Play Store, and update your apps when we update the theme. This way the theme code and app code will match, and work.\n\nBefore updating your firmware you <b>must</b> uninstall all active overlays. At last, if you update an app from Play Store, you need to update the respective overlay.</string>
+    <string name="tutorial_basic_usage_content">The best way to keep all overlays working over time is to disable automatic updates in Play Store, and update your apps when we update the theme. This way the theme code and app code will match, and work.\n\nBefore updating your firmware you <b>must</b> uninstall all active overlays. And if you update an app from Play Store, you need to update the respective overlay.</string>
     <string name="tutorial_customize_content">You can change to your favourite background and accent color before installing overlays. Input any color code you want and create that personal feeling!</string>
     <string name="tutorial_customize_title">Personalize background and accent</string>
-    <string name="tutorial_guide">This guide will explain what Swift Installer is and what it does</string>
+    <string name="tutorial_guide">Swift Installer makes your system dark, and personal. Let\'s start with a guide on how to use is…</string>
     <string name="tutorial_permission_content">A theme contain overlays, and it\'s the overlay that applies on top of an app and themes it. Overlays gets installed as APK\'s on your device. By pressing \'Give\' you acknowledge and accept this. \n\n We also need storage permission as we temporarily place the APK on the storage before installing it. Press \'Give\' to grant the permission.</string>
     <string name="tutorial_permission_title">Permissions</string>
     <string name="bg_nature">Nature</string>
@@ -88,4 +88,6 @@
     <string name="dark_notifications_preview">A preview of dark notifications with sender name fix</string>
     <string name="white_notifications_preview">A preview of white notifications</string>
     <string name="dark_notifications_preview_normal">A preview of normal dark notifications</string>
+    <string name="tutorial_more_usage_info">The first install will require you to install all apps manually, and this means a lot of clicking. Once the first install is done, it will all be much smoother and faster due to our update system. There is a learning curve, but once you get a hang of it, you\'ll find it easy to use.</string>
+    <string name="tutorial_more_usage_title">More usage info</string>
 </resources>
