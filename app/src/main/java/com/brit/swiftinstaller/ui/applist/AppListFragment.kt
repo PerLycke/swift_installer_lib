@@ -69,10 +69,6 @@ class AppListFragment : Fragment() {
         return view
     }
 
-    fun notifyDataSetChanged() {
-        app_list_view.adapter.notifyDataSetChanged()
-    }
-
     fun querySearch(query: String) {
         mVisible.clear()
         if (query.isEmpty() || query.isBlank()) {
