@@ -1,5 +1,6 @@
 package com.brit.swiftinstaller.ui.applist
 
+import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -75,6 +76,10 @@ class AppListFragment : Fragment() {
 
     fun querySearch(query: String) {
         mVisible.clear()
+        if (app_list_view != null && !app_list_view.isComputingLayout) {
+            app_list_view.recycledViewPool.clear()
+            app_list_view.adapter.notifyDataSetChanged()
+        }
         if (query.isEmpty() || query.isBlank()) {
             mApps.forEach { mVisible.add(mApps.indexOf(it)) }
         } else {
@@ -93,7 +98,7 @@ class AppListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         app_list_view.adapter = AppAdapter()
-        app_list_view.layoutManager = LinearLayoutManager(activity)
+        app_list_view.layoutManager = MyLayoutManager(activity!!)
     }
 
     fun getCheckedItems(): ArrayList<AppItem> {
@@ -116,6 +121,10 @@ class AppListFragment : Fragment() {
         mApps.clear()
         mVisible.clear()
         mChecked.clear()
+        if (app_list_view != null && !app_list_view.isComputingLayout) {
+            app_list_view.recycledViewPool.clear()
+            app_list_view.adapter.notifyDataSetChanged()
+        }
         mApps.addAll(apps!!)
         mApps.sortWith(Comparator { o1: AppItem, o2: AppItem ->
             o1.title.compareTo(o2.title)
@@ -123,6 +132,7 @@ class AppListFragment : Fragment() {
         mVisible.addAll(mApps.indices)
         if (app_list_view != null && !app_list_view.isComputingLayout) {
             mHandler.post {
+                app_list_view.recycledViewPool.clear()
                 app_list_view.adapter.notifyDataSetChanged()
             }
         }
@@ -186,10 +196,6 @@ class AppListFragment : Fragment() {
                     //appCheckBox.setButtonTintList(ColorStateList(states, colors))
                 } else {
                     appCheckBox.setOnCheckedChangeListener(checkListener)
-                    Log.d("TEST", "mVisible.size == ${mVisible.size}")
-                    Log.d("TEST", "mChecked.size == ${mChecked.size()}")
-                    Log.d("TEST", "position - $position")
-                    Log.d("TEST", "adapterPosition - $adapterPosition")
                     appCheckBox.isChecked = mChecked.get(mVisible[position], false)
                     view.setOnClickListener(clickListener)
                     view.isEnabled = true
@@ -235,6 +241,12 @@ class AppListFragment : Fragment() {
             }
         }
 
+    }
+
+    inner class MyLayoutManager(context: Context): LinearLayoutManager(context) {
+        override fun supportsPredictiveItemAnimations(): Boolean {
+            return false
+        }
     }
 
     interface AlertIconClickListener {
