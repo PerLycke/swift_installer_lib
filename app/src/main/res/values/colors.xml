@@ -17,6 +17,7 @@
     <color name="preview_searchbar_icon">#BFffffff</color>
     <color name="preview_searchbar_text">#BFffffff</color>
     <color name="preview_stroke">#14ffffff</color>
+    <color name="radio_button_disabled">#B3ffffff</color>
 
     <!-- Minimal palette -->
     <color name="minimal_blue">#4A7CA5</color>
