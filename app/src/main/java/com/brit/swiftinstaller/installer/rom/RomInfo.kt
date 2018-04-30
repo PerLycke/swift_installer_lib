@@ -87,6 +87,9 @@ class RomInfo internal constructor(var context: Context, var name: String,
         }
 
         if (oppositeApps != null && !oppositeApps.isEmpty()) {
+            oppositeApps.forEach {
+                Log.d("TEST", "opposite app - $it")
+            }
             val oppositeIntents = Array(oppositeApps.size, {
                 val appInstall = Intent()
                 if (!uninstall) {
@@ -104,6 +107,8 @@ class RomInfo internal constructor(var context: Context, var name: String,
                 appInstall
             })
             context.startActivities(oppositeIntents)
+        } else {
+            Log.d("TEST", "opposite apps is null")
         }
 
         clearAppsToUninstall(context)

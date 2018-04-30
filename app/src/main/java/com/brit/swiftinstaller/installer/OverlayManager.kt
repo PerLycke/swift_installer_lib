@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.util.Log
 import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.utils.rom.RomInfo
 import java.util.*
@@ -72,11 +73,13 @@ class OverlayManager(private val context: Context) {
                     }
 
                     OVERLAY_UNINSTALLED -> {
-                        if (msg.arg1 == msg.arg2) {
+                        if (msg.arg1 == (msg.arg2 - 1)) {
                             if (callback != null) {
                                 callback!!.installFinished()
                             }
+                            Notifier.broadcastUninstallFinished(context)
                         }
+                        Notifier.broadcastOverlayUninstalled(context, overlayTask.packageName, overlayTask.index, msg.arg2)
                     }
                 }
             }

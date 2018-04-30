@@ -12,7 +12,9 @@ class Notifier {
         private const val installerPackage = BuildConfig.APPLICATION_ID
         const val ACTION_FAILED = "$installerPackage.action.OVERLAY_FAILED"
         const val ACTION_INSTALLED = "$installerPackage.action.OVERLAY_INSTALLED"
+        const val ACTION_UNINSTALLED = "$installerPackage.action.OVERLAY_UNINSTALLED"
         const val ACTION_INSTALL_COMPLETE = "$installerPackage.action.INSTALL_FINISHED"
+        const val ACTION_UNINSTALL_COMPLETE = "$installerPackage.action.UNINSTALL_FINISHED"
         const val EXTRA_PACKAGE_NAME = "$installerPackage.extra.PACKAGE_NAME"
         const val EXTRA_LOG = "$installerPackage.extra.LOG"
         const val EXTRA_PROGRESS = "$installerPackage.extra.PROGRESS"
@@ -34,8 +36,21 @@ class Notifier {
             LocalBroadcastManager.getInstance(context.applicationContext).sendBroadcast(intent)
         }
 
+        fun broadcastOverlayUninstalled(context: Context, packageName: String, progress: Int, max: Int) {
+            val intent = Intent(ACTION_UNINSTALLED)
+            intent.putExtra(EXTRA_PACKAGE_NAME, packageName)
+            intent.putExtra(EXTRA_PROGRESS, progress)
+            intent.putExtra(EXTRA_MAX, max)
+            LocalBroadcastManager.getInstance(context.applicationContext).sendBroadcast(intent)
+        }
+
         fun broadcastInstallFinished(context: Context) {
             val intent = Intent(ACTION_INSTALL_COMPLETE)
+            LocalBroadcastManager.getInstance(context.applicationContext).sendBroadcast(intent)
+        }
+
+        fun broadcastUninstallFinished(context: Context) {
+            val intent = Intent(ACTION_UNINSTALL_COMPLETE)
             LocalBroadcastManager.getInstance(context.applicationContext).sendBroadcast(intent)
         }
     }

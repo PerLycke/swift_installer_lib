@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.support.v4.content.LocalBroadcastManager
+import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -49,21 +50,29 @@ class InstallActivity : ThemeActivity() {
         }
     }
 
-    private fun installComplete(uninstall: Boolean) {
-        if (!uninstall) {
-            LocalBroadcastManager.getInstance(applicationContext).unregisterReceiver(installListener)
-            val intent = Intent(this, InstallSummaryActivity::class.java)
-            intent.putExtra("errorMap", Utils.mapToBundle(errorMap))
-            errorMap.keys.forEach {
-                if (apps.contains(it)) {
-                    apps.remove(it)
-                }
+    private fun installComplete() {
+        LocalBroadcastManager.getInstance(applicationContext).unregisterReceiver(installListener)
+        val intent = Intent(this, InstallSummaryActivity::class.java)
+        intent.putExtra("errorMap", Utils.mapToBundle(errorMap))
+        errorMap.keys.forEach {
+            if (apps.contains(it)) {
+                apps.remove(it)
             }
-            intent.putExtra("apps", apps)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            finish()
-            RomInfo.getRomInfo(this).postInstall(uninstall, apps, updateAppsToUninstall, intent)
         }
+        intent.putExtra("apps", apps)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        if (ShellUtils.isRootAvailable) {
+            startActivity(intent)
+        } else {
+            RomInfo.getRomInfo(this).postInstall(false, apps, updateAppsToUninstall, intent)
+        }
+        finish()
+    }
+
+    fun uninstallComplete() {
+        startActivity(Intent(this@InstallActivity,
+                UninstallFinishedActivity::class.java))
+        finish()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,6 +98,8 @@ class InstallActivity : ThemeActivity() {
         val filter = IntentFilter(Notifier.ACTION_FAILED)
         filter.addAction(Notifier.ACTION_INSTALLED)
         filter.addAction(Notifier.ACTION_INSTALL_COMPLETE)
+        filter.addAction(Notifier.ACTION_UNINSTALLED)
+        filter.addAction(Notifier.ACTION_UNINSTALL_COMPLETE)
         LocalBroadcastManager.getInstance(applicationContext)
                 .registerReceiver(installListener, filter)
 
@@ -105,27 +116,28 @@ class InstallActivity : ThemeActivity() {
         }
         dialog.show()
 
-        if (uninstall && !ShellUtils.isRootAvailable) {
-            val intentfilter = IntentFilter(Intent.ACTION_PACKAGE_FULLY_REMOVED)
-            intentfilter.addDataScheme("package")
-            registerReceiver(object : BroadcastReceiver() {
-                var count = apps.size
-                override fun onReceive(context: Context?, intent: Intent?) {
-                    count--
-                    if (count == 0) {
-                        startActivity(Intent(this@InstallActivity,
-                                UninstallFinishedActivity::class.java))
-                        finish()
-                        context!!.unregisterReceiver(this)
+        if (uninstall) {
+            if (!ShellUtils.isRootAvailable) {
+                val intentfilter = IntentFilter(Intent.ACTION_PACKAGE_FULLY_REMOVED)
+                intentfilter.addDataScheme("package")
+                registerReceiver(object : BroadcastReceiver() {
+                    var count = apps.size
+                    override fun onReceive(context: Context?, intent: Intent?) {
+                        count--
+                        Log.d("TEST", "count - $count")
+                        Log.d("TEST", "data - ${intent!!.data}")
+                        if (count == 0) {
+                            uninstallComplete()
+                            context!!.unregisterReceiver(this)
+                        }
                     }
-                }
-            }, intentfilter)
-            RomInfo.getRomInfo(this).postInstall(true, apps, null, null)
-        }
-        if (!uninstall) {
-            InstallerServiceHelper.install(this, apps)
+                }, intentfilter)
+                RomInfo.getRomInfo(this).postInstall(true, apps, null, null)
+            } else {
+                InstallerServiceHelper.uninstall(this, apps)
+            }
         } else {
-            InstallerServiceHelper.uninstall(this, apps)
+            InstallerServiceHelper.install(this, apps)
         }
     }
 
@@ -144,20 +156,28 @@ class InstallActivity : ThemeActivity() {
 
     inner class InstallListener : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            if (intent.action == Notifier.ACTION_INSTALLED) {
-                val pn = intent.getStringExtra(Notifier.EXTRA_PACKAGE_NAME)
-                val label = packageManager.getApplicationInfo(pn, 0).loadLabel(packageManager)
-                val max = intent.getIntExtra(Notifier.EXTRA_MAX, 0)
-                val progress = intent.getIntExtra(Notifier.EXTRA_PROGRESS, 0)
-                updateProgress(label as String, progress, max, uninstall)
-            } else if (intent.action == Notifier.ACTION_FAILED) {
-                errorMap[intent.getStringExtra(Notifier.EXTRA_PACKAGE_NAME)] =
-                        intent.getStringExtra(Notifier.EXTRA_LOG)
-                if (update) {
-                    updateAppsToUninstall.add(intent.getStringExtra(Notifier.EXTRA_PACKAGE_NAME))
+            Log.d("TEST", "action - ${intent.action}")
+            when {
+                intent.action == Notifier.ACTION_INSTALLED || intent.action == Notifier.ACTION_UNINSTALLED -> {
+                    val pn = intent.getStringExtra(Notifier.EXTRA_PACKAGE_NAME)
+                    val label = packageManager.getApplicationInfo(pn, 0).loadLabel(packageManager)
+                    val max = intent.getIntExtra(Notifier.EXTRA_MAX, 0)
+                    val progress = intent.getIntExtra(Notifier.EXTRA_PROGRESS, 0)
+                    updateProgress(label as String, progress, max, uninstall)
                 }
-            } else if (intent.action == Notifier.ACTION_INSTALL_COMPLETE) {
-                installComplete(uninstall)
+                intent.action == Notifier.ACTION_FAILED -> {
+                    errorMap[intent.getStringExtra(Notifier.EXTRA_PACKAGE_NAME)] =
+                            intent.getStringExtra(Notifier.EXTRA_LOG)
+                    if (update) {
+                        updateAppsToUninstall.add(intent.getStringExtra(Notifier.EXTRA_PACKAGE_NAME))
+                    }
+                }
+                intent.action == Notifier.ACTION_INSTALL_COMPLETE -> {
+                    installComplete()
+                }
+                intent.action == Notifier.ACTION_UNINSTALL_COMPLETE -> {
+                    uninstallComplete()
+                }
             }
         }
 
