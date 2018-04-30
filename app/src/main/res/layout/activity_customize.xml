@@ -48,7 +48,9 @@
             android:id="@+id/preview_pager"
             android:layout_width="match_parent"
             android:layout_height="240dp"
-            tools:layout_editor_absoluteX="12dp">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <include
                 android:id="@+id/settings_preview_page"
@@ -152,6 +154,7 @@
                         android:textColor="?android:attr/textColorSecondary"
                         android:textSize="14sp"
                         android:textStyle="bold"
+                        android:visibility="visible"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -163,6 +166,7 @@
                         android:layout_marginStart="8dp"
                         android:background="@color/divider"
                         android:contentDescription="@string/image"
+                        android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="@+id/toolbar_subtitle_accent_title"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/toolbar_subtitle_accent_title"
@@ -194,6 +198,7 @@
                         android:textColor="?android:attr/textColorSecondary"
                         android:textSize="14sp"
                         android:textStyle="bold"
+                        android:visibility="visible"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
@@ -205,6 +210,7 @@
                         android:layout_marginStart="8dp"
                         android:background="@color/divider"
                         android:contentDescription="@string/image"
+                        android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="@+id/bg_category"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/bg_category"
@@ -265,6 +271,7 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="20dp"
+                        android:visibility="visible"
                         app:layout_constraintEnd_toStartOf="@+id/guideline2"
                         app:layout_constraintStart_toStartOf="@+id/guideline1"
                         app:layout_constraintTop_toBottomOf="@+id/icons_category_title">
@@ -310,8 +317,6 @@
                     <android.support.constraint.ConstraintLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginStart="8dp"
                         android:layout_marginTop="20dp"
                         app:layout_constraintEnd_toStartOf="@+id/guideline2"
                         app:layout_constraintStart_toStartOf="@+id/guideline1"
