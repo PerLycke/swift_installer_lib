@@ -420,6 +420,13 @@ class CustomizeActivity : ThemeActivity() {
             hex_input_bg.background.setTint(accentColor)
             if (updateHex && accent_hex_input.text.toString() != Integer.toHexString(accentColor).substring(2))
                 accent_hex_input.setText(Integer.toHexString(accentColor).substring(2), TextView.BufferType.EDITABLE)
+
+            custom_dark_bg_indicator.drawable.setTint(accentColor)
+            custom_black_bg_indicator.drawable.setTint(accentColor)
+            custom_style_bg_indicator.drawable.setTint(accentColor)
+            custom_nature_bg_indicator.drawable.setTint(accentColor)
+            custom_ocean_bg_indicator.drawable.setTint(accentColor)
+            custom_night_bg_indicator.drawable.setTint(accentColor)
         }
         if (force || this.backgroundColor != backgroundColor) {
             materialPalette = MaterialPalette.createPalette(backgroundColor, usePalette)

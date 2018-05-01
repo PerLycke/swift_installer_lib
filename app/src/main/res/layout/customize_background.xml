@@ -120,19 +120,6 @@
             app:layout_constraintTop_toBottomOf="@+id/custom_bg_title">
 
             <ImageView
-                android:id="@+id/custom_dark_bg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:contentDescription="@string/image"
-                app:layout_constraintEnd_toStartOf="@+id/custom_black_bg"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="spread_inside"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/bg_circle_dark" />
-
-            <ImageView
                 android:id="@+id/custom_dark_bg_indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -143,6 +130,20 @@
                 app:layout_constraintStart_toStartOf="@+id/custom_dark_bg"
                 app:layout_constraintTop_toTopOf="@+id/custom_dark_bg"
                 app:srcCompat="@drawable/bg_circle_active_stroke" />
+
+            <ImageView
+                android:id="@+id/custom_dark_bg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="2dp"
+                android:contentDescription="@string/image"
+                app:layout_constraintEnd_toStartOf="@+id/custom_black_bg"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/bg_circle_dark" />
 
             <TextView
                 android:id="@+id/custom_dark_bg_txt"
@@ -158,16 +159,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/custom_dark_bg" />
 
             <ImageView
-                android:id="@+id/custom_black_bg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/image"
-                app:layout_constraintEnd_toStartOf="@+id/custom_style_bg"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/custom_dark_bg"
-                app:srcCompat="@drawable/bg_circle_black" />
-
-            <ImageView
                 android:id="@+id/custom_black_bg_indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -178,6 +169,18 @@
                 app:layout_constraintStart_toStartOf="@+id/custom_black_bg"
                 app:layout_constraintTop_toTopOf="@+id/custom_black_bg"
                 app:srcCompat="@drawable/bg_circle_active_stroke" />
+
+            <ImageView
+                android:id="@+id/custom_black_bg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:contentDescription="@string/image"
+                app:layout_constraintEnd_toStartOf="@+id/custom_style_bg"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/custom_dark_bg"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/bg_circle_black" />
 
             <TextView
                 android:id="@+id/custom_black_bg_txt"
@@ -191,18 +194,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/custom_black_bg" />
 
             <ImageView
-                android:id="@+id/custom_style_bg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:contentDescription="@string/image"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/custom_black_bg"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/bg_circle_style" />
-
-            <ImageView
                 android:id="@+id/custom_style_bg_indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -213,6 +204,19 @@
                 app:layout_constraintStart_toStartOf="@+id/custom_style_bg"
                 app:layout_constraintTop_toTopOf="@+id/custom_style_bg"
                 app:srcCompat="@drawable/bg_circle_active_stroke" />
+
+            <ImageView
+                android:id="@+id/custom_style_bg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="2dp"
+                android:contentDescription="@string/image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/custom_black_bg"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/bg_circle_style" />
 
             <TextView
                 android:id="@+id/custom_style_bg_txt"
@@ -226,17 +230,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/custom_style_bg" />
 
             <ImageView
-                android:id="@+id/custom_nature_bg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:contentDescription="@string/image"
-                app:layout_constraintEnd_toEndOf="@+id/custom_dark_bg"
-                app:layout_constraintStart_toStartOf="@+id/custom_dark_bg"
-                app:layout_constraintTop_toBottomOf="@+id/custom_dark_bg_txt"
-                app:srcCompat="@drawable/bg_circle_nature" />
-
-            <ImageView
                 android:id="@+id/custom_nature_bg_indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -247,6 +240,17 @@
                 app:layout_constraintStart_toStartOf="@+id/custom_nature_bg"
                 app:layout_constraintTop_toTopOf="@+id/custom_nature_bg"
                 app:srcCompat="@drawable/bg_circle_active_stroke" />
+
+            <ImageView
+                android:id="@+id/custom_nature_bg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:contentDescription="@string/image"
+                app:layout_constraintEnd_toEndOf="@+id/custom_dark_bg"
+                app:layout_constraintStart_toStartOf="@+id/custom_dark_bg"
+                app:layout_constraintTop_toBottomOf="@+id/custom_dark_bg_txt"
+                app:srcCompat="@drawable/bg_circle_nature" />
 
             <TextView
                 android:id="@+id/custom_nature_bg_txt"
@@ -261,17 +265,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/custom_nature_bg" />
 
             <ImageView
-                android:id="@+id/custom_ocean_bg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:contentDescription="@string/image"
-                app:layout_constraintEnd_toEndOf="@+id/custom_black_bg"
-                app:layout_constraintStart_toStartOf="@+id/custom_black_bg"
-                app:layout_constraintTop_toBottomOf="@+id/custom_black_bg_txt"
-                app:srcCompat="@drawable/bg_circle_ocean" />
-
-            <ImageView
                 android:id="@+id/custom_ocean_bg_indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -282,6 +275,17 @@
                 app:layout_constraintStart_toStartOf="@+id/custom_ocean_bg"
                 app:layout_constraintTop_toTopOf="@+id/custom_ocean_bg"
                 app:srcCompat="@drawable/bg_circle_active_stroke" />
+
+            <ImageView
+                android:id="@+id/custom_ocean_bg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:contentDescription="@string/image"
+                app:layout_constraintEnd_toEndOf="@+id/custom_black_bg"
+                app:layout_constraintStart_toStartOf="@+id/custom_black_bg"
+                app:layout_constraintTop_toBottomOf="@+id/custom_black_bg_txt"
+                app:srcCompat="@drawable/bg_circle_ocean" />
 
             <TextView
                 android:id="@+id/custom_ocean_bg_txt"
@@ -296,17 +300,6 @@
 
 
             <ImageView
-                android:id="@+id/custom_night_bg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:contentDescription="@string/image"
-                app:layout_constraintEnd_toEndOf="@+id/custom_style_bg"
-                app:layout_constraintStart_toStartOf="@+id/custom_style_bg"
-                app:layout_constraintTop_toBottomOf="@+id/custom_style_bg_txt"
-                app:srcCompat="@drawable/bg_circle_night" />
-
-            <ImageView
                 android:id="@+id/custom_night_bg_indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -317,6 +310,17 @@
                 app:layout_constraintStart_toStartOf="@+id/custom_night_bg"
                 app:layout_constraintTop_toTopOf="@+id/custom_night_bg"
                 app:srcCompat="@drawable/bg_circle_active_stroke" />
+
+            <ImageView
+                android:id="@+id/custom_night_bg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:contentDescription="@string/image"
+                app:layout_constraintEnd_toEndOf="@+id/custom_style_bg"
+                app:layout_constraintStart_toStartOf="@+id/custom_style_bg"
+                app:layout_constraintTop_toBottomOf="@+id/custom_style_bg_txt"
+                app:srcCompat="@drawable/bg_circle_night" />
 
             <TextView
                 android:id="@+id/custom_night_bg_txt"

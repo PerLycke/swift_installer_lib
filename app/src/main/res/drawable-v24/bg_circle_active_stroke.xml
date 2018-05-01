@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape android:shape="oval" xmlns:android="http://schemas.android.com/apk/res/android" >
     <size android:height="49dp" android:width="49dp" />
-    <stroke android:width="2dp" android:color="@color/minimal_green" />
 </shape>
