@@ -2,6 +2,7 @@ package com.brit.swiftinstaller.ui.activities
 
 import android.Manifest
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -26,6 +27,7 @@ import com.brit.swiftinstaller.utils.UpdateChecker
 import com.brit.swiftinstaller.utils.getAppsToUpdate
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.dialog_about.view.*
+import kotlinx.android.synthetic.main.info_card_compatibility.*
 import kotlinx.android.synthetic.main.popup_menu.view.*
 
 class MainActivity : ThemeActivity() {
@@ -35,6 +37,14 @@ class MainActivity : ThemeActivity() {
         setContentView(R.layout.activity_main)
         val myToolbar = findViewById<Toolbar>(R.id.my_toolbar)
         setSupportActionBar(myToolbar)
+
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("not_closed", true)) {
+            compatibility_card_layout.visibility = View.VISIBLE
+            compatibility_info_card_close.setOnClickListener {
+                PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("not_closed", false).apply()
+                compatibility_card_layout.visibility = View.GONE
+            }
+        }
 
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener { _, key ->
             if (key == "overlays_to_update") {

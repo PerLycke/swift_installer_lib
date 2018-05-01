@@ -21,6 +21,26 @@
         app:titleTextAppearance="@style/ToolbarTitle" />
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/compatibility_card_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/my_toolbar">
+
+        <include
+            android:id="@+id/compatibility_card"
+            layout="@layout/info_card_compatibility"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/update_tile_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -30,7 +50,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_toolbar">
+        app:layout_constraintTop_toBottomOf="@+id/compatibility_card_layout">
 
         <ImageView
             android:id="@+id/install_updates_tile"

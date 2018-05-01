@@ -90,4 +90,5 @@
     <string name="dark_notifications_preview_normal">A preview of normal dark notifications</string>
     <string name="tutorial_more_usage_info">The first install will require you to install all apps manually, and this means a lot of clicking. Once the first install is done, it will all be much smoother and faster due to our update system. There is a learning curve, but once you get a hang of it, you\'ll find it easy to use.</string>
     <string name="tutorial_more_usage_title">More usage info</string>
+    <string name="info_card_compatibility_msg">Please note that we, due to stability reasons, advice <b>not</b> to use native Samsung themes or Substratum overlays together with Swift Installer.</string>
 </resources>
