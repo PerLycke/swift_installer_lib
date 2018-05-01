@@ -295,26 +295,6 @@ class CustomizeActivity : ThemeActivity() {
         }
         aosp_icons.setOnCheckedChangeListener(iconListener)
         stock_icons.setOnCheckedChangeListener(iconListener)
-
-        val buttonColor = ColorStateList(
-                arrayOf(
-                        intArrayOf(-android.R.attr.state_checked), //disabled
-                        intArrayOf(android.R.attr.state_checked) //enabled
-                ),
-                intArrayOf(
-                        ContextCompat.getColor(this, R.color.radio_button_disabled)
-                        , getAccentColor(this)
-                )
-        )
-
-        material_theme.buttonTintList = buttonColor
-        flat_theme.buttonTintList = buttonColor
-        stock_icons.buttonTintList = buttonColor
-        aosp_icons.buttonTintList = buttonColor
-        white_notifications.buttonTintList = buttonColor
-        dark_notifications.buttonTintList = buttonColor
-        shadow_enabled.buttonTintList = buttonColor
-        shadow_disabled.buttonTintList = buttonColor
     }
 
     override fun onResume() {
@@ -427,6 +407,26 @@ class CustomizeActivity : ThemeActivity() {
             custom_nature_bg_indicator.drawable.setTint(accentColor)
             custom_ocean_bg_indicator.drawable.setTint(accentColor)
             custom_night_bg_indicator.drawable.setTint(accentColor)
+
+            val buttonColor = ColorStateList(
+                    arrayOf(
+                            intArrayOf(-android.R.attr.state_checked), //disabled
+                            intArrayOf(android.R.attr.state_checked) //enabled
+                    ),
+                    intArrayOf(
+                            ContextCompat.getColor(this, R.color.radio_button_disabled)
+                            , accentColor
+                    )
+            )
+
+            material_theme.buttonTintList = buttonColor
+            flat_theme.buttonTintList = buttonColor
+            stock_icons.buttonTintList = buttonColor
+            aosp_icons.buttonTintList = buttonColor
+            white_notifications.buttonTintList = buttonColor
+            dark_notifications.buttonTintList = buttonColor
+            shadow_enabled.buttonTintList = buttonColor
+            shadow_disabled.buttonTintList = buttonColor
         }
         if (force || this.backgroundColor != backgroundColor) {
             materialPalette = MaterialPalette.createPalette(backgroundColor, usePalette)
