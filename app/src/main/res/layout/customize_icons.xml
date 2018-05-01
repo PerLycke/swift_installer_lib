@@ -10,10 +10,10 @@
         android:layout_height="wrap_content"
         android:checked="true"
         android:fontFamily="sans-serif"
-        android:text="Google icons"
+        android:text="AOSP icons"
         android:visibility="visible"
-        app:layout_constraintStart_toStartOf="@+id/guideline1"
-        app:layout_constraintTop_toBottomOf="@+id/icons_category_title" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <RadioButton
         android:id="@+id/stock_icons"
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="sans-serif"
-        android:text="Samsung icons"
+        android:text="Stock icons"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/aosp_icons" />
