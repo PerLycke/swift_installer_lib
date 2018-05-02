@@ -3,7 +3,14 @@ package com.brit.swiftinstaller.utils
 import android.content.Context
 import android.os.AsyncTask
 
-class UpdateChecker(val context: Context, val callback: Callback) : AsyncTask<Void, Void, UpdateChecker.Output>() {
+class UpdateChecker(context: Context, val callback: Callback) : AsyncTask<Void, Void, UpdateChecker.Output>() {
+
+    private val context: Context
+
+    init {
+        this.context = context.applicationContext
+    }
+
     override fun doInBackground(vararg params: Void?): Output {
         var installedCount = 0
         val updates = ArrayList<String>()
