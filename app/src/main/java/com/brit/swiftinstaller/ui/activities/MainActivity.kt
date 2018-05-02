@@ -2,7 +2,6 @@ package com.brit.swiftinstaller.ui.activities
 
 import android.Manifest
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -25,9 +24,11 @@ import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.MaterialPalette
 import com.brit.swiftinstaller.utils.UpdateChecker
 import com.brit.swiftinstaller.utils.getAppsToUpdate
+import kotlinx.android.synthetic.main.card_compatibility_info.*
+import kotlinx.android.synthetic.main.card_install.*
+import kotlinx.android.synthetic.main.card_update.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.dialog_about.view.*
-import kotlinx.android.synthetic.main.info_card_compatibility.*
 import kotlinx.android.synthetic.main.popup_menu.view.*
 
 class MainActivity : ThemeActivity() {
@@ -35,25 +36,14 @@ class MainActivity : ThemeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val myToolbar = findViewById<Toolbar>(R.id.my_toolbar)
+        val myToolbar = findViewById<Toolbar>(R.id.main_toolbar)
         setSupportActionBar(myToolbar)
 
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("not_closed", true)) {
-            compatibility_card_layout.visibility = View.VISIBLE
-            compatibility_info_card_close.setOnClickListener {
+            card_compatibility.visibility = View.VISIBLE
+            card_compatibility_close.setOnClickListener {
                 PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("not_closed", false).apply()
-                compatibility_card_layout.visibility = View.GONE
-            }
-        }
-
-        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener { _, key ->
-            if (key == "overlays_to_update") {
-                val apps = getAppsToUpdate(this)
-                if (apps.isEmpty()) {
-                    install_updates_tile.visibility = View.GONE
-                } else {
-                    install_updates_tile.visibility = View.VISIBLE
-                }
+                card_compatibility.visibility = View.GONE
             }
         }
 
@@ -84,17 +74,17 @@ class MainActivity : ThemeActivity() {
             }
         }
 
-        install_tile.setOnClickListener {
+        card_install.setOnClickListener {
             startActivity(Intent(this, OverlaysActivity::class.java))
         }
 
-        update_tile_layout.setOnClickListener {
+        card_update.setOnClickListener {
             val intent = Intent(this, OverlaysActivity::class.java)
             intent.putExtra("tab", OverlaysActivity.UPDATE_TAB)
             startActivity(intent)
         }
 
-        accent_tile.setOnClickListener {
+        card_personalize.setOnClickListener {
             val intent = Intent(this, CustomizeActivity::class.java)
             startActivity(intent)
         }
@@ -124,10 +114,10 @@ class MainActivity : ThemeActivity() {
             override fun finished(installedCount: Int, updates: ArrayList<String>) {
                 active_count.text = String.format("%d", installedCount)
                 if (updates.isEmpty()) {
-                    update_tile_layout.visibility = View.GONE
+                    card_update.visibility = View.GONE
                 } else {
                     updates_count.text = String.format("%d", updates.size)
-                    update_tile_layout.visibility = View.VISIBLE
+                    card_update.visibility = View.VISIBLE
                 }
             }
 

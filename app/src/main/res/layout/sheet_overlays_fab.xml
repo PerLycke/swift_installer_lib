@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/dialog_install_icon"
+            android:id="@+id/card_install_icon"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:contentDescription="@string/image"
@@ -41,7 +41,7 @@
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/dialog_install_icon"
+            app:layout_constraintStart_toEndOf="@+id/card_install_icon"
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 

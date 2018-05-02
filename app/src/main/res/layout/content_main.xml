@@ -10,7 +10,7 @@
     tools:showIn="@layout/activity_main">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/my_toolbar"
+        android:id="@+id/main_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:background="?colorPrimary"
@@ -20,354 +20,66 @@
         app:title="Swift Installer"
         app:titleTextAppearance="@style/ToolbarTitle" />
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/compatibility_card_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_toolbar">
-
-        <include
-            android:id="@+id/compatibility_card"
-            layout="@layout/info_card_compatibility"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/update_tile_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="16dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/compatibility_card_layout">
-
-        <ImageView
-            android:id="@+id/install_updates_tile"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:contentDescription="@string/image"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/big_tile_bg" />
-
-        <ImageView
-            android:id="@+id/install_updates_icon"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="32dp"
-            android:contentDescription="@string/image"
-            app:layout_constraintBottom_toBottomOf="@+id/install_updates_tile"
-            app:layout_constraintStart_toStartOf="@+id/install_updates_tile"
-            app:layout_constraintTop_toTopOf="@+id/install_updates_tile"
-            app:srcCompat="@drawable/ic_updates" />
-
-        <TextView
-            android:id="@+id/install_updates_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="8dp"
-            android:fontFamily="sans-serif"
-            android:text="@string/big_tile_install_updates"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/install_updates_desc"
-            app:layout_constraintEnd_toEndOf="@+id/install_updates_tile"
-            app:layout_constraintStart_toEndOf="@+id/install_updates_icon"
-            app:layout_constraintTop_toTopOf="@+id/install_updates_tile"
-            app:layout_constraintVertical_chainStyle="packed" />
-
-        <TextView
-            android:id="@+id/install_updates_desc"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="@string/big_tile_update_msg"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/install_updates_tile"
-            app:layout_constraintEnd_toEndOf="@+id/install_updates_tile"
-            app:layout_constraintStart_toEndOf="@+id/install_updates_icon"
-            app:layout_constraintTop_toBottomOf="@+id/install_updates_title" />
-
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/update_info_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="84dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="@+id/install_updates_tile"
-            app:layout_constraintTop_toTopOf="@+id/install_updates_tile">
-
-            <ImageView
-                android:id="@+id/update_info"
-                android:layout_width="98dp"
-                android:layout_height="30dp"
-                android:contentDescription="@string/image"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/big_tile_bg" />
-
-            <TextView
-                android:id="@+id/updates_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="2dp"
-                android:fontFamily="sans-serif-condensed"
-                android:text="@string/small_info_updates"
-                android:textColor="@android:color/white"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/updates_count"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toEndOf="@+id/update_info"
-                app:layout_constraintStart_toStartOf="@+id/update_info"
-                app:layout_constraintTop_toTopOf="@+id/update_info" />
-
-            <TextView
-                android:id="@+id/updates_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:fontFamily="sans-serif-condensed"
-                android:textColor="@color/minimal_orange"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/update_info"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/updates_txt"
-                app:layout_constraintTop_toTopOf="@+id/update_info"
-                tools:text="0" />
-        </android.support.constraint.ConstraintLayout>
-
-    </android.support.constraint.ConstraintLayout>
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/install_tile_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/update_tile_layout">
-
-        <ImageView
-            android:id="@+id/install_tile"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:contentDescription="@string/image"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/big_tile_bg" />
-
-        <ImageView
-            android:id="@+id/dialog_install_icon"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_marginBottom="32dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:contentDescription="@string/image"
-            app:layout_constraintBottom_toBottomOf="@+id/install_tile"
-            app:layout_constraintStart_toStartOf="@+id/install_tile"
-            app:layout_constraintTop_toTopOf="@+id/install_tile"
-            app:srcCompat="@drawable/ic_install" />
-
-        <TextView
-            android:id="@+id/install_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="16dp"
-            android:fontFamily="sans-serif"
-            android:text="@string/big_tile_install_title"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/install_desc"
-            app:layout_constraintEnd_toEndOf="@+id/install_tile"
-            app:layout_constraintStart_toEndOf="@+id/dialog_install_icon"
-            app:layout_constraintTop_toTopOf="@+id/install_tile"
-            app:layout_constraintVertical_chainStyle="packed" />
-
-        <TextView
-            android:id="@+id/install_desc"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="16dp"
-            android:text="@string/big_tile_install_msg"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/install_tile"
-            app:layout_constraintEnd_toEndOf="@+id/install_tile"
-            app:layout_constraintStart_toEndOf="@+id/dialog_install_icon"
-            app:layout_constraintTop_toBottomOf="@+id/install_title" />
-
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/installed_info_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="84dp"
-            app:layout_constraintEnd_toEndOf="@+id/install_tile"
-            app:layout_constraintTop_toTopOf="@+id/install_tile">
-
-            <ImageView
-                android:id="@+id/installed_info"
-                android:layout_width="98dp"
-                android:layout_height="30dp"
-                android:contentDescription="@string/image"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/big_tile_bg" />
-
-            <TextView
-                android:id="@+id/active_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="2dp"
-                android:fontFamily="sans-serif-condensed"
-                android:text="@string/small_info_active"
-                android:textColor="@android:color/white"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/installed_info"
-                app:layout_constraintEnd_toStartOf="@+id/active_count"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/installed_info" />
-
-            <TextView
-                android:id="@+id/active_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:fontFamily="sans-serif-condensed"
-                android:textColor="@color/minimal_green"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/active_txt"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="0"/>
-
-        </android.support.constraint.ConstraintLayout>
-    </android.support.constraint.ConstraintLayout>
-
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/install_tile_layout">
-
-        <ImageView
-            android:id="@+id/accent_tile"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:contentDescription="@string/image"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/big_tile_bg" />
-
-        <ImageView
-            android:id="@+id/accent_icon"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_marginBottom="32dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:contentDescription="@string/image"
-            app:layout_constraintBottom_toBottomOf="@+id/accent_tile"
-            app:layout_constraintStart_toStartOf="@+id/accent_tile"
-            app:layout_constraintTop_toTopOf="@+id/accent_tile"
-            app:srcCompat="@drawable/ic_accent_new" />
-
-        <TextView
-            android:id="@+id/accent_category_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="16dp"
-            android:fontFamily="sans-serif"
-            android:text="@string/big_tile_personalize_title"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/accent_desc"
-            app:layout_constraintEnd_toEndOf="@+id/accent_tile"
-            app:layout_constraintStart_toEndOf="@+id/accent_icon"
-            app:layout_constraintTop_toTopOf="@+id/accent_tile"
-            app:layout_constraintVertical_chainStyle="packed" />
-
-        <TextView
-            android:id="@+id/accent_desc"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="16dp"
-            android:text="@string/big_tile_personalize_msg"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/accent_tile"
-            app:layout_constraintEnd_toEndOf="@+id/accent_tile"
-            app:layout_constraintStart_toEndOf="@+id/accent_icon"
-            app:layout_constraintTop_toBottomOf="@+id/accent_category_title" />
-
-    </android.support.constraint.ConstraintLayout>
-
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:onClick="overflowClick"
         android:padding="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/my_toolbar"
-        app:layout_constraintEnd_toEndOf="@+id/my_toolbar"
+        app:layout_constraintBottom_toBottomOf="@+id/main_toolbar"
+        app:layout_constraintEnd_toEndOf="@+id/main_toolbar"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_menu" />
+
+    <include
+        android:id="@+id/card_compatibility"
+        layout="@layout/card_compatibility_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_toolbar" />
+
+    <include
+        android:id="@+id/card_update"
+        layout="@layout/card_update"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card_compatibility" />
+
+    <include
+        android:id="@+id/card_install"
+        layout="@layout/card_install"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card_update" />
+
+    <include
+        android:id="@+id/card_personalize"
+        layout="@layout/card_personalize"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card_install" />
 
 </android.support.constraint.ConstraintLayout>
