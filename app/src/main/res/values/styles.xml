@@ -20,6 +20,7 @@
         <item name="android:windowTitleStyle">@style/AppTheme.AlertDialog.Title</item>
         <item name="android:lineSpacingExtra">4dp</item>
         <item name="buttonBarStyle">@style/AppTheme.AlertDialog.ButtonBar</item>
+        <item name="android:buttonBarStyle">@style/AppTheme.AlertDialog.ButtonBar</item>
     </style>
     <style name="AppTheme.AlertDialog.Error" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:windowBackground">@drawable/dialog_bg</item>
@@ -35,8 +36,8 @@
     <style name="AppTheme.AlertDialog.Title">
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
-        <item name="android:layout_marginTop">6dp</item>
-        <item name="android:layout_marginBottom">6dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
     </style>
     <style name="AppTheme.BottomSheetDialog" parent="Theme.Design.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>

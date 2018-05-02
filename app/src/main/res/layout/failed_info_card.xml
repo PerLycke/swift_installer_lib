@@ -25,10 +25,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/image"
-            android:tint="@color/light_grey"
+            android:tint="@color/minimal_red"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_close_round" />
+            app:srcCompat="@drawable/ic_close" />
 
         <TextView
             android:id="@+id/failed_info_card_desc"

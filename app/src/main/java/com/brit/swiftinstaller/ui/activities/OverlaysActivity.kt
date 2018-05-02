@@ -258,21 +258,36 @@ class OverlaysActivity : ThemeActivity() {
 
         val install = sheetView.findViewById<View>(R.id.install)
         install.setOnClickListener {
-            if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("first_time", true)) {
-                bottomSheetDialog.dismiss()
+            val launch = getSharedPreferences("launched", Context.MODE_PRIVATE).getString("launched","first")
+            bottomSheetDialog.dismiss()
+
+            if (launch == "default") {
                 installAction()
-            } else {
-                bottomSheetDialog.dismiss()
+            } else if (launch == "first") {
                 val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-
                 themeDialog()
-
                 builder.setTitle(R.string.installing_and_uninstalling_title)
                 builder.setMessage(R.string.installing_and_uninstalling_msg)
                 builder.setPositiveButton(R.string.proceed, { dialogInterface, _ ->
-                    PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("first_time", false).apply()
+                    getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "second").apply()
                     dialogInterface.dismiss()
                     installAction()
+                })
+
+                val dialog = builder.create()
+                dialog.show()
+            } else if (launch == "second"){
+                val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+                themeDialog()
+                builder.setTitle(R.string.reboot_delay_title)
+                builder.setMessage(R.string.reboot_delay_msg)
+                builder.setPositiveButton(R.string.proceed, { dialogInterface, _ ->
+                    getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "default").apply()
+                    dialogInterface.dismiss()
+                    installAction()
+                })
+                builder.setNegativeButton(R.string.cancel, { dialogInterface, _ ->
+                    dialogInterface.dismiss()
                 })
 
                 val dialog = builder.create()
