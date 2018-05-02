@@ -1,6 +1,7 @@
 package com.brit.swiftinstaller.ui.activities
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -23,7 +24,6 @@ import android.widget.Toast
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.MaterialPalette
 import com.brit.swiftinstaller.utils.UpdateChecker
-import com.brit.swiftinstaller.utils.getAppsToUpdate
 import kotlinx.android.synthetic.main.card_compatibility_info.*
 import kotlinx.android.synthetic.main.card_install.*
 import kotlinx.android.synthetic.main.card_update.*
@@ -124,10 +124,11 @@ class MainActivity : ThemeActivity() {
         }).execute()
     }
 
+    @SuppressLint("RtlHardcoded", "InflateParams")
     fun overflowClick(view: View) {
         val popup = PopupWindow(this, null, 0, R.style.PopupWindow)
         val popupView = LayoutInflater.from(this).inflate(R.layout.popup_menu, null)
-        popup.setAnimationStyle(R.style.PopupWindowAnimation)
+        popup.animationStyle = R.style.PopupWindowAnimation
         popup.contentView = popupView
         popup.isFocusable = true
 

@@ -249,7 +249,7 @@ class CustomizeActivity : ThemeActivity() {
                 dark_notifications.isChecked = b
                 white_notifications.isChecked = !b
                 shadowFixLayout.visibility = View.VISIBLE
-                customizations_scrollview.postDelayed(Runnable { customizations_scrollview.fullScroll(ScrollView.FOCUS_DOWN) }, 200)
+                customizations_scrollview.postDelayed({ customizations_scrollview.fullScroll(ScrollView.FOCUS_DOWN) }, 200)
             } else {
                 dark_notifications.isChecked = !b
                 white_notifications.isChecked = b
@@ -440,15 +440,15 @@ class CustomizeActivity : ThemeActivity() {
         }
 
         if (notifShadow) {
-            preview_sysui_sender.setText(getString(R.string.dark_notifications))
-            preview_sysui_msg.setText(getString(R.string.dark_notifications_preview))
+            preview_sysui_sender.text = getString(R.string.dark_notifications)
+            preview_sysui_msg.text = getString(R.string.dark_notifications_preview)
             preview_sysui_msg.setText(R.string.notification_fix_summary)
             preview_sysui_app_title.setShadowLayer(2.0f, 0.0f, 0.0f, Color.WHITE)
             preview_sysui_sender.setTextColor(Color.BLACK)
             preview_sysui_sender.setShadowLayer(2.0f, 0.0f, 0.0f, Color.WHITE)
         } else {
             preview_sysui_sender.setText(R.string.dark_notifications)
-            preview_sysui_msg.setText(getString(R.string.dark_notifications_preview_normal))
+            preview_sysui_msg.text = getString(R.string.dark_notifications_preview_normal)
             preview_sysui_app_title.setShadowLayer(0.0f, 0.0f, 0.0f, Color.TRANSPARENT)
             preview_sysui_sender.setTextColor(Color.WHITE)
             preview_sysui_sender.setShadowLayer(0.0f, 0.0f, 0.0f, Color.TRANSPARENT)
@@ -464,8 +464,8 @@ class CustomizeActivity : ThemeActivity() {
             preview_sysui_msg.setTextColor(Color.parseColor("#b3ffffff"))
             shadowFixLayout.visibility = View.VISIBLE
         } else {
-            preview_sysui_sender.setText(getString(R.string.white_notifications))
-            preview_sysui_msg.setText(getString(R.string.white_notifications_preview))
+            preview_sysui_sender.text = getString(R.string.white_notifications)
+            preview_sysui_msg.text = getString(R.string.white_notifications_preview)
             notif_bg_layout.drawable.setTint(Color.parseColor("#f5f5f5"))
             preview_sysui_sender.setTextColor(Color.BLACK)
             preview_sysui_msg.setTextColor(Color.parseColor("#8a000000"))
