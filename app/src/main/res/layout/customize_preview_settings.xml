@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/customize_preview_root"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
@@ -10,19 +9,17 @@
         android:id="@+id/preview_settings_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="parent">
 
         <android.support.constraint.Guideline
-            android:id="@+id/guideline7"
+            android:id="@+id/settings_guideline1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="201dp" />
 
         <android.support.constraint.Guideline
-            android:id="@+id/guideline6"
+            android:id="@+id/settings_guideline2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -49,7 +46,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/settings_preview"
-            app:srcCompat="@drawable/search_frame_bg" />
+            app:srcCompat="@drawable/search_frame_bg"
+            android:contentDescription="@string/image" />
 
         <ImageView
             android:id="@+id/searchbar_search_icon"
@@ -59,7 +57,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/searchbar_bg"
             app:layout_constraintStart_toStartOf="@+id/searchbar_bg"
             app:layout_constraintTop_toTopOf="@+id/searchbar_bg"
-            app:srcCompat="@drawable/ic_search_preview" />
+            app:srcCompat="@drawable/ic_search_preview"
+            android:contentDescription="@string/image" />
 
         <TextView
             android:id="@+id/searchbar_hint"
@@ -82,7 +81,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/searchbar_bg"
             app:layout_constraintEnd_toEndOf="@+id/searchbar_bg"
             app:layout_constraintTop_toTopOf="@+id/searchbar_bg"
-            app:srcCompat="@drawable/ic_mic_preview" />
+            app:srcCompat="@drawable/ic_mic_preview"
+            android:contentDescription="@string/image" />
 
         <ImageView
             android:id="@+id/settings_connections_icon"
@@ -130,7 +130,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="54dp"
             android:layout_marginTop="59dp"
-            android:text="Connections"
+            android:text="@string/connections"
             android:textColor="@android:color/white"
             android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@+id/connections_desc"
@@ -144,7 +144,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:text="Wi-Fi, Bluetooth, Data usage, Flight mode"
+            android:text="@string/connections_desc"
             android:textColor="@android:color/white"
             android:textSize="9sp"
             app:layout_constraintBottom_toTopOf="@+id/sounds_title"
@@ -159,7 +159,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="54dp"
             android:layout_marginTop="19dp"
-            android:text="Sound and vibration"
+            android:text="@string/sound_and_vibration"
             android:textColor="@android:color/white"
             android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@+id/sounds_desc"
@@ -172,7 +172,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:text="Sounds, Vibration, Do not disturb"
+            android:text="@string/sounds_and_vibration_desc"
             android:textColor="@android:color/white"
             android:textSize="9sp"
             app:layout_constraintBottom_toTopOf="@+id/notifications_title"
@@ -187,7 +187,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="54dp"
             android:layout_marginTop="19dp"
-            android:text="Notifications"
+            android:text="@string/notifications"
             android:textColor="@android:color/white"
             android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@+id/notifications_desc"
@@ -201,7 +201,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
-            android:text="Block, allow, prioritise"
+            android:text="@string/notifications_desc"
             android:textColor="@android:color/white"
             android:textSize="9sp"
             app:layout_constraintBottom_toBottomOf="parent"

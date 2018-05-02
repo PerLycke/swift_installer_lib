@@ -50,7 +50,8 @@
             android:paddingEnd="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/title"
-            app:layout_constraintTop_toBottomOf="@+id/title">
+            app:layout_constraintTop_toBottomOf="@+id/title"
+            tools:ignore="RtlSymmetry">
 
             <TextView
                 android:id="@+id/toolbar_subtitle_bg_title"
@@ -69,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:fontFamily="sans-serif-condensed"
-                android:text="#ff0000"
+                tools:text="#ff0000"
                 android:textAppearance="@style/ToolbarSubtitle"
                 app:layout_constraintStart_toEndOf="@+id/toolbar_subtitle_accent_title"
                 app:layout_constraintTop_toTopOf="@+id/toolbar_subtitle_accent_title" />
@@ -80,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:fontFamily="sans-serif-condensed"
-                android:text="Dark"
+                android:text="@string/dark"
                 android:textAppearance="@style/ToolbarSubtitle"
                 app:layout_constraintStart_toEndOf="@+id/toolbar_subtitle_bg_title"
                 app:layout_constraintTop_toTopOf="@+id/toolbar_subtitle_bg_title" />
@@ -111,7 +112,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/toolbar_overlays_main_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlSymmetry">
 
         <android.support.v7.widget.SearchView
             android:id="@+id/search_view"

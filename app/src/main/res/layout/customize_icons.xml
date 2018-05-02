@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:checked="true"
         android:fontFamily="sans-serif"
-        android:text="AOSP icons"
+        android:text="@string/aosp_icons"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="sans-serif"
-        android:text="Stock icons"
+        android:text="@string/stock_icons"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/aosp_icons" />

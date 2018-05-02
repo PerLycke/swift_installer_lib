@@ -2,7 +2,6 @@
 <resources>
     <color name="background_main">#16161c</color>
     <color name="bg_circle_dark">#202021</color>
-    <color name="big_tile_pressed_tint">#202026</color>
     <color name="colorAccent">#47AE84</color>
     <color name="colorPrimary">@color/background_main</color>
     <color name="colorPrimaryDark">@color/background_main</color>
@@ -11,10 +10,8 @@
     <color name="light_grey">#dedede</color>
     <color name="tab_underline">#14ffffff</color>
     <color name="ripple">#14ffffff</color>
-    <color name="search_frame_bg">#12ffffff</color>
     <color name="search_frame_stroke">#0Dffffff</color>
     <color name="preview_searchbar_icon">#BFffffff</color>
-    <color name="preview_searchbar_text">#BFffffff</color>
     <color name="preview_stroke">#14ffffff</color>
     <color name="radio_button_disabled">#B3ffffff</color>
 

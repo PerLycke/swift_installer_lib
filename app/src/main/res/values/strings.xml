@@ -8,17 +8,13 @@
     <string name="big_tile_personalize_msg">Change background and accent color</string>
     <string name="big_tile_personalize_title">Personalize</string>
     <string name="big_tile_update_msg">Some overlays were updated. Install them.</string>
-    <string name="black">Black</string>
     <string name="cancel">Cancel</string>
     <string name="category_accent">Accent</string>
     <string name="category_background">Background</string>
     <string name="category_icons">Icons</string>
-    <string name="changing_background_msg">Changing background requires all overlays to be re-installed. This will take some time and the process will start once you click confirm on the previous screen.</string>
-    <string name="changing_background_title">Changing background info</string>
     <string name="confirm">Confirm</string>
     <string name="credits_msg">Credits to Projekt Development Team &amp; SlimRoms Ltd for the encryption implementation</string>
     <string name="dark">Dark</string>
-    <string name="email_log">Email error log &amp; reboot</string>
     <string name="examined_result_msg">After you examined the result, and optionally sent an error log if something failed, you need to manually reboot to finish the installation!\n\nYou don\'t need to reboot if all overlays failed to install.</string>
     <string name="got_it">Got it!</string>
     <string name="hashtag">#</string>
@@ -31,7 +27,6 @@
     <string name="installing_and_uninstalling_title">Please note that:</string>
     <string name="ok">OK</string>
     <string name="overflow_about">About</string>
-    <string name="overflow_disable_notifications">Disable notifications</string>
     <string name="overlays">Overlays</string>
     <string name="overlays_action_install">Install</string>
     <string name="overlays_action_uninstall">Uninstall</string>
@@ -44,7 +39,6 @@
     <string name="reboot">Reboot</string>
     <string name="reboot_later">Reboot later</string>
     <string name="reboot_manually">You need to reboot manually to finish uninstall.</string>
-    <string name="reboot_now">Reboot now to finish installation</string>
     <string name="reboot_to_finish">Manually reboot!</string>
     <string name="small_info_active">Active :</string>
     <string name="small_info_updates">Updates :</string>
@@ -76,7 +70,6 @@
     <string name="invalid_accent">Invalid Accent</string>
     <string name="invalid_background">Invalid Background</string>
     <string name="preview_time_string">22:20 | Sun 19 April</string>
-    <string name="whatsapp_title">WhatsApp</string>
     <string name="sender_name_preview">Michael</string>
     <string name="notification_fix_summary">Notification fix makes black text visible, e.g. WhatsApp notifications.</string>
     <string name="notif_fix_desc_summary">When using dark notifications: Some notification texts are hardcoded black, e.g. WhatsApp notifications. This fix adds a shadow around all text, making black text visible. You can see how it looks in the preview above.</string>
@@ -91,4 +84,18 @@
     <string name="tutorial_more_usage_info">The first install will require you to install all apps manually, and this means a lot of clicking. Once the first install is done, it will all be much smoother and faster due to our update system. There is a learning curve, but once you get a hang of it, you\'ll find it easy to use.</string>
     <string name="tutorial_more_usage_title">More usage info</string>
     <string name="info_card_compatibility_msg">Please note that we, due to stability reasons, advice <b>not</b> to use native Samsung themes or Substratum overlays together with Swift Installer.</string>
+    <string name="aosp_icons">AOSP icons</string>
+    <string name="stock_icons">Stock icons</string>
+    <string name="faq">FAQ</string>
+    <string name="notification_tweaks">Notification tweaks</string>
+    <string name="link_substratum_template">https://github.com/substratum/template</string>
+    <string name="link_slimroms">https://slimroms.org</string>
+    <string name="required">- Required</string>
+    <string name="connections">Connections</string>
+    <string name="connections_desc">Wi-Fi, Bluetooth, Data usage, Flight mode</string>
+    <string name="sound_and_vibration">Sound and vibration</string>
+    <string name="sounds_and_vibration_desc">Sounds, Vibration, Do not disturb</string>
+    <string name="notifications">Notifications</string>
+    <string name="notifications_desc">Block, allow, prioritise</string>
+    <string name="send_error_log">Send error log</string>
 </resources>

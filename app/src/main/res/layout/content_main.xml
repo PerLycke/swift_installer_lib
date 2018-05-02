@@ -30,7 +30,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/main_toolbar"
         app:layout_constraintEnd_toEndOf="@+id/main_toolbar"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_menu" />
+        app:srcCompat="@drawable/ic_menu"
+        android:contentDescription="@string/image" />
 
     <include
         android:id="@+id/card_compatibility"

@@ -15,14 +15,14 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <android.support.constraint.Guideline
-            android:id="@+id/guideline7"
+            android:id="@+id/sysui_guideline1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="201dp" />
 
         <android.support.constraint.Guideline
-            android:id="@+id/guideline6"
+            android:id="@+id/sysui_guideline2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -33,7 +33,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:contentDescription="@null"
-            app:layout_constraintBottom_toTopOf="@+id/guideline7"
+            app:layout_constraintBottom_toTopOf="@+id/sysui_guideline1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -50,7 +50,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/preview_sysui_divider"
-            app:srcCompat="@drawable/notif_bg" />
+            app:srcCompat="@drawable/notif_bg"
+            android:contentDescription="@string/image" />
 
         <TextView
             android:id="@+id/preview_sysui_date"
@@ -173,7 +174,7 @@
             app:layout_constraintTop_toBottomOf="@+id/preview_sysui_handle" />
 
         <ImageView
-            android:id="@+id/preview_sysui_whatsapp"
+            android:id="@+id/preview_sysui_app_icon"
             android:layout_width="14dp"
             android:layout_height="14dp"
             android:layout_marginStart="17dp"
@@ -185,7 +186,7 @@
             app:srcCompat="@drawable/ic_tutorial_logo" />
 
         <TextView
-            android:id="@+id/preview_sysui_whatsapp_title"
+            android:id="@+id/preview_sysui_app_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
@@ -193,26 +194,26 @@
             android:textColor="#ff78909c"
             android:textSize="11sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/preview_sysui_whatsapp"
-            app:layout_constraintStart_toEndOf="@id/preview_sysui_whatsapp"
-            app:layout_constraintTop_toTopOf="@+id/preview_sysui_whatsapp"
+            app:layout_constraintBottom_toBottomOf="@+id/preview_sysui_app_icon"
+            app:layout_constraintStart_toEndOf="@id/preview_sysui_app_icon"
+            app:layout_constraintTop_toTopOf="@+id/preview_sysui_app_icon"
             tools:ignore="SmallSp" />
 
         <TextView
-            android:id="@+id/preview_sysui_whatsapp_sender"
+            android:id="@+id/preview_sysui_sender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:text="@string/sender_name_preview"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/preview_sysui_whatsapp"
-            app:layout_constraintTop_toBottomOf="@+id/preview_sysui_whatsapp"
+            app:layout_constraintStart_toStartOf="@+id/preview_sysui_app_icon"
+            app:layout_constraintTop_toBottomOf="@+id/preview_sysui_app_icon"
             tools:ignore="SmallSp"
             tools:textColor="@android:color/black" />
 
         <TextView
-            android:id="@+id/preview_sysui_whatsapp_msg"
+            android:id="@+id/preview_sysui_msg"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="8dp"
@@ -223,8 +224,8 @@
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/notif_bg_layout"
             app:layout_constraintEnd_toEndOf="@+id/notif_bg_layout"
-            app:layout_constraintStart_toStartOf="@+id/preview_sysui_whatsapp_sender"
-            app:layout_constraintTop_toBottomOf="@+id/preview_sysui_whatsapp_sender"
+            app:layout_constraintStart_toStartOf="@+id/preview_sysui_sender"
+            app:layout_constraintTop_toBottomOf="@+id/preview_sysui_sender"
             tools:ignore="SmallSp"
             tools:textColor="#8a000000" />
 

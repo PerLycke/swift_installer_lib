@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/customize_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -81,7 +80,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/customization_preview_layout"
-        app:srcCompat="@drawable/top_shadow" />
+        app:srcCompat="@drawable/top_shadow"
+        android:contentDescription="@string/image" />
 
     <ScrollView
         android:id="@+id/customizations_scrollview"
@@ -291,7 +291,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="32dp"
                         android:fontFamily="sans-serif"
-                        android:text="Notification tweaks"
+                        android:text="@string/notification_tweaks"
                         android:textAllCaps="true"
                         android:textColor="?android:attr/textColorSecondary"
                         android:textSize="14sp"

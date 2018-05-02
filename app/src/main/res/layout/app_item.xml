@@ -84,13 +84,14 @@
         android:background="#14ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="@string/image" />
 
     <TextView
         android:id="@+id/required"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="- Required"
+        android:text="@string/required"
         android:textColor="@color/minimal_green"
         android:textSize="11sp"
         android:textStyle="bold|italic"

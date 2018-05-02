@@ -42,18 +42,13 @@
         <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
         <item name="windowNoTitle">true</item>
     </style>
-    <style name="AppTheme.BottomSheetDialog.Black" parent="Theme.Design.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/CustomBottomSheetStyle.Black</item>
-        <item name="windowNoTitle">true</item>
-    </style>
+
     <style name="AppTheme.TutorialStyle" parent="AppTheme">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
     <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal" />
-    <style name="CustomBottomSheetStyle.Black" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@android:color/black</item>
-    </style>
+
     <style name="PopupMenuOverflow" parent="Widget.AppCompat.PopupMenu.Overflow">
         <item name="android:popupBackground">@drawable/popup_bg</item>
         <item name="android:dropDownHorizontalOffset">0.0dip</item>

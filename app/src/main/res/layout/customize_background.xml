@@ -59,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="Material"
+                android:text="@string/material"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -68,7 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Flat"
+                android:text="@string/flat"
                 app:layout_constraintStart_toStartOf="@+id/material_theme"
                 app:layout_constraintTop_toBottomOf="@+id/material_theme" />
 

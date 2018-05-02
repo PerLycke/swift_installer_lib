@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/popup_menu_root"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -19,7 +18,7 @@
         android:paddingEnd="110dp"
         android:paddingStart="10dp"
         android:paddingTop="8dp"
-        android:text="FAQ"
+        android:text="@string/faq"
         android:textAppearance="@android:style/TextAppearance.Material.Medium"
         android:textColor="@android:color/white"
         android:textSize="16sp"

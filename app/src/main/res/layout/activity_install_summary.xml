@@ -14,7 +14,7 @@
 
         <include
             android:id="@+id/include4"
-            layout="@layout/toobar_install_summary"
+            layout="@layout/toolbar_install_summary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -40,7 +40,8 @@
         android:background="@color/tab_underline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        android:contentDescription="@string/image" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/container"
@@ -70,7 +71,8 @@
             android:background="@color/tab_underline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/image" />
 
         <Button
             android:id="@+id/send_email_btn"
@@ -81,7 +83,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             android:fontFamily="sans-serif"
-            android:text="Send error log"
+            android:text="@string/send_error_log"
             android:textColor="@color/minimal_red"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
