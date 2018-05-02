@@ -44,6 +44,7 @@ class InstallSummaryActivity : ThemeActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        InstallActivity().finish()
         setContentView(R.layout.activity_install_summary)
 
         if (intent.extras.containsKey("errorMap")) {

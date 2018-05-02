@@ -10,8 +10,9 @@ class UninstallFinishedActivity : ThemeActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+        InstallActivity().finish()
 
+        val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
         themeDialog()
 
         builder.setTitle(R.string.reboot)

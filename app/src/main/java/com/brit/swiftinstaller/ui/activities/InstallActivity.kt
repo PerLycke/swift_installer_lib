@@ -35,7 +35,7 @@ class InstallActivity : ThemeActivity() {
     private var uninstall = false
     private var update = false
 
-    private lateinit var dialog: AlertDialog
+    private var dialog: AlertDialog? = null
 
     private lateinit var apps: ArrayList<String>
     private val updateAppsToUninstall = ArrayList<String>()
@@ -91,8 +91,8 @@ class InstallActivity : ThemeActivity() {
 
         builder.setView(inflate)
         dialog = builder.create()
-        dialog.setCanceledOnTouchOutside(false)
-        dialog.setCancelable(false)
+        dialog?.setCanceledOnTouchOutside(false)
+        dialog?.setCancelable(false)
 
         if (uninstall) {
             inflate.install_progress_txt.setText(R.string.progress_uninstalling_title)
@@ -117,7 +117,7 @@ class InstallActivity : ThemeActivity() {
             progressCount.visibility = View.INVISIBLE
             progressPercent.visibility = View.INVISIBLE
         }
-        dialog.show()
+        dialog?.show()
 
         if (uninstall) {
             if (!ShellUtils.isRootAvailable) {
@@ -154,7 +154,7 @@ class InstallActivity : ThemeActivity() {
 
     override fun finish() {
         super.finish()
-        if (dialog.isShowing) dialog.cancel()
+        if (dialog != null && dialog!!.isShowing) dialog?.cancel()
     }
 
     inner class InstallListener : BroadcastReceiver() {
