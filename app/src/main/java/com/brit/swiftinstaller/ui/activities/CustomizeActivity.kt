@@ -350,9 +350,11 @@ class CustomizeActivity : ThemeActivity() {
         }
         val settingsBackground = settings_preview?.drawable as LayerDrawable
         val systemUIBackground = preview_sysui_bg.drawable as LayerDrawable
+        val searchFrameBackground = searchbar_bg.drawable as LayerDrawable
         //back.setTintMode(PorterDuff.Mode.SRC_ATOP)
         settingsBackground.findDrawableByLayerId(R.id.preview_background).setTint(materialPalette.backgroundColor)
         systemUIBackground.findDrawableByLayerId(R.id.preview_background).setTint(materialPalette.backgroundColor)
+        searchFrameBackground.findDrawableByLayerId(R.id.search_frame_background).setTint(materialPalette.cardBackgroud)
     }
 
     private fun updateIcons() {
