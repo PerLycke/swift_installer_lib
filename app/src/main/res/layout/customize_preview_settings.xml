@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/customize_preview_root"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
@@ -150,7 +151,8 @@
             app:layout_constraintBottom_toTopOf="@+id/sounds_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/connections_title"
-            app:layout_constraintTop_toBottomOf="@+id/connections_title" />
+            app:layout_constraintTop_toBottomOf="@+id/connections_title"
+            tools:ignore="SmallSp" />
 
         <TextView
             android:id="@+id/sounds_title"
@@ -178,7 +180,8 @@
             app:layout_constraintBottom_toTopOf="@+id/notifications_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/sounds_title"
-            app:layout_constraintTop_toBottomOf="@+id/sounds_title" />
+            app:layout_constraintTop_toBottomOf="@+id/sounds_title"
+            tools:ignore="SmallSp" />
 
         <TextView
             android:id="@+id/notifications_title"
@@ -207,7 +210,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/notifications_title"
-            app:layout_constraintTop_toBottomOf="@+id/notifications_title" />
+            app:layout_constraintTop_toBottomOf="@+id/notifications_title"
+            tools:ignore="SmallSp" />
 
 
     </android.support.constraint.ConstraintLayout>

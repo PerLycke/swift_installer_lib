@@ -98,6 +98,7 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/app_name"
-        app:layout_constraintTop_toBottomOf="@+id/app_name" />
+        app:layout_constraintTop_toBottomOf="@+id/app_name"
+        tools:ignore="SmallSp" />
 
 </android.support.constraint.ConstraintLayout>
