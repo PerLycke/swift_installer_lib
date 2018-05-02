@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.graphics.drawable.LayerDrawable
 import android.os.AsyncTask
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -345,20 +346,7 @@ class OverlaysActivity : ThemeActivity() {
             bottomSheetDialog.dismiss()
             uninstallProgressAction()
 
-            val toast = Toast.makeText(this, "This can take a lot of time, have patience!", Toast.LENGTH_LONG)
-            val view = toast.view
-
-            val text = view.findViewById<TextView>(android.R.id.message)
-            text.setTextColor(ContextCompat.getColor(this, R.color.minimal_green))
-
-            if (AppCompatDelegate.getDefaultNightMode()
-                    == AppCompatDelegate.MODE_NIGHT_YES) {
-                view.setBackgroundResource(R.drawable.toast_black)
-            } else {
-                view.setBackgroundResource(R.drawable.toast_dark)
-            }
-
-            toast.show()
+            Toast.makeText(this, "This can take a lot of time, have patience!", Toast.LENGTH_LONG).show()
         }
 
         val cancel = sheetView.findViewById<View>(R.id.cancel_uninstall_txt)
