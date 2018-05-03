@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -215,6 +216,7 @@ class CustomizeActivity : ThemeActivity() {
 
     override fun onResume() {
         super.onResume()
+        updateColors(backgroundColor, usePalette)
         if (finish) finish()
     }
 
