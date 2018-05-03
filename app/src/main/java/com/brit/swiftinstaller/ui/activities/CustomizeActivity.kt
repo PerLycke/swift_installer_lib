@@ -176,11 +176,9 @@ class CustomizeActivity : ThemeActivity() {
                 val launch = getSharedPreferences("launched", Context.MODE_PRIVATE).getString("launched","first")
                 val thisLaunch = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("thisLaunched", false)
                 intent.putStringArrayListExtra("apps", apps)
-                Log.d("beachroad before", "$launch $thisLaunch")
 
 
                 if (launch == "default" && thisLaunch) {
-                    Log.d("beachroad doing", "first if $launch $thisLaunch")
                     startActivity(intent)
                 } else {
                     if (launch == "second") {
@@ -198,7 +196,6 @@ class CustomizeActivity : ThemeActivity() {
                         })
 
                         val dialog = builder.create()
-                        Log.d("beachroad doing", "first else $launch $thisLaunch")
                         dialog.show()
                     } else {
                         val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
@@ -212,8 +209,6 @@ class CustomizeActivity : ThemeActivity() {
                         })
 
                         val dialog = builder.create()
-
-                        Log.d("beachroad doing", "first else if $launch $thisLaunch")
                         dialog.show()
                     }
                 }
