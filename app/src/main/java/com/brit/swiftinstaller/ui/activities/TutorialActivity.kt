@@ -49,11 +49,6 @@ class TutorialActivity : TutorialActivity() {
                     .setBackgroundColor(ContextCompat.getColor(this, R.color.background_main))
                     .setDrawable(R.drawable.ic_apps) // int top drawable
                     .build())
-            addFragment(Step.Builder().setTitle(resources.getString(R.string.tutorial_customize_title))
-                    .setContent(resources.getString(R.string.tutorial_customize_content))
-                    .setBackgroundColor(ContextCompat.getColor(this, R.color.background_main))
-                    .setDrawable(R.drawable.ic_tutorial_customize) // int top drawable
-                    .build())
             addFragment(Step.Builder().setTitle(getString(R.string.basic_usage))
                     .setContent(resources.getString(R.string.tutorial_basic_usage_content))
                     .setBackgroundColor(ContextCompat.getColor(this, R.color.background_main))
@@ -70,13 +65,18 @@ class TutorialActivity : TutorialActivity() {
                     .setDrawable(R.drawable.ic_tutorial_permission)
                     .setPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE))
                     .build())
+            addFragment(Step.Builder().setTitle(resources.getString(R.string.tutorial_customize_title))
+                    .setContent(resources.getString(R.string.tutorial_customize_content))
+                    .setBackgroundColor(ContextCompat.getColor(this, R.color.background_main))
+                    .setDrawable(R.drawable.ic_tutorial_customize) // int top drawable
+                    .build())
         }
     }
 
     override fun finishTutorial() {
         super.finishTutorial()
         PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("appHasRunBefore", true).apply()
-        startActivity(Intent(this, MainActivity::class.java))
+        startActivity(Intent(this, CustomizeActivity::class.java).putExtra("parentActivity", "tutorial"))
         finish()
     }
 }

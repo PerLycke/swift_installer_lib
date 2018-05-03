@@ -48,9 +48,12 @@ class CustomizeActivity : ThemeActivity() {
     private var darkNotif = false
 
     private lateinit var materialPalette: MaterialPalette
+    private var parentActivity: String? = "parent"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        parentActivity = intent.getStringExtra("parentActivity")
 
         setContentView(R.layout.activity_customize)
         setupAccentSheet()
@@ -181,7 +184,10 @@ class CustomizeActivity : ThemeActivity() {
                 if (launch == "default" && thisLaunch) {
                     startActivity(intent)
                 } else {
-                    if (launch == "second") {
+                    if (launch == "first") {
+                        getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "second").apply()
+                        startActivity(intent)
+                    } else if (launch == "second") {
                         val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
                         themeDialog()
                         builder.setTitle(R.string.reboot_delay_title)
@@ -331,6 +337,14 @@ class CustomizeActivity : ThemeActivity() {
         }
         aosp_icons.setOnCheckedChangeListener(iconListener)
         stock_icons.setOnCheckedChangeListener(iconListener)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+
+        if (parentActivity == "tutorial") {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
     }
 
     override fun onResume() {
