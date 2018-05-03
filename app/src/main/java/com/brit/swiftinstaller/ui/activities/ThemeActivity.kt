@@ -72,7 +72,7 @@ open class ThemeActivity : AppCompatActivity() {
 
     fun updateColors(backgroundColor: Int, usePalette: Boolean) {
         val palette = MaterialPalette.createPalette(backgroundColor, usePalette)
-        window.statusBarColor = palette.darkBackgroundColor
+        window.statusBarColor = palette.backgroundColor
         window.navigationBarColor = palette.backgroundColor
         for (id in backgroundIDs) {
             val v = findViewById<View>(id)
