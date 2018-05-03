@@ -20,20 +20,6 @@
         app:layout_constraintGuide_percent="0.85" />
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <include
-            android:id="@+id/include"
-            layout="@layout/toolbar_customize"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </android.support.constraint.ConstraintLayout>
-
-    <android.support.constraint.ConstraintLayout
         android:id="@+id/customization_preview_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -41,7 +27,7 @@
         android:visibility="visible"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+        app:layout_constraintTop_toTopOf="parent">
 
         <android.support.v4.view.ViewPager
             android:id="@+id/preview_pager"
@@ -77,11 +63,11 @@
         android:layout_width="0dp"
         android:layout_height="4dp"
         android:layout_marginTop="12dp"
+        android:contentDescription="@string/image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/customization_preview_layout"
-        app:srcCompat="@drawable/top_shadow"
-        android:contentDescription="@string/image" />
+        app:srcCompat="@drawable/top_shadow" />
 
     <ScrollView
         android:id="@+id/customizations_scrollview"
@@ -338,5 +324,17 @@
         </android.support.constraint.ConstraintLayout>
 
     </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/personalize_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:onClick="personalizeFabClick"
+        app:borderWidth="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_fab_install" />
 
 </android.support.constraint.ConstraintLayout>

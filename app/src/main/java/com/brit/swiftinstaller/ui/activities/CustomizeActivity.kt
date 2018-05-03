@@ -1,12 +1,16 @@
 package com.brit.swiftinstaller.ui.activities
 
 import android.app.AlertDialog
-import android.content.*
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.support.design.widget.BottomSheetDialog
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.view.PagerAdapter
@@ -31,7 +35,7 @@ import kotlinx.android.synthetic.main.customize_icons.*
 import kotlinx.android.synthetic.main.customize_notifications.*
 import kotlinx.android.synthetic.main.customize_preview_settings.*
 import kotlinx.android.synthetic.main.customize_preview_sysui.*
-import kotlinx.android.synthetic.main.toolbar_customize.*
+import kotlinx.android.synthetic.main.fab_sheet_personalize.view.*
 
 class CustomizeActivity : ThemeActivity() {
 
@@ -83,7 +87,144 @@ class CustomizeActivity : ThemeActivity() {
             updateColor(accentColor, convertToColorInt("363844"), true, false)
         }
 
-        customize_confirm_btn.setOnClickListener {
+        accent_hex_input.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s?.length == 3 || s?.length == 6) {
+                    if (checkAccentColor(convertToColorInt(s.toString()))) {
+                        updateColor(convertToColorInt(s.toString()), backgroundColor, false, false)
+                    } else {
+                        Toast.makeText(this@CustomizeActivity, R.string.invalid_accent,
+                                Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        })
+
+        hex_input_bg.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s?.length == 3 || s?.length == 6) {
+                    if (checkBackgroundColor(convertToColorInt(s.toString()))) {
+                        updateColor(accentColor, convertToColorInt(s.toString()), false, false)
+                    } else {
+                        Toast.makeText(this@CustomizeActivity,
+                                R.string.invalid_background, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        })
+
+        val viewpager: ViewPager = findViewById(R.id.preview_pager)
+        viewpager.pageMargin = 64
+        val adapter = PreviewPagerAdapter()
+        viewpager.adapter = adapter
+
+        material_theme.isChecked = usePalette
+        flat_theme.isChecked = !usePalette
+
+        val listener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
+            if (compoundButton.id == R.id.material_theme) {
+                material_theme.isChecked = b
+                flat_theme.isChecked = !b
+            } else {
+                material_theme.isChecked = !b
+                flat_theme.isChecked = b
+            }
+            usePalette = material_theme.isChecked
+            updateColor(accentColor, backgroundColor, false, true)
+        }
+        material_theme.setOnCheckedChangeListener(listener)
+        flat_theme.setOnCheckedChangeListener(listener)
+
+        white_notifications.isChecked = !darkNotif
+        dark_notifications.isChecked = darkNotif
+
+        val notifBglistener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
+            if (compoundButton.id == R.id.dark_notifications) {
+                dark_notifications.isChecked = b
+                white_notifications.isChecked = !b
+                shadowFixLayout.visibility = View.VISIBLE
+                customizations_scrollview.postDelayed({ customizations_scrollview.fullScroll(ScrollView.FOCUS_DOWN) }, 200)
+            } else {
+                dark_notifications.isChecked = !b
+                white_notifications.isChecked = b
+                shadowFixLayout.visibility = View.GONE
+            }
+            darkNotif = dark_notifications.isChecked
+            updateColor(accentColor, backgroundColor, false, true)
+        }
+
+        dark_notifications.setOnCheckedChangeListener(notifBglistener)
+        white_notifications.setOnCheckedChangeListener(notifBglistener)
+
+        shadow_disabled.isChecked = !notifShadow
+        shadow_enabled.isChecked = notifShadow
+
+        val notifListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+            if (buttonView.id == R.id.shadow_disabled) {
+                shadow_disabled.isChecked = isChecked
+                shadow_enabled.isChecked = !isChecked
+            } else {
+                shadow_disabled.isChecked = !isChecked
+                shadow_enabled.isChecked = isChecked
+            }
+            notifShadow = shadow_enabled.isChecked
+            updateColor(accentColor, backgroundColor, false, true)
+        }
+        shadow_disabled.setOnCheckedChangeListener(notifListener)
+        shadow_enabled.setOnCheckedChangeListener(notifListener)
+
+        aosp_icons.isChecked = useAospIcons
+        stock_icons.isChecked = !useAospIcons
+
+        val iconListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+            if (buttonView.id == R.id.aosp_icons) {
+                aosp_icons.isChecked = isChecked
+                stock_icons.isChecked = !isChecked
+            } else {
+                aosp_icons.isChecked = !isChecked
+                stock_icons.isChecked = isChecked
+            }
+            useAospIcons = aosp_icons.isChecked
+            updateIcons()
+        }
+        aosp_icons.setOnCheckedChangeListener(iconListener)
+        stock_icons.setOnCheckedChangeListener(iconListener)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+
+        if (parentActivity == "tutorial") {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (finish) finish()
+    }
+
+    fun personalizeFabClick(view: View) {
+        val bottomSheetDialog = BottomSheetDialog(this)
+        val sheetView = View.inflate(this, R.layout.fab_sheet_personalize, null)
+        bottomSheetDialog.setContentView(sheetView)
+        bottomSheetDialog.window.decorView.findViewById<View>(R.id.design_bottom_sheet).setBackgroundColor(getBackgroundColor(this))
+        bottomSheetDialog.show()
+
+        sheetView.personalization_confirm_txt.setOnClickListener {
+            bottomSheetDialog.dismiss()
             var recompile = false
             val apps = ArrayList<String>()
 
@@ -223,133 +364,10 @@ class CustomizeActivity : ThemeActivity() {
             }
         }
 
-        accent_hex_input.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s?.length == 3 || s?.length == 6) {
-                    if (checkAccentColor(convertToColorInt(s.toString()))) {
-                        updateColor(convertToColorInt(s.toString()), backgroundColor, false, false)
-                    } else {
-                        Toast.makeText(this@CustomizeActivity, R.string.invalid_accent,
-                                Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        })
-
-        hex_input_bg.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s?.length == 3 || s?.length == 6) {
-                    if (checkBackgroundColor(convertToColorInt(s.toString()))) {
-                        updateColor(accentColor, convertToColorInt(s.toString()), false, false)
-                    } else {
-                        Toast.makeText(this@CustomizeActivity,
-                                R.string.invalid_background, Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        })
-
-        val viewpager: ViewPager = findViewById(R.id.preview_pager)
-        viewpager.pageMargin = 64
-        val adapter = PreviewPagerAdapter()
-        viewpager.adapter = adapter
-
-        material_theme.isChecked = usePalette
-        flat_theme.isChecked = !usePalette
-
-        val listener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
-            if (compoundButton.id == R.id.material_theme) {
-                material_theme.isChecked = b
-                flat_theme.isChecked = !b
-            } else {
-                material_theme.isChecked = !b
-                flat_theme.isChecked = b
-            }
-            usePalette = material_theme.isChecked
-            updateColor(accentColor, backgroundColor, false, true)
+        sheetView.personalization_discard_txt.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            finish()
         }
-        material_theme.setOnCheckedChangeListener(listener)
-        flat_theme.setOnCheckedChangeListener(listener)
-
-        white_notifications.isChecked = !darkNotif
-        dark_notifications.isChecked = darkNotif
-
-        val notifBglistener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
-            if (compoundButton.id == R.id.dark_notifications) {
-                dark_notifications.isChecked = b
-                white_notifications.isChecked = !b
-                shadowFixLayout.visibility = View.VISIBLE
-                customizations_scrollview.postDelayed({ customizations_scrollview.fullScroll(ScrollView.FOCUS_DOWN) }, 200)
-            } else {
-                dark_notifications.isChecked = !b
-                white_notifications.isChecked = b
-                shadowFixLayout.visibility = View.GONE
-            }
-            darkNotif = dark_notifications.isChecked
-            updateColor(accentColor, backgroundColor, false, true)
-        }
-
-        dark_notifications.setOnCheckedChangeListener(notifBglistener)
-        white_notifications.setOnCheckedChangeListener(notifBglistener)
-
-        shadow_disabled.isChecked = !notifShadow
-        shadow_enabled.isChecked = notifShadow
-
-        val notifListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
-            if (buttonView.id == R.id.shadow_disabled) {
-                shadow_disabled.isChecked = isChecked
-                shadow_enabled.isChecked = !isChecked
-            } else {
-                shadow_disabled.isChecked = !isChecked
-                shadow_enabled.isChecked = isChecked
-            }
-            notifShadow = shadow_enabled.isChecked
-            updateColor(accentColor, backgroundColor, false, true)
-        }
-        shadow_disabled.setOnCheckedChangeListener(notifListener)
-        shadow_enabled.setOnCheckedChangeListener(notifListener)
-
-        aosp_icons.isChecked = useAospIcons
-        stock_icons.isChecked = !useAospIcons
-
-        val iconListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
-            if (buttonView.id == R.id.aosp_icons) {
-                aosp_icons.isChecked = isChecked
-                stock_icons.isChecked = !isChecked
-            } else {
-                aosp_icons.isChecked = !isChecked
-                stock_icons.isChecked = isChecked
-            }
-            useAospIcons = aosp_icons.isChecked
-            updateIcons()
-        }
-        aosp_icons.setOnCheckedChangeListener(iconListener)
-        stock_icons.setOnCheckedChangeListener(iconListener)
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-
-        if (parentActivity == "tutorial") {
-            startActivity(Intent(this, MainActivity::class.java))
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (finish) finish()
     }
 
     private fun setupAccentSheet() {
@@ -479,6 +497,8 @@ class CustomizeActivity : ThemeActivity() {
             dark_notifications.buttonTintList = buttonColor
             shadow_enabled.buttonTintList = buttonColor
             shadow_disabled.buttonTintList = buttonColor
+
+            personalize_fab.background.setTint(accentColor)
         }
         if (force || this.backgroundColor != backgroundColor) {
             materialPalette = MaterialPalette.createPalette(backgroundColor, usePalette)
@@ -551,10 +571,6 @@ class CustomizeActivity : ThemeActivity() {
             }
             return mainView
         }
-    }
-
-    fun cancelBtnClick(@Suppress("UNUSED_PARAMETER") view: View) {
-        finish()
     }
 
     inner class PreviewPagerAdapter : PagerAdapter() {
