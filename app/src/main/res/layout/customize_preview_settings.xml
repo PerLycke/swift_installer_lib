@@ -10,6 +10,8 @@
         android:id="@+id/preview_settings_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <android.support.constraint.Guideline
@@ -44,22 +46,22 @@
             android:layout_marginEnd="13dp"
             android:layout_marginStart="13dp"
             android:layout_marginTop="25dp"
+            android:contentDescription="@string/image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/settings_preview"
-            app:srcCompat="@drawable/search_frame_bg"
-            android:contentDescription="@string/image" />
+            app:srcCompat="@drawable/search_frame_bg" />
 
         <ImageView
             android:id="@+id/searchbar_search_icon"
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_marginStart="8dp"
+            android:contentDescription="@string/image"
             app:layout_constraintBottom_toBottomOf="@+id/searchbar_bg"
             app:layout_constraintStart_toStartOf="@+id/searchbar_bg"
             app:layout_constraintTop_toTopOf="@+id/searchbar_bg"
-            app:srcCompat="@drawable/ic_search_preview"
-            android:contentDescription="@string/image" />
+            app:srcCompat="@drawable/ic_search_preview" />
 
         <TextView
             android:id="@+id/searchbar_hint"
@@ -79,11 +81,11 @@
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_marginEnd="8dp"
+            android:contentDescription="@string/image"
             app:layout_constraintBottom_toBottomOf="@+id/searchbar_bg"
             app:layout_constraintEnd_toEndOf="@+id/searchbar_bg"
             app:layout_constraintTop_toTopOf="@+id/searchbar_bg"
-            app:srcCompat="@drawable/ic_mic_preview"
-            android:contentDescription="@string/image" />
+            app:srcCompat="@drawable/ic_mic_preview" />
 
         <ImageView
             android:id="@+id/settings_connections_icon"
