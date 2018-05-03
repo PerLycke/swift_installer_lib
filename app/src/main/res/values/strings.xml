@@ -100,4 +100,6 @@
     <string name="tutorial_permission_title">Permissions</string>
     <string name="white_notifications">White notifications</string>
     <string name="white_notifications_preview">A preview of white notifications</string>
+    <string name="continue_theming">Continue theming</string>
+    <string name="exit_to_main">Exit to main menu</string>
 </resources>

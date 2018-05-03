@@ -35,12 +35,9 @@ open class ThemeActivity : AppCompatActivity() {
         backgroundIDs.add(R.id.customize_preview_root)
         backgroundIDs.add(R.id.failed_info_card_root)
         backgroundIDs.add(R.id.palette_view_root)
-        backgroundIDs.add(R.id.sheet_confirm_root)
-        backgroundIDs.add(R.id.sheet_overlays_fab_root)
         backgroundIDs.add(R.id.tab_install_summary_root)
         backgroundIDs.add(R.id.tabs_overlays_root)
         backgroundIDs.add(R.id.toolbar_install_summary_root)
-        backgroundIDs.add(R.id.toolbar_customize_root)
         backgroundIDs.add(R.id.toolbar_overlays_root)
 
         cardIDs.add(R.id.failed_info_card_layout)

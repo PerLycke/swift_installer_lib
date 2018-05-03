@@ -35,6 +35,7 @@ import kotlinx.android.synthetic.main.customize_icons.*
 import kotlinx.android.synthetic.main.customize_notifications.*
 import kotlinx.android.synthetic.main.customize_preview_settings.*
 import kotlinx.android.synthetic.main.customize_preview_sysui.*
+import kotlinx.android.synthetic.main.fab_sheet_personalize.*
 import kotlinx.android.synthetic.main.fab_sheet_personalize.view.*
 
 class CustomizeActivity : ThemeActivity() {
@@ -53,6 +54,7 @@ class CustomizeActivity : ThemeActivity() {
 
     private lateinit var materialPalette: MaterialPalette
     private var parentActivity: String? = "parent"
+    lateinit var bottomSheetDialog: BottomSheetDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -217,10 +219,15 @@ class CustomizeActivity : ThemeActivity() {
     }
 
     fun personalizeFabClick(view: View) {
-        val bottomSheetDialog = BottomSheetDialog(this)
+        bottomSheetDialog = BottomSheetDialog(this)
         val sheetView = View.inflate(this, R.layout.fab_sheet_personalize, null)
         bottomSheetDialog.setContentView(sheetView)
-        bottomSheetDialog.window.decorView.findViewById<View>(R.id.design_bottom_sheet).setBackgroundColor(getBackgroundColor(this))
+        bottomSheetDialog.window.decorView.findViewById<View>(R.id.design_bottom_sheet).setBackgroundColor(backgroundColor)
+
+        if (parentActivity == "tutorial") {
+            sheetView.personalization_confirm_txt.text = getString(R.string.continue_theming)
+            sheetView.personalization_discard_txt.text = getString(R.string.exit_to_main)
+        }
         bottomSheetDialog.show()
 
         sheetView.personalization_confirm_txt.setOnClickListener {
@@ -360,13 +367,21 @@ class CustomizeActivity : ThemeActivity() {
                     }
                 }
             } else {
-                finish()
+                if (parentActivity == "tutorial") {
+                    startActivity(Intent(this, OverlaysActivity::class.java))
+                } else {
+                    finish()
+                }
             }
         }
 
         sheetView.personalization_discard_txt.setOnClickListener {
             bottomSheetDialog.dismiss()
-            finish()
+            if (parentActivity == "tutorial") {
+                startActivity(Intent(this, MainActivity::class.java))
+            } else {
+                finish()
+            }
         }
     }
 
@@ -507,6 +522,9 @@ class CustomizeActivity : ThemeActivity() {
             if (updateHex && hex_input_bg.text.toString() != Integer.toHexString(backgroundColor).substring(2))
                 hex_input_bg.setText(Integer.toHexString(backgroundColor).substring(2), TextView.BufferType.EDITABLE)
             setBgIndicator()
+
+            val sheetBg = getDrawable(R.drawable.personalization_sheet_bg) as LayerDrawable
+            sheetBg.findDrawableByLayerId(R.id.sheet_bg).setTint(backgroundColor)
         }
 
         if (notifShadow) {

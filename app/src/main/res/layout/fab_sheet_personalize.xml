@@ -5,79 +5,98 @@
     android:id="@+id/fab_sheet_personalize_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="8dp"
-    android:paddingEnd="16dp"
-    android:paddingStart="16dp"
-    android:paddingTop="8dp"
     tools:layout_editor_absoluteY="25dp">
 
+    <ImageView
+        android:id="@+id/fab_personalize_bg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/personalization_sheet_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/personalization_confirm"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/personalization_confirm_icon"
-            android:layout_width="wrap_content"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/personalization_confirm"
+            android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:contentDescription="@string/image"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_install" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/personalization_confirm_txt"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="32dp"
-            android:fontFamily="sans-serif"
-            android:gravity="center_vertical"
-            android:text="Confirm Changes"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
+            <ImageView
+                android:id="@+id/personalization_confirm_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:contentDescription="@string/image"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_install" />
+
+            <TextView
+                android:id="@+id/personalization_confirm_txt"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="32dp"
+                android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
+                android:text="Confirm Changes"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/personalization_confirm_icon"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/personalization_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/personalization_confirm_icon"
-            app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/personalization_cancel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/personalization_confirm">
-
-        <ImageView
-            android:id="@+id/personalization_discard_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:contentDescription="@string/image"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_uninstall" />
+            app:layout_constraintTop_toBottomOf="@+id/personalization_confirm">
 
-        <TextView
-            android:id="@+id/personalization_discard_txt"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="32dp"
-            android:fontFamily="sans-serif"
-            android:gravity="center_vertical"
-            android:text="Discard changes"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/personalization_discard_icon"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/personalization_discard_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:contentDescription="@string/image"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_uninstall" />
+
+            <TextView
+                android:id="@+id/personalization_discard_txt"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="32dp"
+                android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
+                android:text="Discard changes"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/personalization_discard_icon"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
 
     </android.support.constraint.ConstraintLayout>
 
