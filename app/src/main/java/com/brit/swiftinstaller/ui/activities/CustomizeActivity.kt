@@ -6,6 +6,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.view.PagerAdapter
@@ -80,38 +81,144 @@ class CustomizeActivity : ThemeActivity() {
         }
 
         customize_confirm_btn.setOnClickListener {
-            val launch = getSharedPreferences("launched", Context.MODE_PRIVATE).getString("launched","first")
-            if (launch == "default") {
-                initialize()
-            } else if (launch == "first") {
-                val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                themeDialog()
-                builder.setTitle(R.string.installing_and_uninstalling_title)
-                builder.setMessage(R.string.installing_and_uninstalling_msg)
-                builder.setPositiveButton(R.string.proceed, { dialogInterface, _ ->
-                    getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "second").apply()
-                    dialogInterface.dismiss()
-                    initialize()
-                })
+            var recompile = false
+            val apps = ArrayList<String>()
 
-                val dialog = builder.create()
-                dialog.show()
-            } else if (launch == "second"){
-                val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                themeDialog()
-                builder.setTitle(R.string.reboot_delay_title)
-                builder.setMessage(R.string.reboot_delay_msg)
-                builder.setPositiveButton(R.string.proceed, { dialogInterface, _ ->
-                    getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "default").apply()
-                    dialogInterface.dismiss()
-                    initialize()
-                })
-                builder.setNegativeButton(R.string.cancel, { dialogInterface, _ ->
-                    dialogInterface.dismiss()
-                })
+            val oldAccent = getAccentColor(this)
+            val oldBackground = getBackgroundColor(this)
+            val oldPalette = useBackgroundPalette(this)
+            val oldIcons = useAospIcons(this)
+            val oldShadow = useSenderNameFix(this)
+            val oldNotifbg = useDarkNotifBg(this)
 
-                val dialog = builder.create()
-                dialog.show()
+            if (oldAccent != accentColor) {
+                setAccentColor(this, accentColor)
+                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
+                    recompile = true
+                    apps.add("android")
+                }
+            }
+
+            if (oldBackground != backgroundColor) {
+                setBackgroundColor(this, backgroundColor)
+                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
+                    recompile = true
+                    if (!apps.contains("android"))
+                        apps.add("android")
+                }
+            }
+
+            if (usePalette != oldPalette) {
+                setUseBackgroundPalette(this, usePalette)
+                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
+                    recompile = true
+                    if (!apps.contains("android"))
+                        apps.add("android")
+                }
+            }
+
+            if (darkNotif != oldNotifbg) {
+                setUseDarkNotifBg(this, darkNotif)
+                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
+                    recompile = true
+                    if (!apps.contains("android"))
+                        apps.add("android")
+                }
+            }
+
+            if (notifShadow != oldShadow) {
+                setUseSenderNameFix(this, notifShadow)
+                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
+                    recompile = true
+                    if (!apps.contains("android"))
+                        apps.add("android")
+                }
+            }
+
+            if (useAospIcons != oldIcons) {
+                setUseAospIcons(this, useAospIcons)
+                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
+                    recompile = true
+                    apps.add("com.samsung.android.lool")
+                    apps.add("com.samsung.android.themestore")
+                    apps.add("com.android.settings")
+                    apps.add("com.android.systemui")
+                }
+            }
+
+            if (recompile && apps.isNotEmpty()) {
+
+                val receiver = object : BroadcastReceiver() {
+                    override fun onReceive(context: Context, intent: Intent) {
+                        if (intent.action == InstallSummaryActivity.ACTION_INSTALL_CANCELLED) {
+                            if (oldAccent != getAccentColor(context)) {
+                                setAccentColor(context, oldAccent)
+                            }
+                            if (oldBackground != getBackgroundColor(context)) {
+                                setBackgroundColor(context, oldBackground)
+                            }
+                            if (oldPalette != useBackgroundPalette(context)) {
+                                setUseBackgroundPalette(context, oldPalette)
+                            }
+                            if (oldIcons != com.brit.swiftinstaller.utils.useAospIcons(context)) {
+                                setUseAospIcons(context, oldIcons)
+                            }
+                            LocalBroadcastManager.getInstance(context.applicationContext)
+                                    .unregisterReceiver(this)
+                        }
+                    }
+                }
+                LocalBroadcastManager.getInstance(applicationContext).registerReceiver(receiver,
+                        IntentFilter(InstallSummaryActivity.ACTION_INSTALL_CANCELLED))
+
+                finish = true
+                val intent = Intent(this, InstallActivity::class.java)
+                val launch = getSharedPreferences("launched", Context.MODE_PRIVATE).getString("launched","first")
+                val thisLaunch = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("thisLaunched", false)
+                intent.putStringArrayListExtra("apps", apps)
+                Log.d("beachroad before", "$launch $thisLaunch")
+
+
+                if (launch == "default" && thisLaunch) {
+                    Log.d("beachroad doing", "first if $launch $thisLaunch")
+                    startActivity(intent)
+                } else {
+                    if (launch == "second") {
+                        val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+                        themeDialog()
+                        builder.setTitle(R.string.reboot_delay_title)
+                        builder.setMessage(R.string.reboot_delay_msg)
+                        builder.setPositiveButton(R.string.proceed, { dialogInterface, _ ->
+                            getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "default").apply()
+                            dialogInterface.dismiss()
+                            startActivity(intent)
+                        })
+                        builder.setNegativeButton(R.string.cancel, { dialogInterface, _ ->
+                            dialogInterface.dismiss()
+                        })
+
+                        val dialog = builder.create()
+                        Log.d("beachroad doing", "first else $launch $thisLaunch")
+                        dialog.show()
+                    } else {
+                        val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+                        themeDialog()
+                        builder.setTitle(R.string.installing_and_uninstalling_title)
+                        builder.setMessage(R.string.installing_and_uninstalling_msg)
+                        builder.setPositiveButton(R.string.proceed, { dialogInterface, _ ->
+                            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("thisLaunched", true).apply()
+                            dialogInterface.dismiss()
+                            startActivity(intent)
+                        })
+
+                        val dialog = builder.create()
+
+                        Log.d("beachroad doing", "first else if $launch $thisLaunch")
+                        dialog.show()
+                    }
+                }
+            } else {
+                finish()
             }
         }
 
@@ -234,106 +341,6 @@ class CustomizeActivity : ThemeActivity() {
     override fun onResume() {
         super.onResume()
         if (finish) finish()
-    }
-
-    private fun initialize() {
-        var recompile = false
-        val apps = ArrayList<String>()
-
-        val oldAccent = getAccentColor(this)
-        val oldBackground = getBackgroundColor(this)
-        val oldPalette = useBackgroundPalette(this)
-        val oldIcons = useAospIcons(this)
-        val oldShadow = useSenderNameFix(this)
-        val oldNotifbg = useDarkNotifBg(this)
-
-        if (oldAccent != accentColor) {
-            setAccentColor(this, accentColor)
-            if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
-                recompile = true
-                apps.add("android")
-            }
-        }
-
-        if (oldBackground != backgroundColor) {
-            setBackgroundColor(this, backgroundColor)
-            if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
-                recompile = true
-                if (!apps.contains("android"))
-                    apps.add("android")
-            }
-        }
-
-        if (usePalette != oldPalette) {
-            setUseBackgroundPalette(this, usePalette)
-            if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
-                recompile = true
-                if (!apps.contains("android"))
-                    apps.add("android")
-            }
-        }
-
-        if (darkNotif != oldNotifbg) {
-            setUseDarkNotifBg(this, darkNotif)
-            if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
-                recompile = true
-                if (!apps.contains("android"))
-                    apps.add("android")
-            }
-        }
-
-        if (notifShadow != oldShadow) {
-            setUseSenderNameFix(this, notifShadow)
-            if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
-                recompile = true
-                if (!apps.contains("android"))
-                    apps.add("android")
-            }
-        }
-
-        if (useAospIcons != oldIcons) {
-            setUseAospIcons(this, useAospIcons)
-            if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
-                recompile = true
-                apps.add("com.samsung.android.lool")
-                apps.add("com.samsung.android.themestore")
-                apps.add("com.android.settings")
-                apps.add("com.android.systemui")
-            }
-        }
-
-        if (recompile && apps.isNotEmpty()) {
-
-            val receiver = object : BroadcastReceiver() {
-                override fun onReceive(context: Context, intent: Intent) {
-                    if (intent.action == InstallSummaryActivity.ACTION_INSTALL_CANCELLED) {
-                        if (oldAccent != getAccentColor(context)) {
-                            setAccentColor(context, oldAccent)
-                        }
-                        if (oldBackground != getBackgroundColor(context)) {
-                            setBackgroundColor(context, oldBackground)
-                        }
-                        if (oldPalette != useBackgroundPalette(context)) {
-                            setUseBackgroundPalette(context, oldPalette)
-                        }
-                        if (oldIcons != com.brit.swiftinstaller.utils.useAospIcons(context)) {
-                            setUseAospIcons(context, oldIcons)
-                        }
-                        LocalBroadcastManager.getInstance(context.applicationContext)
-                                .unregisterReceiver(this)
-                    }
-                }
-            }
-            LocalBroadcastManager.getInstance(applicationContext).registerReceiver(receiver,
-                    IntentFilter(InstallSummaryActivity.ACTION_INSTALL_CANCELLED))
-
-            finish = true
-            val intent = Intent(this, InstallActivity::class.java)
-            intent.putStringArrayListExtra("apps", apps)
-            startActivity(intent)
-        } else {
-            finish()
-        }
     }
 
     private fun setupAccentSheet() {

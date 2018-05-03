@@ -264,18 +264,8 @@ class OverlaysActivity : ThemeActivity() {
             if (launch == "default") {
                 installAction()
             } else if (launch == "first") {
-                val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                themeDialog()
-                builder.setTitle(R.string.installing_and_uninstalling_title)
-                builder.setMessage(R.string.installing_and_uninstalling_msg)
-                builder.setPositiveButton(R.string.proceed, { dialogInterface, _ ->
-                    getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "second").apply()
-                    dialogInterface.dismiss()
-                    installAction()
-                })
-
-                val dialog = builder.create()
-                dialog.show()
+                getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "second").apply()
+                installAction()
             } else if (launch == "second"){
                 val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
                 themeDialog()
