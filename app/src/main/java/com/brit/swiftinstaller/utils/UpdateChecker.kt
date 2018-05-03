@@ -2,20 +2,18 @@ package com.brit.swiftinstaller.utils
 
 import android.content.Context
 import android.os.AsyncTask
+import java.lang.ref.WeakReference
 
 class UpdateChecker(context: Context, val callback: Callback) : AsyncTask<Void, Void, UpdateChecker.Output>() {
 
-    private val context: Context
-
-    init {
-        this.context = context.applicationContext
-    }
+    private val mConRef: WeakReference<Context> = WeakReference(context)
 
     override fun doInBackground(vararg params: Void?): Output {
         var installedCount = 0
         val updates = ArrayList<String>()
+        val context = mConRef.get()
 
-        clearAppsToUpdate(context)
+        clearAppsToUpdate(context!!)
         for (packageName in context.assets.list("overlays")) {
             if (Utils.isOverlayInstalled(context, Utils.getOverlayPackageName(packageName))
                     && Utils.isOverlayInstalled(context, packageName)) {
