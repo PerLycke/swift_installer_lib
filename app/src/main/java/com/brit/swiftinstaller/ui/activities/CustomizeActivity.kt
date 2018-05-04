@@ -58,7 +58,7 @@ class CustomizeActivity : ThemeActivity() {
     private lateinit var materialPalette: MaterialPalette
     private lateinit var handler: Handler
     private var parentActivity: String? = "parent"
-    lateinit var bottomSheetDialog: BottomSheetDialog
+    private lateinit var bottomSheetDialog: BottomSheetDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,39 +93,7 @@ class CustomizeActivity : ThemeActivity() {
             updateColor(accentColor, convertToColorInt("363844"), true, false)
         }
 
-        fun showFab() {
-            handler = Handler()
-            handler.postDelayed(object:Runnable {
-                override fun run() {
-                    if (personalize_fab.visibility == View.GONE) {
-                        personalize_fab.visibility = View.VISIBLE;
-                        personalize_fab.startAnimation(AnimationUtils.loadAnimation(this@CustomizeActivity, android.R.anim.fade_in));
-                    }
-                    if (accent_hex_input.hasFocus() || hex_input_bg.hasFocus()) {
-                        personalize_fab.setImageDrawable(ContextCompat.getDrawable(this@CustomizeActivity, R.drawable.ic_done))
-                    } else {
-                        personalize_fab.setImageDrawable(ContextCompat.getDrawable(this@CustomizeActivity, R.drawable.ic_fab_install))
-                    }
-                }
-            }, 300)
-        }
-
-        fun hideFab() {
-            if (personalize_fab.visibility == View.VISIBLE) {
-                personalize_fab.visibility = View.GONE
-            }
-        }
-
-        fun keyboardOpenListener(input: BaseTextInputEditText) {
-            input.setOnKeyListener({ v, keyCode, event ->
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    input.clearFocus()
-                }
-                true
-            })
-        }
-
-        fun activeKeyboard() {
+        /*fun activeKeyboard() {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             showFab()
             personalize_fab.setOnClickListener {
@@ -143,25 +111,29 @@ class CustomizeActivity : ThemeActivity() {
             personalize_fab.setOnClickListener {
                 personalizeFabClick()
             }
-        }
+        }*/
 
-        fun onFocus(input: BaseTextInputEditText) {
-            input.onFocusChangeListener = object:View.OnFocusChangeListener {
-                override fun onFocusChange(arg0:View, hasfocus:Boolean) {
-                    if (hasfocus) {
-                        hideFab()
-                        keyboardOpenListener(input)
-                        activeKeyboard()
-                    } else {
-                        hideFab()
-                        inactiveKeyboard()
-                    }
-                }
+        val onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                //hideFab()
+                //activeKeyboard()
+            } else {
+                //hideFab()
+                //inactiveKeyboard()
             }
         }
 
-        onFocus(accent_hex_input)
-        onFocus(hex_input_bg)
+        val keyListener = { v: View, keyCode: Int, _: KeyEvent ->
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                v.clearFocus()
+            }
+            true
+        }
+
+        accent_hex_input.onFocusChangeListener = onFocusChangeListener
+        hex_input_bg.onFocusChangeListener = onFocusChangeListener
+        accent_hex_input.setOnKeyListener(keyListener)
+        hex_input_bg.setOnKeyListener(keyListener)
 
         accent_hex_input.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -283,6 +255,27 @@ class CustomizeActivity : ThemeActivity() {
         }
     }
 
+    fun showFab() {
+        handler = Handler()
+        handler.postDelayed({
+            if (personalize_fab.visibility == View.GONE) {
+                personalize_fab.visibility = View.VISIBLE
+                personalize_fab.startAnimation(AnimationUtils.loadAnimation(this@CustomizeActivity, android.R.anim.fade_in))
+            }
+            if (accent_hex_input.hasFocus() || hex_input_bg.hasFocus()) {
+                personalize_fab.setImageDrawable(ContextCompat.getDrawable(this@CustomizeActivity, R.drawable.ic_done))
+            } else {
+                personalize_fab.setImageDrawable(ContextCompat.getDrawable(this@CustomizeActivity, R.drawable.ic_fab_install))
+            }
+        }, 300)
+    }
+
+    fun hideFab() {
+        if (personalize_fab.visibility == View.VISIBLE) {
+            personalize_fab.visibility = View.GONE
+        }
+    }
+
     override fun onBackPressed() {
         super.onBackPressed()
 
@@ -297,7 +290,19 @@ class CustomizeActivity : ThemeActivity() {
         if (finish) finish()
     }
 
-    fun personalizeFabClick() {
+    private fun personalizeFabClick() {
+
+        if (hex_input_bg.hasFocus() || accent_hex_input.hasFocus()) {
+            val imm = getSystemService(InputMethodManager::class.java)
+            imm.hideSoftInputFromWindow(accent_hex_input.windowToken, 0)
+            if (accent_hex_input.hasFocus()) {
+                accent_hex_input.clearFocus()
+            } else {
+                hex_input_bg.clearFocus()
+            }
+            return
+        }
+
         bottomSheetDialog = BottomSheetDialog(this)
         val sheetView = View.inflate(this, R.layout.fab_sheet_personalize, null)
         bottomSheetDialog.setContentView(sheetView)
@@ -411,38 +416,42 @@ class CustomizeActivity : ThemeActivity() {
                 if (launch == "default" && thisLaunch) {
                     startActivity(intent)
                 } else {
-                    if (launch == "first") {
-                        getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "second").apply()
-                        startActivity(intent)
-                    } else if (launch == "second") {
-                        val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                        themeDialog()
-                        builder.setTitle(R.string.reboot_delay_title)
-                        builder.setMessage(R.string.reboot_delay_msg)
-                        builder.setPositiveButton(R.string.proceed, { dialogInterface, _ ->
-                            getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "default").apply()
-                            dialogInterface.dismiss()
+                    when (launch) {
+                        "first" -> {
+                            getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "second").apply()
                             startActivity(intent)
-                        })
-                        builder.setNegativeButton(R.string.cancel, { dialogInterface, _ ->
-                            dialogInterface.dismiss()
-                        })
+                        }
+                        "second" -> {
+                            val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+                            themeDialog()
+                            builder.setTitle(R.string.reboot_delay_title)
+                            builder.setMessage(R.string.reboot_delay_msg)
+                            builder.setPositiveButton(R.string.proceed, { dialogInterface, _ ->
+                                getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "default").apply()
+                                dialogInterface.dismiss()
+                                startActivity(intent)
+                            })
+                            builder.setNegativeButton(R.string.cancel, { dialogInterface, _ ->
+                                dialogInterface.dismiss()
+                            })
 
-                        val dialog = builder.create()
-                        dialog.show()
-                    } else {
-                        val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                        themeDialog()
-                        builder.setTitle(R.string.installing_and_uninstalling_title)
-                        builder.setMessage(R.string.installing_and_uninstalling_msg)
-                        builder.setPositiveButton(R.string.proceed, { dialogInterface, _ ->
-                            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("thisLaunched", true).apply()
-                            dialogInterface.dismiss()
-                            startActivity(intent)
-                        })
+                            val dialog = builder.create()
+                            dialog.show()
+                        }
+                        else -> {
+                            val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+                            themeDialog()
+                            builder.setTitle(R.string.installing_and_uninstalling_title)
+                            builder.setMessage(R.string.installing_and_uninstalling_msg)
+                            builder.setPositiveButton(R.string.proceed, { dialogInterface, _ ->
+                                PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("thisLaunched", true).apply()
+                                dialogInterface.dismiss()
+                                startActivity(intent)
+                            })
 
-                        val dialog = builder.create()
-                        dialog.show()
+                            val dialog = builder.create()
+                            dialog.show()
+                        }
                     }
                 }
             } else {
