@@ -7,9 +7,9 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
+import android.os.Handler
 import android.preference.PreferenceManager
 import android.support.design.widget.BottomSheetDialog
 import android.support.v4.content.ContextCompat
@@ -19,9 +19,12 @@ import android.support.v4.view.ViewPager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.CircleDrawable
@@ -36,7 +39,6 @@ import kotlinx.android.synthetic.main.customize_icons.*
 import kotlinx.android.synthetic.main.customize_notifications.*
 import kotlinx.android.synthetic.main.customize_preview_settings.*
 import kotlinx.android.synthetic.main.customize_preview_sysui.*
-import kotlinx.android.synthetic.main.fab_sheet_personalize.*
 import kotlinx.android.synthetic.main.fab_sheet_personalize.view.*
 
 class CustomizeActivity : ThemeActivity() {
@@ -54,6 +56,7 @@ class CustomizeActivity : ThemeActivity() {
     private var darkNotif = false
 
     private lateinit var materialPalette: MaterialPalette
+    private lateinit var handler: Handler
     private var parentActivity: String? = "parent"
     lateinit var bottomSheetDialog: BottomSheetDialog
 
@@ -89,6 +92,76 @@ class CustomizeActivity : ThemeActivity() {
         custom_night_bg.setOnClickListener {
             updateColor(accentColor, convertToColorInt("363844"), true, false)
         }
+
+        fun showFab() {
+            handler = Handler()
+            handler.postDelayed(object:Runnable {
+                override fun run() {
+                    if (personalize_fab.visibility == View.GONE) {
+                        personalize_fab.visibility = View.VISIBLE;
+                        personalize_fab.startAnimation(AnimationUtils.loadAnimation(this@CustomizeActivity, android.R.anim.fade_in));
+                    }
+                    if (accent_hex_input.hasFocus() || hex_input_bg.hasFocus()) {
+                        personalize_fab.setImageDrawable(ContextCompat.getDrawable(this@CustomizeActivity, R.drawable.ic_done))
+                    } else {
+                        personalize_fab.setImageDrawable(ContextCompat.getDrawable(this@CustomizeActivity, R.drawable.ic_fab_install))
+                    }
+                }
+            }, 300)
+        }
+
+        fun hideFab() {
+            if (personalize_fab.visibility == View.VISIBLE) {
+                personalize_fab.visibility = View.GONE
+            }
+        }
+
+        fun keyboardOpenListener(input: BaseTextInputEditText) {
+            input.setOnKeyListener({ v, keyCode, event ->
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    input.clearFocus()
+                }
+                true
+            })
+        }
+
+        fun activeKeyboard() {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            showFab()
+            personalize_fab.setOnClickListener {
+                imm.hideSoftInputFromWindow(accent_hex_input.getWindowToken(), 0)
+                if (accent_hex_input.hasFocus()) {
+                    accent_hex_input.clearFocus()
+                } else {
+                    hex_input_bg.clearFocus()
+                }
+            }
+        }
+
+        fun inactiveKeyboard() {
+            showFab()
+            personalize_fab.setOnClickListener {
+                personalizeFabClick()
+            }
+        }
+
+        fun onFocus(input: BaseTextInputEditText) {
+            input.onFocusChangeListener = object:View.OnFocusChangeListener {
+                override fun onFocusChange(arg0:View, hasfocus:Boolean) {
+                    if (hasfocus) {
+                        hideFab()
+                        keyboardOpenListener(input)
+                        activeKeyboard()
+                    } else {
+                        hideFab()
+                        inactiveKeyboard()
+                    }
+                }
+            }
+        }
+
+        onFocus(accent_hex_input)
+        onFocus(hex_input_bg)
 
         accent_hex_input.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -204,6 +277,10 @@ class CustomizeActivity : ThemeActivity() {
         }
         aosp_icons.setOnCheckedChangeListener(iconListener)
         stock_icons.setOnCheckedChangeListener(iconListener)
+
+        personalize_fab.setOnClickListener {
+            personalizeFabClick()
+        }
     }
 
     override fun onBackPressed() {
@@ -220,7 +297,7 @@ class CustomizeActivity : ThemeActivity() {
         if (finish) finish()
     }
 
-    fun personalizeFabClick(view: View) {
+    fun personalizeFabClick() {
         bottomSheetDialog = BottomSheetDialog(this)
         val sheetView = View.inflate(this, R.layout.fab_sheet_personalize, null)
         bottomSheetDialog.setContentView(sheetView)
