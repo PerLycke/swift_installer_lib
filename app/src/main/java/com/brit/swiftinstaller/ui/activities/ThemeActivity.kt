@@ -76,11 +76,7 @@ open class ThemeActivity : AppCompatActivity() {
         for (id in backgroundIDs) {
             val v = findViewById<View>(id)
             if (v != null) {
-                if (v is Toolbar) {
-                    v.background = ColorDrawable(palette.darkBackgroundColor)
-                } else {
-                    v.background = ColorDrawable(palette.backgroundColor)
-                }
+                v.background = ColorDrawable(palette.backgroundColor)
             }
         }
         if (findViewById<FloatingActionButton>(R.id.fab) != null) {
