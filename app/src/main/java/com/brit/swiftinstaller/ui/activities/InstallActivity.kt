@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.content.LocalBroadcastManager
 import android.util.Log
 import android.view.View
@@ -20,7 +21,6 @@ import com.brit.swiftinstaller.utils.Utils
 import kotlinx.android.synthetic.main.progress_dialog_install.view.*
 import java.util.ArrayList
 import kotlin.collections.HashMap
-import kotlin.collections.forEach
 import kotlin.collections.set
 
 
@@ -93,9 +93,20 @@ class InstallActivity : ThemeActivity() {
         dialog = builder.create()
         dialog?.setCanceledOnTouchOutside(false)
         dialog?.setCancelable(false)
+        val fc = inflate.findViewById<TextView>(R.id.force_close)
 
         if (uninstall) {
             inflate.install_progress_txt.setText(R.string.progress_uninstalling_title)
+            Handler().postDelayed(object:Runnable {
+                override fun run() {
+                    if (dialog != null && dialog?.isShowing!!) {
+                        fc.visibility = View.VISIBLE
+                        fc.setOnClickListener {
+                            uninstallComplete()
+                        }
+                    }
+                }
+            }, 20000)
         }
 
         val filter = IntentFilter(Notifier.ACTION_FAILED)
