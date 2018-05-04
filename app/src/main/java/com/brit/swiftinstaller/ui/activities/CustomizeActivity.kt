@@ -56,43 +56,84 @@ class CustomizeActivity : ThemeActivity() {
     private var darkNotif = false
 
     private lateinit var materialPalette: MaterialPalette
-    private lateinit var handler: Handler
+    private val handler = Handler()
     private var parentActivity: String? = "parent"
     private lateinit var bottomSheetDialog: BottomSheetDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val time = System.currentTimeMillis()
+
         parentActivity = intent.getStringExtra("parentActivity")
 
         setContentView(R.layout.activity_customize)
-        setupAccentSheet()
-        usePalette = useBackgroundPalette(this)
-        useAospIcons = com.brit.swiftinstaller.utils.useAospIcons(this)
-        notifShadow = useSenderNameFix(this)
-        darkNotif = useDarkNotifBg(this)
-        updateColor(getAccentColor(this), getBackgroundColor(this), true, false)
-        updateIcons()
+        handler.post {
+            setupAccentSheet()
+            usePalette = useBackgroundPalette(this)
+            useAospIcons = com.brit.swiftinstaller.utils.useAospIcons(this)
+            notifShadow = useSenderNameFix(this)
+            darkNotif = useDarkNotifBg(this)
+            updateColor(getAccentColor(this), getBackgroundColor(this), true, false)
+            updateIcons()
 
-        custom_dark_bg.setOnClickListener {
-            updateColor(accentColor, convertToColorInt("202026"), true, false)
-        }
-        custom_black_bg.setOnClickListener {
-            updateColor(accentColor, convertToColorInt("000000"), true, false)
-        }
-        custom_style_bg.setOnClickListener {
-            updateColor(accentColor, convertToColorInt("202833"), true, false)
-        }
-        custom_nature_bg.setOnClickListener {
-            updateColor(accentColor, convertToColorInt("1C3B3A"), true, false)
-        }
-        custom_ocean_bg.setOnClickListener {
-            updateColor(accentColor, convertToColorInt("173145"), true, false)
-        }
-        custom_night_bg.setOnClickListener {
-            updateColor(accentColor, convertToColorInt("363844"), true, false)
+            custom_dark_bg.setOnClickListener {
+                updateColor(accentColor, convertToColorInt("202026"), true, false)
+            }
+            custom_black_bg.setOnClickListener {
+                updateColor(accentColor, convertToColorInt("000000"), true, false)
+            }
+            custom_style_bg.setOnClickListener {
+                updateColor(accentColor, convertToColorInt("202833"), true, false)
+            }
+            custom_nature_bg.setOnClickListener {
+                updateColor(accentColor, convertToColorInt("1C3B3A"), true, false)
+            }
+            custom_ocean_bg.setOnClickListener {
+                updateColor(accentColor, convertToColorInt("173145"), true, false)
+            }
+            custom_night_bg.setOnClickListener {
+                updateColor(accentColor, convertToColorInt("363844"), true, false)
+            }
+
+            setupHexInputs()
+            setupThemeOptions()
+
+            val viewpager: ViewPager = findViewById(R.id.preview_pager)
+            viewpager.pageMargin = 64
+            val adapter = PreviewPagerAdapter()
+            viewpager.adapter = adapter
+
+            personalize_fab.setOnClickListener {
+                personalizeFabClick()
+            }
         }
 
+        val endTime = System.currentTimeMillis()
+        Log.d("TEST", "onCreateFinished - ${endTime - time}")
+    }
+
+    private fun showFab() {
+        handler.postDelayed({
+            if (personalize_fab.visibility == View.GONE) {
+                personalize_fab.visibility = View.VISIBLE
+                personalize_fab.startAnimation(AnimationUtils.loadAnimation(this@CustomizeActivity, android.R.anim.fade_in))
+            }
+            if (accent_hex_input.hasFocus() || hex_input_bg.hasFocus()) {
+                personalize_fab.setImageDrawable(ContextCompat.getDrawable(this@CustomizeActivity, R.drawable.ic_done))
+            } else {
+                personalize_fab.setImageDrawable(ContextCompat.getDrawable(this@CustomizeActivity, R.drawable.ic_fab_install))
+            }
+        }, 300)
+    }
+
+    private fun hideFab() {
+        if (personalize_fab.visibility == View.VISIBLE) {
+            personalize_fab.visibility = View.GONE
+        }
+    }
+
+    private fun setupHexInputs() {
         val onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 hideFab()
@@ -152,11 +193,9 @@ class CustomizeActivity : ThemeActivity() {
                 }
             }
         })
+    }
 
-        val viewpager: ViewPager = findViewById(R.id.preview_pager)
-        viewpager.pageMargin = 64
-        val adapter = PreviewPagerAdapter()
-        viewpager.adapter = adapter
+    private fun setupThemeOptions() {
 
         material_theme.isChecked = usePalette
         flat_theme.isChecked = !usePalette
@@ -230,30 +269,6 @@ class CustomizeActivity : ThemeActivity() {
         aosp_icons.setOnCheckedChangeListener(iconListener)
         stock_icons.setOnCheckedChangeListener(iconListener)
 
-        personalize_fab.setOnClickListener {
-            personalizeFabClick()
-        }
-    }
-
-    fun showFab() {
-        handler = Handler()
-        handler.postDelayed({
-            if (personalize_fab.visibility == View.GONE) {
-                personalize_fab.visibility = View.VISIBLE
-                personalize_fab.startAnimation(AnimationUtils.loadAnimation(this@CustomizeActivity, android.R.anim.fade_in))
-            }
-            if (accent_hex_input.hasFocus() || hex_input_bg.hasFocus()) {
-                personalize_fab.setImageDrawable(ContextCompat.getDrawable(this@CustomizeActivity, R.drawable.ic_done))
-            } else {
-                personalize_fab.setImageDrawable(ContextCompat.getDrawable(this@CustomizeActivity, R.drawable.ic_fab_install))
-            }
-        }, 300)
-    }
-
-    fun hideFab() {
-        if (personalize_fab.visibility == View.VISIBLE) {
-            personalize_fab.visibility = View.GONE
-        }
     }
 
     override fun onBackPressed() {

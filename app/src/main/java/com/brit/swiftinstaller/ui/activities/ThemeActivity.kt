@@ -10,7 +10,6 @@ import android.support.design.widget.FloatingActionButton
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import com.brit.swiftinstaller.R
@@ -89,9 +88,7 @@ open class ThemeActivity : AppCompatActivity() {
         }
         for (id in cardIDs) {
             val v = findViewById<View>(id)
-            Log.d("TEST", "id - ${resources.getResourceName(id)}")
             if (v != null) {
-                Log.d("TEST", "not null")
                 if (v.background != null) {
                     v.background.setTint(palette.cardBackgroud)
                 } else if (v is ImageView && v.drawable != null) {
@@ -103,8 +100,6 @@ open class ThemeActivity : AppCompatActivity() {
                         draw.findDrawableByLayerId(R.id.background).setTint(palette.cardBackgroud)
                     }
                 }
-            } else {
-                Log.d("TEST", "null")
             }
             val popup = ContextCompat.getDrawable(this, R.drawable.popup_bg) as LayerDrawable
             popup.findDrawableByLayerId(R.id.background_popup).setTint(palette.cardBackgroud)
