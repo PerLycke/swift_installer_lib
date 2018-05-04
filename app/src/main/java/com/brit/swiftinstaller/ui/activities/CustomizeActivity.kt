@@ -93,33 +93,13 @@ class CustomizeActivity : ThemeActivity() {
             updateColor(accentColor, convertToColorInt("363844"), true, false)
         }
 
-        /*fun activeKeyboard() {
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            showFab()
-            personalize_fab.setOnClickListener {
-                imm.hideSoftInputFromWindow(accent_hex_input.getWindowToken(), 0)
-                if (accent_hex_input.hasFocus()) {
-                    accent_hex_input.clearFocus()
-                } else {
-                    hex_input_bg.clearFocus()
-                }
-            }
-        }
-
-        fun inactiveKeyboard() {
-            showFab()
-            personalize_fab.setOnClickListener {
-                personalizeFabClick()
-            }
-        }*/
-
         val onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                //hideFab()
-                //activeKeyboard()
+                hideFab()
+                showFab()
             } else {
-                //hideFab()
-                //inactiveKeyboard()
+                hideFab()
+                showFab()
             }
         }
 
