@@ -63,8 +63,6 @@ class CustomizeActivity : ThemeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val time = System.currentTimeMillis()
-
         parentActivity = intent.getStringExtra("parentActivity")
 
         setContentView(R.layout.activity_customize)
@@ -108,9 +106,6 @@ class CustomizeActivity : ThemeActivity() {
                 personalizeFabClick()
             }
         }
-
-        val endTime = System.currentTimeMillis()
-        Log.d("TEST", "onCreateFinished - ${endTime - time}")
     }
 
     private fun showFab() {
