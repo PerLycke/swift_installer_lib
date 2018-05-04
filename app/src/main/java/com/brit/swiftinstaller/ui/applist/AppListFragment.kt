@@ -118,8 +118,8 @@ class AppListFragment : Fragment() {
             o1.title.compareTo(o2.title)
         })
         mVisible.addAll(mApps.indices)
-        if (app_list_view != null && !app_list_view.isComputingLayout) {
-            mHandler.post {
+        mHandler.post {
+            if (app_list_view != null && !app_list_view.isComputingLayout) {
                 app_list_view.adapter.notifyDataSetChanged()
             }
         }
