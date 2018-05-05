@@ -135,11 +135,6 @@ class MainActivity : ThemeActivity() {
         val b = popupView.background as LayerDrawable
         b.findDrawableByLayerId(R.id.background_popup).setTint(MaterialPalette.get(this).cardBackgroud)
 
-        popupView.popup_faq_item.setOnClickListener {
-            popup.dismiss()
-            faq()
-        }
-
         popupView.popup_menu_about.setOnClickListener {
             popup.dismiss()
 
@@ -157,24 +152,5 @@ class MainActivity : ThemeActivity() {
         }
 
         popup.showAtLocation(view, Gravity.TOP or Gravity.RIGHT, 0, 0)
-    }
-
-    private fun isNetworkAvailable(context: Context): Boolean {
-        val connectivityManager = context.getSystemService(ConnectivityManager::class.java)
-        return connectivityManager.activeNetworkInfo != null && connectivityManager.activeNetworkInfo.isConnected
-    }
-
-    fun faq() {
-        if (!isNetworkAvailable(this)) {
-            Toast.makeText(this, R.string.no_internet_faq, Toast.LENGTH_LONG).show()
-        } else {
-            val alert = AlertDialog.Builder(this, R.style.dialogNoTitle)
-            val wv = WebView(this)
-            wv.setBackgroundColor(Color.TRANSPARENT)
-            wv.loadUrl("https://goo.gl/KoB1xi")
-            wv.webViewClient = WebViewClient()
-            alert.setView(wv)
-            alert.show()
-        }
     }
 }

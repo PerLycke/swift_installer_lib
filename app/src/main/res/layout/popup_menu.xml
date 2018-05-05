@@ -7,25 +7,8 @@
     android:background="@drawable/popup_bg"
     android:paddingBottom="16dp"
     android:paddingEnd="32dp"
-    android:paddingStart="8dp"
+    android:paddingStart="16dp"
     android:paddingTop="16dp">
-
-    <TextView
-        android:id="@+id/popup_faq_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="12dp"
-        android:paddingEnd="110dp"
-        android:paddingStart="10dp"
-        android:paddingTop="8dp"
-        android:text="@string/faq"
-        android:textAppearance="@android:style/TextAppearance.Material.Medium"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@id/popup_menu_about"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/popup_menu_about"
@@ -41,6 +24,6 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/popup_faq_item"
-        app:layout_constraintTop_toBottomOf="@+id/popup_faq_item" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
