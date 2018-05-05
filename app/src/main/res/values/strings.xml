@@ -36,7 +36,7 @@
     <string name="hex">HEX</string>
     <string name="hex_string">#%1$s</string>
     <string name="image">image</string>
-    <string name="info_card_compatibility_msg">Please note that we, due to stability reasons, advice <b>not</b> to use native Samsung themes or Substratum overlays together with Swift Installer.</string>
+    <string name="info_card_compatibility_msg">Note that we cannot guarantee a stable experience if you use this app in combination with native Samsung themes or Substratum overlays.</string>
     <string name="info_card_failed_msg">One reason an app fails to install is that the app version doesn\'t match the overlays version. We usually update the theme and add support for new versions within a few days, so please be patient.</string>
     <string name="install_count">%1$d / %2$d</string>
     <string name="installing_and_uninstalling_msg">In the process of installing or uninstalling the Android System overlay some apps might force close. This is expected, and normal. Everything will work fine once you rebooted after installation is completed.</string>
@@ -94,7 +94,7 @@
     <string name="tutorial_customize_content">You can change to your favourite background and accent color before installing overlays. Input any color code you want and create that personal feeling!</string>
     <string name="tutorial_customize_title">Personalize background and accent</string>
     <string name="tutorial_guide">Swift Installer makes your system dark, and personal. It\'s important for you to get to know the installer before using it, so please take a moment and read the following guide…</string>
-    <string name="tutorial_more_usage_info">The first install will require you to install all apps manually, and this means a lot of clicking. Once the first install is done, it will all be much smoother and faster due to our update system. There is a learning curve, but once you get a hang of it, you\'ll find it easy to use.\n\nPlease note that we, due to stability reasons, advice not to use native Samsung themes or Substratum overlays together with Swift Installer.</string>
+    <string name="tutorial_more_usage_info">The first install will require you to install all apps manually, and this means a lot of clicking. Once the first install is done, it will all be much smoother and faster due to our update system. There is a learning curve, but once you get a hang of it, you\'ll find it easy to use.\n\nNote that we cannot guarantee a stable experience if you use this app in combination with native Samsung themes or Substratum overlays.</string>
     <string name="tutorial_more_usage_title">First install</string>
     <string name="tutorial_permission_content">A theme contain overlays, and it\'s the overlay that applies on top of an app and themes it. Overlays gets installed as APK\'s on your device. By pressing \'Give\' you acknowledge and accept this. \n\n We also need storage permission as we temporarily place the APK on the storage before installing it. Press \'Give\' to grant the permission. Lastly, we use a special Samsung permission to activate overlays on reboot.</string>
     <string name="tutorial_permission_title">Permissions</string>
