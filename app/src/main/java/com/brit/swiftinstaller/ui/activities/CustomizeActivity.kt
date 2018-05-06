@@ -562,7 +562,7 @@ class CustomizeActivity : ThemeActivity() {
             accent_hex_input.background.setTint(accentColor)
             hex_input_bg.background.setTint(accentColor)
             if (updateHex && accent_hex_input.text.toString() != Integer.toHexString(accentColor).substring(2))
-                accent_hex_input.setText(Integer.toHexString(accentColor).substring(2), TextView.BufferType.EDITABLE)
+                accent_hex_input.setText(Integer.toHexString(accentColor).substring(2).toUpperCase(), TextView.BufferType.EDITABLE)
 
             custom_dark_bg_indicator.drawable.setTint(accentColor)
             custom_black_bg_indicator.drawable.setTint(accentColor)
@@ -598,7 +598,7 @@ class CustomizeActivity : ThemeActivity() {
             Log.d("TEST", "MaterialPalette : $materialPalette")
             this.backgroundColor = backgroundColor
             if (updateHex && hex_input_bg.text.toString() != Integer.toHexString(backgroundColor).substring(2))
-                hex_input_bg.setText(Integer.toHexString(backgroundColor).substring(2), TextView.BufferType.EDITABLE)
+                hex_input_bg.setText(Integer.toHexString(backgroundColor).substring(2).toUpperCase(), TextView.BufferType.EDITABLE)
             setBgIndicator()
 
             val sheetBg = getDrawable(R.drawable.personalization_sheet_bg) as LayerDrawable
