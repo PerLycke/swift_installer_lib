@@ -10,16 +10,10 @@ import android.widget.EditText
 
 class BaseTextInputEditText(context: Context?, attrs: AttributeSet) : EditText(context, attrs){
 
-    var firstFocus = true
     val inputMethodManager = context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
 
     override fun onFocusChanged(focused: Boolean, direction: Int, previouslyFocusedRect: Rect?) {
         super.onFocusChanged(focused, direction, previouslyFocusedRect)
-
-        if (focused && firstFocus) {
-            setText("")
-            firstFocus = false
-        }
 
         if (!focused) {
             inputMethodManager.hideSoftInputFromWindow(this.windowToken, 0)
