@@ -148,6 +148,22 @@ class CustomizeActivity : ThemeActivity() {
 
         accent_hex_input.onFocusChangeListener = onFocusChangeListener
         hex_input_bg.onFocusChangeListener = onFocusChangeListener
+        accent_hex_input.setOnKeyListener({ v, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_UP) {
+                when (keyCode) {
+                    KeyEvent.KEYCODE_BACK -> accent_hex_input.clearFocus()
+                }
+            }
+            false
+        })
+        hex_input_bg.setOnKeyListener({ v, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_UP) {
+                when (keyCode) {
+                    KeyEvent.KEYCODE_BACK -> accent_hex_input.clearFocus()
+                }
+            }
+            false
+        })
 
         accent_hex_input.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
