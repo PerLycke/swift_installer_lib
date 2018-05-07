@@ -623,9 +623,9 @@ class CustomizeActivity : ThemeActivity() {
             preview_sysui_sender.text = getString(R.string.dark_notifications)
             preview_sysui_msg.text = getString(R.string.dark_notifications_preview)
             preview_sysui_msg.setText(R.string.notification_fix_summary)
-            preview_sysui_app_title.setShadowLayer(2.0f, 0.0f, 0.0f, Color.WHITE)
+            preview_sysui_app_title.setShadowLayer(2.0f, -1.0f, -1.0f, Color.WHITE)
             preview_sysui_sender.setTextColor(Color.BLACK)
-            preview_sysui_sender.setShadowLayer(2.0f, 0.0f, 0.0f, Color.WHITE)
+            preview_sysui_sender.setShadowLayer(2.0f, -1.0f, -1.0f, Color.WHITE)
         } else {
             preview_sysui_sender.setText(R.string.dark_notifications)
             preview_sysui_msg.text = getString(R.string.dark_notifications_preview_normal)
