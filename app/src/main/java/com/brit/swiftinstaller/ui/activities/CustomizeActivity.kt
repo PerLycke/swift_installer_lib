@@ -139,13 +139,6 @@ class CustomizeActivity : ThemeActivity() {
             }
         }
 
-        val keyListener = { v: View, keyCode: Int, _: KeyEvent ->
-            if (keyCode == KeyEvent.KEYCODE_BACK) {
-                v.clearFocus()
-            }
-            true
-        }
-
         accent_hex_input.onFocusChangeListener = onFocusChangeListener
         hex_input_bg.onFocusChangeListener = onFocusChangeListener
         accent_hex_input.setOnKeyListener({ v, keyCode, event ->
