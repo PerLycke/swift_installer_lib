@@ -202,7 +202,7 @@ class AppListFragment : Fragment() {
                 } else {
                     if (!Utils.checkVersionCompatible(context!!, item.packageName)) {
                         appName.alpha = 0.3f
-                        if (Utils.isOverlayInstalled(context!!, item.packageName)) {
+                        if (Utils.isOverlayInstalled(context!!, Utils.getOverlayPackageName(item.packageName))) {
                             appCheckBox.visibility = View.VISIBLE
                             alertIcon.visibility = View.GONE
                             appCheckBox.isEnabled = true
