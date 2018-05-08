@@ -131,7 +131,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
             }
         }
         if (variants.contains("icons") && useAospIcons(context)) {
-            checkResourcePath(am, "$path/icons/aosp", resourcePaths)
+            checkResourcePath(am, "$path/icons", resourcePaths)
         }
     }
 
