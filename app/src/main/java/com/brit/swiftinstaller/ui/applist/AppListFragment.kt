@@ -202,9 +202,17 @@ class AppListFragment : Fragment() {
                 } else {
                     if (!Utils.checkVersionCompatible(context!!, item.packageName)) {
                         appName.alpha = 0.3f
-                        alertIcon.visibility = View.VISIBLE
-                        appCheckBox.visibility = View.INVISIBLE
-                        appCheckBox.isEnabled = false
+                        if (Utils.isOverlayInstalled(context!!, item.packageName)) {
+                            appCheckBox.visibility = View.VISIBLE
+                            alertIcon.visibility = View.GONE
+                            appCheckBox.isEnabled = true
+                            required.visibility = View.VISIBLE
+                            required.text = "Unsupported, please uninstall"
+                        } else {
+                            alertIcon.visibility = View.VISIBLE
+                            appCheckBox.visibility = View.INVISIBLE
+                            appCheckBox.isEnabled = false
+                        }
                     } else {
                         appName.alpha = 1.0f
                         alertIcon.visibility = View.GONE
