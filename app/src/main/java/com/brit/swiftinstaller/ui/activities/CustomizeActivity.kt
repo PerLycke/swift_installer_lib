@@ -52,6 +52,7 @@ class CustomizeActivity : ThemeActivity() {
     private var finish = false
     private var usePalette = false
     private var useAospIcons = false
+    private var useStockMultiIcons = false
     private var notifShadow = false
     private var darkNotif = false
 
@@ -70,6 +71,7 @@ class CustomizeActivity : ThemeActivity() {
             setupAccentSheet()
             usePalette = useBackgroundPalette(this)
             useAospIcons = com.brit.swiftinstaller.utils.useAospIcons(this)
+            useStockMultiIcons = com.brit.swiftinstaller.utils.useStockMultiIcons(this)
             notifShadow = useSenderNameFix(this)
             darkNotif = useDarkNotifBg(this)
             updateColor(getAccentColor(this), getBackgroundColor(this), true, false)
@@ -254,22 +256,51 @@ class CustomizeActivity : ThemeActivity() {
         shadow_disabled.setOnCheckedChangeListener(notifListener)
         shadow_enabled.setOnCheckedChangeListener(notifListener)
 
-        aosp_icons.isChecked = useAospIcons
-        stock_icons.isChecked = !useAospIcons
+        when {
+            useAospIcons -> aosp_icons.isChecked = true
+            useStockMultiIcons -> stock_icons_multi.isChecked = true
+            else -> stock_icons.isChecked = true
+        }
 
         val iconListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
             if (buttonView.id == R.id.aosp_icons) {
-                aosp_icons.isChecked = isChecked
-                stock_icons.isChecked = !isChecked
-            } else {
-                aosp_icons.isChecked = !isChecked
-                stock_icons.isChecked = isChecked
+                if (isChecked) {
+                    aosp_icons.isChecked = true
+                    stock_icons.isChecked = false
+                    stock_icons_multi.isChecked = false
+                    for (icon: ImageView? in settingsIcons) {
+                        icon?.setColorFilter(accentColor)
+                    }
+                }
+            } else if (buttonView.id == R.id.stock_icons_multi) {
+                if (isChecked) {
+                    aosp_icons.isChecked = false
+                    stock_icons.isChecked = false
+                    stock_icons_multi.isChecked = true
+                    for (icon: ImageView? in settingsIcons) {
+                        icon?.clearColorFilter()
+                    }
+                }
+            } else if (buttonView.id == R.id.stock_icons) {
+                if (isChecked) {
+                    aosp_icons.isChecked = false
+                    stock_icons.isChecked = true
+                    stock_icons_multi.isChecked = false
+                    for (icon: ImageView? in settingsIcons) {
+                        icon?.setColorFilter(accentColor)
+                    }
+                }
             }
+
             useAospIcons = aosp_icons.isChecked
+            useStockMultiIcons = stock_icons_multi.isChecked
+
             updateIcons()
         }
+
         aosp_icons.setOnCheckedChangeListener(iconListener)
         stock_icons.setOnCheckedChangeListener(iconListener)
+        stock_icons_multi.setOnCheckedChangeListener(iconListener)
 
     }
 
@@ -320,6 +351,7 @@ class CustomizeActivity : ThemeActivity() {
             val oldBackground = getBackgroundColor(this)
             val oldPalette = useBackgroundPalette(this)
             val oldIcons = useAospIcons(this)
+            val oldStockIcons = useStockMultiIcons(this)
             val oldShadow = useSenderNameFix(this)
             val oldNotifbg = useDarkNotifBg(this)
 
@@ -378,6 +410,17 @@ class CustomizeActivity : ThemeActivity() {
                 }
             }
 
+            if (useStockMultiIcons != oldStockIcons) {
+                setUseStockMultiIcons(this, useStockMultiIcons)
+                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
+                    recompile = true
+                    apps.add("com.samsung.android.lool")
+                    apps.add("com.samsung.android.themestore")
+                    apps.add("com.android.settings")
+                    apps.add("com.android.systemui")
+                }
+            }
+
             if (recompile && apps.isNotEmpty()) {
 
                 val receiver = object : BroadcastReceiver() {
@@ -394,6 +437,9 @@ class CustomizeActivity : ThemeActivity() {
                             }
                             if (oldIcons != com.brit.swiftinstaller.utils.useAospIcons(context)) {
                                 setUseAospIcons(context, oldIcons)
+                            }
+                            if (oldIcons != com.brit.swiftinstaller.utils.useStockMultiIcons(context)) {
+                                setUseStockMultiIcons(context, oldIcons)
                             }
                             LocalBroadcastManager.getInstance(context.applicationContext)
                                     .unregisterReceiver(this)
@@ -556,8 +602,10 @@ class CustomizeActivity : ThemeActivity() {
         updateColors(backgroundColor, usePalette)
         if (force || this.accentColor != accentColor) {
             this.accentColor = accentColor
-            for (icon: ImageView? in settingsIcons) {
-                icon?.setColorFilter(accentColor)
+            if (!stock_icons_multi.isChecked) {
+                for (icon: ImageView? in settingsIcons) {
+                    icon?.setColorFilter(accentColor)
+                }
             }
             for (icon: ImageView? in systemUiIcons) {
                 icon?.setColorFilter(accentColor)
@@ -587,8 +635,11 @@ class CustomizeActivity : ThemeActivity() {
 
             material_theme.buttonTintList = buttonColor
             flat_theme.buttonTintList = buttonColor
-            stock_icons.buttonTintList = buttonColor
+
             aosp_icons.buttonTintList = buttonColor
+            stock_icons.buttonTintList = buttonColor
+            stock_icons_multi.buttonTintList = buttonColor
+
             white_notifications.buttonTintList = buttonColor
             dark_notifications.buttonTintList = buttonColor
             shadow_enabled.buttonTintList = buttonColor

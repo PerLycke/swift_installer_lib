@@ -13,6 +13,7 @@ const val KEY_BACKGROUND_COLOR = "background_color"
 const val KEY_BACKGROUND_PALETTE = "background_palette"
 const val KEY_SENDER_NAME_FIX = "sender_name_fix"
 const val KEY_USE_AOSP_ICONS = "use_aosp_icons"
+const val KEY_USE_STOCK_MULTI_ICONS = "use_stock_multi_icons"
 const val KEY_HIDE_INFO_CARD = "hide_failed_info"
 const val KEY_OVERLAY_VERSIONS = "overlay_versions"
 const val KEY_USER_ACCENTS = "user_accents"
@@ -67,6 +68,14 @@ fun useAospIcons(context: Context): Boolean {
 
 fun setUseAospIcons(context: Context, use: Boolean) {
     PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(KEY_USE_AOSP_ICONS, use).apply()
+}
+
+fun useStockMultiIcons(context: Context): Boolean {
+    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_USE_STOCK_MULTI_ICONS, false)
+}
+
+fun setUseStockMultiIcons(context: Context, use: Boolean) {
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(KEY_USE_STOCK_MULTI_ICONS, use).apply()
 }
 
 fun setHideFailedInfoCard(context: Context, hide: Boolean) {
