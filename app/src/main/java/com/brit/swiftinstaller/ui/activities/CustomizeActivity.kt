@@ -52,6 +52,7 @@ class CustomizeActivity : ThemeActivity() {
     private var finish = false
     private var usePalette = false
     private var useAospIcons = false
+    private var useStockAccentIcons = false
     private var useStockMultiIcons = false
     private var notifShadow = false
     private var darkNotif = false
@@ -71,6 +72,7 @@ class CustomizeActivity : ThemeActivity() {
             setupAccentSheet()
             usePalette = useBackgroundPalette(this)
             useAospIcons = com.brit.swiftinstaller.utils.useAospIcons(this)
+            useStockAccentIcons = com.brit.swiftinstaller.utils.useStockAccentIcons(this)
             useStockMultiIcons = com.brit.swiftinstaller.utils.useStockMultiIcons(this)
             notifShadow = useSenderNameFix(this)
             darkNotif = useDarkNotifBg(this)
@@ -257,50 +259,59 @@ class CustomizeActivity : ThemeActivity() {
         shadow_enabled.setOnCheckedChangeListener(notifListener)
 
         when {
-            useAospIcons -> aosp_icons.isChecked = true
-            useStockMultiIcons -> stock_icons_multi.isChecked = true
-            else -> stock_icons.isChecked = true
-        }
-
-        val iconListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
-            if (buttonView.id == R.id.aosp_icons) {
-                if (isChecked) {
-                    aosp_icons.isChecked = true
-                    stock_icons.isChecked = false
-                    stock_icons_multi.isChecked = false
-                    for (icon: ImageView? in settingsIcons) {
-                        icon?.setColorFilter(accentColor)
-                    }
-                }
-            } else if (buttonView.id == R.id.stock_icons_multi) {
-                if (isChecked) {
-                    aosp_icons.isChecked = false
-                    stock_icons.isChecked = false
-                    stock_icons_multi.isChecked = true
-                    for (icon: ImageView? in settingsIcons) {
-                        icon?.clearColorFilter()
-                    }
-                }
-            } else if (buttonView.id == R.id.stock_icons) {
-                if (isChecked) {
-                    aosp_icons.isChecked = false
-                    stock_icons.isChecked = true
-                    stock_icons_multi.isChecked = false
-                    for (icon: ImageView? in settingsIcons) {
-                        icon?.setColorFilter(accentColor)
-                    }
-                }
+            useAospIcons -> {
+                aosp_icons.isChecked = true
             }
-
-            useAospIcons = aosp_icons.isChecked
-            useStockMultiIcons = stock_icons_multi.isChecked
-
-            updateIcons()
+            useStockMultiIcons -> {
+                stock_icons_multi.isChecked = true
+            }
+            else -> {
+                stock_icons.isChecked = true
+            }
         }
 
-        aosp_icons.setOnCheckedChangeListener(iconListener)
-        stock_icons.setOnCheckedChangeListener(iconListener)
-        stock_icons_multi.setOnCheckedChangeListener(iconListener)
+        aosp_icons.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (aosp_icons.isChecked) {
+                aosp_icons.isChecked = true
+                stock_icons.isChecked = false
+                stock_icons_multi.isChecked = false
+                for (icon: ImageView? in settingsIcons) {
+                    icon?.setColorFilter(accentColor)
+                }
+                useAospIcons = true
+                updateIcons()
+            } else {
+                useAospIcons = false
+            }
+        }
+        stock_icons.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (stock_icons.isChecked) {
+                aosp_icons.isChecked = false
+                stock_icons.isChecked = true
+                stock_icons_multi.isChecked = false
+                for (icon: ImageView? in settingsIcons) {
+                    icon?.setColorFilter(accentColor)
+                }
+                useStockAccentIcons = true
+                updateIcons()
+            } else {
+                useStockAccentIcons = false
+            }
+        }
+        stock_icons_multi.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (stock_icons_multi.isChecked) {
+                aosp_icons.isChecked = false
+                stock_icons.isChecked = false
+                stock_icons_multi.isChecked = true
+                for (icon: ImageView? in settingsIcons) {
+                    icon?.clearColorFilter()
+                }
+                useStockMultiIcons = true
+                updateIcons()
+            } else {
+                useStockMultiIcons = false
+            }
+        }
 
     }
 
@@ -351,7 +362,8 @@ class CustomizeActivity : ThemeActivity() {
             val oldBackground = getBackgroundColor(this)
             val oldPalette = useBackgroundPalette(this)
             val oldIcons = useAospIcons(this)
-            val oldStockIcons = useStockMultiIcons(this)
+            val oldStockAccentIcons = useStockAccentIcons(this)
+            val oldStockMultiIcons = useStockMultiIcons(this)
             val oldShadow = useSenderNameFix(this)
             val oldNotifbg = useDarkNotifBg(this)
 
@@ -399,8 +411,10 @@ class CustomizeActivity : ThemeActivity() {
                 }
             }
 
-            if (useAospIcons != oldIcons) {
-                setUseAospIcons(this, useAospIcons)
+            if (useAospIcons != oldIcons && useAospIcons) {
+                setUseAospIcons(this, true)
+                setUseStockAccentIcons(this, false)
+                setUseStockMultiIcons(this, false)
                 if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
                     recompile = true
                     apps.add("com.samsung.android.lool")
@@ -410,8 +424,23 @@ class CustomizeActivity : ThemeActivity() {
                 }
             }
 
-            if (useStockMultiIcons != oldStockIcons) {
-                setUseStockMultiIcons(this, useStockMultiIcons)
+            if (useStockAccentIcons != oldStockAccentIcons && useStockAccentIcons) {
+                setUseStockAccentIcons(this, true)
+                setUseAospIcons(this, false)
+                setUseStockMultiIcons(this, false)
+                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
+                    recompile = true
+                    apps.add("com.samsung.android.lool")
+                    apps.add("com.samsung.android.themestore")
+                    apps.add("com.android.settings")
+                    apps.add("com.android.systemui")
+                }
+            }
+
+            if (useStockMultiIcons != oldStockMultiIcons && useStockMultiIcons) {
+                setUseStockMultiIcons(this, true)
+                setUseAospIcons(this, false)
+                setUseStockAccentIcons(this, false)
                 if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
                     recompile = true
                     apps.add("com.samsung.android.lool")
@@ -438,8 +467,11 @@ class CustomizeActivity : ThemeActivity() {
                             if (oldIcons != com.brit.swiftinstaller.utils.useAospIcons(context)) {
                                 setUseAospIcons(context, oldIcons)
                             }
-                            if (oldIcons != com.brit.swiftinstaller.utils.useStockMultiIcons(context)) {
-                                setUseStockMultiIcons(context, oldIcons)
+                            if (oldStockAccentIcons != com.brit.swiftinstaller.utils.useStockAccentIcons(context)) {
+                                setUseStockAccentIcons(context, oldStockAccentIcons)
+                            }
+                            if (oldStockMultiIcons != com.brit.swiftinstaller.utils.useStockMultiIcons(context)) {
+                                setUseStockMultiIcons(context, oldStockMultiIcons)
                             }
                             LocalBroadcastManager.getInstance(context.applicationContext)
                                     .unregisterReceiver(this)
