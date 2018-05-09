@@ -57,6 +57,7 @@ class InstallActivity : ThemeActivity() {
         LocalBroadcastManager.getInstance(applicationContext).unregisterReceiver(installListener)
         val intent = Intent(this, InstallSummaryActivity::class.java)
         intent.putExtra("errorMap", Utils.mapToBundle(errorMap))
+        intent.putExtra("update", update);
         errorMap.keys.forEach {
             if (apps.contains(it)) {
                 apps.remove(it)

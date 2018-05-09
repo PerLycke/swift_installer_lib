@@ -225,7 +225,7 @@ class OverlaysActivity : ThemeActivity() {
                     item.title = info.loadLabel(pm) as String
                     item.versionCode = pInfo!!.versionCode
                     item.versionName = pInfo.versionName
-                    if (isOverlayInstalled(context, getOverlayPackageName(pn))) {
+                    if (isOverlayInstalled(context, getOverlayPackageName(pn)) && info.enabled) {
                         if (isOverlayEnabled(context, getOverlayPackageName(pn))) {
                             if (updates.contains(pn)) {
                                 publishProgress(Progress(UPDATE_TAB, item))

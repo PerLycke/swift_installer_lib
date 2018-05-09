@@ -42,6 +42,8 @@ class InstallSummaryActivity : ThemeActivity() {
     private var mErrorMap: HashMap<String, String> = HashMap()
     private lateinit var mApps: ArrayList<String>
 
+    private var update = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         InstallActivity().finish()
@@ -50,6 +52,8 @@ class InstallSummaryActivity : ThemeActivity() {
         if (intent.extras.containsKey("errorMap")) {
             mErrorMap = Utils.bundleToMap(intent.getBundleExtra("errorMap"))
         }
+
+        update = intent.getBooleanExtra("update", false)
 
         if (mErrorMap.isNotEmpty()) {
             send_email_layout.visibility = View.VISIBLE
