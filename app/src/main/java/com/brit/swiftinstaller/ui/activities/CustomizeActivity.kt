@@ -634,7 +634,7 @@ class CustomizeActivity : ThemeActivity() {
         updateColors(backgroundColor, usePalette)
         if (force || this.accentColor != accentColor) {
             this.accentColor = accentColor
-            if (!stock_icons_multi.isChecked) {
+            if (!useStockMultiIcons) {
                 for (icon: ImageView? in settingsIcons) {
                     icon?.setColorFilter(accentColor)
                 }
