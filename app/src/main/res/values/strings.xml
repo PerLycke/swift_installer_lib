@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
-    <string name="aosp_icons">AOSP icons</string>
+    <string name="aosp_icons">AOSP</string>
     <string name="app_name">Swift Installer</string>
     <string name="apply">Apply</string>
     <string name="base_theme">Base theme</string>
@@ -78,7 +78,7 @@
     <string name="small_info_updates">Updates :</string>
     <string name="sound_and_vibration">Sound and vibration</string>
     <string name="sounds_and_vibration_desc">Sounds, Vibration, Do not disturb</string>
-    <string name="stock_icons">Stock icons accented</string>
+    <string name="stock_icons">Stock accented</string>
     <string name="successful">Successful</string>
     <string name="swift_black">Black</string>
     <string name="swift_dark">Dark</string>
@@ -102,5 +102,6 @@
     <string name="white_notifications_preview">A preview of white notifications</string>
     <string name="continue_theming">Continue theming</string>
     <string name="exit_to_main">Exit to main menu</string>
-    <string name="stock_icons_multi">Stock icons multi-colored</string>
+    <string name="stock_icons_multi">Stock multi-colored</string>
+    <string name="android_p">Android P</string>
 </resources>

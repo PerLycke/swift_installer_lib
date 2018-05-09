@@ -54,6 +54,7 @@ class CustomizeActivity : ThemeActivity() {
     private var useAospIcons = false
     private var useStockAccentIcons = false
     private var useStockMultiIcons = false
+    private var usePIcons = false
     private var notifShadow = false
     private var darkNotif = false
 
@@ -74,6 +75,7 @@ class CustomizeActivity : ThemeActivity() {
             useAospIcons = com.brit.swiftinstaller.utils.useAospIcons(this)
             useStockAccentIcons = com.brit.swiftinstaller.utils.useStockAccentIcons(this)
             useStockMultiIcons = com.brit.swiftinstaller.utils.useStockMultiIcons(this)
+            usePIcons = com.brit.swiftinstaller.utils.usePIcons(this)
             notifShadow = useSenderNameFix(this)
             darkNotif = useDarkNotifBg(this)
             updateColor(getAccentColor(this), getBackgroundColor(this), true, false)
@@ -265,6 +267,9 @@ class CustomizeActivity : ThemeActivity() {
             useStockMultiIcons -> {
                 stock_icons_multi.isChecked = true
             }
+            usePIcons -> {
+                p_icons.isChecked = true
+            }
             else -> {
                 stock_icons.isChecked = true
             }
@@ -275,10 +280,12 @@ class CustomizeActivity : ThemeActivity() {
                 aosp_icons.isChecked = true
                 stock_icons.isChecked = false
                 stock_icons_multi.isChecked = false
+                p_icons.isChecked = false
                 for (icon: ImageView? in settingsIcons) {
                     icon?.setColorFilter(accentColor)
                 }
                 useAospIcons = true
+                Log.d("beachroad", "useAospIcons $useAospIcons")
                 updateIcons()
             } else {
                 useAospIcons = false
@@ -289,10 +296,12 @@ class CustomizeActivity : ThemeActivity() {
                 aosp_icons.isChecked = false
                 stock_icons.isChecked = true
                 stock_icons_multi.isChecked = false
+                p_icons.isChecked = false
                 for (icon: ImageView? in settingsIcons) {
                     icon?.setColorFilter(accentColor)
                 }
                 useStockAccentIcons = true
+                Log.d("beachroad", "useStockAccentIcons $useStockAccentIcons")
                 updateIcons()
             } else {
                 useStockAccentIcons = false
@@ -303,13 +312,31 @@ class CustomizeActivity : ThemeActivity() {
                 aosp_icons.isChecked = false
                 stock_icons.isChecked = false
                 stock_icons_multi.isChecked = true
+                p_icons.isChecked = false
                 for (icon: ImageView? in settingsIcons) {
                     icon?.clearColorFilter()
                 }
                 useStockMultiIcons = true
+                Log.d("beachroad", "useStockMultiIcons $useStockMultiIcons")
                 updateIcons()
             } else {
                 useStockMultiIcons = false
+            }
+        }
+        p_icons.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (p_icons.isChecked) {
+                aosp_icons.isChecked = false
+                stock_icons.isChecked = false
+                stock_icons_multi.isChecked = false
+                p_icons.isChecked = true
+                for (icon: ImageView? in settingsIcons) {
+                    icon?.clearColorFilter()
+                }
+                usePIcons = true
+                Log.d("beachroad", "usePIcons $usePIcons")
+                updateIcons()
+            } else {
+                usePIcons = false
             }
         }
 
@@ -364,6 +391,7 @@ class CustomizeActivity : ThemeActivity() {
             val oldIcons = useAospIcons(this)
             val oldStockAccentIcons = useStockAccentIcons(this)
             val oldStockMultiIcons = useStockMultiIcons(this)
+            val oldAndroidPIcons = usePIcons(this)
             val oldShadow = useSenderNameFix(this)
             val oldNotifbg = useDarkNotifBg(this)
 
@@ -415,6 +443,7 @@ class CustomizeActivity : ThemeActivity() {
                 setUseAospIcons(this, true)
                 setUseStockAccentIcons(this, false)
                 setUseStockMultiIcons(this, false)
+                setUsePIcons(this, false)
                 if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
                     recompile = true
                     apps.add("com.samsung.android.lool")
@@ -425,9 +454,10 @@ class CustomizeActivity : ThemeActivity() {
             }
 
             if (useStockAccentIcons != oldStockAccentIcons && useStockAccentIcons) {
-                setUseStockAccentIcons(this, true)
                 setUseAospIcons(this, false)
+                setUseStockAccentIcons(this, true)
                 setUseStockMultiIcons(this, false)
+                setUsePIcons(this, false)
                 if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
                     recompile = true
                     apps.add("com.samsung.android.lool")
@@ -438,9 +468,24 @@ class CustomizeActivity : ThemeActivity() {
             }
 
             if (useStockMultiIcons != oldStockMultiIcons && useStockMultiIcons) {
-                setUseStockMultiIcons(this, true)
                 setUseAospIcons(this, false)
                 setUseStockAccentIcons(this, false)
+                setUseStockMultiIcons(this, true)
+                setUsePIcons(this, false)
+                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
+                    recompile = true
+                    apps.add("com.samsung.android.lool")
+                    apps.add("com.samsung.android.themestore")
+                    apps.add("com.android.settings")
+                    apps.add("com.android.systemui")
+                }
+            }
+
+            if (usePIcons != oldAndroidPIcons && usePIcons) {
+                setUseStockMultiIcons(this, false)
+                setUseAospIcons(this, false)
+                setUseStockAccentIcons(this, false)
+                setUsePIcons(this, true)
                 if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
                     recompile = true
                     apps.add("com.samsung.android.lool")
@@ -472,6 +517,9 @@ class CustomizeActivity : ThemeActivity() {
                             }
                             if (oldStockMultiIcons != com.brit.swiftinstaller.utils.useStockMultiIcons(context)) {
                                 setUseStockMultiIcons(context, oldStockMultiIcons)
+                            }
+                            if (oldAndroidPIcons != com.brit.swiftinstaller.utils.usePIcons(context)) {
+                                setUsePIcons(context, oldAndroidPIcons)
                             }
                             LocalBroadcastManager.getInstance(context.applicationContext)
                                     .unregisterReceiver(this)
@@ -606,6 +654,8 @@ class CustomizeActivity : ThemeActivity() {
             if (icon != null) {
                 val idName = "ic_${resources.getResourceEntryName(icon.id)}_${if (useAospIcons) {
                     "aosp"
+                } else if (usePIcons) {
+                    "p"
                 } else {
                     "stock"
                 }}"
@@ -634,7 +684,7 @@ class CustomizeActivity : ThemeActivity() {
         updateColors(backgroundColor, usePalette)
         if (force || this.accentColor != accentColor) {
             this.accentColor = accentColor
-            if (!useStockMultiIcons) {
+            if (!useStockMultiIcons && !usePIcons) {
                 for (icon: ImageView? in settingsIcons) {
                     icon?.setColorFilter(accentColor)
                 }

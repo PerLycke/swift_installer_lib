@@ -136,6 +136,9 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         if (variants.contains("icons") && useStockMultiIcons(context)) {
             checkResourcePath(am, "$path/icons/stock", resourcePaths)
         }
+        if (variants.contains("icons") && usePIcons(context)) {
+            checkResourcePath(am, "$path/icons/p", resourcePaths)
+        }
     }
 
     private fun parseOverlayVersions(am: AssetManager, resourcePaths: ArrayList<String>, path: String) {
