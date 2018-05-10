@@ -669,6 +669,8 @@ class CustomizeActivity : ThemeActivity() {
             if (icon != null) {
                 val idName = "ic_${resources.getResourceEntryName(icon.id)}_${if (useAospIcons) {
                     "aosp"
+                } else if (usePIcons) {
+                    "p"
                 } else {
                     "stock"
                 }}"
