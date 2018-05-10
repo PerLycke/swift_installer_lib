@@ -481,7 +481,7 @@ class CustomizeActivity : ThemeActivity() {
                 }
             }
 
-            if (usePIcons != oldAndroidPIcons && usePIcons) {
+            if (usePIcons) {
                 setUseStockMultiIcons(this, false)
                 setUseAospIcons(this, false)
                 setUseStockAccentIcons(this, false)
@@ -721,6 +721,7 @@ class CustomizeActivity : ThemeActivity() {
             aosp_icons.buttonTintList = buttonColor
             stock_icons.buttonTintList = buttonColor
             stock_icons_multi.buttonTintList = buttonColor
+            p_icons.buttonTintList = buttonColor
 
             white_notifications.buttonTintList = buttonColor
             dark_notifications.buttonTintList = buttonColor
