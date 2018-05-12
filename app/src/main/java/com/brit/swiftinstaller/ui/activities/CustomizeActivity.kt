@@ -481,7 +481,7 @@ class CustomizeActivity : ThemeActivity() {
                 }
             }
 
-            if (usePIcons) {
+            if (usePIcons != oldAndroidPIcons && usePIcons) {
                 setUseStockMultiIcons(this, false)
                 setUseAospIcons(this, false)
                 setUseStockAccentIcons(this, false)
