@@ -17,7 +17,7 @@
         android:paddingEnd="20dp"
         android:paddingStart="8dp"
         android:paddingTop="8dp"
-        android:text="Force close"
+        android:text="@string/force_close"
         android:textAllCaps="true"
         android:textColor="@color/minimal_red"
         android:textSize="12sp"

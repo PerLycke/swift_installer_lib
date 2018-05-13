@@ -9,14 +9,14 @@
     android:clickable="true">
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline"
+        android:id="@+id/guideline1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.15" />
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline5"
+        android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -27,9 +27,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:visibility="visible"
-        app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline1"
         app:layout_constraintTop_toTopOf="parent">
 
         <android.support.v4.view.ViewPager
@@ -85,115 +84,42 @@
             android:id="@+id/main_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
+            android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:clickable="true"
+            android:paddingBottom="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <android.support.constraint.ConstraintLayout
+                android:id="@+id/personalization_cards"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <android.support.constraint.Guideline
-                    android:id="@+id/guideline1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.15" />
-
-                <android.support.constraint.Guideline
-                    android:id="@+id/guideline2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.85" />
-
-                <TextView
-                    android:id="@+id/toolbar_subtitle_accent_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="24dp"
-                    android:fontFamily="sans-serif"
-                    android:text="@string/category_accent"
-                    android:textAllCaps="true"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:visibility="visible"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/accent_category_divider"
-                    android:layout_width="0dp"
-                    android:layout_height="2dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginStart="8dp"
-                    android:background="@color/divider"
-                    android:contentDescription="@string/image"
-                    android:visibility="visible"
-                    app:layout_constraintBottom_toBottomOf="@+id/toolbar_subtitle_accent_title"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/toolbar_subtitle_accent_title"
-                    app:layout_constraintTop_toTopOf="@+id/toolbar_subtitle_accent_title" />
-
                 <android.support.constraint.ConstraintLayout
-                    android:id="@+id/constraintLayout"
+                    android:id="@+id/accent_card"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:visibility="visible"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
-                    app:layout_constraintStart_toStartOf="@+id/guideline1"
-                    app:layout_constraintTop_toBottomOf="@+id/toolbar_subtitle_accent_title">
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <include layout="@layout/customize_accent" />
+                    <include
+                        layout="@layout/customize_accent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </android.support.constraint.ConstraintLayout>
 
-                <TextView
-                    android:id="@+id/bg_category"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="18dp"
-                    android:fontFamily="sans-serif"
-                    android:text="@string/category_background"
-                    android:textAllCaps="true"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:visibility="visible"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
-
-                <ImageView
-                    android:id="@+id/bg_category_divider"
-                    android:layout_width="0dp"
-                    android:layout_height="2dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginStart="8dp"
-                    android:background="@color/divider"
-                    android:contentDescription="@string/image"
-                    android:visibility="visible"
-                    app:layout_constraintBottom_toBottomOf="@+id/bg_category"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/bg_category"
-                    app:layout_constraintTop_toTopOf="@+id/bg_category" />
-
                 <android.support.constraint.ConstraintLayout
-                    android:id="@+id/constraintLayout2"
+                    android:id="@+id/background_card"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:visibility="visible"
-                    app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
-                    app:layout_constraintStart_toStartOf="@+id/constraintLayout"
-                    app:layout_constraintTop_toBottomOf="@+id/bg_category">
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/accent_card">
 
                     <include
                         layout="@layout/customize_background"
@@ -203,47 +129,13 @@
 
                 </android.support.constraint.ConstraintLayout>
 
-                <TextView
-                    android:id="@+id/icons_category_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="18dp"
-                    android:fontFamily="sans-serif"
-                    android:text="@string/category_icons"
-                    android:textAllCaps="true"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:visibility="visible"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
-
-                <ImageView
-                    android:id="@+id/icons_category_divider"
-                    android:layout_width="0dp"
-                    android:layout_height="2dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginStart="8dp"
-                    android:background="@color/divider"
-                    android:contentDescription="@string/image"
-                    android:visibility="visible"
-                    app:layout_constraintBottom_toBottomOf="@+id/icons_category_title"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/icons_category_title"
-                    app:layout_constraintTop_toTopOf="@+id/icons_category_title" />
-
                 <android.support.constraint.ConstraintLayout
-                    android:id="@+id/constraintLayout6"
+                    android:id="@+id/icons_card"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="20dp"
-                    android:visibility="visible"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
-                    app:layout_constraintStart_toStartOf="@+id/guideline1"
-                    app:layout_constraintTop_toBottomOf="@+id/icons_category_title">
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/background_card">
 
                     <include
                         layout="@layout/customize_icons"
@@ -253,43 +145,14 @@
 
                 </android.support.constraint.ConstraintLayout>
 
-                <TextView
-                    android:id="@+id/notif_category_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="32dp"
-                    android:fontFamily="sans-serif"
-                    android:text="@string/notification_tweaks"
-                    android:textAllCaps="true"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:visibility="visible"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout6" />
-
-                <ImageView
-                    android:id="@+id/notif_category_divider"
-                    android:layout_width="0dp"
-                    android:layout_height="2dp"
-                    android:layout_marginEnd="32dp"
-                    android:layout_marginStart="8dp"
-                    android:background="@color/divider"
-                    android:contentDescription="@string/image"
-                    android:visibility="visible"
-                    app:layout_constraintBottom_toBottomOf="@+id/notif_category_title"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/notif_category_title"
-                    app:layout_constraintTop_toTopOf="@+id/notif_category_title" />
-
                 <android.support.constraint.ConstraintLayout
+                    android:id="@+id/notifications_card"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    app:layout_constraintEnd_toStartOf="@+id/guideline2"
-                    app:layout_constraintStart_toStartOf="@+id/guideline1"
-                    app:layout_constraintTop_toBottomOf="@+id/notif_category_title">
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/icons_card">
 
                     <include
                         layout="@layout/customize_notifications"

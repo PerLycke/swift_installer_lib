@@ -1,22 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/customize_bg_root"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingBottom="8dp"
-    android:paddingTop="8dp"
-    tools:layout_editor_absoluteY="25dp">
+    android:layout_height="wrap_content">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.85" />
+
+    <TextView
+        android:id="@+id/bg_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="18dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/category_background"
+        android:textAllCaps="true"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/bg_category_divider"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="8dp"
+        android:background="@color/divider"
+        android:contentDescription="@string/image"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/bg_category"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/bg_category"
+        app:layout_constraintTop_toTopOf="@+id/bg_category" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/customize_base_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toBottomOf="@+id/bg_category">
 
         <TextView
             android:id="@+id/customize_base_theme_title"
@@ -78,12 +118,11 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/custom_bg_main_layout"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:paddingBottom="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toBottomOf="@+id/customize_base_layout">
 
         <TextView
@@ -340,14 +379,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:backgroundTint="@color/minimal_green"
+                android:digits="0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,A,B,C,D,E,F"
                 android:ems="6"
                 android:fontFamily="sans-serif"
                 android:hint="@string/hex"
+                android:imeOptions="actionDone"
                 android:inputType="textNoSuggestions|textVisiblePassword"
                 android:maxLength="6"
-                android:digits="0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,A,B,C,D,E,F"
                 android:singleLine="true"
-                android:imeOptions="actionDone"
                 app:layout_constraintEnd_toEndOf="@+id/custom_night_bg"
                 app:layout_constraintTop_toBottomOf="@+id/custom_ocean_bg_txt" />
 
