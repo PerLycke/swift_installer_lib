@@ -294,7 +294,6 @@ class CustomizeActivity : ThemeActivity() {
                             icon?.setColorFilter(accentColor)
                         }
                         useAospIcons = true
-                        Log.d("beachroad", "useAospIcons $useAospIcons")
                         updateIcons()
                     } else {
                         useAospIcons = false
@@ -310,7 +309,6 @@ class CustomizeActivity : ThemeActivity() {
                             icon?.setColorFilter(accentColor)
                         }
                         useStockAccentIcons = true
-                        Log.d("beachroad", "useStockAccentIcons $useStockAccentIcons")
                         updateIcons()
                     } else {
                         useStockAccentIcons = false
@@ -326,7 +324,6 @@ class CustomizeActivity : ThemeActivity() {
                             icon?.clearColorFilter()
                         }
                         useStockMultiIcons = true
-                        Log.d("beachroad", "useStockMultiIcons $useStockMultiIcons")
                         updateIcons()
                     } else {
                         useStockMultiIcons = false
@@ -342,7 +339,6 @@ class CustomizeActivity : ThemeActivity() {
                             icon?.clearColorFilter()
                         }
                         usePIcons = true
-                        Log.d("beachroad", "usePIcons $usePIcons")
                         updateIcons()
                     } else {
                         usePIcons = false
@@ -439,6 +435,12 @@ class CustomizeActivity : ThemeActivity() {
         super.onResume()
         updateColors(backgroundColor, usePalette)
         if (finish) finish()
+    }
+
+    private fun checkAndAddApp(apps: ArrayList<String>, app: String) {
+        if (!apps.contains(app)) {
+            apps.add(app)
+        }
     }
 
     private fun personalizeFabClick() {
@@ -589,7 +591,7 @@ class CustomizeActivity : ThemeActivity() {
                 setUseRightClock(this, true)
                 if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
                     recompile = true
-                    apps.add("com.android.systemui")
+                    checkAndAddApp(apps,"com.android.systemui")
                 }
             }
 
@@ -599,17 +601,17 @@ class CustomizeActivity : ThemeActivity() {
                 setUseLeftClock(this, true)
                 if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
                     recompile = true
-                    apps.add("com.android.systemui")
+                    checkAndAddApp(apps,"com.android.systemui")
                 }
             }
 
-            if (useCenteredClock != oldRightClock && useCenteredClock) {
+            if (useCenteredClock != oldCenteredClock && useCenteredClock) {
                 setUseLeftClock(this, false)
                 setUseRightClock(this, false)
                 setUseCenteredClock(this, true)
                 if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
                     recompile = true
-                    apps.add("com.android.systemui")
+                    checkAndAddApp(apps,"com.android.systemui")
                 }
             }
 
