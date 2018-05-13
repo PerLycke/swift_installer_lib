@@ -16,6 +16,9 @@ const val KEY_USE_AOSP_ICONS = "use_aosp_icons"
 const val KEY_USE_STOCK_ACCENT_ICONS = "use_stock_accent_icons"
 const val KEY_USE_STOCK_MULTI_ICONS = "use_stock_multi_icons"
 const val KEY_USE_P_ICONS = "use_p_icons"
+const val KEY_USE_RIGHT_CLOCK = "use_p_icons"
+const val KEY_USE_LEFT_CLOCK = "use_p_icons"
+const val KEY_USE_CENTERED_CLOCK = "use_p_icons"
 const val KEY_HIDE_INFO_CARD = "hide_failed_info"
 const val KEY_OVERLAY_VERSIONS = "overlay_versions"
 const val KEY_USER_ACCENTS = "user_accents"
@@ -94,6 +97,30 @@ fun usePIcons(context: Context): Boolean {
 
 fun setUsePIcons(context: Context, use: Boolean) {
     PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(KEY_USE_P_ICONS, use).apply()
+}
+
+fun useRightClock(context: Context): Boolean {
+    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_USE_RIGHT_CLOCK, false)
+}
+
+fun setUseRightClock(context: Context, use: Boolean) {
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(KEY_USE_RIGHT_CLOCK, use).apply()
+}
+
+fun useLeftClock(context: Context): Boolean {
+    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_USE_LEFT_CLOCK, false)
+}
+
+fun setUseLeftClock(context: Context, use: Boolean) {
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(KEY_USE_LEFT_CLOCK, use).apply()
+}
+
+fun useCenteredClock(context: Context): Boolean {
+    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_USE_CENTERED_CLOCK, false)
+}
+
+fun setUseCenteredClock(context: Context, use: Boolean) {
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(KEY_USE_CENTERED_CLOCK, use).apply()
 }
 
 fun setHideFailedInfoCard(context: Context, hide: Boolean) {

@@ -45,7 +45,7 @@
             android:layout_height="24dp"
             android:layout_marginEnd="13dp"
             android:layout_marginStart="13dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="28dp"
             android:contentDescription="@string/image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -214,6 +214,76 @@
             app:layout_constraintStart_toStartOf="@+id/notifications_title"
             app:layout_constraintTop_toBottomOf="@+id/notifications_title"
             tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/clock_centered"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:text="18:04"
+            android:textColor="#b3ffffff"
+            android:textSize="10sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/searchbar_bg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/settings_preview" />
+
+        <TextView
+            android:id="@+id/clock_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="18:04"
+            android:textColor="#b3ffffff"
+            android:textSize="10sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/searchbar_bg"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/settings_preview" />
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/searchbar_bg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/clock_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:text="18:04"
+                android:textColor="#b3ffffff"
+                android:textSize="10sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/wifi"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginEnd="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/battery"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_wifi" />
+
+            <ImageView
+                android:id="@+id/battery"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginEnd="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/clock_right"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_battery" />
+        </android.support.constraint.ConstraintLayout>
 
 
     </android.support.constraint.ConstraintLayout>

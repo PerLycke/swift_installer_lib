@@ -103,8 +103,12 @@
     <string name="continue_theming">Continue theming</string>
     <string name="exit_to_main">Exit to main menu</string>
     <string name="stock_icons_multi">Stock multi-colored</string>
-    <string name="android_p">Android P</string>
+    <string name="android_p">Android P (settings only)</string>
     <string name="force_close">Force close</string>
     <string name="confirm_changes">Confirm Changes</string>
     <string name="discard_changes">Discard changes</string>
+    <string name="right">Right</string>
+    <string name="left">Left</string>
+    <string name="centered">Centered</string>
+    <string name="clock">Clock</string>
 </resources>

@@ -139,6 +139,12 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         if (variants.contains("icons") && usePIcons(context)) {
             checkResourcePath(am, "$path/icons/p", resourcePaths)
         }
+        if (variants.contains("clock") && useLeftClock(context)) {
+            checkResourcePath(am, "$path/clock/left", resourcePaths)
+        }
+        if (variants.contains("clock") && useCenteredClock(context)) {
+            checkResourcePath(am, "$path/clock/centered", resourcePaths)
+        }
     }
 
     private fun parseOverlayVersions(am: AssetManager, resourcePaths: ArrayList<String>, path: String) {

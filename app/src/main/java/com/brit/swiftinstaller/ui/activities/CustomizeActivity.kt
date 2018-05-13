@@ -35,6 +35,7 @@ import com.brit.swiftinstaller.utils.ColorUtils.convertToColorInt
 import kotlinx.android.synthetic.main.activity_customize.*
 import kotlinx.android.synthetic.main.customize_accent.*
 import kotlinx.android.synthetic.main.customize_background.*
+import kotlinx.android.synthetic.main.customize_clock.*
 import kotlinx.android.synthetic.main.customize_icons.*
 import kotlinx.android.synthetic.main.customize_notifications.*
 import kotlinx.android.synthetic.main.customize_preview_settings.*
@@ -57,6 +58,9 @@ class CustomizeActivity : ThemeActivity() {
     private var usePIcons = false
     private var notifShadow = false
     private var darkNotif = false
+    private var useRightClock = false
+    private var useLeftClock = false
+    private var useCenteredClock = false
 
     private lateinit var materialPalette: MaterialPalette
     private val handler = Handler()
@@ -78,6 +82,9 @@ class CustomizeActivity : ThemeActivity() {
             usePIcons = com.brit.swiftinstaller.utils.usePIcons(this)
             notifShadow = useSenderNameFix(this)
             darkNotif = useDarkNotifBg(this)
+            useRightClock = com.brit.swiftinstaller.utils.useRightClock(this)
+            useLeftClock = com.brit.swiftinstaller.utils.useLeftClock(this)
+            useCenteredClock = com.brit.swiftinstaller.utils.useCenteredClock(this)
             updateColor(getAccentColor(this), getBackgroundColor(this), true, false)
             updateIcons()
 
@@ -275,70 +282,148 @@ class CustomizeActivity : ThemeActivity() {
             }
         }
 
-        aosp_icons.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (aosp_icons.isChecked) {
-                aosp_icons.isChecked = true
-                stock_icons.isChecked = false
-                stock_icons_multi.isChecked = false
-                p_icons.isChecked = false
-                for (icon: ImageView? in settingsIcons) {
-                    icon?.setColorFilter(accentColor)
+        val iconListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+            when {
+                buttonView.id == R.id.aosp_icons -> {
+                    if (aosp_icons.isChecked) {
+                        aosp_icons.isChecked = true
+                        stock_icons.isChecked = false
+                        stock_icons_multi.isChecked = false
+                        p_icons.isChecked = false
+                        for (icon: ImageView? in settingsIcons) {
+                            icon?.setColorFilter(accentColor)
+                        }
+                        useAospIcons = true
+                        Log.d("beachroad", "useAospIcons $useAospIcons")
+                        updateIcons()
+                    } else {
+                        useAospIcons = false
+                    }
                 }
-                useAospIcons = true
-                Log.d("beachroad", "useAospIcons $useAospIcons")
-                updateIcons()
-            } else {
-                useAospIcons = false
+                buttonView.id == R.id.stock_icons -> {
+                    if (stock_icons.isChecked) {
+                        aosp_icons.isChecked = false
+                        stock_icons.isChecked = true
+                        stock_icons_multi.isChecked = false
+                        p_icons.isChecked = false
+                        for (icon: ImageView? in settingsIcons) {
+                            icon?.setColorFilter(accentColor)
+                        }
+                        useStockAccentIcons = true
+                        Log.d("beachroad", "useStockAccentIcons $useStockAccentIcons")
+                        updateIcons()
+                    } else {
+                        useStockAccentIcons = false
+                    }
+                }
+                buttonView.id == R.id.stock_icons_multi -> {
+                    if (stock_icons_multi.isChecked) {
+                        aosp_icons.isChecked = false
+                        stock_icons.isChecked = false
+                        stock_icons_multi.isChecked = true
+                        p_icons.isChecked = false
+                        for (icon: ImageView? in settingsIcons) {
+                            icon?.clearColorFilter()
+                        }
+                        useStockMultiIcons = true
+                        Log.d("beachroad", "useStockMultiIcons $useStockMultiIcons")
+                        updateIcons()
+                    } else {
+                        useStockMultiIcons = false
+                    }
+                }
+                buttonView.id == R.id.p_icons -> {
+                    if (p_icons.isChecked) {
+                        aosp_icons.isChecked = false
+                        stock_icons.isChecked = false
+                        stock_icons_multi.isChecked = false
+                        p_icons.isChecked = true
+                        for (icon: ImageView? in settingsIcons) {
+                            icon?.clearColorFilter()
+                        }
+                        usePIcons = true
+                        Log.d("beachroad", "usePIcons $usePIcons")
+                        updateIcons()
+                    } else {
+                        usePIcons = false
+                    }
+                }
             }
         }
-        stock_icons.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (stock_icons.isChecked) {
-                aosp_icons.isChecked = false
-                stock_icons.isChecked = true
-                stock_icons_multi.isChecked = false
-                p_icons.isChecked = false
-                for (icon: ImageView? in settingsIcons) {
-                    icon?.setColorFilter(accentColor)
+
+        aosp_icons.setOnCheckedChangeListener(iconListener)
+        stock_icons.setOnCheckedChangeListener(iconListener)
+        stock_icons_multi.setOnCheckedChangeListener(iconListener)
+        p_icons.setOnCheckedChangeListener(iconListener)
+
+        when {
+            useLeftClock -> {
+                left_clock.isChecked = true
+                if (clock_left.visibility == View.GONE) {
+                    clock_left.visibility = View.VISIBLE
                 }
-                useStockAccentIcons = true
-                Log.d("beachroad", "useStockAccentIcons $useStockAccentIcons")
-                updateIcons()
-            } else {
-                useStockAccentIcons = false
+            }
+            useCenteredClock -> {
+                centered_clock.isChecked = true
+                if (clock_centered.visibility == View.GONE) {
+                    clock_centered.visibility = View.VISIBLE
+                }
+            }
+            else -> {
+                right_clock.isChecked = true
+                if (clock_right.visibility == View.GONE) {
+                    clock_right.visibility = View.VISIBLE
+                }
             }
         }
-        stock_icons_multi.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (stock_icons_multi.isChecked) {
-                aosp_icons.isChecked = false
-                stock_icons.isChecked = false
-                stock_icons_multi.isChecked = true
-                p_icons.isChecked = false
-                for (icon: ImageView? in settingsIcons) {
-                    icon?.clearColorFilter()
+
+        val clockListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+            when {
+                buttonView.id == R.id.right_clock -> {
+                    if (right_clock.isChecked) {
+                        right_clock.isChecked = true
+                        left_clock.isChecked = false
+                        centered_clock.isChecked = false
+                        clock_right.visibility = View.VISIBLE
+                        clock_left.visibility = View.GONE
+                        clock_centered.visibility = View.GONE
+                        useRightClock = true
+                    } else {
+                        useRightClock = false
+                    }
                 }
-                useStockMultiIcons = true
-                Log.d("beachroad", "useStockMultiIcons $useStockMultiIcons")
-                updateIcons()
-            } else {
-                useStockMultiIcons = false
+                buttonView.id == R.id.left_clock -> {
+                    if (left_clock.isChecked) {
+                        right_clock.isChecked = false
+                        left_clock.isChecked = true
+                        centered_clock.isChecked = false
+                        clock_right.visibility = View.GONE
+                        clock_left.visibility = View.VISIBLE
+                        clock_centered.visibility = View.GONE
+                        useLeftClock = true
+                    } else {
+                        useLeftClock = false
+                    }
+                }
+                buttonView.id == R.id.centered_clock -> {
+                    if (centered_clock.isChecked) {
+                        right_clock.isChecked = false
+                        left_clock.isChecked = false
+                        centered_clock.isChecked = true
+                        clock_right.visibility = View.GONE
+                        clock_left.visibility = View.GONE
+                        clock_centered.visibility = View.VISIBLE
+                        useCenteredClock = true
+                    } else {
+                        useCenteredClock = false
+                    }
+                }
             }
         }
-        p_icons.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (p_icons.isChecked) {
-                aosp_icons.isChecked = false
-                stock_icons.isChecked = false
-                stock_icons_multi.isChecked = false
-                p_icons.isChecked = true
-                for (icon: ImageView? in settingsIcons) {
-                    icon?.clearColorFilter()
-                }
-                usePIcons = true
-                Log.d("beachroad", "usePIcons $usePIcons")
-                updateIcons()
-            } else {
-                usePIcons = false
-            }
-        }
+
+        right_clock.setOnCheckedChangeListener(clockListener)
+        left_clock.setOnCheckedChangeListener(clockListener)
+        centered_clock.setOnCheckedChangeListener(clockListener)
 
     }
 
@@ -394,6 +479,9 @@ class CustomizeActivity : ThemeActivity() {
             val oldAndroidPIcons = usePIcons(this)
             val oldShadow = useSenderNameFix(this)
             val oldNotifbg = useDarkNotifBg(this)
+            val oldRightClock = useRightClock(this)
+            val oldLeftClock = useLeftClock(this)
+            val oldCenteredClock = useCenteredClock(this)
 
             if (oldAccent != accentColor) {
                 setAccentColor(this, accentColor)
@@ -495,6 +583,36 @@ class CustomizeActivity : ThemeActivity() {
                 }
             }
 
+            if (useRightClock != oldRightClock && useRightClock) {
+                setUseLeftClock(this, false)
+                setUseCenteredClock(this, false)
+                setUseRightClock(this, true)
+                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
+                    recompile = true
+                    apps.add("com.android.systemui")
+                }
+            }
+
+            if (useLeftClock != oldLeftClock && useLeftClock) {
+                setUseCenteredClock(this, false)
+                setUseRightClock(this, false)
+                setUseLeftClock(this, true)
+                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
+                    recompile = true
+                    apps.add("com.android.systemui")
+                }
+            }
+
+            if (useCenteredClock != oldRightClock && useCenteredClock) {
+                setUseLeftClock(this, false)
+                setUseRightClock(this, false)
+                setUseCenteredClock(this, true)
+                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
+                    recompile = true
+                    apps.add("com.android.systemui")
+                }
+            }
+
             if (recompile && apps.isNotEmpty()) {
 
                 val receiver = object : BroadcastReceiver() {
@@ -520,6 +638,15 @@ class CustomizeActivity : ThemeActivity() {
                             }
                             if (oldAndroidPIcons != com.brit.swiftinstaller.utils.usePIcons(context)) {
                                 setUsePIcons(context, oldAndroidPIcons)
+                            }
+                            if (oldRightClock != com.brit.swiftinstaller.utils.useRightClock(context)) {
+                                setUseRightClock(context, oldRightClock)
+                            }
+                            if (oldLeftClock != com.brit.swiftinstaller.utils.useLeftClock(context)) {
+                                setUseLeftClock(context, oldLeftClock)
+                            }
+                            if (oldCenteredClock != com.brit.swiftinstaller.utils.useCenteredClock(context)) {
+                                setUseCenteredClock(context, oldCenteredClock)
                             }
                             LocalBroadcastManager.getInstance(context.applicationContext)
                                     .unregisterReceiver(this)
@@ -729,6 +856,10 @@ class CustomizeActivity : ThemeActivity() {
             dark_notifications.buttonTintList = buttonColor
             shadow_enabled.buttonTintList = buttonColor
             shadow_disabled.buttonTintList = buttonColor
+
+            right_clock.buttonTintList = buttonColor
+            left_clock.buttonTintList = buttonColor
+            centered_clock.buttonTintList = buttonColor
 
             personalize_fab.background.setTint(accentColor)
         }
