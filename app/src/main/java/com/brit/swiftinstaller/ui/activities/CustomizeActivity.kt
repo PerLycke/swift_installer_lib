@@ -118,6 +118,20 @@ class CustomizeActivity : ThemeActivity() {
             personalize_fab.setOnClickListener {
                 personalizeFabClick()
             }
+
+            baseThemeInfo.setOnClickListener {
+                val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+                val dialogBg = getDrawable(R.drawable.dialog_bg) as LayerDrawable
+                dialogBg.findDrawableByLayerId(R.id.dialog_bg).setTint(backgroundColor)
+                builder.setTitle(getString(R.string.base_theme_dialog_title))
+                builder.setMessage(getString(R.string.base_theme_dialog_info))
+                builder.setPositiveButton(R.string.ok, { dialogInterface, i ->
+                    dialogInterface.dismiss()
+                })
+                val dialog = builder.create()
+                dialog.show()
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(accentColor)
+            }
         }
     }
 
@@ -860,6 +874,8 @@ class CustomizeActivity : ThemeActivity() {
             centered_clock.buttonTintList = buttonColor
 
             personalize_fab.background.setTint(accentColor)
+
+            baseThemeInfo.setTextColor(accentColor)
         }
         if (force || this.backgroundColor != backgroundColor) {
             materialPalette = MaterialPalette.createPalette(backgroundColor, usePalette)
