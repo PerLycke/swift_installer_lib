@@ -497,8 +497,7 @@ class CustomizeActivity : ThemeActivity() {
                 setBackgroundColor(this, backgroundColor)
                 if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
                     recompile = true
-                    if (!apps.contains("android"))
-                        apps.add("android")
+                    checkAndAddApp(apps, "android")
                 }
             }
 
@@ -506,8 +505,7 @@ class CustomizeActivity : ThemeActivity() {
                 setUseBackgroundPalette(this, usePalette)
                 if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
                     recompile = true
-                    if (!apps.contains("android"))
-                        apps.add("android")
+                    checkAndAddApp(apps, "android")
                 }
             }
 
@@ -515,8 +513,7 @@ class CustomizeActivity : ThemeActivity() {
                 setUseDarkNotifBg(this, darkNotif)
                 if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
                     recompile = true
-                    if (!apps.contains("android"))
-                        apps.add("android")
+                    checkAndAddApp(apps, "android")
                 }
             }
 
@@ -524,8 +521,7 @@ class CustomizeActivity : ThemeActivity() {
                 setUseSenderNameFix(this, notifShadow)
                 if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
                     recompile = true
-                    if (!apps.contains("android"))
-                        apps.add("android")
+                    checkAndAddApp(apps, "android")
                 }
             }
 
