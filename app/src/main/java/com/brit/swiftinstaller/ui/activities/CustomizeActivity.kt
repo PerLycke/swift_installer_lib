@@ -185,7 +185,7 @@ class CustomizeActivity : ThemeActivity() {
         hex_input_bg.setOnKeyListener({ v, keyCode, event ->
             if (event.action == KeyEvent.ACTION_UP) {
                 when (keyCode) {
-                    KeyEvent.KEYCODE_BACK -> accent_hex_input.clearFocus()
+                    KeyEvent.KEYCODE_BACK -> hex_input_bg.clearFocus()
                 }
             }
             false
