@@ -196,7 +196,7 @@ class AppListFragment : androidx.fragment.app.Fragment() {
                 appCheckBox.setOnCheckedChangeListener(checkListener)
 
                 if (mSummary) {
-                    appCheckBox.visibility = View.INVISIBLE
+                    appCheckBox.visibility = View.GONE
                     appCheckBox.isEnabled = false
                     if (mFailedTab) {
                         alertIcon.visibility = View.VISIBLE

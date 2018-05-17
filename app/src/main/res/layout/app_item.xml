@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_item_root"
     android:layout_width="match_parent"
-    android:layout_height="76dp">
+    android:layout_height="76dp"
+    android:paddingEnd="24dp">
 
     <TextView
         android:id="@+id/app_item_name"
@@ -41,9 +42,9 @@
         android:id="@+id/app_item_image"
         android:layout_width="32dp"
         android:layout_height="match_parent"
-        android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:contentDescription="@string/image"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -55,9 +56,8 @@
         android:id="@+id/app_item_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="24dp"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:buttonTint="@color/light_grey"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -79,13 +79,13 @@
         android:id="@+id/imageView"
         android:layout_width="0dp"
         android:layout_height="0.5dp"
-        android:layout_marginEnd="20dp"
         android:layout_marginStart="66dp"
+        android:layout_marginEnd="20dp"
         android:background="#14ffffff"
+        android:contentDescription="@string/image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:contentDescription="@string/image" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/required"
