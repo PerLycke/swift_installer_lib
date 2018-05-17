@@ -6,9 +6,9 @@ import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.inputmethod.InputMethodManager
-import com.google.android.material.textfield.TextInputEditText
+import android.widget.EditText
 
-class BaseTextInputEditText(context: Context?, attrs: AttributeSet) : TextInputEditText(context, attrs){
+class BaseTextInputEditText(context: Context?, attrs: AttributeSet) : EditText(context, attrs){
 
     val inputMethodManager = context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
 

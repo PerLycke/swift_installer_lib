@@ -11,8 +11,14 @@ import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.preference.PreferenceManager
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import androidx.core.content.ContextCompat
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +26,6 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import androidx.core.content.ContextCompat
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.CircleDrawable
 import com.brit.swiftinstaller.utils.*
@@ -138,10 +143,8 @@ class CustomizeActivity : ThemeActivity() {
             }
             if (accent_hex_input.hasFocus() || hex_input_bg.hasFocus()) {
                 personalize_fab.setImageDrawable(ContextCompat.getDrawable(this@CustomizeActivity, R.drawable.ic_done))
-                customizations_scrollview.scrollBy(0, 100)
             } else {
                 personalize_fab.setImageDrawable(ContextCompat.getDrawable(this@CustomizeActivity, R.drawable.ic_fab_install))
-                customizations_scrollview.scrollBy(0, -100)
             }
         }, 300)
     }
@@ -152,21 +155,12 @@ class CustomizeActivity : ThemeActivity() {
         }
     }
 
-    private fun editTextBg() {
-        accent_hex_input.background = ContextCompat.getDrawable(this, R.drawable.edit_text)
-        accent_hex_input.background.setTint(accentColor)
-        hex_input_bg.background = ContextCompat.getDrawable(this, R.drawable.edit_text)
-        hex_input_bg.background.setTint(accentColor)
-    }
-
     private fun setupHexInputs() {
         val onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                editTextBg()
                 hideFab()
                 showFab()
             } else {
-                editTextBg()
                 hideFab()
                 showFab()
             }
@@ -202,10 +196,9 @@ class CustomizeActivity : ThemeActivity() {
                 if (s?.length == 3 || s?.length == 6) {
                     if (checkAccentColor(convertToColorInt(s.toString()))) {
                         updateColor(convertToColorInt(s.toString()), backgroundColor, false, false)
-                        accent_hex_input_layout.isErrorEnabled = false
                     } else {
-                        accent_hex_input_layout.isErrorEnabled = true
-                        accent_hex_input_layout.error = "Invalid accent"
+                        Toast.makeText(this@CustomizeActivity, R.string.invalid_accent,
+                                Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -222,10 +215,9 @@ class CustomizeActivity : ThemeActivity() {
                 if (s?.length == 3 || s?.length == 6) {
                     if (checkBackgroundColor(convertToColorInt(s.toString()))) {
                         updateColor(accentColor, convertToColorInt(s.toString()), false, false)
-                        hex_input_bg_layout.isErrorEnabled = false
                     } else {
-                        hex_input_bg_layout.isErrorEnabled = true
-                        hex_input_bg_layout.error = "Invalid background"
+                        Toast.makeText(this@CustomizeActivity,
+                                R.string.invalid_background, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -833,7 +825,6 @@ class CustomizeActivity : ThemeActivity() {
         updateColors(backgroundColor, usePalette)
         if (force || this.accentColor != accentColor) {
             this.accentColor = accentColor
-
             if (!useStockMultiIcons && !usePIcons) {
                 for (icon: ImageView? in settingsIcons) {
                     icon?.setColorFilter(accentColor)
@@ -842,15 +833,10 @@ class CustomizeActivity : ThemeActivity() {
             for (icon: ImageView? in systemUiIcons) {
                 icon?.setColorFilter(accentColor)
             }
-
-            accent_hex_input.background = ContextCompat.getDrawable(this, R.drawable.edit_text)
             accent_hex_input.background.setTint(accentColor)
-            hex_input_bg.background = ContextCompat.getDrawable(this, R.drawable.edit_text)
             hex_input_bg.background.setTint(accentColor)
             if (updateHex && accent_hex_input.text.toString() != Integer.toHexString(accentColor).substring(2))
                 accent_hex_input.setText(Integer.toHexString(accentColor).substring(2), TextView.BufferType.EDITABLE)
-            accent_hex_input_layout.defaultHintTextColor = ColorStateList.valueOf(accentColor)
-            hex_input_bg_layout.defaultHintTextColor = ColorStateList.valueOf(accentColor)
 
             custom_dark_bg_indicator.drawable.setTint(accentColor)
             custom_black_bg_indicator.drawable.setTint(accentColor)
@@ -872,14 +858,17 @@ class CustomizeActivity : ThemeActivity() {
 
             material_theme.buttonTintList = buttonColor
             flat_theme.buttonTintList = buttonColor
+
             aosp_icons.buttonTintList = buttonColor
             stock_icons.buttonTintList = buttonColor
             stock_icons_multi.buttonTintList = buttonColor
             p_icons.buttonTintList = buttonColor
+
             white_notifications.buttonTintList = buttonColor
             dark_notifications.buttonTintList = buttonColor
             shadow_enabled.buttonTintList = buttonColor
             shadow_disabled.buttonTintList = buttonColor
+
             right_clock.buttonTintList = buttonColor
             left_clock.buttonTintList = buttonColor
             centered_clock.buttonTintList = buttonColor
@@ -887,7 +876,6 @@ class CustomizeActivity : ThemeActivity() {
             personalize_fab.background.setTint(accentColor)
 
             baseThemeInfo.setTextColor(accentColor)
-
         }
         if (force || this.backgroundColor != backgroundColor) {
             materialPalette = MaterialPalette.createPalette(backgroundColor, usePalette)

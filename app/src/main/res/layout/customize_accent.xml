@@ -61,38 +61,33 @@
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_subtitle_accent_title" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/accent_hex_input_layout"
+    <TextView
+        android:id="@+id/hashtag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:text="@string/hashtag"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/accent_hex_input"
+        app:layout_constraintEnd_toStartOf="@+id/accent_hex_input"
+        app:layout_constraintTop_toTopOf="@+id/accent_hex_input" />
+
+    <com.brit.swiftinstaller.utils.BaseTextInputEditText
+        android:id="@+id/accent_hex_input"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:paddingBottom="4dp"
-        app:boxBackgroundColor="@android:color/transparent"
-        app:boxCollapsedPaddingTop="0dp"
-        app:boxCollapsedPaddingBottom="12dp"
-        app:boxExpandedPaddingTop="4dp"
-        app:boxExpandedPaddingBottom="12dp"
-        app:boxPaddingLeft="0dp"
-        app:boxPaddingRight="0dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:backgroundTint="@color/minimal_green"
+        android:digits="0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,A,B,C,D,E,F"
+        android:ems="6"
+        android:fontFamily="sans-serif"
+        android:hint="@string/hex"
+        android:imeOptions="actionDone"
+        android:inputType="textNoSuggestions|textVisiblePassword"
+        android:maxLength="6"
+        android:singleLine="true"
         app:layout_constraintEnd_toEndOf="@+id/palette"
-        app:layout_constraintTop_toBottomOf="@+id/palette">
-
-        <com.brit.swiftinstaller.utils.BaseTextInputEditText
-            android:id="@+id/accent_hex_input"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:digits="0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,A,B,C,D,E,F"
-            android:ems="6"
-            android:fontFamily="sans-serif"
-            android:hint="@string/hex"
-            android:imeOptions="actionDone"
-            android:inputType="textNoSuggestions|textVisiblePassword"
-            android:maxLength="6"
-            android:singleLine="true"
-            android:background="@null" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintTop_toBottomOf="@+id/palette" />
 
     <Button
         android:id="@+id/apply_hex"
@@ -104,7 +99,7 @@
         android:text="@string/apply"
         android:textStyle="bold"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/accent_hex_input_layout"
-        app:layout_constraintTop_toTopOf="@+id/accent_hex_input_layout" />
+        app:layout_constraintBottom_toBottomOf="@+id/accent_hex_input"
+        app:layout_constraintTop_toTopOf="@+id/accent_hex_input" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
