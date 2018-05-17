@@ -15,6 +15,7 @@ import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.utils.getAppsToUpdate
@@ -69,7 +70,7 @@ class AppListFragment : androidx.fragment.app.Fragment() {
             view.failed_info.visibility = View.GONE
             setHideFailedInfoCard(context!!, true)
         }
-        appListView = view.app_list_view
+        appListView = view.findViewById(R.id.app_list_view)
         return view
     }
 
@@ -200,22 +201,25 @@ class AppListFragment : androidx.fragment.app.Fragment() {
                     appCheckBox.isEnabled = false
                     if (mFailedTab) {
                         alertIcon.visibility = View.VISIBLE
+                        alertIcon.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_alert))
                     }
                 } else {
                     if (!Utils.checkVersionCompatible(context!!, item.packageName)) {
                         appName.alpha = 0.3f
+                        alertIcon.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_alert))
                         if (Utils.isOverlayInstalled(context!!, Utils.getOverlayPackageName(item.packageName))) {
                             appCheckBox.visibility = View.VISIBLE
                             appCheckBox.isEnabled = true
                             required.visibility = View.VISIBLE
                             required.text = "Unsupported, please uninstall"
                         } else {
-                            appCheckBox.visibility = View.INVISIBLE
+                            appCheckBox.visibility = View.GONE
                             appCheckBox.isEnabled = false
                         }
                     } else {
                         appName.alpha = 1.0f
                         appCheckBox.visibility = View.VISIBLE
+                        alertIcon.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_info))
                     }
                     if (Utils.isOverlayInstalled(context!!, item.packageName)
                             && getAppsToUpdate(context!!).contains(item.packageName)) {
