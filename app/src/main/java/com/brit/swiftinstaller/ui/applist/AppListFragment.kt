@@ -37,6 +37,7 @@ class AppListFragment : androidx.fragment.app.Fragment() {
     private val mChecked = SparseBooleanArray()
 
     var alertIconClickListener: AlertIconClickListener? = null
+    var appListView: RecyclerView? = null
 
     private var mSummary = false
     private var mFailedTab = false
@@ -68,6 +69,7 @@ class AppListFragment : androidx.fragment.app.Fragment() {
             view.failed_info.visibility = View.GONE
             setHideFailedInfoCard(context!!, true)
         }
+        appListView = view.app_list_view
         return view
     }
 
@@ -82,16 +84,16 @@ class AppListFragment : androidx.fragment.app.Fragment() {
                 }
             }
         }
-        if (app_list_view != null && !app_list_view.isComputingLayout) {
-            app_list_view.adapter?.notifyDataSetChanged()
+        if (appListView != null && !appListView!!.isComputingLayout) {
+            appListView?.adapter?.notifyDataSetChanged()
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        app_list_view.adapter = AppAdapter()
-        app_list_view.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
+        appListView?.adapter = AppAdapter()
+        appListView?.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
     }
 
     fun getCheckedItems(): ArrayList<AppItem> {
@@ -119,8 +121,8 @@ class AppListFragment : androidx.fragment.app.Fragment() {
         })
         mVisible.addAll(mApps.indices)
         mHandler.post {
-            if (app_list_view != null && !app_list_view.isComputingLayout) {
-                app_list_view.adapter?.notifyDataSetChanged()
+            if (appListView != null && !appListView!!.isComputingLayout) {
+                appListView?.adapter?.notifyDataSetChanged()
             }
         }
     }
@@ -204,18 +206,15 @@ class AppListFragment : androidx.fragment.app.Fragment() {
                         appName.alpha = 0.3f
                         if (Utils.isOverlayInstalled(context!!, Utils.getOverlayPackageName(item.packageName))) {
                             appCheckBox.visibility = View.VISIBLE
-                            alertIcon.visibility = View.GONE
                             appCheckBox.isEnabled = true
                             required.visibility = View.VISIBLE
                             required.text = "Unsupported, please uninstall"
                         } else {
-                            alertIcon.visibility = View.VISIBLE
                             appCheckBox.visibility = View.INVISIBLE
                             appCheckBox.isEnabled = false
                         }
                     } else {
                         appName.alpha = 1.0f
-                        alertIcon.visibility = View.GONE
                         appCheckBox.visibility = View.VISIBLE
                     }
                     if (Utils.isOverlayInstalled(context!!, item.packageName)
@@ -225,6 +224,11 @@ class AppListFragment : androidx.fragment.app.Fragment() {
                         appName.setTextColor(Color.parseColor("#4dffffff"))
                     } else {
                         appName.setTextColor(context!!.getColor(android.R.color.white))
+                    }
+                    if (Utils.overlayHasVersion(context!!, item.packageName)) {
+                        alertIcon.visibility = View.VISIBLE
+                    } else {
+                        alertIcon.visibility = View.GONE
                     }
                 }
 

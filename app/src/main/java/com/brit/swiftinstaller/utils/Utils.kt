@@ -81,6 +81,10 @@ object Utils {
         return appVersionCode > curVersionCode
     }
 
+    fun overlayHasVersion(context: Context, packageName: String): Boolean {
+        return context.assets.list("overlays/$packageName").contains("versions")
+    }
+
     fun checkVersionCompatible(context: Context, packageName: String): Boolean {
         val packageInfo = context.packageManager.getPackageInfo(packageName, 0)
         if (context.assets.list("overlays/$packageName").contains("versions")) {

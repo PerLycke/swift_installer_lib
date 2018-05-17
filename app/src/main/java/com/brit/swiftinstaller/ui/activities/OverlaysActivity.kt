@@ -86,7 +86,7 @@ class OverlaysActivity : ThemeActivity() {
 
                 dialog.setTitle(appItem.title)
                 dialog.setIcon(appItem.icon)
-                dialog.setMessage("Version Unsupported." +
+                dialog.setMessage("Version support info:" +
                         "\nCurrent Version: ${packageInfo.versionName}" +
                         "\nAvailable Versions: ${Utils.getAvailableOverlayVersions(
                                 this@OverlaysActivity, appItem.packageName)}")
