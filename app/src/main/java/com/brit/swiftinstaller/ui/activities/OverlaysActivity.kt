@@ -80,7 +80,7 @@ class OverlaysActivity : ThemeActivity() {
         mPagerAdapter!!.setAlertIconClickListener(object : AppListFragment.AlertIconClickListener {
             override fun onAlertIconClick(appItem: AppItem) {
                 val packageInfo = packageManager.getPackageInfo(appItem.packageName, 0)
-                val dialog = AlertDialog.Builder(this@OverlaysActivity)
+                val dialog = AlertDialog.Builder(this@OverlaysActivity, R.style.AppTheme_AlertDialog)
 
                 themeDialog()
 
