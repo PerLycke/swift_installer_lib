@@ -81,10 +81,6 @@ object Utils {
         return appVersionCode > curVersionCode
     }
 
-    fun getOverlayVersion(context: Context, packageName: String): Int {
-        return Integer.parseInt(ShellUtils.inputStreamToString(context.assets.open("overlays/$packageName/version")))
-    }
-
     fun overlayHasVersion(context: Context, packageName: String): Boolean {
         return context.assets.list("overlays/$packageName").contains("versions")
     }
