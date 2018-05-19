@@ -21,9 +21,7 @@ import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.applist.AppItem
 import com.brit.swiftinstaller.ui.applist.AppListFragment
 import com.brit.swiftinstaller.ui.applist.AppsTabPagerAdapter
-import com.brit.swiftinstaller.utils.Utils
-import com.brit.swiftinstaller.utils.getAppVersion
-import com.brit.swiftinstaller.utils.setAppVersion
+import com.brit.swiftinstaller.utils.*
 import kotlinx.android.synthetic.main.activity_install_summary.*
 import kotlinx.android.synthetic.main.tab_layout_install_summary.*
 import java.lang.ref.WeakReference
@@ -203,6 +201,7 @@ class InstallSummaryActivity : ThemeActivity() {
                             && oInfo!!.versionCode > getAppVersion(context, pn)) {
                         setAppVersion(context, pn, oInfo.versionCode)
                         onProgressUpdate(Progress(SUCCESS_TAB, item))
+                        removeAppToUpdate(context, item.packageName)
                     } else {
                         errorMap[pn] = "Install Cancelled"
                         LocalBroadcastManager.getInstance(context.applicationContext).sendBroadcast(Intent(ACTION_INSTALL_CANCELLED))

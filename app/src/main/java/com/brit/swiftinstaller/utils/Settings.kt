@@ -181,6 +181,11 @@ fun addAppToUpdate(context: Context, packageName: String) {
     PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet(KEY_OVERLAY_UPDATES, apps.plus(packageName)).apply()
 }
 
+fun removeAppToUpdate(context: Context, packageName: String) {
+    val apps = getAppsToUpdate(context)
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet(KEY_OVERLAY_UPDATES, apps.minus(packageName)).apply()
+}
+
 fun clearAppsToUpdate(context: Context) {
     PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet(KEY_OVERLAY_UPDATES, ArraySet<String>()).apply()
 }
