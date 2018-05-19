@@ -223,24 +223,25 @@ class OverlaysActivity : ThemeActivity() {
                 } catch (e: PackageManager.NameNotFoundException) {
                     continue
                 }
-                if (info != null && status == COMPONENT_ENABLED_STATE_DEFAULT || status == COMPONENT_ENABLED_STATE_ENABLED) {
+                if (info != null) {
                     val item = AppItem()
                     item.packageName = pn
                     item.icon = info.loadIcon(pm)
                     item.title = info.loadLabel(pm) as String
                     item.versionCode = pInfo!!.versionCode
                     item.versionName = pInfo.versionName
-                    if (isOverlayInstalled(context, getOverlayPackageName(pn)) && info.enabled) {
+                    if (isOverlayInstalled(context, getOverlayPackageName(pn))) {
                         if (isOverlayEnabled(context, getOverlayPackageName(pn))) {
-                            if (updates.contains(pn)) {
+                            if (updates.contains(pn)
+                                    && status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
                                 publishProgress(Progress(UPDATE_TAB, item))
                             } else {
                                 publishProgress(Progress(ACTIVE_TAB, item))
                             }
-                        } else {
+                        } else if (status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
                             publishProgress(Progress(INSTALL_TAB, item))
                         }
-                    } else {
+                    } else if (status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
                         publishProgress(Progress(INSTALL_TAB, item))
                     }
                 }
