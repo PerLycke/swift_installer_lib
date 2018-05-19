@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.content.pm.PackageManager.*
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.design.widget.BottomSheetDialog
@@ -214,13 +215,15 @@ class OverlaysActivity : ThemeActivity() {
             for (pn: String in mConRef.get()!!.assets.list("overlays")) {
                 var info: ApplicationInfo?
                 var pInfo: PackageInfo?
+                var status: Int?
                 try {
                     info = pm.getApplicationInfo(pn, PackageManager.GET_META_DATA)
                     pInfo = pm.getPackageInfo(pn, 0)
+                    status = pm.getApplicationEnabledSetting(pn)
                 } catch (e: PackageManager.NameNotFoundException) {
                     continue
                 }
-                if (info != null) {
+                if (info != null && status == COMPONENT_ENABLED_STATE_DEFAULT || status == COMPONENT_ENABLED_STATE_ENABLED) {
                     val item = AppItem()
                     item.packageName = pn
                     item.icon = info.loadIcon(pm)
