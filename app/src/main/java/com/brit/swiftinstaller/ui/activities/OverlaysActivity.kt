@@ -50,7 +50,7 @@ class OverlaysActivity : ThemeActivity() {
                 9 -> "com.google.android.apps.genie.geniewidget"
                 10 -> "com.google.android.apps.inbox"
                 11 -> "com.google.android.apps.messaging"
-                12 -> "com.google.android.app.gm"
+                12 -> "com.google.android.gm"
                 13 -> "com.google.android.talk"
                 14 -> "com.mxtech.videoplayer.ad"
                 15 -> "com.mxtech.videoplayer.pro"
