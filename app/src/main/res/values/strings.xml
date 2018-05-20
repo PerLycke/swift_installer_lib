@@ -50,7 +50,7 @@
     <string name="no_internet_faq">Please connect to internet to show the FAQ</string>
     <string name="notif_fix_desc_summary">When using dark notifications: Some notification texts are hardcoded black, e.g. WhatsApp notifications. This fix adds a shadow around all text, making black text visible. You can see how it looks in the preview above.</string>
     <string name="notification_fix_summary">Notification fix makes black text visible, e.g. WhatsApp notifications.</string>
-    <string name="notification_tweaks">Notifications</string>
+    <string name="notification_tweaks">Notification background</string>
     <string name="notifications">Notifications</string>
     <string name="notifications_desc">Block, allow, prioritise</string>
     <string name="ok">OK</string>
@@ -113,4 +113,7 @@
     <string name="clock">Clock</string>
     <string name="base_theme_dialog_info">The material theme uses a slightly lighter or darker colors for cards, dialogs, popups etc. to distinguish the background from the themed app background. Flat theme is just flat, and the background color is mostly the same everywhere.</string>
     <string name="base_theme_dialog_title">Base Theme</string>
+    <string name="default_style">Default style</string>
+    <string name="android_p_rounded_style">Android P rounded style</string>
+    <string name="notification_style">Notification style</string>
 </resources>

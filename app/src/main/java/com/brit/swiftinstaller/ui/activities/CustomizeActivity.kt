@@ -40,6 +40,7 @@ import kotlinx.android.synthetic.main.customize_icons.*
 import kotlinx.android.synthetic.main.customize_notifications.*
 import kotlinx.android.synthetic.main.customize_preview_settings.*
 import kotlinx.android.synthetic.main.customize_preview_sysui.*
+import kotlinx.android.synthetic.main.customize_systemui.*
 import kotlinx.android.synthetic.main.fab_sheet_personalize.view.*
 
 class CustomizeActivity : ThemeActivity() {
@@ -61,6 +62,7 @@ class CustomizeActivity : ThemeActivity() {
     private var useRightClock = false
     private var useLeftClock = false
     private var useCenteredClock = false
+    private var usePStyle = false
 
     private lateinit var materialPalette: MaterialPalette
     private val handler = Handler()
@@ -85,6 +87,7 @@ class CustomizeActivity : ThemeActivity() {
             useRightClock = com.brit.swiftinstaller.utils.useRightClock(this)
             useLeftClock = com.brit.swiftinstaller.utils.useLeftClock(this)
             useCenteredClock = com.brit.swiftinstaller.utils.useCenteredClock(this)
+            usePStyle = com.brit.swiftinstaller.utils.usePstyle(this)
             updateColor(getAccentColor(this), getBackgroundColor(this), true, false)
             updateIcons()
 
@@ -435,6 +438,23 @@ class CustomizeActivity : ThemeActivity() {
         left_clock.setOnCheckedChangeListener(clockListener)
         centered_clock.setOnCheckedChangeListener(clockListener)
 
+        default_style.isChecked = !usePStyle
+        p_style.isChecked = usePStyle
+
+        val styleListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+            if (buttonView.id == R.id.default_style) {
+                default_style.isChecked = isChecked
+                p_style.isChecked = !isChecked
+            } else {
+                default_style.isChecked = !isChecked
+                p_style.isChecked = isChecked
+            }
+            usePStyle = p_style.isChecked
+            updateColor(accentColor, backgroundColor, false, true)
+        }
+        p_style.setOnCheckedChangeListener(styleListener)
+        default_style.setOnCheckedChangeListener(styleListener)
+
     }
 
     override fun onBackPressed() {
@@ -498,6 +518,7 @@ class CustomizeActivity : ThemeActivity() {
             val oldRightClock = useRightClock(this)
             val oldLeftClock = useLeftClock(this)
             val oldCenteredClock = useCenteredClock(this)
+            val oldPStyle = usePstyle(this)
 
             if (oldAccent != accentColor) {
                 setAccentColor(this, accentColor)
@@ -625,6 +646,14 @@ class CustomizeActivity : ThemeActivity() {
                 }
             }
 
+            if (usePStyle != oldPStyle && usePStyle) {
+                setUsePStyle(this, true)
+                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
+                    recompile = true
+                    checkAndAddApp(apps, "com.android.systemui")
+                }
+            }
+
             if (recompile && apps.isNotEmpty()) {
 
                 val receiver = object : BroadcastReceiver() {
@@ -659,6 +688,9 @@ class CustomizeActivity : ThemeActivity() {
                             }
                             if (oldCenteredClock != com.brit.swiftinstaller.utils.useCenteredClock(context)) {
                                 setUseCenteredClock(context, oldCenteredClock)
+                            }
+                            if (oldPStyle != com.brit.swiftinstaller.utils.usePstyle(context)) {
+                                setUsePStyle(context, oldPStyle)
                             }
                             LocalBroadcastManager.getInstance(context.applicationContext)
                                     .unregisterReceiver(this)
@@ -873,6 +905,9 @@ class CustomizeActivity : ThemeActivity() {
             left_clock.buttonTintList = buttonColor
             centered_clock.buttonTintList = buttonColor
 
+            default_style.buttonTintList = buttonColor
+            p_style.buttonTintList = buttonColor
+
             personalize_fab.background.setTint(accentColor)
 
             baseThemeInfo.setTextColor(accentColor)
@@ -903,8 +938,18 @@ class CustomizeActivity : ThemeActivity() {
             preview_sysui_sender.setShadowLayer(0.0f, 0.0f, 0.0f, Color.TRANSPARENT)
         }
 
+        if (usePStyle) {
+            notif_bg_layout.setImageResource(R.drawable.notif_bg_rounded)
+        } else {
+            notif_bg_layout.setImageResource(R.drawable.notif_bg)
+        }
+
         if (darkNotif) {
-            notif_bg_layout.drawable.setTint(Color.TRANSPARENT)
+            if (usePStyle) {
+                notif_bg_layout.drawable.setTint(Color.parseColor("#0Dffffff"))
+            } else {
+                notif_bg_layout.drawable.setTint(Color.TRANSPARENT)
+            }
             if (notifShadow) {
                 preview_sysui_sender.setTextColor(Color.BLACK)
             } else {

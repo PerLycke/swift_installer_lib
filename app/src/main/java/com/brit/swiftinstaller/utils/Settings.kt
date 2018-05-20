@@ -19,6 +19,7 @@ const val KEY_USE_P_ICONS = "use_p_icons"
 const val KEY_USE_RIGHT_CLOCK = "use_right_clock"
 const val KEY_USE_LEFT_CLOCK = "use_left_clock"
 const val KEY_USE_CENTERED_CLOCK = "use_centered_clock"
+const val KEY_USE_P_STYLE = "use_p_style"
 const val KEY_HIDE_INFO_CARD = "hide_failed_info"
 const val KEY_OVERLAY_VERSIONS = "overlay_versions"
 const val KEY_USER_ACCENTS = "user_accents"
@@ -121,6 +122,14 @@ fun useCenteredClock(context: Context): Boolean {
 
 fun setUseCenteredClock(context: Context, use: Boolean) {
     PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(KEY_USE_CENTERED_CLOCK, use).apply()
+}
+
+fun usePstyle(context: Context): Boolean {
+    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_USE_P_STYLE, false)
+}
+
+fun setUsePStyle(context: Context, use: Boolean) {
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(KEY_USE_P_STYLE, use).apply()
 }
 
 fun setHideFailedInfoCard(context: Context, hide: Boolean) {
