@@ -646,8 +646,8 @@ class CustomizeActivity : ThemeActivity() {
                 }
             }
 
-            if (usePStyle != oldPStyle && usePStyle) {
-                setUsePStyle(this, true)
+            if (usePStyle != oldPStyle) {
+                setUsePStyle(this, usePStyle)
                 if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
                     recompile = true
                     checkAndAddApp(apps, "com.android.systemui")
