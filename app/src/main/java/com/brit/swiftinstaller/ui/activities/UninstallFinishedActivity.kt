@@ -33,4 +33,11 @@ class UninstallFinishedActivity : ThemeActivity() {
             dialog.show()
         }
     }
+
+    override fun onStop() {
+        super.onStop()
+        if (dialog.isShowing) {
+            dialog.dismiss()
+        }
+    }
 }
