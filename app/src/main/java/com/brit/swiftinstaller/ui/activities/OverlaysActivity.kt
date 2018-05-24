@@ -37,7 +37,7 @@ class OverlaysActivity : ThemeActivity() {
         private const val ACTIVE_TAB = 1
         const val UPDATE_TAB = 2
 
-        private val requiredApps = Array(27, {
+        private val requiredApps = Array(28, {
             when (it) {
                 0 -> "android"
                 1 -> "com.android.systemui"
@@ -66,6 +66,7 @@ class OverlaysActivity : ThemeActivity() {
                 24 -> "com.samsung.android.lool"
                 25 -> "com.samsung.android.samsungpassautofill"
                 26 -> "com.google.android.gms"
+                27 -> "com.sec.android.daemonapp"
                 else -> ""
             }
         })
