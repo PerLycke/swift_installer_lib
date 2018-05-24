@@ -524,7 +524,7 @@ class CustomizeActivity : ThemeActivity() {
                 setAccentColor(this, accentColor)
                 if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
                     recompile = true
-                    apps.add("android")
+                    checkAndAddApp(apps, "android")
                 }
             }
 
