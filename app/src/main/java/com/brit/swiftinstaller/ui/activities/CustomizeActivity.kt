@@ -135,6 +135,19 @@ class CustomizeActivity : ThemeActivity() {
                 dialog.show()
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(accentColor)
             }
+            roundedInfo.setOnClickListener {
+                val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+                val dialogBg = getDrawable(R.drawable.dialog_bg) as LayerDrawable
+                dialogBg.findDrawableByLayerId(R.id.dialog_bg).setTint(backgroundColor)
+                builder.setTitle(getString(R.string.rounded_dialog_title))
+                builder.setMessage(getString(R.string.rounded_dialog_info))
+                builder.setPositiveButton(R.string.ok, { dialogInterface, i ->
+                    dialogInterface.dismiss()
+                })
+                val dialog = builder.create()
+                dialog.show()
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(accentColor)
+            }
         }
     }
 
@@ -912,6 +925,7 @@ class CustomizeActivity : ThemeActivity() {
             personalize_fab.background.setTint(accentColor)
 
             baseThemeInfo.setTextColor(accentColor)
+            roundedInfo.setTextColor(accentColor)
         }
         if (force || this.backgroundColor != backgroundColor) {
             materialPalette = MaterialPalette.createPalette(backgroundColor, usePalette)

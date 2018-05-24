@@ -106,7 +106,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/dark_notifications"
+            android:text="@string/dark"
             app:layout_constraintStart_toStartOf="@+id/white_notifications"
             app:layout_constraintTop_toBottomOf="@+id/white_notifications" />
 
@@ -115,7 +115,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="@string/white_notifications"
+            android:text="@string/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>

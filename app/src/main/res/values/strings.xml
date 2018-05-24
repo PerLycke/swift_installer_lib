@@ -113,7 +113,11 @@
     <string name="clock">Clock</string>
     <string name="base_theme_dialog_info">The material theme uses a slightly lighter or darker colors for cards, dialogs, popups etc. to distinguish the background from the themed app background. Flat theme is just flat, and the background color is mostly the same everywhere.</string>
     <string name="base_theme_dialog_title">Base Theme</string>
-    <string name="default_style">Default style</string>
-    <string name="android_p_rounded_style">Android P rounded style</string>
+    <string name="default_style">Default</string>
+    <string name="android_p_rounded_style">Android P rounded</string>
     <string name="notification_style">Notification style</string>
+    <string name="rounded_info">Info!</string>
+    <string name="rounded_dialog_info">This option is only tested on stock ROMs. Custom ROMs are not tested and they might cause conflicts with this option. If you want to use this option on a custom ROM, make sure you have adb debugging enabled and the rescue script available.</string>
+    <string name="rounded_dialog_title">Rounded style info</string>
+    <string name="white">White</string>
 </resources>
