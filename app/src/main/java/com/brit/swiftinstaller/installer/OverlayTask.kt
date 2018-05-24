@@ -230,6 +230,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
             file.append("<color name=\"legacy_light_control_normal\">@*android:color/transparent</color>\n")
             file.append("<color name=\"legacy_light_primary\">@*android:color/background_material_dark</color>\n")
             file.append("<color name=\"legacy_light_primary_dark\">@*android:color/white</color>\n")
+            file.append("<color name=\"legacy_control_normal\">@*android:color/button_material_dark</color>\n")
         } else {
             file.append("<color name=\"legacy_selected_highlight\">@*android:color/white</color>\n")
             file.append("<color name=\"legacy_light_button_pressed\">#eeeeee</color>\n")
@@ -238,6 +239,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
             file.append("<color name=\"legacy_light_control_normal\">@*android:color/white</color>\n")
             file.append("<color name=\"legacy_light_primary\">@null</color>\n")
             file.append("<color name=\"legacy_light_primary_dark\">#eeeeee</color>\n")
+            file.append("<color name=\"legacy_control_normal\">#ffe0e0e0</color>\n")
         }
         file.append("</resources>")
 
