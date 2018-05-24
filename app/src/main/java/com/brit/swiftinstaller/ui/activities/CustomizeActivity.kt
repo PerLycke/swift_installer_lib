@@ -650,8 +650,8 @@ class CustomizeActivity : ThemeActivity() {
                 setUsePStyle(this, usePStyle)
                 if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
                     recompile = true
-                    apps.add("com.android.systemui")
-                    apps.add("android")
+                    checkAndAddApp(apps,"com.android.systemui")
+                    checkAndAddApp(apps,"android")
                 }
             }
 
