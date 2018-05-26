@@ -6,6 +6,7 @@ import android.content.pm.PackageInfo
 import android.content.res.AssetManager
 import android.graphics.Color
 import android.os.Environment
+import android.util.Log
 import com.brit.swiftinstaller.BuildConfig
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.utils.*
@@ -217,6 +218,8 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         file.append("<color name=\"legacy_primary\">#${toHexString(palette.darkBackgroundColor)}</color>\n")
         file.append("<color name=\"legacy_green\">#${toHexString(palette.cardBackgroud)}</color>\n")
         file.append("<color name=\"legacy_orange\">#${toHexString(palette.otherBackground)}</color>\n")
+        file.append("<color name=\"legacy_control_activated\">#${ColorUtils.addAlpha(palette.backgroundColor, getAlphaValue(context))}</color>\n")
+        file.append("<item type=\"dimen\" name=\"disabled_alpha_leanback_formwizard\">${getAlphaDimen(getAlphaValue(context))}</item>\n")
         if (useSenderNameFix(context)) {
             file.append("<integer name=\"leanback_setup_alpha_activity_in_bkg_delay\">2</integer>\n")
         } else {
@@ -266,6 +269,12 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
 
     fun toHexString(color: Int): String {
         return Integer.toHexString(removeAlpha(color))
+    }
+
+    fun getAlphaDimen(i: Int): Float {
+        val input = i
+        val dimen = (100 - input.toFloat()) / 100
+        return dimen
     }
 
     fun removeAlpha(color: Int): Int {

@@ -6,7 +6,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.res.ColorStateList
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.os.Handler
@@ -14,8 +17,10 @@ import android.preference.PreferenceManager
 import android.support.design.widget.BottomSheetDialog
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
+import android.support.v4.widget.ImageViewCompat
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -63,6 +68,7 @@ class CustomizeActivity : ThemeActivity() {
     private var useLeftClock = false
     private var useCenteredClock = false
     private var usePStyle = false
+    private var alpha = 0
 
     private lateinit var materialPalette: MaterialPalette
     private val handler = Handler()
@@ -88,6 +94,7 @@ class CustomizeActivity : ThemeActivity() {
             useLeftClock = com.brit.swiftinstaller.utils.useLeftClock(this)
             useCenteredClock = com.brit.swiftinstaller.utils.useCenteredClock(this)
             usePStyle = com.brit.swiftinstaller.utils.usePstyle(this)
+            alpha = com.brit.swiftinstaller.utils.getAlphaValue(this)
             updateColor(getAccentColor(this), getBackgroundColor(this), true, false)
             updateIcons()
 
@@ -148,6 +155,27 @@ class CustomizeActivity : ThemeActivity() {
                 dialog.show()
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(accentColor)
             }
+
+            alpha_value.text = getString(R.string.alpha_value, alpha)
+            alpha_seekbar.progress = alpha
+            alpha_seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                    alpha_value.text = getString(R.string.alpha_value, progress)
+                    val overlay = ColorUtils.addAlphaColor(backgroundColor, alpha_seekbar.progress)
+                    ImageViewCompat.setImageTintList(preview_wallpaper, ColorStateList.valueOf(overlay))
+                    ImageViewCompat.setImageTintMode(preview_wallpaper, PorterDuff.Mode.SRC_OVER)
+                }
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                    alpha = alpha_seekbar.progress
+                }
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                }
+            })
+
+            preview_wallpaper.clipToOutline = true
+            val overlay = ColorUtils.addAlphaColor(backgroundColor, alpha)
+            ImageViewCompat.setImageTintList(preview_wallpaper, ColorStateList.valueOf(overlay))
+            ImageViewCompat.setImageTintMode(preview_wallpaper, PorterDuff.Mode.SRC_OVER)
         }
     }
 
@@ -521,6 +549,7 @@ class CustomizeActivity : ThemeActivity() {
 
             val oldAccent = getAccentColor(this)
             val oldBackground = getBackgroundColor(this)
+            val oldAlpha = getAlphaValue(this)
             val oldPalette = useBackgroundPalette(this)
             val oldIcons = useAospIcons(this)
             val oldStockAccentIcons = useStockAccentIcons(this)
@@ -543,6 +572,14 @@ class CustomizeActivity : ThemeActivity() {
 
             if (oldBackground != backgroundColor) {
                 setBackgroundColor(this, backgroundColor)
+                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
+                    recompile = true
+                    checkAndAddApp(apps, "android")
+                }
+            }
+
+            if (oldAlpha != alpha) {
+                setAlphaValue(this, alpha)
                 if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
                     recompile = true
                     checkAndAddApp(apps, "android")
@@ -659,13 +696,11 @@ class CustomizeActivity : ThemeActivity() {
                 }
             }
 
-            if (usePStyle != oldPStyle) {
+            if (usePStyle) {
                 setUsePStyle(this, usePStyle)
-                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
                     recompile = true
                     checkAndAddApp(apps,"com.android.systemui")
                     checkAndAddApp(apps,"android")
-                }
             }
 
             if (recompile && apps.isNotEmpty()) {
@@ -678,6 +713,9 @@ class CustomizeActivity : ThemeActivity() {
                             }
                             if (oldBackground != getBackgroundColor(context)) {
                                 setBackgroundColor(context, oldBackground)
+                            }
+                            if (oldAlpha != getAlphaValue(context)) {
+                                setAlphaValue(context, oldAlpha)
                             }
                             if (oldPalette != useBackgroundPalette(context)) {
                                 setUseBackgroundPalette(context, oldPalette)
@@ -926,6 +964,9 @@ class CustomizeActivity : ThemeActivity() {
 
             baseThemeInfo.setTextColor(accentColor)
             roundedInfo.setTextColor(accentColor)
+
+            alpha_seekbar.getThumb().setColorFilter(accentColor, PorterDuff.Mode.SRC_ATOP)
+            alpha_seekbar.getProgressDrawable().setColorFilter(accentColor, PorterDuff.Mode.SRC_ATOP)
         }
         if (force || this.backgroundColor != backgroundColor) {
             materialPalette = MaterialPalette.createPalette(backgroundColor, usePalette)
@@ -960,16 +1001,12 @@ class CustomizeActivity : ThemeActivity() {
         }
 
         if (darkNotif) {
-            if (usePStyle) {
-                notif_bg_layout.drawable.setTint(Color.parseColor("#0Dffffff"))
-            } else {
-                notif_bg_layout.drawable.setTint(Color.TRANSPARENT)
-            }
             if (notifShadow) {
                 preview_sysui_sender.setTextColor(Color.BLACK)
             } else {
                 preview_sysui_sender.setTextColor(Color.WHITE)
             }
+            notif_bg_layout.drawable.setTint(backgroundColor)
             preview_sysui_msg.setTextColor(Color.parseColor("#b3ffffff"))
             shadowFixLayout.visibility = View.VISIBLE
         } else {

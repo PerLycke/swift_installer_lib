@@ -28,6 +28,27 @@ object ColorUtils {
         return darkness > 0.2 && darkness < 0.9
     }
 
+    fun addAlpha(color: Int, i: Int): String {
+        val a = 255 - (255 * (i.toFloat() / 100))
+        val r = Color.red(color)
+        val g = Color.green(color)
+        val b = Color.blue(color)
+        val alphaColor = Color.argb(a.toInt(), r, g, b)
+        var hex = Integer.toHexString(alphaColor)
+        if (hex.count() == 7) {
+            hex = "0$hex"
+        }
+        return hex
+    }
+
+    fun addAlphaColor(color: Int, i: Int): Int {
+        val a = 255 - (255 * (i.toFloat() / 100))
+        val r = Color.red(color)
+        val g = Color.green(color)
+        val b = Color.blue(color)
+        return Color.argb(a.toInt(), r, g, b)
+    }
+
     fun removeAlpha(color: Int): Int {
         val r = Color.red(color)
         val g = Color.green(color)

@@ -27,6 +27,7 @@ const val KEY_OVERLAY_UPDATES = "overlays_to_update"
 const val KEY_OVERLAYS_TO_INSTALL = "overlays_to_install"
 const val KEY_OVERLAYS_TO_UNINSTALL = "overlays_to_uninstall"
 const val KEY_DARK_NOTIF_BG = "dark_notif_bg"
+const val KEY_ALPHA = "alpha"
 
 fun getAccentColor(context: Context): Int {
     return PreferenceManager.getDefaultSharedPreferences(context).getInt(KEY_ACCENT_COLOR, RomInfo.getRomInfo(context).defaultAccent)
@@ -42,6 +43,14 @@ fun getBackgroundColor(context: Context): Int {
 
 fun setBackgroundColor(context: Context, color: Int) {
     PreferenceManager.getDefaultSharedPreferences(context).edit().putInt(KEY_BACKGROUND_COLOR, color).apply()
+}
+
+fun getAlphaValue(context: Context): Int {
+    return PreferenceManager.getDefaultSharedPreferences(context).getInt(KEY_ALPHA, 0)
+}
+
+fun setAlphaValue(context: Context, alpha: Int) {
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putInt(KEY_ALPHA, alpha).apply()
 }
 
 fun useBackgroundPalette(context: Context): Boolean {

@@ -120,4 +120,5 @@
     <string name="rounded_dialog_info">This option is only tested on stock ROMs. Custom ROMs are not tested and they might cause conflicts with this option. If you want to use this option on a custom ROM, make sure you have adb debugging enabled and the rescue script available.</string>
     <string name="rounded_dialog_title">Rounded style info</string>
     <string name="white">White</string>
+    <string name="alpha_value">%1$d %%</string>
 </resources>
