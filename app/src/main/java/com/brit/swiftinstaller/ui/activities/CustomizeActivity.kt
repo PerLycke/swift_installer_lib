@@ -173,9 +173,6 @@ class CustomizeActivity : ThemeActivity() {
             })
 
             preview_wallpaper.clipToOutline = true
-            val overlay = ColorUtils.addAlphaColor(backgroundColor, alpha)
-            ImageViewCompat.setImageTintList(preview_wallpaper, ColorStateList.valueOf(overlay))
-            ImageViewCompat.setImageTintMode(preview_wallpaper, PorterDuff.Mode.SRC_OVER)
         }
     }
 
@@ -979,6 +976,9 @@ class CustomizeActivity : ThemeActivity() {
 
             val sheetBg = getDrawable(R.drawable.personalization_sheet_bg) as LayerDrawable
             sheetBg.findDrawableByLayerId(R.id.sheet_bg).setTint(backgroundColor)
+            val overlay = ColorUtils.addAlphaColor(backgroundColor, alpha)
+            ImageViewCompat.setImageTintList(preview_wallpaper, ColorStateList.valueOf(overlay))
+            ImageViewCompat.setImageTintMode(preview_wallpaper, PorterDuff.Mode.SRC_OVER)
         }
 
         if (notifShadow) {
@@ -1008,7 +1008,11 @@ class CustomizeActivity : ThemeActivity() {
             } else {
                 preview_sysui_sender.setTextColor(Color.WHITE)
             }
-            notif_bg_layout.drawable.setTint(backgroundColor)
+            if (usePStyle) {
+                notif_bg_layout.drawable.setTint(ColorUtils.handleColor(backgroundColor, 8))
+            } else {
+                notif_bg_layout.drawable.setTint(backgroundColor)
+            }
             preview_sysui_msg.setTextColor(Color.parseColor("#b3ffffff"))
             shadowFixLayout.visibility = View.VISIBLE
         } else {
