@@ -2,6 +2,9 @@ package com.brit.swiftinstaller.utils
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Paint
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -127,6 +130,15 @@ object Utils {
             }
         }
         return apps
+    }
+
+    fun createImage(width:Int, height:Int, color:Int):Bitmap {
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        val paint = Paint()
+        paint.setColor(color)
+        canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paint)
+        return bitmap
     }
 
     /*fun makeKey(key: File) {

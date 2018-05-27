@@ -17,10 +17,7 @@ import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.TextView
 import com.brit.swiftinstaller.R
-import com.brit.swiftinstaller.utils.Utils
-import com.brit.swiftinstaller.utils.getAppsToUpdate
-import com.brit.swiftinstaller.utils.getHideFailedInfoCard
-import com.brit.swiftinstaller.utils.setHideFailedInfoCard
+import com.brit.swiftinstaller.utils.*
 import kotlinx.android.synthetic.main.activity_app_list.*
 import kotlinx.android.synthetic.main.activity_app_list.view.*
 import kotlinx.android.synthetic.main.failed_info_card.view.*
@@ -151,6 +148,7 @@ class AppListFragment : Fragment() {
             private var appIcon: ImageView = view.findViewById(R.id.app_item_image)
             private var appCheckBox: CheckBox = view.findViewById(R.id.app_item_checkbox)
             private var alertIcon: ImageView = view.findViewById(R.id.alert_icon)
+            private var downloadIcon: ImageView = view.findViewById(R.id.download_icon)
             private var required: TextView = view.findViewById(R.id.required)
 
             private val checkListener: (CompoundButton, Boolean) -> Unit
@@ -232,6 +230,13 @@ class AppListFragment : Fragment() {
                     } else {
                         alertIcon.visibility = View.GONE
                     }
+                }
+
+                if (appName.text.contains("Gboard") && appCheckBox.visibility == View.VISIBLE) {
+                    downloadIcon.visibility = View.VISIBLE
+                    downloadIcon.setColorFilter(getAccentColor(context!!))
+                } else {
+                    downloadIcon.visibility = View.GONE
                 }
 
                 if (alertIconClickListener != null) {

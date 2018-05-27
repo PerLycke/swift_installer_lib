@@ -7,8 +7,10 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.*
+import android.graphics.Bitmap
 import android.os.AsyncTask
 import android.os.Bundle
+import android.os.Environment
 import android.support.design.widget.BottomSheetDialog
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
@@ -21,6 +23,7 @@ import com.brit.swiftinstaller.ui.applist.AppItem
 import com.brit.swiftinstaller.ui.applist.AppListFragment
 import com.brit.swiftinstaller.ui.applist.AppsTabPagerAdapter
 import com.brit.swiftinstaller.utils.*
+import com.brit.swiftinstaller.utils.Utils.createImage
 import com.brit.swiftinstaller.utils.Utils.getOverlayPackageName
 import com.brit.swiftinstaller.utils.Utils.isOverlayEnabled
 import com.brit.swiftinstaller.utils.Utils.isOverlayInstalled
@@ -28,6 +31,10 @@ import kotlinx.android.synthetic.main.activity_overlays.*
 import kotlinx.android.synthetic.main.tab_layout_overlay.*
 import kotlinx.android.synthetic.main.tab_overlays_updates.*
 import kotlinx.android.synthetic.main.toolbar_overlays.*
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
 import java.lang.ref.WeakReference
 
 class OverlaysActivity : ThemeActivity() {
@@ -405,5 +412,48 @@ class OverlaysActivity : ThemeActivity() {
 
     fun overlaysBackClick(@Suppress("UNUSED_PARAMETER") view: View) {
         onBackPressed()
+    }
+
+    fun gboardInfo(view: View) {
+        val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+        themeDialog()
+        builder.setTitle("Gboard background")
+        builder.setMessage("To make the Gboard overlay work, you need to set up and activate a theme with a custom picture background from Gboard's theme settings. Download an image with your selected background by clicking save, and use the image in Gboard.\n\nImage will be saved as swift_bg.png in sdcard/Downloads/")
+        builder.setPositiveButton("Save", { dialogInterface, i ->
+            val bitmap = createImage(512,512, getBackgroundColor(this))
+            val downloads = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            val image = File(downloads, "swift_bg.png")
+            var success = false
+            val outStream: FileOutputStream
+            try
+            {
+                outStream = FileOutputStream(image)
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream)
+                outStream.flush()
+                outStream.close()
+                success = true
+            }
+            catch (e: FileNotFoundException) {
+                e.printStackTrace()
+            }
+            catch (e: IOException) {
+                e.printStackTrace()
+            }
+
+            if (success) {
+                Toast.makeText(getApplicationContext(), "Saved!",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getApplicationContext(),
+                        "Error during image saving", Toast.LENGTH_LONG).show();
+            }
+
+            dialogInterface.dismiss()
+        })
+        builder.setNegativeButton("Cancel", { dialogInterface, i ->
+            dialogInterface.dismiss()
+        })
+        val dialog = builder.create()
+        dialog.show()
     }
 }
