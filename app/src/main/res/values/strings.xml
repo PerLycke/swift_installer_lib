@@ -121,4 +121,9 @@
     <string name="rounded_dialog_title">Rounded style info</string>
     <string name="white">White</string>
     <string name="alpha_value">%1$d %%</string>
+    <string name="gboard_bg_info">To make the Gboard overlay work, you need to set up and activate a theme with a custom picture background from Gboard\'s theme settings. Download an image with your selected background by clicking save, and use the image in Gboard.\n\nImage will be saved as swift_bg.png in sdcard/Download/</string>
+    <string name="gboard_dialog_title">Gboard background</string>
+    <string name="save">Save</string>
+    <string name="saved">Saved!</string>
+    <string name="save_error">Error saving image</string>
 </resources>

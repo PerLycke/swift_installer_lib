@@ -417,9 +417,9 @@ class OverlaysActivity : ThemeActivity() {
     fun gboardInfo(view: View) {
         val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
         themeDialog()
-        builder.setTitle("Gboard background")
-        builder.setMessage("To make the Gboard overlay work, you need to set up and activate a theme with a custom picture background from Gboard's theme settings. Download an image with your selected background by clicking save, and use the image in Gboard.\n\nImage will be saved as swift_bg.png in sdcard/Downloads/")
-        builder.setPositiveButton("Save", { dialogInterface, i ->
+        builder.setTitle(R.string.gboard_dialog_title)
+        builder.setMessage(R.string.gboard_bg_info)
+        builder.setPositiveButton(R.string.save, { dialogInterface, i ->
             val bitmap = createImage(512,512, getBackgroundColor(this))
             val downloads = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
             val image = File(downloads, "swift_bg.png")
@@ -441,16 +441,16 @@ class OverlaysActivity : ThemeActivity() {
             }
 
             if (success) {
-                Toast.makeText(getApplicationContext(), "Saved!",
+                Toast.makeText(getApplicationContext(), R.string.saved,
                         Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(getApplicationContext(),
-                        "Error during image saving", Toast.LENGTH_LONG).show();
+                        R.string.save_error, Toast.LENGTH_LONG).show();
             }
 
             dialogInterface.dismiss()
         })
-        builder.setNegativeButton("Cancel", { dialogInterface, i ->
+        builder.setNegativeButton(R.string.cancel, { dialogInterface, i ->
             dialogInterface.dismiss()
         })
         val dialog = builder.create()
