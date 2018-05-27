@@ -696,11 +696,13 @@ class CustomizeActivity : ThemeActivity() {
                 }
             }
 
-            if (usePStyle) {
+            if (usePStyle != oldPStyle) {
                 setUsePStyle(this, usePStyle)
+                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
                     recompile = true
                     checkAndAddApp(apps,"com.android.systemui")
                     checkAndAddApp(apps,"android")
+                }
             }
 
             if (recompile && apps.isNotEmpty()) {
