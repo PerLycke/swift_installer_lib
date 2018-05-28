@@ -94,17 +94,16 @@ class OverlaysActivity : ThemeActivity() {
                 val packageInfo = packageManager.getPackageInfo(appItem.packageName, 0)
                 val dialog = AlertDialog.Builder(this@OverlaysActivity, R.style.AppTheme_AlertDialog)
 
-                themeDialog()
-
-                dialog.setTitle(appItem.title)
-                dialog.setIcon(appItem.icon)
-                dialog.setMessage("Version support info:" +
+                .setTitle(appItem.title)
+                .setIcon(appItem.icon)
+                .setMessage("Version support info:" +
                         "\nCurrent Version: ${packageInfo.versionName}" +
                         "\nAvailable Versions: ${Utils.getAvailableOverlayVersions(
                                 this@OverlaysActivity, appItem.packageName)}")
-                dialog.setPositiveButton(android.R.string.ok) { dialogInterface, _ ->
+                .setPositiveButton(android.R.string.ok) { dialogInterface, _ ->
                     dialogInterface.dismiss()
                 }
+                themeDialog()
                 dialog.show()
             }
         })
@@ -287,18 +286,18 @@ class OverlaysActivity : ThemeActivity() {
                 }
                 "second" -> {
                     val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                    themeDialog()
-                    builder.setTitle(R.string.reboot_delay_title)
-                    builder.setMessage(R.string.reboot_delay_msg)
-                    builder.setPositiveButton(R.string.proceed, { dialogInterface, _ ->
+                    .setTitle(R.string.reboot_delay_title)
+                    .setMessage(R.string.reboot_delay_msg)
+                    .setPositiveButton(R.string.proceed, { dialogInterface, _ ->
                         getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "default").apply()
                         dialogInterface.dismiss()
                         installAction()
                     })
-                    builder.setNegativeButton(R.string.cancel, { dialogInterface, _ ->
+                    .setNegativeButton(R.string.cancel, { dialogInterface, _ ->
                         dialogInterface.dismiss()
                     })
 
+                    themeDialog()
                     val dialog = builder.create()
                     dialog.show()
                 }
@@ -416,10 +415,9 @@ class OverlaysActivity : ThemeActivity() {
 
     fun gboardInfo(view: View) {
         val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-        themeDialog()
-        builder.setTitle(R.string.gboard_dialog_title)
-        builder.setMessage(R.string.gboard_bg_info)
-        builder.setPositiveButton(R.string.save, { dialogInterface, i ->
+        .setTitle(R.string.gboard_dialog_title)
+        .setMessage(R.string.gboard_bg_info)
+        .setPositiveButton(R.string.save, { dialogInterface, i ->
             val bitmap = createImage(512,512, getBackgroundColor(this))
             val downloads = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
             val image = File(downloads, "swift_bg.png")
@@ -450,9 +448,10 @@ class OverlaysActivity : ThemeActivity() {
 
             dialogInterface.dismiss()
         })
-        builder.setNegativeButton(R.string.cancel, { dialogInterface, i ->
+        .setNegativeButton(R.string.cancel, { dialogInterface, i ->
             dialogInterface.dismiss()
         })
+        themeDialog()
         val dialog = builder.create()
         dialog.show()
     }

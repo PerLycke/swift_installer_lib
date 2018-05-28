@@ -71,6 +71,8 @@ class CustomizeActivity : ThemeActivity() {
     private var parentActivity: String? = "parent"
     private lateinit var bottomSheetDialog: BottomSheetDialog
 
+    private var recompile = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -481,8 +483,9 @@ class CustomizeActivity : ThemeActivity() {
     }
 
     private fun checkAndAddApp(apps: ArrayList<String>, app: String) {
-        if (!apps.contains(app)) {
+        if (!apps.contains(app) && Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
             apps.add(app)
+            recompile = true
         }
     }
 
@@ -512,7 +515,6 @@ class CustomizeActivity : ThemeActivity() {
 
         sheetView.personalization_confirm_txt.setOnClickListener {
             bottomSheetDialog.dismiss()
-            var recompile = false
             val apps = ArrayList<String>()
 
             val oldAccent = getAccentColor(this)
@@ -530,52 +532,41 @@ class CustomizeActivity : ThemeActivity() {
             val oldCenteredClock = useCenteredClock(this)
             val oldPStyle = usePstyle(this)
 
+            val iconOverlays = listOf(
+                    "com.samsung.android.lool",
+                    "com.samsung.android.themestore",
+                    "com.android.settings",
+                    "com.android.systemui"
+            )
+
             if (oldAccent != accentColor) {
                 setAccentColor(this, accentColor)
-                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
-                    recompile = true
-                    checkAndAddApp(apps, "android")
-                }
+                checkAndAddApp(apps, "android")
             }
 
             if (oldBackground != backgroundColor) {
                 setBackgroundColor(this, backgroundColor)
-                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
-                    recompile = true
-                    checkAndAddApp(apps, "android")
-                }
+                checkAndAddApp(apps, "android")
             }
 
             if (oldAlpha != alpha) {
                 setAlphaValue(this, alpha)
-                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
-                    recompile = true
-                    checkAndAddApp(apps, "android")
-                }
+                checkAndAddApp(apps, "android")
             }
 
             if (usePalette != oldPalette) {
                 setUseBackgroundPalette(this, usePalette)
-                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
-                    recompile = true
-                    checkAndAddApp(apps, "android")
-                }
+                checkAndAddApp(apps, "android")
             }
 
             if (darkNotif != oldNotifbg) {
                 setUseDarkNotifBg(this, darkNotif)
-                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
-                    recompile = true
-                    checkAndAddApp(apps, "android")
-                }
+                checkAndAddApp(apps, "android")
             }
 
             if (notifShadow != oldShadow) {
                 setUseSenderNameFix(this, notifShadow)
-                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
-                    recompile = true
-                    checkAndAddApp(apps, "android")
-                }
+                checkAndAddApp(apps, "android")
             }
 
             if (useAospIcons != oldIcons && useAospIcons) {
@@ -583,12 +574,8 @@ class CustomizeActivity : ThemeActivity() {
                 setUseStockAccentIcons(this, false)
                 setUseStockMultiIcons(this, false)
                 setUsePIcons(this, false)
-                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
-                    recompile = true
-                    apps.add("com.samsung.android.lool")
-                    apps.add("com.samsung.android.themestore")
-                    apps.add("com.android.settings")
-                    apps.add("com.android.systemui")
+                for (i in iconOverlays) {
+                    checkAndAddApp(apps, i)
                 }
             }
 
@@ -597,12 +584,8 @@ class CustomizeActivity : ThemeActivity() {
                 setUseStockAccentIcons(this, true)
                 setUseStockMultiIcons(this, false)
                 setUsePIcons(this, false)
-                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
-                    recompile = true
-                    apps.add("com.samsung.android.lool")
-                    apps.add("com.samsung.android.themestore")
-                    apps.add("com.android.settings")
-                    apps.add("com.android.systemui")
+                for (i in iconOverlays) {
+                    checkAndAddApp(apps, i)
                 }
             }
 
@@ -611,12 +594,8 @@ class CustomizeActivity : ThemeActivity() {
                 setUseStockAccentIcons(this, false)
                 setUseStockMultiIcons(this, true)
                 setUsePIcons(this, false)
-                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
-                    recompile = true
-                    apps.add("com.samsung.android.lool")
-                    apps.add("com.samsung.android.themestore")
-                    apps.add("com.android.settings")
-                    apps.add("com.android.systemui")
+                for (i in iconOverlays) {
+                    checkAndAddApp(apps, i)
                 }
             }
 
@@ -625,12 +604,8 @@ class CustomizeActivity : ThemeActivity() {
                 setUseAospIcons(this, false)
                 setUseStockAccentIcons(this, false)
                 setUsePIcons(this, true)
-                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
-                    recompile = true
-                    apps.add("com.samsung.android.lool")
-                    apps.add("com.samsung.android.themestore")
-                    apps.add("com.android.settings")
-                    apps.add("com.android.systemui")
+                for (i in iconOverlays) {
+                    checkAndAddApp(apps, i)
                 }
             }
 
@@ -638,39 +613,27 @@ class CustomizeActivity : ThemeActivity() {
                 setUseLeftClock(this, false)
                 setUseCenteredClock(this, false)
                 setUseRightClock(this, true)
-                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
-                    recompile = true
-                    checkAndAddApp(apps,"com.android.systemui")
-                }
+                checkAndAddApp(apps,"com.android.systemui")
             }
 
             if (useLeftClock != oldLeftClock && useLeftClock) {
                 setUseCenteredClock(this, false)
                 setUseRightClock(this, false)
                 setUseLeftClock(this, true)
-                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
-                    recompile = true
-                    checkAndAddApp(apps,"com.android.systemui")
-                }
+                checkAndAddApp(apps,"com.android.systemui")
             }
 
             if (useCenteredClock != oldCenteredClock && useCenteredClock) {
                 setUseLeftClock(this, false)
                 setUseRightClock(this, false)
                 setUseCenteredClock(this, true)
-                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
-                    recompile = true
-                    checkAndAddApp(apps,"com.android.systemui")
-                }
+                checkAndAddApp(apps,"com.android.systemui")
             }
 
             if (usePStyle != oldPStyle) {
                 setUsePStyle(this, usePStyle)
-                if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
-                    recompile = true
-                    checkAndAddApp(apps,"com.android.systemui")
-                    checkAndAddApp(apps,"android")
-                }
+                checkAndAddApp(apps,"com.android.systemui")
+                checkAndAddApp(apps,"android")
             }
 
             if (recompile && apps.isNotEmpty()) {
@@ -739,32 +702,32 @@ class CustomizeActivity : ThemeActivity() {
                         }
                         "second" -> {
                             val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                            themeDialog()
-                            builder.setTitle(R.string.reboot_delay_title)
-                            builder.setMessage(R.string.reboot_delay_msg)
-                            builder.setPositiveButton(R.string.proceed, { dialogInterface, _ ->
+                            .setTitle(R.string.reboot_delay_title)
+                            .setMessage(R.string.reboot_delay_msg)
+                            .setPositiveButton(R.string.proceed, { dialogInterface, _ ->
                                 getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "default").apply()
                                 dialogInterface.dismiss()
                                 startActivity(intent)
                             })
-                            builder.setNegativeButton(R.string.cancel, { dialogInterface, _ ->
+                            .setNegativeButton(R.string.cancel, { dialogInterface, _ ->
                                 dialogInterface.dismiss()
                             })
 
+                            themeDialog()
                             val dialog = builder.create()
                             dialog.show()
                         }
                         else -> {
                             val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                            themeDialog()
-                            builder.setTitle(R.string.installing_and_uninstalling_title)
-                            builder.setMessage(R.string.installing_and_uninstalling_msg)
-                            builder.setPositiveButton(R.string.proceed, { dialogInterface, _ ->
+                            .setTitle(R.string.installing_and_uninstalling_title)
+                            .setMessage(R.string.installing_and_uninstalling_msg)
+                            .setPositiveButton(R.string.proceed, { dialogInterface, _ ->
                                 PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("thisLaunched", true).apply()
                                 dialogInterface.dismiss()
                                 startActivity(intent)
                             })
 
+                            themeDialog()
                             val dialog = builder.create()
                             dialog.show()
                         }

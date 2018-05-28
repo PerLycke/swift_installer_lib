@@ -13,11 +13,9 @@ class UninstallFinishedActivity : ThemeActivity() {
         InstallActivity().finish()
 
         val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-        themeDialog()
-
-        builder.setTitle(R.string.reboot)
-        builder.setMessage(R.string.reboot_manually)
-        builder.setPositiveButton(R.string.reboot_later, { dialogInterface, _ ->
+        .setTitle(R.string.reboot)
+        .setMessage(R.string.reboot_manually)
+        .setPositiveButton(R.string.reboot_later, { dialogInterface, _ ->
             dialogInterface.dismiss()
             finish()
         })
@@ -25,6 +23,7 @@ class UninstallFinishedActivity : ThemeActivity() {
         dialog = builder.create()
         dialog.setCancelable(false)
         dialog.setCanceledOnTouchOutside(false)
+        themeDialog()
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
