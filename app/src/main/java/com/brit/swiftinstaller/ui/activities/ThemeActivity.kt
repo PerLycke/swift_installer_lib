@@ -17,38 +17,6 @@ import com.brit.swiftinstaller.utils.*
 @SuppressLint("Registered")
 open class ThemeActivity : AppCompatActivity() {
 
-    private val backgroundIDs = ArrayList<Int>()
-    private val cardIDs = ArrayList<Int>()
-
-    init {
-        backgroundIDs.add(R.id.app_list_root)
-        backgroundIDs.add(R.id.customize_root)
-        backgroundIDs.add(R.id.installation_summary_root)
-        backgroundIDs.add(R.id.overlays_root)
-        backgroundIDs.add(R.id.app_item_root)
-        backgroundIDs.add(R.id.main_toolbar)
-        backgroundIDs.add(R.id.content_main_root)
-        backgroundIDs.add(R.id.customize_bg_root)
-        backgroundIDs.add(R.id.customize_accent_root)
-        backgroundIDs.add(R.id.customize_preview_root)
-        backgroundIDs.add(R.id.failed_info_card_root)
-        backgroundIDs.add(R.id.palette_view_root)
-        backgroundIDs.add(R.id.tab_install_summary_root)
-        backgroundIDs.add(R.id.tabs_overlays_root)
-        backgroundIDs.add(R.id.toolbar_install_summary_root)
-        backgroundIDs.add(R.id.toolbar_overlays_root)
-
-        cardIDs.add(R.id.failed_info_card_layout)
-        cardIDs.add(R.id.send_email_layout)
-        cardIDs.add(R.id.popup_menu_root)
-        cardIDs.add(R.id.card_update_bg)
-        cardIDs.add(R.id.card_install_bg)
-        cardIDs.add(R.id.card_personalize_bg)
-        cardIDs.add(R.id.card_compatibility_bg)
-        cardIDs.add(R.id.update_info)
-        cardIDs.add(R.id.installed_info)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener { _, key ->
@@ -72,7 +40,7 @@ open class ThemeActivity : AppCompatActivity() {
         val palette = MaterialPalette.createPalette(backgroundColor, usePalette)
         window.statusBarColor = palette.backgroundColor
         window.navigationBarColor = palette.backgroundColor
-        for (id in backgroundIDs) {
+        for (id in IdLists.bgIds) {
             val v = findViewById<View>(id)
             if (v != null) {
                 v.background = ColorDrawable(palette.backgroundColor)
@@ -81,7 +49,7 @@ open class ThemeActivity : AppCompatActivity() {
         if (findViewById<FloatingActionButton>(R.id.fab) != null) {
             findViewById<FloatingActionButton>(R.id.fab).background.setTint(getAccentColor(this))
         }
-        for (id in cardIDs) {
+        for (id in IdLists.cardIds) {
             val v = findViewById<View>(id)
             if (v != null) {
                 if (v.background != null) {
@@ -100,8 +68,6 @@ open class ThemeActivity : AppCompatActivity() {
             popup.findDrawableByLayerId(R.id.background_popup).setTint(palette.cardBackgroud)
             val bottomSheet = ContextCompat.getDrawable(this, R.drawable.bottom_sheet_bg) as LayerDrawable
             bottomSheet.findDrawableByLayerId(R.id.background_bottom_sheet).setTint(palette.cardBackgroud)
-            val failedInfoCard = ContextCompat.getDrawable(this, R.drawable.failed_info_card_bg) as LayerDrawable
-            failedInfoCard.findDrawableByLayerId(R.id.background_failed_info_card).setTint(palette.cardBackgroud)
         }
     }
 }

@@ -30,4 +30,35 @@ object IdLists {
             R.id.custom_ocean_bg_indicator,
             R.id.custom_night_bg_indicator
     )
+
+    val bgIds = arrayListOf(
+            R.id.app_list_root,
+            R.id.customize_root,
+            R.id.installation_summary_root,
+            R.id.overlays_root,
+            R.id.app_item_root,
+            R.id.main_toolbar,
+            R.id.content_main_root,
+            R.id.customize_bg_root,
+            R.id.customize_accent_root,
+            R.id.customize_preview_root,
+            R.id.palette_view_root,
+            R.id.tab_install_summary_root,
+            R.id.tabs_overlays_root,
+            R.id.toolbar_install_summary_root,
+            R.id.toolbar_overlays_root
+
+    )
+
+    val cardIds = arrayListOf(
+            R.id.failed_info_card_layout,
+            R.id.send_email_layout,
+            R.id.popup_menu_root,
+            R.id.card_update_bg,
+            R.id.card_install_bg,
+            R.id.card_personalize_bg,
+            R.id.card_compatibility_bg,
+            R.id.update_info,
+            R.id.installed_info
+    )
 }
