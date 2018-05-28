@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
@@ -17,7 +16,6 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
-import android.support.v4.widget.ImageViewCompat
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
@@ -160,8 +158,7 @@ class CustomizeActivity : ThemeActivity() {
                 override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                     alpha_value.text = getString(R.string.alpha_value, progress)
                     val overlay = ColorUtils.addAlphaColor(backgroundColor, alpha_seekbar.progress)
-                    ImageViewCompat.setImageTintList(preview_wallpaper, ColorStateList.valueOf(overlay))
-                    ImageViewCompat.setImageTintMode(preview_wallpaper, PorterDuff.Mode.SRC_OVER)
+                    preview_wallpaper.setColorFilter(overlay, PorterDuff.Mode.SRC_OVER)
                 }
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
                     alpha = alpha_seekbar.progress
@@ -505,7 +502,7 @@ class CustomizeActivity : ThemeActivity() {
         bottomSheetDialog = BottomSheetDialog(this)
         val sheetView = View.inflate(this, R.layout.fab_sheet_personalize, null)
         bottomSheetDialog.setContentView(sheetView)
-        bottomSheetDialog.window.decorView.findViewById<View>(R.id.design_bottom_sheet).setBackgroundColor(backgroundColor)
+        sheetView.setBackgroundColor(backgroundColor)
 
         if (parentActivity == "tutorial") {
             sheetView.personalization_confirm_txt.text = getString(R.string.continue_theming)
@@ -877,29 +874,23 @@ class CustomizeActivity : ThemeActivity() {
 
         if (force || this.backgroundColor != backgroundColor) {
             materialPalette = MaterialPalette.createPalette(backgroundColor, usePalette)
-            val sheetBg = getDrawable(R.drawable.personalization_sheet_bg) as LayerDrawable
             val settingsBackground = settings_preview?.drawable as LayerDrawable
             val systemUIBackground = preview_sysui_bg.drawable as LayerDrawable
-            val searchFrameBackground = searchbar_bg.drawable as LayerDrawable
-            val overlay = ColorUtils.addAlphaColor(backgroundColor, alpha)
             this.backgroundColor = backgroundColor
 
             if (updateHex && hex_input_bg.text.toString() != Integer.toHexString(backgroundColor).substring(2))
                 hex_input_bg.setText(Integer.toHexString(backgroundColor).substring(2), TextView.BufferType.EDITABLE)
 
-            sheetBg.findDrawableByLayerId(R.id.sheet_bg).setTint(backgroundColor)
-            ImageViewCompat.setImageTintList(preview_wallpaper, ColorStateList.valueOf(overlay))
-            ImageViewCompat.setImageTintMode(preview_wallpaper, PorterDuff.Mode.SRC_OVER)
+            preview_wallpaper.setColorFilter(ColorUtils.addAlphaColor(backgroundColor, alpha), PorterDuff.Mode.SRC_OVER)
             settingsBackground.findDrawableByLayerId(R.id.preview_background).setTint(backgroundColor)
             systemUIBackground.findDrawableByLayerId(R.id.preview_background).setTint(backgroundColor)
-            searchFrameBackground.findDrawableByLayerId(R.id.search_frame_background).setTint(materialPalette.cardBackgroud)
+            searchbar_bg.setColorFilter(materialPalette.cardBackgroud)
 
             setBgIndicator()
         }
 
         if (notifShadow) {
-            preview_sysui_msg.text = getString(R.string.dark_notifications_preview)
-            preview_sysui_msg.setText(R.string.notification_fix_summary)
+            preview_sysui_msg.text = getString(R.string.dark_notifications_preview_shadow)
             preview_sysui_app_title.setShadowLayer(2.0f, -1.0f, -1.0f, Color.WHITE)
             preview_sysui_sender.setTextColor(Color.BLACK)
             preview_sysui_sender.setShadowLayer(2.0f, -1.0f, -1.0f, Color.WHITE)
