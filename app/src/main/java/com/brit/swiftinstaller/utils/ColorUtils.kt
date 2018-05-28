@@ -31,17 +31,14 @@ object ColorUtils {
         return darkness > 0.2 && darkness < 0.9
     }
 
-    fun addAlpha(color: Int, i: Int): String {
+    fun getAlpha(color: Int, i: Int): String {
         val a = 255 - (255 * (i.toFloat() / 100))
         val r = Color.red(color)
         val g = Color.green(color)
         val b = Color.blue(color)
-        val alphaColor = Color.argb(a.toInt(), r, g, b)
-        var hex = Integer.toHexString(alphaColor)
-        if (hex.count() == 7) {
-            hex = "0$hex"
-        }
-        return hex
+        val alpha = String.format("%02X", (0xFF and Math.round(a)))
+        val rgb = String.format("%06X", (0xFFFFFF and Color.rgb(r, g, b)))
+        return "$alpha$rgb"
     }
 
     fun addAlphaColor(color: Int, i: Int): Int {
@@ -49,7 +46,7 @@ object ColorUtils {
         val r = Color.red(color)
         val g = Color.green(color)
         val b = Color.blue(color)
-        return Color.argb(a.toInt(), r, g, b)
+        return Color.argb(Math.round(a), r, g, b)
     }
 
     fun removeAlpha(color: Int): Int {

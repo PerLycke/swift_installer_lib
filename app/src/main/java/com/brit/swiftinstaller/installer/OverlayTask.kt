@@ -217,7 +217,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         file.append("<color name=\"legacy_primary\">#${toHexString(palette.darkBackgroundColor)}</color>\n")
         file.append("<color name=\"legacy_green\">#${toHexString(palette.cardBackgroud)}</color>\n")
         file.append("<color name=\"legacy_orange\">#${toHexString(palette.otherBackground)}</color>\n")
-        file.append("<color name=\"legacy_control_activated\">#${ColorUtils.addAlpha(palette.backgroundColor, getAlphaValue(context))}</color>\n")
+        file.append("<color name=\"legacy_control_activated\">#${ColorUtils.getAlpha(palette.backgroundColor, getAlphaValue(context))}</color>\n")
         file.append("<item type=\"dimen\" name=\"disabled_alpha_leanback_formwizard\">${getAlphaDimen(getAlphaValue(context))}</item>\n")
         if (useSenderNameFix(context)) {
             file.append("<integer name=\"leanback_setup_alpha_activity_in_bkg_delay\">2</integer>\n")
