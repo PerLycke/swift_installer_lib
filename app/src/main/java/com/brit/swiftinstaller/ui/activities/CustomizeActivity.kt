@@ -131,7 +131,7 @@ class CustomizeActivity : ThemeActivity() {
                 dialogBg.findDrawableByLayerId(R.id.dialog_bg).setTint(backgroundColor)
                 builder.setTitle(getString(R.string.base_theme_dialog_title))
                 builder.setMessage(getString(R.string.base_theme_dialog_info))
-                builder.setPositiveButton(R.string.ok, { dialogInterface, i ->
+                builder.setPositiveButton(R.string.ok, { dialogInterface, _ ->
                     dialogInterface.dismiss()
                 })
                 val dialog = builder.create()
@@ -144,7 +144,7 @@ class CustomizeActivity : ThemeActivity() {
                 dialogBg.findDrawableByLayerId(R.id.dialog_bg).setTint(backgroundColor)
                 builder.setTitle(getString(R.string.rounded_dialog_title))
                 builder.setMessage(getString(R.string.rounded_dialog_info))
-                builder.setPositiveButton(R.string.ok, { dialogInterface, i ->
+                builder.setPositiveButton(R.string.ok, { dialogInterface, _ ->
                     dialogInterface.dismiss()
                 })
                 val dialog = builder.create()
@@ -204,7 +204,7 @@ class CustomizeActivity : ThemeActivity() {
 
         accent_hex_input.onFocusChangeListener = onFocusChangeListener
         hex_input_bg.onFocusChangeListener = onFocusChangeListener
-        accent_hex_input.setOnKeyListener({ v, keyCode, event ->
+        accent_hex_input.setOnKeyListener({ _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_UP) {
                 when (keyCode) {
                     KeyEvent.KEYCODE_BACK -> accent_hex_input.clearFocus()
@@ -212,7 +212,7 @@ class CustomizeActivity : ThemeActivity() {
             }
             false
         })
-        hex_input_bg.setOnKeyListener({ v, keyCode, event ->
+        hex_input_bg.setOnKeyListener({ _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_UP) {
                 when (keyCode) {
                     KeyEvent.KEYCODE_BACK -> hex_input_bg.clearFocus()
@@ -340,7 +340,7 @@ class CustomizeActivity : ThemeActivity() {
             notifShadow = shadow_enabled.isChecked
             updateColor(accentColor, backgroundColor, false, true)
         }
-        val iconListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+        val iconListener = CompoundButton.OnCheckedChangeListener { buttonView, _ ->
             when {
                 buttonView.id == R.id.aosp_icons -> {
                     if (aosp_icons.isChecked) {
@@ -392,7 +392,7 @@ class CustomizeActivity : ThemeActivity() {
                 }
             }
         }
-        val clockListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+        val clockListener = CompoundButton.OnCheckedChangeListener { buttonView, _ ->
             when {
                 buttonView.id == R.id.right_clock -> {
                     if (right_clock.isChecked) {

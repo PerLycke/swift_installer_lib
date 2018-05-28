@@ -413,11 +413,12 @@ class OverlaysActivity : ThemeActivity() {
         onBackPressed()
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun gboardInfo(view: View) {
         val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
         .setTitle(R.string.gboard_dialog_title)
         .setMessage(R.string.gboard_bg_info)
-        .setPositiveButton(R.string.save, { dialogInterface, i ->
+        .setPositiveButton(R.string.save, { dialogInterface, _ ->
             val bitmap = createImage(512,512, getBackgroundColor(this))
             val downloads = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
             val image = File(downloads, "swift_bg.png")
@@ -448,7 +449,7 @@ class OverlaysActivity : ThemeActivity() {
 
             dialogInterface.dismiss()
         })
-        .setNegativeButton(R.string.cancel, { dialogInterface, i ->
+        .setNegativeButton(R.string.cancel, { dialogInterface, _ ->
             dialogInterface.dismiss()
         })
         themeDialog()
