@@ -5,7 +5,6 @@
     android:id="@+id/sheet_confirm_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:backgroundTint="@color/dialog_bg_tint"
     tools:layout_editor_absoluteY="25dp">
 
     <android.support.constraint.ConstraintLayout

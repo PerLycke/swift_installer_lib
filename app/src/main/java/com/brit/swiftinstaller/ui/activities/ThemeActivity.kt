@@ -64,10 +64,6 @@ open class ThemeActivity : AppCompatActivity() {
                     }
                 }
             }
-            val popup = ContextCompat.getDrawable(this, R.drawable.popup_bg) as LayerDrawable
-            popup.findDrawableByLayerId(R.id.background_popup).setTint(palette.cardBackgroud)
-            val bottomSheet = ContextCompat.getDrawable(this, R.drawable.bottom_sheet_bg) as LayerDrawable
-            bottomSheet.findDrawableByLayerId(R.id.background_bottom_sheet).setTint(palette.cardBackgroud)
         }
     }
 }
