@@ -19,7 +19,6 @@ import android.widget.TextView
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.*
 import kotlinx.android.synthetic.main.activity_app_list.*
-import kotlinx.android.synthetic.main.activity_app_list.view.*
 import kotlinx.android.synthetic.main.failed_info_card.view.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -57,13 +56,13 @@ class AppListFragment : Fragment() {
             mFailedTab = arguments!!.getBoolean("failed_tab", false)
         }
         if (mSummary && mFailedTab && !getHideFailedInfoCard(context!!)) {
-            view.failed_info.visibility = View.VISIBLE
+            view.failed_info_card.visibility = View.VISIBLE
         } else {
-            view.failed_info.visibility = View.GONE
+            view.failed_info_card.visibility = View.GONE
         }
         selectAll(false)
-        view.failed_info.failed_info_card_close.setOnClickListener {
-            view.failed_info.visibility = View.GONE
+        view.failed_info_card.failed_info_card_close.setOnClickListener {
+            view.failed_info_card.visibility = View.GONE
             setHideFailedInfoCard(context!!, true)
         }
         return view
