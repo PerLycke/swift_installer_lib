@@ -241,7 +241,7 @@ class AppListFragment : Fragment() {
 
                 if (alertIconClickListener != null) {
                     alertIcon.setOnClickListener {
-                        alertIconClickListener!!.onAlertIconClick(mApps[adapterPosition])
+                        alertIconClickListener!!.onAlertIconClick(mApps[mVisible[adapterPosition]])
                     }
                 }
             }
