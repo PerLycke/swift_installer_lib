@@ -94,24 +94,18 @@ class CustomizeActivity : ThemeActivity() {
             updateColor(getAccentColor(this), getBackgroundColor(this), true, false)
             updateIcons()
 
-            custom_dark_bg.setOnClickListener {
-                updateColor(accentColor, convertToColorInt("202026"), true, false)
+            val bgListener: (String) -> View.OnClickListener = { color ->
+                View.OnClickListener {
+                    updateColor(accentColor, convertToColorInt(color), true, false)
+                }
             }
-            custom_black_bg.setOnClickListener {
-                updateColor(accentColor, convertToColorInt("000000"), true, false)
-            }
-            custom_style_bg.setOnClickListener {
-                updateColor(accentColor, convertToColorInt("202833"), true, false)
-            }
-            custom_nature_bg.setOnClickListener {
-                updateColor(accentColor, convertToColorInt("1C3B3A"), true, false)
-            }
-            custom_ocean_bg.setOnClickListener {
-                updateColor(accentColor, convertToColorInt("173145"), true, false)
-            }
-            custom_night_bg.setOnClickListener {
-                updateColor(accentColor, convertToColorInt("363844"), true, false)
-            }
+
+            custom_dark_bg.setOnClickListener(bgListener("202026"))
+            custom_black_bg.setOnClickListener(bgListener("000000"))
+            custom_style_bg.setOnClickListener(bgListener("202833"))
+            custom_nature_bg.setOnClickListener(bgListener("1C3B3A"))
+            custom_ocean_bg.setOnClickListener(bgListener("173145"))
+            custom_night_bg.setOnClickListener(bgListener("363844"))
 
             setupHexInputs()
             setupThemeOptions()
@@ -125,32 +119,24 @@ class CustomizeActivity : ThemeActivity() {
                 personalizeFabClick()
             }
 
-            baseThemeInfo.setOnClickListener {
-                val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                val dialogBg = getDrawable(R.drawable.dialog_bg) as LayerDrawable
-                dialogBg.findDrawableByLayerId(R.id.dialog_bg).setTint(backgroundColor)
-                builder.setTitle(getString(R.string.base_theme_dialog_title))
-                builder.setMessage(getString(R.string.base_theme_dialog_info))
-                builder.setPositiveButton(R.string.ok, { dialogInterface, _ ->
-                    dialogInterface.dismiss()
-                })
-                val dialog = builder.create()
-                dialog.show()
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(accentColor)
+            val infoListener: (String, String) -> View.OnClickListener = { title, message ->
+                View.OnClickListener {
+                    val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+                    val dialogBg = getDrawable(R.drawable.dialog_bg) as LayerDrawable
+                    dialogBg.findDrawableByLayerId(R.id.dialog_bg).setTint(backgroundColor)
+                    builder.setTitle(title)
+                    builder.setMessage(message)
+                    builder.setPositiveButton(R.string.ok, { dialogInterface, _ ->
+                        dialogInterface.dismiss()
+                    })
+                    val dialog = builder.create()
+                    dialog.show()
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(accentColor)
+                }
             }
-            roundedInfo.setOnClickListener {
-                val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                val dialogBg = getDrawable(R.drawable.dialog_bg) as LayerDrawable
-                dialogBg.findDrawableByLayerId(R.id.dialog_bg).setTint(backgroundColor)
-                builder.setTitle(getString(R.string.rounded_dialog_title))
-                builder.setMessage(getString(R.string.rounded_dialog_info))
-                builder.setPositiveButton(R.string.ok, { dialogInterface, _ ->
-                    dialogInterface.dismiss()
-                })
-                val dialog = builder.create()
-                dialog.show()
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(accentColor)
-            }
+
+            baseThemeInfo.setOnClickListener(infoListener(getString(R.string.base_theme_dialog_title), getString(R.string.base_theme_dialog_info)))
+            roundedInfo.setOnClickListener(infoListener(getString(R.string.rounded_dialog_title), getString(R.string.rounded_dialog_info)))
 
             alpha_value.text = getString(R.string.alpha_value, alpha)
             alpha_seekbar.progress = alpha
