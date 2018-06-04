@@ -1,7 +1,9 @@
 package com.brit.swiftinstaller.ui.activities
 
 import android.annotation.SuppressLint
+import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.StateListDrawable
 import android.os.Bundle
@@ -9,7 +11,9 @@ import android.preference.PreferenceManager
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.*
 
@@ -63,6 +67,43 @@ open class ThemeActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    fun setCursorPointerColor(view: EditText, color: Int) {
+        try {
+            var field = TextView::class.java.getDeclaredField("mTextSelectHandleRes")
+            field.isAccessible = true
+            val drawableResId = field.getInt(view)
+            field = TextView::class.java.getDeclaredField("mEditor")
+            field.isAccessible = true
+            val editor = field.get(view)
+            val drawable = view.context.getDrawable(drawableResId)!!
+            drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN)
+            field = editor.javaClass.getDeclaredField("mSelectHandleCenter")
+            field.isAccessible = true
+            field.set(editor, drawable)
+        } catch (ex: Exception) {
+        }
+    }
+
+    fun setCursorDrawableColor(view: EditText, color: Int) {
+        try {
+            var field = TextView::class.java.getDeclaredField("mCursorDrawableRes")
+            field.isAccessible = true
+            val drawableResId = field.getInt(view)
+            field = TextView::class.java.getDeclaredField("mEditor")
+            field.isAccessible = true
+            val editor = field.get(view)
+            val drawable = arrayOfNulls<Drawable>(2)
+            drawable[0] = view.context.getDrawable(drawableResId)
+            drawable[1] = view.context.getDrawable(drawableResId)
+            drawable[0]?.setColorFilter(color, PorterDuff.Mode.SRC_IN)
+            drawable[1]?.setColorFilter(color, PorterDuff.Mode.SRC_IN)
+            field = editor.javaClass.getDeclaredField("mCursorDrawable")
+            field.isAccessible = true
+            field.set(editor, drawable)
+        } catch (ex: Exception) {
         }
     }
 }

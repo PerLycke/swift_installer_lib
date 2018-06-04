@@ -15,6 +15,7 @@ import android.support.v4.view.ViewPager
 import android.support.v7.widget.SearchView
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.applist.AppItem
@@ -140,6 +141,10 @@ class OverlaysActivity : ThemeActivity() {
             toolbar_overlays_main_content.visibility = View.VISIBLE
             false
         }
+        val textViewId = search_view.findViewById(android.support.v7.appcompat.R.id.search_src_text) as EditText
+        setCursorPointerColor(textViewId, getAccentColor(this))
+        setCursorDrawableColor(textViewId, getAccentColor(this))
+
 
         mViewPager = container
 
