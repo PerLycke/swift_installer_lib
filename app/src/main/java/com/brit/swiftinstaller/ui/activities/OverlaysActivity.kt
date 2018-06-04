@@ -153,6 +153,9 @@ class OverlaysActivity : ThemeActivity() {
             val apps = mPagerAdapter!!.getAppsCount(container.currentItem)
             if (checked == apps) {
                 mPagerAdapter!!.selectAll(container.currentItem, false)
+                if (select_all_btn.isChecked) {
+                    select_all_btn.isChecked = false
+                }
             } else {
                 mPagerAdapter!!.selectAll(container.currentItem, true)
             }
