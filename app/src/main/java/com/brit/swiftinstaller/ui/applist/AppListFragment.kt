@@ -197,6 +197,7 @@ class AppListFragment : Fragment() {
                         appName.setTextColor(Color.parseColor("#4dffffff"))
                         appCheckBox.buttonTintList = ColorStateList(arrayOf<IntArray>(appCheckBox.drawableState),
                                 intArrayOf(Color.parseColor("#4dffffff")))
+                        view.isClickable = false
                     }
                     if (incompatible) {
                         appName.alpha = 0.3f
