@@ -27,6 +27,12 @@ class AppsTabPagerAdapter(fm: FragmentManager, val summary: Boolean, vararg tabs
         }
     }
 
+    fun setAppCheckBoxClickListener(listener: AppListFragment.AppCheckBoxClickListener) {
+        mFragments.forEach {
+            it.appCheckBoxClickListener = listener
+        }
+    }
+
     fun querySearch(tab: Int, query: String) {
         mFragments[tab].querySearch(query)
     }

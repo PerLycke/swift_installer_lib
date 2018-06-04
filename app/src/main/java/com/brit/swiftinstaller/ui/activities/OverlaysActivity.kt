@@ -114,6 +114,13 @@ class OverlaysActivity : ThemeActivity() {
                 dialog.show()
             }
         })
+        mPagerAdapter!!.setAppCheckBoxClickListener(object : AppListFragment.AppCheckBoxClickListener {
+            override fun onCheckBoxClick(appItem: AppItem) {
+                if (select_all_btn.isChecked) {
+                    select_all_btn.isChecked = false
+                }
+            }
+        })
         mPagerAdapter!!.setRequiredApps(INSTALL_TAB, requiredApps)
 
         search_view.setOnSearchClickListener {
@@ -138,8 +145,12 @@ class OverlaysActivity : ThemeActivity() {
 
         select_all_btn.setOnClickListener {
             val checked = mPagerAdapter!!.getCheckedCount(container.currentItem)
-            val check = checked < (mPagerAdapter!!.getAppsCount(container.currentItem) / 2)
-            mPagerAdapter!!.selectAll(container.currentItem, check)
+            val apps = mPagerAdapter!!.getAppsCount(container.currentItem)
+            if (checked == apps) {
+                mPagerAdapter!!.selectAll(container.currentItem, false)
+            } else {
+                mPagerAdapter!!.selectAll(container.currentItem, true)
+            }
             mPagerAdapter!!.notifyFragmentDataSetChanged(container.currentItem)
         }
 
@@ -173,6 +184,9 @@ class OverlaysActivity : ThemeActivity() {
                 String.format("%06x", getAccentColor(this)).substring(2))
         toolbar_subtitle_current_bg.text = getString(R.string.hex_string,
                 String.format("%06x", getBackgroundColor(this)).substring(2))
+        if (select_all_btn.isChecked) {
+            select_all_btn.isChecked = false
+        }
 
         updateAdapter()
     }

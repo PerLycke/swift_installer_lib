@@ -31,6 +31,7 @@ class AppListFragment : Fragment() {
     private val mChecked = SparseBooleanArray()
 
     var alertIconClickListener: AlertIconClickListener? = null
+    var appCheckBoxClickListener: AppCheckBoxClickListener? = null
 
     private var mSummary = false
     private var mFailedTab = false
@@ -171,6 +172,9 @@ class AppListFragment : Fragment() {
                 view.setOnClickListener(clickListener)
                 appCheckBox.visibility = View.VISIBLE
                 appCheckBox.setOnCheckedChangeListener(checkListener)
+                appCheckBox.setOnClickListener {
+                    appCheckBoxClickListener!!.onCheckBoxClick(mApps[mVisible[adapterPosition]])
+                }
                 appCheckBox.isChecked = mChecked.get(mVisible[adapterPosition], false)
                 appCheckBox.buttonTintList = null
                 alertIcon.visibility = View.GONE
@@ -229,5 +233,9 @@ class AppListFragment : Fragment() {
 
     interface AlertIconClickListener {
         fun onAlertIconClick(appItem: AppItem)
+    }
+
+    interface AppCheckBoxClickListener {
+        fun onCheckBoxClick(appItem: AppItem)
     }
 }
