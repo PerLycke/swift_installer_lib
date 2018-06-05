@@ -1,6 +1,7 @@
 package com.brit.swiftinstaller.ui.applist
 
 import android.content.res.ColorStateList
+import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -127,6 +128,20 @@ class AppListFragment : Fragment() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             holder.bindAppItem(mApps[mVisible[position]])
+
+            if (position + 1 == itemCount) {
+                setBottomMargin(holder.itemView, (64 * Resources.getSystem().displayMetrics.density).toInt())
+            } else {
+                setBottomMargin(holder.itemView, 0);
+            }
+        }
+
+        private fun setBottomMargin(view: View, bottomMargin: Int) {
+            if (view.layoutParams is ViewGroup.MarginLayoutParams) {
+                val params = view.layoutParams as ViewGroup.MarginLayoutParams
+                params.setMargins(params.leftMargin, params.topMargin, params.rightMargin, bottomMargin)
+                view.requestLayout()
+            }
         }
 
         override fun getItemCount(): Int {
