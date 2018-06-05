@@ -1,5 +1,6 @@
 package com.brit.swiftinstaller.ui.applist
 
+import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
@@ -8,10 +9,9 @@ import com.brit.swiftinstaller.ui.activities.InstallSummaryActivity
 class AppsTabPagerAdapter(fm: FragmentManager, val summary: Boolean, vararg tabs: Int) : FragmentPagerAdapter(fm) {
 
     private val mApps = HashMap<Int, ArrayList<AppItem>>()
-
     private var mFragments: ArrayList<AppListFragment> = ArrayList()
-
     private val requiredApps = HashMap<Int, Array<String>>()
+    private val mHandler = Handler()
 
     init {
         for (index in tabs) {
@@ -40,7 +40,7 @@ class AppsTabPagerAdapter(fm: FragmentManager, val summary: Boolean, vararg tabs
     }
 
     fun querySearch(tab: Int, query: String) {
-        mFragments[tab].querySearch(query)
+        mHandler.post { mFragments[tab].querySearch(query) }
     }
 
     fun addApp(tab: Int, app: AppItem) {
@@ -86,9 +86,11 @@ class AppsTabPagerAdapter(fm: FragmentManager, val summary: Boolean, vararg tabs
     }
 
     fun notifyFragmentDataSetChanged(position: Int) {
-        mFragments[position].setAppList(mApps[position])
-        if (requiredApps[position] != null) {
-            mFragments[position].setRequiredAppList(requiredApps[position]!!)
+        mHandler.post {
+            mFragments[position].setAppList(mApps[position])
+            if (requiredApps[position] != null) {
+                mFragments[position].setRequiredAppList(requiredApps[position]!!)
+            }
         }
     }
 

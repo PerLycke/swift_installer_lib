@@ -133,6 +133,8 @@ class OverlaysActivity : ThemeActivity() {
 
         search_view.setOnSearchClickListener {
             toolbar_overlays_main_content.visibility = View.GONE
+            select_all_btn.isClickable = false
+            select_all_btn.alpha = 0.2f
         }
         search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -145,7 +147,7 @@ class OverlaysActivity : ThemeActivity() {
             }
         })
         search_view.setOnCloseListener {
-            toolbar_overlays_main_content.visibility = View.VISIBLE
+            onClose()
             false
         }
         val textViewId = search_view.findViewById(android.support.v7.appcompat.R.id.search_src_text) as EditText
@@ -189,6 +191,21 @@ class OverlaysActivity : ThemeActivity() {
 
         if (intent.hasExtra("tab")) {
             mViewPager.currentItem = intent.getIntExtra("tab", 0)
+        }
+    }
+
+    private fun onClose() {
+        toolbar_overlays_main_content.visibility = View.VISIBLE
+        select_all_btn.isClickable = true
+        select_all_btn.alpha = 1.0f
+    }
+
+    override fun onBackPressed() {
+        if (!search_view.isIconified) {
+            search_view.onActionViewCollapsed()
+            onClose()
+        } else {
+            super.onBackPressed();
         }
     }
 

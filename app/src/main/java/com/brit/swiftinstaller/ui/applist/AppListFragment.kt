@@ -3,7 +3,6 @@ package com.brit.swiftinstaller.ui.applist
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -24,7 +23,6 @@ class AppListFragment : Fragment() {
 
     var mApps: ArrayList<AppItem> = ArrayList()
     var mVisible: ArrayList<Int> = ArrayList()
-    private val mHandler = Handler()
 
     var requiredApps: Array<String> = emptyArray()
 
@@ -111,10 +109,8 @@ class AppListFragment : Fragment() {
         mVisible.clear()
         mApps.addAll(apps!!)
         mVisible.addAll(mApps.indices)
-        mHandler.post {
-            if (app_list_view != null && !app_list_view.isComputingLayout) {
-                app_list_view.adapter?.notifyDataSetChanged()
-            }
+        if (app_list_view != null && !app_list_view.isComputingLayout) {
+            app_list_view.adapter?.notifyDataSetChanged()
         }
     }
 
