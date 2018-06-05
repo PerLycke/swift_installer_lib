@@ -103,7 +103,7 @@
 
     <TextView
         android:id="@+id/required"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/required"
         android:textColor="@color/minimal_green"
@@ -111,6 +111,7 @@
         android:textStyle="bold|italic"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/app_name"
         app:layout_constraintStart_toStartOf="@+id/app_name"
         app:layout_constraintTop_toBottomOf="@+id/app_name"
         tools:ignore="SmallSp" />
