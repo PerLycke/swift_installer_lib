@@ -122,6 +122,13 @@ class OverlaysActivity : ThemeActivity() {
                 }
             }
         })
+        mPagerAdapter!!.setViewClickListener(object : AppListFragment.ViewClickListener {
+            override fun onClick(appItem: AppItem) {
+                if (select_all_btn.isChecked) {
+                    select_all_btn.isChecked = false
+                }
+            }
+        })
         mPagerAdapter!!.setRequiredApps(INSTALL_TAB, requiredApps)
 
         search_view.setOnSearchClickListener {

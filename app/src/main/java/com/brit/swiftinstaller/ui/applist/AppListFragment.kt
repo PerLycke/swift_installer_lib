@@ -32,6 +32,7 @@ class AppListFragment : Fragment() {
 
     var alertIconClickListener: AlertIconClickListener? = null
     var appCheckBoxClickListener: AppCheckBoxClickListener? = null
+    var viewClickListener: ViewClickListener? = null
 
     private var mSummary = false
     private var mFailedTab = false
@@ -150,9 +151,9 @@ class AppListFragment : Fragment() {
 
             init {
                 clickListener = {
+                    viewClickListener!!.onClick(mApps[mVisible[adapterPosition]])
                     appCheckBox.toggle()
                 }
-
                 checkListener = { _: CompoundButton, checked: Boolean ->
                     mChecked.put(mVisible[adapterPosition], checked)
                 }
@@ -238,5 +239,9 @@ class AppListFragment : Fragment() {
 
     interface AppCheckBoxClickListener {
         fun onCheckBoxClick(appItem: AppItem)
+    }
+
+    interface ViewClickListener {
+        fun onClick(appItem: AppItem)
     }
 }

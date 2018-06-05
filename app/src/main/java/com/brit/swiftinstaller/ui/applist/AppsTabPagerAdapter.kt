@@ -33,6 +33,12 @@ class AppsTabPagerAdapter(fm: FragmentManager, val summary: Boolean, vararg tabs
         }
     }
 
+    fun setViewClickListener(listener: AppListFragment.ViewClickListener) {
+        mFragments.forEach {
+            it.viewClickListener = listener
+        }
+    }
+
     fun querySearch(tab: Int, query: String) {
         mFragments[tab].querySearch(query)
     }
