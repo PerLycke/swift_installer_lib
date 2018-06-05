@@ -103,7 +103,7 @@
 
     <TextView
         android:id="@+id/required"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/required"
         android:textColor="@color/minimal_green"
