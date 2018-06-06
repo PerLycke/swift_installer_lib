@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="76dp"
     android:paddingEnd="24dp"
+    android:background="@drawable/item_background"
     tools:ignore="RtlSymmetry">
 
     <TextView
@@ -68,9 +69,10 @@
         android:id="@+id/alert_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
         android:contentDescription="@string/image"
+        android:padding="4dp"
         android:visibility="gone"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
         app:layout_constraintBottom_toBottomOf="@+id/app_item_checkbox"
         app:layout_constraintEnd_toStartOf="@+id/app_item_checkbox"
         app:layout_constraintTop_toTopOf="@+id/app_item_checkbox"
@@ -80,14 +82,15 @@
         android:id="@+id/download_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
+        android:contentDescription="@string/image"
         android:onClick="gboardInfo"
+        android:padding="4dp"
         android:visibility="gone"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
         app:layout_constraintBottom_toBottomOf="@+id/alert_icon"
         app:layout_constraintEnd_toStartOf="@+id/alert_icon"
         app:layout_constraintTop_toTopOf="@+id/alert_icon"
-        app:srcCompat="@drawable/ic_download"
-        android:contentDescription="@string/image" />
+        app:srcCompat="@drawable/ic_download" />
 
     <ImageView
         android:id="@+id/imageView"

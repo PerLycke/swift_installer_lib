@@ -32,6 +32,7 @@
         android:contentDescription="@string/image"
         android:padding="8dp"
         android:tint="@color/minimal_red"
+        android:foreground="@drawable/item_background_rounded"
         app:layout_constraintBottom_toBottomOf="@+id/failed_info_card_layout"
         app:layout_constraintEnd_toEndOf="@+id/failed_info_card_layout"
         app:layout_constraintTop_toTopOf="@+id/failed_info_card_layout"

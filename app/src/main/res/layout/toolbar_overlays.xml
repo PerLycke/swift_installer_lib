@@ -22,16 +22,21 @@
             android:layout_marginStart="16dp"
             android:contentDescription="@string/image"
             android:onClick="overlaysBackClick"
+            android:paddingBottom="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="8dp"
+            android:background="?android:selectableItemBackgroundBorderless"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_back" />
+            app:srcCompat="@drawable/ic_back"
+            tools:ignore="RtlSymmetry" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="16dp"
             android:fontFamily="sans-serif-condensed"
             android:paddingTop="4dp"
             android:text="@string/overlays"
@@ -150,12 +155,13 @@
 
         <ImageView
             android:id="@+id/customize_btn"
-            android:layout_width="32dp"
+            android:layout_width="24dp"
             android:layout_height="36dp"
+            android:layout_marginEnd="8dp"
             android:contentDescription="@string/image"
             android:onClick="customizeBtnClick"
-            android:paddingEnd="8dp"
             android:scaleType="center"
+            android:background="?android:selectableItemBackgroundBorderless"
             app:layout_constraintBottom_toBottomOf="@+id/select_all_btn"
             app:layout_constraintEnd_toStartOf="@+id/select_all_btn"
             app:layout_constraintTop_toTopOf="@+id/select_all_btn"

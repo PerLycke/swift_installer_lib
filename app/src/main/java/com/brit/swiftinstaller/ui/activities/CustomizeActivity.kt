@@ -314,6 +314,7 @@ class CustomizeActivity : ThemeActivity() {
             usePalette = material_theme.isChecked
             updateColor(accentColor, backgroundColor, false, true)
         }
+
         val notifBglistener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
             if (compoundButton.id == R.id.dark_notifications) {
                 dark_notifications.isChecked = b
@@ -328,6 +329,7 @@ class CustomizeActivity : ThemeActivity() {
             darkNotif = dark_notifications.isChecked
             updateColor(accentColor, backgroundColor, false, true)
         }
+
         val shadowListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
             if (buttonView.id == R.id.shadow_disabled) {
                 shadow_disabled.isChecked = isChecked
@@ -339,6 +341,7 @@ class CustomizeActivity : ThemeActivity() {
             notifShadow = shadow_enabled.isChecked
             updateColor(accentColor, backgroundColor, false, true)
         }
+
         val iconListener = CompoundButton.OnCheckedChangeListener { buttonView, _ ->
             when {
                 buttonView.id == R.id.aosp_icons -> {
@@ -391,6 +394,7 @@ class CustomizeActivity : ThemeActivity() {
                 }
             }
         }
+
         val clockListener = CompoundButton.OnCheckedChangeListener { buttonView, _ ->
             when {
                 buttonView.id == R.id.right_clock -> {
@@ -434,6 +438,7 @@ class CustomizeActivity : ThemeActivity() {
                 }
             }
         }
+
         val styleListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
             if (buttonView.id == R.id.default_style) {
                 default_style.isChecked = isChecked
@@ -509,7 +514,7 @@ class CustomizeActivity : ThemeActivity() {
         }
         bottomSheetDialog.show()
 
-        sheetView.personalization_confirm_txt.setOnClickListener {
+        sheetView.personalization_confirm.setOnClickListener {
             bottomSheetDialog.dismiss()
             val apps = ArrayList<String>()
 
@@ -743,7 +748,7 @@ class CustomizeActivity : ThemeActivity() {
             }
         }
 
-        sheetView.personalization_discard_txt.setOnClickListener {
+        sheetView.personalization_cancel.setOnClickListener {
             bottomSheetDialog.dismiss()
             if (parentActivity == "tutorial") {
                 startActivity(Intent(this, MainActivity::class.java))

@@ -3,7 +3,6 @@ package com.brit.swiftinstaller.ui.activities
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
@@ -11,7 +10,6 @@ import android.preference.PreferenceManager
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
-import android.support.v7.widget.Toolbar
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -36,8 +34,7 @@ class MainActivity : ThemeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val myToolbar = findViewById<Toolbar>(R.id.main_toolbar)
-        setSupportActionBar(myToolbar)
+        setSupportActionBar(main_toolbar)
 
         doAsync {
             overlaysList = Utils.sortedOverlaysList(this@MainActivity)

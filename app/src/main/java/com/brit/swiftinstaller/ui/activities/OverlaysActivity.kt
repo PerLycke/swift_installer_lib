@@ -27,6 +27,7 @@ import com.brit.swiftinstaller.utils.Utils.getOverlayPackageName
 import com.brit.swiftinstaller.utils.Utils.isOverlayEnabled
 import com.brit.swiftinstaller.utils.Utils.isOverlayInstalled
 import kotlinx.android.synthetic.main.activity_overlays.*
+import kotlinx.android.synthetic.main.sheet_confirm_uninstall.view.*
 import kotlinx.android.synthetic.main.tab_layout_overlay.*
 import kotlinx.android.synthetic.main.tab_overlays_updates.*
 import kotlinx.android.synthetic.main.toolbar_overlays.*
@@ -205,7 +206,7 @@ class OverlaysActivity : ThemeActivity() {
             search_view.onActionViewCollapsed()
             onClose()
         } else {
-            super.onBackPressed();
+            super.onBackPressed()
         }
     }
 
@@ -311,47 +312,54 @@ class OverlaysActivity : ThemeActivity() {
         bottomSheetDialog.show()
 
         val install = sheetView.findViewById<View>(R.id.install)
-        install.setOnClickListener {
-            val launch = getSharedPreferences("launched", Context.MODE_PRIVATE).getString("launched","first")
-            bottomSheetDialog.dismiss()
+        val uninstall = sheetView.findViewById<View>(R.id.uninstall)
+        val update = sheetView.findViewById<View>(R.id.update)
 
-            when (launch) {
-                "default" -> installAction()
-                "first" -> {
-                    getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "second").apply()
-                    installAction()
+        val sheetListener = View.OnClickListener {
+            when (it) {
+                install -> {
+                    val launch = getSharedPreferences("launched", Context.MODE_PRIVATE).getString("launched","first")
+                    bottomSheetDialog.dismiss()
+
+                    when (launch) {
+                        "default" -> installAction()
+                        "first" -> {
+                            getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "second").apply()
+                            installAction()
+                        }
+                        "second" -> {
+                            val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+                                    .setTitle(R.string.reboot_delay_title)
+                                    .setMessage(R.string.reboot_delay_msg)
+                                    .setPositiveButton(R.string.proceed, { dialogInterface, _ ->
+                                        getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "default").apply()
+                                        dialogInterface.dismiss()
+                                        installAction()
+                                    })
+                                    .setNegativeButton(R.string.cancel, { dialogInterface, _ ->
+                                        dialogInterface.dismiss()
+                                    })
+
+                            themeDialog()
+                            val dialog = builder.create()
+                            dialog.show()
+                        }
+                    }
                 }
-                "second" -> {
-                    val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                            .setTitle(R.string.reboot_delay_title)
-                            .setMessage(R.string.reboot_delay_msg)
-                            .setPositiveButton(R.string.proceed, { dialogInterface, _ ->
-                                getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "default").apply()
-                                dialogInterface.dismiss()
-                                installAction()
-                            })
-                            .setNegativeButton(R.string.cancel, { dialogInterface, _ ->
-                                dialogInterface.dismiss()
-                            })
-
-                    themeDialog()
-                    val dialog = builder.create()
-                    dialog.show()
+                uninstall -> {
+                    bottomSheetDialog.dismiss()
+                    uninstallAction()
+                }
+                update -> {
+                    bottomSheetDialog.dismiss()
+                    updateAction()
                 }
             }
         }
 
-        val uninstall = sheetView.findViewById<View>(R.id.uninstall)
-        uninstall.setOnClickListener {
-            bottomSheetDialog.dismiss()
-            uninstallAction()
-        }
-
-        val update = sheetView.findViewById<View>(R.id.update)
-        update.setOnClickListener {
-            bottomSheetDialog.dismiss()
-            updateAction()
-        }
+        install.setOnClickListener(sheetListener)
+        uninstall.setOnClickListener(sheetListener)
+        update.setOnClickListener(sheetListener)
 
         when {
             container.currentItem == INSTALL_TAB -> {
@@ -398,16 +406,14 @@ class OverlaysActivity : ThemeActivity() {
         sheetView.setBackgroundColor(getBackgroundColor(this))
         bottomSheetDialog.show()
 
-        val uninstall = sheetView.findViewById<View>(R.id.confirm_uninstall_txt)
-        uninstall.setOnClickListener {
+        sheetView.confirm_layout.setOnClickListener {
             bottomSheetDialog.dismiss()
             uninstallProgressAction()
 
             Toast.makeText(this, "This can take a lot of time, have patience!", Toast.LENGTH_LONG).show()
         }
 
-        val cancel = sheetView.findViewById<View>(R.id.cancel_uninstall_txt)
-        cancel.setOnClickListener {
+        sheetView.cancel_layout.setOnClickListener {
             bottomSheetDialog.dismiss()
         }
     }

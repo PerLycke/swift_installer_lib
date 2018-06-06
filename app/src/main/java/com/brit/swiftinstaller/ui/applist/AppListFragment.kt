@@ -132,7 +132,7 @@ class AppListFragment : Fragment() {
             if (position + 1 == itemCount) {
                 setBottomMargin(holder.itemView, (64 * Resources.getSystem().displayMetrics.density).toInt())
             } else {
-                setBottomMargin(holder.itemView, 0);
+                setBottomMargin(holder.itemView, 0)
             }
         }
 
@@ -197,6 +197,7 @@ class AppListFragment : Fragment() {
                 if (mSummary) {
                     appCheckBox.visibility = View.GONE
                     appCheckBox.isEnabled = false
+                    view.isClickable = false
                     if (mFailedTab) {
                         alertIcon.visibility = View.VISIBLE
                         alertIcon.setImageDrawable(context!!.getDrawable(R.drawable.ic_alert))
