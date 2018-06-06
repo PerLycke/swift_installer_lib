@@ -1,12 +1,14 @@
 package com.brit.swiftinstaller.ui.activities
 
 import android.os.Bundle
+import android.os.Handler
 import android.support.v7.app.AlertDialog
 import com.brit.swiftinstaller.R
 
 class UninstallFinishedActivity : ThemeActivity() {
 
     lateinit var dialog: AlertDialog
+    private val mHandler = Handler()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +31,7 @@ class UninstallFinishedActivity : ThemeActivity() {
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
-            dialog.show()
+            mHandler.post { dialog.show() }
         }
     }
 

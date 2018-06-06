@@ -4,6 +4,7 @@
     <item android:drawable="?android:selectableItemBackgroundBorderless" />
     <item>
         <selector xmlns:android="http://schemas.android.com/apk/res/android">
+            <item android:state_enabled="false" android:drawable="@drawable/ic_select_all_disabled" />
             <item android:state_checked="true" android:drawable="@drawable/ic_select_all_checked" />
             <item android:state_checked="false" android:drawable="@drawable/ic_select_all_unchecked" />
         </selector>

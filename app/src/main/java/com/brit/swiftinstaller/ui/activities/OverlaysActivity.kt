@@ -32,6 +32,7 @@ import kotlinx.android.synthetic.main.tab_layout_overlay.*
 import kotlinx.android.synthetic.main.tab_overlays_updates.*
 import kotlinx.android.synthetic.main.toolbar_overlays.*
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
 import java.io.File
 import java.io.FileNotFoundException
@@ -135,7 +136,7 @@ class OverlaysActivity : ThemeActivity() {
         search_view.setOnSearchClickListener {
             toolbar_overlays_main_content.visibility = View.GONE
             select_all_btn.isClickable = false
-            select_all_btn.alpha = 0.2f
+            select_all_btn.isEnabled = false
         }
         search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -198,7 +199,7 @@ class OverlaysActivity : ThemeActivity() {
     private fun onClose() {
         toolbar_overlays_main_content.visibility = View.VISIBLE
         select_all_btn.isClickable = true
-        select_all_btn.alpha = 1.0f
+        select_all_btn.isEnabled = true
     }
 
     override fun onBackPressed() {
@@ -390,6 +391,7 @@ class OverlaysActivity : ThemeActivity() {
     private fun installAction() {
         val checked = getCheckedItems(mViewPager.currentItem)
         if (checked.isEmpty()) {
+            toast("No apps checked. Nothing to do")
             return
         }
         val intent = Intent(this, InstallActivity::class.java)
@@ -400,6 +402,11 @@ class OverlaysActivity : ThemeActivity() {
     }
 
     private fun uninstallAction() {
+        val checked = getCheckedItems(mViewPager.currentItem)
+        if (checked.isEmpty()) {
+            toast("No apps checked. Nothing to do")
+            return
+        }
         val bottomSheetDialog = BottomSheetDialog(this)
         val sheetView = View.inflate(this, R.layout.sheet_confirm_uninstall, null)
         bottomSheetDialog.setContentView(sheetView)
@@ -408,7 +415,7 @@ class OverlaysActivity : ThemeActivity() {
 
         sheetView.confirm_layout.setOnClickListener {
             bottomSheetDialog.dismiss()
-            uninstallProgressAction()
+            uninstallProgressAction(checked)
 
             Toast.makeText(this, "This can take a lot of time, have patience!", Toast.LENGTH_LONG).show()
         }
@@ -418,9 +425,8 @@ class OverlaysActivity : ThemeActivity() {
         }
     }
 
-    private fun uninstallProgressAction() {
+    private fun uninstallProgressAction(checked: ArrayList<AppItem>) {
         val intent = Intent(this, InstallActivity::class.java)
-        val checked = getCheckedItems(mViewPager.currentItem)
         val apps = ArrayList<String>()
         checked.mapTo(apps) { it.packageName }
         intent.putStringArrayListExtra("apps", apps)
@@ -431,6 +437,7 @@ class OverlaysActivity : ThemeActivity() {
     private fun updateAction() {
         val checked = getCheckedItems(mViewPager.currentItem)
         if (checked.isEmpty()) {
+            toast("No apps checked. Nothing to do")
             return
         }
         UpdateChecker(this, object : UpdateChecker.Callback() {
