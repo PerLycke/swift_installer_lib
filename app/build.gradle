@@ -20,7 +20,7 @@ android {
     }
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "Installer${versionName}.apk"
+            outputFileName = "Installer${versionName}_${versionCode}.apk"
         }
     }
 }
