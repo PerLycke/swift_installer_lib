@@ -30,7 +30,6 @@ class InstallActivity : ThemeActivity() {
     private lateinit var progressCount: TextView
     private lateinit var progressPercent: TextView
     private val installListener = InstallListener()
-    private val mHandler = Handler()
 
     private var uninstall = false
     private var update = false
@@ -127,7 +126,7 @@ class InstallActivity : ThemeActivity() {
             progressCount.visibility = View.INVISIBLE
             progressPercent.visibility = View.INVISIBLE
         }
-        mHandler.post { dialog?.show() }
+        dialog?.show()
 
         if (uninstall) {
             if (!ShellUtils.isRootAvailable) {
