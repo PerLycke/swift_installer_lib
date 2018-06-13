@@ -289,7 +289,9 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         manifest.append("package=\"${Utils.getOverlayPackageName(targetPackage)}\"\n")
         manifest.append("android:versionCode=\"${getAppVersion(context, targetPackage) + 1}\"\n")
         manifest.append("android:versionName=\"${getAppVersion(context, targetPackage) + 1}\">\n")
-        manifest.append("<uses-permission android:name=\"com.samsung.android.permission.SAMSUNG_OVERLAY_COMPONENT\" />\n")
+        if (!NO_PERMISSION_PACKAGES.contains(targetPackage)) {
+            manifest.append("<uses-permission android:name=\"com.samsung.android.permission.SAMSUNG_OVERLAY_COMPONENT\" />\n")
+        }
         manifest.append("<overlay ")
         manifest.append("android:priority=\"1\" ")
         manifest.append("android:targetPackage=\"$targetPackage\"/>\n")

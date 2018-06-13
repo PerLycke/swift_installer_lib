@@ -156,6 +156,7 @@ class AppListFragment : Fragment() {
             private var alertIcon: ImageView = view.findViewById(R.id.alert_icon)
             private var downloadIcon: ImageView = view.findViewById(R.id.download_icon)
             private var required: TextView = view.findViewById(R.id.required)
+            private var blockedPackagesAlert: ImageView = view.findViewById(R.id.blocked_packages_alert)
 
             private val checkListener: (CompoundButton, Boolean) -> Unit
             private val clickListener: (View) -> Unit
@@ -235,6 +236,10 @@ class AppListFragment : Fragment() {
                     if (appName.text.contains("Gboard")) {
                         downloadIcon.visibility = View.VISIBLE
                         downloadIcon.setColorFilter(getAccentColor(context!!))
+                    }
+                    if (appName.text.contains("Samsung Music") || appName.text.contains("Voice Recorder")) {
+                        blockedPackagesAlert.visibility = View.VISIBLE
+                        blockedPackagesAlert.setColorFilter(getAccentColor(context!!))
                     }
                 }
 

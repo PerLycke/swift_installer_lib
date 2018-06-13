@@ -29,6 +29,8 @@ const val KEY_OVERLAYS_TO_UNINSTALL = "overlays_to_uninstall"
 const val KEY_DARK_NOTIF_BG = "dark_notif_bg"
 const val KEY_ALPHA = "alpha"
 
+val NO_PERMISSION_PACKAGES = arrayListOf("com.sec.android.app.music", "com.sec.android.app.voicenote")
+
 fun getAccentColor(context: Context): Int {
     return PreferenceManager.getDefaultSharedPreferences(context).getInt(KEY_ACCENT_COLOR, RomInfo.getRomInfo(context).defaultAccent)
 }

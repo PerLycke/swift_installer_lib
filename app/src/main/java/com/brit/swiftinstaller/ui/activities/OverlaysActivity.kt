@@ -500,4 +500,15 @@ class OverlaysActivity : ThemeActivity() {
         val dialog = builder.create()
         dialog.show()
     }
+    fun blockedPackagesInfo(view: View) {
+        val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+                .setTitle(R.string.blocked_packages_title)
+                .setMessage(R.string.blocked_packages_message)
+                .setNegativeButton(R.string.ok, { dialogInterface, _ ->
+                    dialogInterface.dismiss()
+                })
+        themeDialog()
+        val dialog = builder.create()
+        dialog.show()
+    }
 }
