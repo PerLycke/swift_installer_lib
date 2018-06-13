@@ -126,4 +126,6 @@
     <string name="unsupported">Unsupported, please uninstall</string>
     <string name="qs_transparency">Quick settings transparency:</string>
     <string name="whats_this">What\'s this?</string>
+    <string name="blocked_packages_title">Info</string>
+    <string name="blocked_packages_message">Due to Samsung restrictions, this overlay won\'t be enabled on its own. After you install the overlays and reboot, you will just need to run the enable script from your desktop or laptop to make it work correctly. You can find the link of script in Play Store description of Swift Installer.</string>
 </resources>

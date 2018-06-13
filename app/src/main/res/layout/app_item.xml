@@ -93,6 +93,20 @@
         app:srcCompat="@drawable/ic_download" />
 
     <ImageView
+        android:id="@+id/blocked_packages_alert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/image"
+        android:onClick="blockedPackagesInfo"
+        android:padding="4dp"
+        android:visibility="gone"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        app:layout_constraintBottom_toBottomOf="@+id/alert_icon"
+        app:layout_constraintEnd_toStartOf="@+id/alert_icon"
+        app:layout_constraintTop_toTopOf="@+id/alert_icon"
+        app:srcCompat="@drawable/ic_alert" />
+
+    <ImageView
         android:id="@+id/imageView"
         android:layout_width="0dp"
         android:layout_height="0.5dp"
