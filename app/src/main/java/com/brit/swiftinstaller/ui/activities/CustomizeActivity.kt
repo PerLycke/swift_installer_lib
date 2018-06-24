@@ -562,6 +562,9 @@ class CustomizeActivity : ThemeActivity() {
             }
 
             if (darkNotif != oldNotifbg) {
+                if (!darkNotif) {
+                    notifShadow = false
+                }
                 setUseDarkNotifBg(this, darkNotif)
                 checkAndAddApp(apps, "android")
             }
