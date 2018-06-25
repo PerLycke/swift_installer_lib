@@ -194,6 +194,7 @@ class AppListFragment : Fragment() {
                 alertIcon.setImageDrawable(context!!.getDrawable(R.drawable.ic_info))
                 required.visibility = View.GONE
                 downloadIcon.visibility = View.GONE
+                blockedPackagesAlert.visibility = View.GONE
 
                 if (mSummary) {
                     appCheckBox.visibility = View.GONE
