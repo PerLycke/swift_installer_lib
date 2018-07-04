@@ -8,7 +8,7 @@ android {
         applicationId "com.brit.swiftinstaller"
         minSdkVersion 26
         targetSdkVersion 27
-        versionCode 39
+        versionCode 40
         versionName "4.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
