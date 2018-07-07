@@ -538,7 +538,8 @@ class CustomizeActivity : ThemeActivity() {
                     "com.samsung.android.themestore",
                     "com.android.settings",
                     "com.android.systemui",
-                    "com.samsung.android.app.aodservice"
+                    "com.samsung.android.app.aodservice",
+                    "android"
             )
 
             if (oldAccent != accentColor) {
