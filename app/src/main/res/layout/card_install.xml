@@ -114,16 +114,6 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="0" />
 
-        <ProgressBar
-            android:id="@+id/active_count_loading"
-            style="@style/?android:attr/progressBarStyle"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_marginStart="4dp"
-            app:layout_constraintBottom_toBottomOf="@+id/active_txt"
-            app:layout_constraintStart_toEndOf="@+id/active_txt"
-            app:layout_constraintTop_toTopOf="@+id/active_txt" />
-
     </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

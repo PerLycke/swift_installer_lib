@@ -111,7 +111,6 @@ class MainActivity : ThemeActivity() {
 
         UpdateChecker(this, object : UpdateChecker.Callback() {
             override fun finished(installedCount: Int, updates: ArrayList<String>) {
-                active_count_loading.visibility = View.GONE
                 active_count.text = String.format("%d", installedCount)
                 if (updates.isEmpty()) {
                     card_update.visibility = View.GONE
