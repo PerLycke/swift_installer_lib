@@ -128,4 +128,7 @@
     <string name="whats_this">What\'s this?</string>
     <string name="blocked_packages_title">Info</string>
     <string name="blocked_packages_message">Due to Samsung restrictions, this overlay won\'t be enabled on its own. After you install the overlays and reboot, you will just need to run the enable script from your desktop or laptop to make it work correctly. You can find the script in Changelog document whose link can be found in Play Store description of Swift Installer.</string>
+    <string name="empty_list_inactive">All overlays active</string>
+    <string name="empty_list_active">No active overlays</string>
+    <string name="empty_list_updates">No updates available</string>
 </resources>

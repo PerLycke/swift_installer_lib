@@ -32,11 +32,9 @@ object IdLists {
     )
 
     val bgIds = arrayListOf(
-            R.id.app_list_root,
             R.id.customize_root,
             R.id.installation_summary_root,
             R.id.overlays_root,
-            R.id.app_item_root,
             R.id.main_toolbar,
             R.id.content_main_root,
             R.id.customize_bg_root,

@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -19,6 +20,7 @@ import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.utils.MaterialPalette
 import com.brit.swiftinstaller.utils.UpdateChecker
 import com.brit.swiftinstaller.utils.Utils
+import com.brit.swiftinstaller.utils.getAccentColor
 import kotlinx.android.synthetic.main.card_compatibility_info.*
 import kotlinx.android.synthetic.main.card_install.*
 import kotlinx.android.synthetic.main.card_update.*
@@ -36,6 +38,8 @@ class MainActivity : ThemeActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(main_toolbar)
+
+        update_checker_spinner.indeterminateDrawable.setColorFilter(getAccentColor(this), PorterDuff.Mode.SRC_ATOP)
 
         doAsync {
             Utils.enableAllOverlays(this@MainActivity)
@@ -109,9 +113,13 @@ class MainActivity : ThemeActivity() {
     override fun onResume() {
         super.onResume()
 
+        card_install.isClickable = false
+
         UpdateChecker(this, object : UpdateChecker.Callback() {
             override fun finished(installedCount: Int, updates: ArrayList<String>) {
                 active_count.text = String.format("%d", installedCount)
+                update_checker_spinner.visibility = View.GONE
+                card_install.isClickable = true
                 if (updates.isEmpty()) {
                     card_update.visibility = View.GONE
                 } else {

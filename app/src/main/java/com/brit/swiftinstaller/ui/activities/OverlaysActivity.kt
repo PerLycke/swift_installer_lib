@@ -13,6 +13,7 @@ import android.support.design.widget.BottomSheetDialog
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.SearchView
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
@@ -154,12 +155,42 @@ class OverlaysActivity : ThemeActivity() {
                 val checked = mPagerAdapter!!.getCheckedCount(position)
                 select_all_btn.isChecked =
                         checked == mPagerAdapter!!.getAppsCount(position) && checked > 0
+                setBackgroundImage()
             }
 
         })
 
         if (intent.hasExtra("tab")) {
             mViewPager.currentItem = intent.getIntExtra("tab", 0)
+        }
+    }
+
+    private fun setBackgroundImage() {
+
+        if (mPagerAdapter!!.getAppsCount(container.currentItem) == 0) {
+            when (container.currentItem) {
+                0 -> {
+                    empty_list_image.setImageDrawable(getDrawable(R.drawable.ic_empty_inactive))
+                    empty_list_image.alpha = 0.2f
+                    empty_list_text.text = getString(R.string.empty_list_inactive)
+                    empty_list_text.alpha = 0.2f
+                }
+                1 -> {
+                    empty_list_image.setImageDrawable(getDrawable(R.drawable.ic_empty_active))
+                    empty_list_image.alpha = 0.2f
+                    empty_list_text.text = getString(R.string.empty_list_active)
+                    empty_list_text.alpha = 0.2f
+                }
+                2 -> {
+                    empty_list_image.setImageDrawable(getDrawable(R.drawable.ic_empty_updates))
+                    empty_list_image.alpha = 0.2f
+                    empty_list_text.text = getString(R.string.empty_list_updates)
+                    empty_list_text.alpha = 0.2f
+                }
+            }
+        } else {
+            empty_list_image.setImageDrawable(null)
+            empty_list_text.text = ""
         }
     }
 
@@ -246,6 +277,7 @@ class OverlaysActivity : ThemeActivity() {
                     update_tab_indicator.visibility = View.VISIBLE
                 }
             }
+            setBackgroundImage()
         }
     }
 
