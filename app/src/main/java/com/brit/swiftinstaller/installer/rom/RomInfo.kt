@@ -14,8 +14,8 @@ import java.io.File
 
 
 @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
-class RomInfo internal constructor(var context: Context, var name: String,
-                                   var version: String) {
+open class RomInfo constructor(var context: Context, var name: String,
+                               var version: String) {
 
     var defaultAccent: Int = 0
 
@@ -132,7 +132,11 @@ class RomInfo internal constructor(var context: Context, var name: String,
         @JvmStatic
         fun getRomInfo(context: Context): RomInfo {
             if (sInfo == null) {
-                sInfo = RomInfo(context, "AOSP", Build.VERSION.RELEASE)
+                if (Build.VERSION_CODES.P == Build.VERSION.SDK_INT) {
+                    sInfo = PRomInfo(context, "P", Build.VERSION.RELEASE)
+                } else {
+                    sInfo = RomInfo(context, "AOSP", Build.VERSION.RELEASE)
+                }
             }
             return sInfo!!
         }

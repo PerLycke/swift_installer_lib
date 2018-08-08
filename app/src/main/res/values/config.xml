@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <bool name="allow_unsupported_systems">false</bool>
+    <bool name="allow_unsupported_systems">true</bool>
 </resources>

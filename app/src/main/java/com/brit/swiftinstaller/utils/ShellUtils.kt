@@ -47,6 +47,10 @@ object ShellUtils {
         return if (s.hasNext()) s.next() else ""
     }
 
+    fun copyFile(path: String, output: String) {
+        runCommand("cp $path $output", true)
+    }
+
     fun compileOverlay(context: Context, themePackage: String, res: String?, manifest: String,
                        overlayPath: String, assetPath: String?, targetInfo: ApplicationInfo?): CommandOutput {
         var output: CommandOutput
