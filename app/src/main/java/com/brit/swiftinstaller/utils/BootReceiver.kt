@@ -13,7 +13,9 @@ class BootReceiver : BroadcastReceiver() {
         if (intent!!.action == Intent.ACTION_BOOT_COMPLETED ||
                 intent.action == "android.intent.action.QUICKBOOT_POWERON") {
             Log.d("TEST", "SwiftInstaller BootReceiver")
-            Utils.enableAllOverlays(context!!)
+            val enable = Intent(context, EnableOverlaysActivity::class.java)
+            enable.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context!!.applicationContext.startActivity(enable)
             if (BuildConfig.DEBUG) {
                 val filter = IntentFilter(Intent.ACTION_PACKAGE_ADDED)
                 filter.addAction(Intent.ACTION_PACKAGE_CHANGED)
@@ -24,5 +26,4 @@ class BootReceiver : BroadcastReceiver() {
             }
         }
     }
-
 }

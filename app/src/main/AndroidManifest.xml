@@ -44,6 +44,9 @@
             android:launchMode="singleInstance"
             android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.BottomSheetDialog" />
+        <activity android:name="com.brit.swiftinstaller.utils.EnableOverlaysActivity"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.NoDisplay" />
 
         <service android:name="com.brit.swiftinstaller.InstallerService"
             android:permission="android.permission.BIND_JOB_SERVICE"
