@@ -6,7 +6,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.os.Build
-import android.system.ErrnoException
 import android.system.Os
 import android.text.TextUtils
 import android.util.Log
@@ -16,6 +15,7 @@ import java.lang.reflect.InvocationTargetException
 import java.security.KeyStore
 import java.security.PrivateKey
 import java.security.cert.X509Certificate
+import java.util.*
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 object ShellUtils {
@@ -63,7 +63,8 @@ object ShellUtils {
                        overlayPath: String, assetPath: String?, targetInfo: ApplicationInfo?): CommandOutput {
         var output: CommandOutput
         val overlay = File(overlayPath)
-        val unsigned = File(overlay.parent, "unsigned_" + overlay.name)
+        val unsigned_unaligned = File(overlay.parent, "unsigned_unaligned" + overlay.name)
+        val unsigned = File(overlay.parent, "unsigned_${overlay.name}")
         val overlayFolder = File(context.cacheDir.toString() + "/" + themePackage + "/overlays")
         if (!overlayFolder.exists()) {
             if (!overlayFolder.mkdirs()) {
@@ -71,6 +72,9 @@ object ShellUtils {
             }
         }
 
+        if (fileExists(unsigned_unaligned.absolutePath) && !deleteFileShell(unsigned_unaligned.absolutePath)) {
+            Log.e(TAG, "Unable to delete " + unsigned_unaligned.absolutePath)
+        }
         if (fileExists(unsigned.absolutePath) && !deleteFileShell(unsigned.absolutePath)) {
             Log.e(TAG, "Unable to delete " + unsigned.absolutePath)
         }
@@ -92,7 +96,7 @@ object ShellUtils {
         if (targetInfo != null && targetInfo.packageName != "android") {
             cmd.append(" -I ").append(targetInfo.sourceDir)
         }
-        cmd.append(" -F ").append(unsigned.absolutePath)
+        cmd.append(" -F ").append(unsigned_unaligned.absolutePath)
         //ShellUtils.runCommand(cmd.toString());
         try {
             val aapt = Runtime.getRuntime().exec(cmd.toString().split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
@@ -104,6 +108,16 @@ object ShellUtils {
         } catch (e: Exception) {
             output = CommandOutput("", "", 1)
             e.printStackTrace()
+        }
+
+        // Zipalign
+        if (unsigned_unaligned.exists()) {
+            val zipalign = StringBuilder()
+            zipalign.append(getZipalign(context))
+            zipalign.append(" 4")
+            zipalign.append(" ${unsigned_unaligned.absolutePath}")
+            zipalign.append(" ${unsigned.absolutePath}")
+            runCommand(zipalign.toString())
         }
 
         if (unsigned.exists()) {
@@ -138,34 +152,32 @@ object ShellUtils {
     private fun getAapt(context: Context): String? {
         val aapt = File(context.cacheDir, "aapt")
         if (aapt.exists()) return aapt.absolutePath
-        var `in`: InputStream? = null
-        var out: OutputStream? = null
-        try {
-            `in` = context.assets.open("aapt")
-            out = FileOutputStream(aapt)
-            val bytes = ByteArray(1024)
-            var len: Int = `in`.read(bytes)
-            while (len != -1) {
-                out.write(bytes, 0, len)
-                len = `in`.read(bytes)
-            }
-            Os.chmod(aapt.absolutePath, 755)
-            return aapt.absolutePath
-        } catch (e: IOException) {
-            e.printStackTrace()
+        if (!AssetHelper.copyAsset(context.assets, "aapt${getArchString()}", aapt.absolutePath, null)) {
             return null
-        } catch (e: ErrnoException) {
-            e.printStackTrace()
-            return null
-        } finally {
-            try {
-                `in`?.close()
-                out?.close()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-
         }
+        Os.chmod(aapt.absolutePath, 755)
+        return aapt.absolutePath
+    }
+
+    private fun getZipalign(context: Context): String? {
+        val zipalign = File(context.cacheDir, "zipalign")
+        if (zipalign.exists()) return zipalign.absolutePath
+        if (!AssetHelper.copyAsset(context.assets, "zipalign${getArchString()}", zipalign.absolutePath, null)) {
+            return null
+        }
+        Os.chmod(zipalign.absolutePath, 755)
+        return zipalign.absolutePath
+    }
+
+    private fun getArchString(): String {
+        if (Arrays.toString(Build.SUPPORTED_ABIS).contains("86")) {
+            return "86"
+        } else {
+            if (Build.SUPPORTED_64_BIT_ABIS.size > 0) {
+                return "64"
+            }
+        }
+        return ""
     }
 }
 
