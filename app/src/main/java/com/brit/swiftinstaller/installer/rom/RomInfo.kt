@@ -26,9 +26,6 @@ open class RomInfo constructor(var context: Context, var name: String,
     open fun installOverlay(context: Context, targetPackage: String, overlayPath: String) {
         if (ShellUtils.isRootAvailable) {
             runCommand("pm install -r $overlayPath", true)
-            if (!Utils.isSamsungOreo(context)) {
-                runCommand("cmd overlay enable " + Utils.getOverlayPackageName(targetPackage), true)
-            }
         }
     }
 
@@ -127,10 +124,10 @@ open class RomInfo constructor(var context: Context, var name: String,
         @JvmStatic
         fun getRomInfo(context: Context): RomInfo {
             if (sInfo == null) {
-                if (Build.VERSION_CODES.P == Build.VERSION.SDK_INT) {
-                    sInfo = PRomInfo(context, "P", Build.VERSION.RELEASE)
-                } else {
-                    sInfo = RomInfo(context, "AOSP", Build.VERSION.RELEASE)
+                sInfo = when {
+                    Build.VERSION_CODES.P == Build.VERSION.SDK_INT -> PRomInfo(context, Build.VERSION.CODENAME, Build.VERSION.RELEASE)
+                    Utils.isSamsungOreo(context) -> RomInfo(context, Build.VERSION.CODENAME, Build.VERSION.RELEASE)
+                    else -> AOSPRomInfo(context, Build.VERSION.CODENAME, Build.VERSION.RELEASE)
                 }
             }
             return sInfo!!

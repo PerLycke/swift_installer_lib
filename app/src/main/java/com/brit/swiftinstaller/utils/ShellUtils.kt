@@ -51,6 +51,14 @@ object ShellUtils {
         runCommand("cp $path $output", true)
     }
 
+    fun mkdir(path: String) {
+        runCommand("mkdir -p $path", true)
+    }
+
+    fun setPermissions(perms: Int, path: String) {
+        runCommand("chmod $perms $path", true)
+    }
+
     fun compileOverlay(context: Context, themePackage: String, res: String?, manifest: String,
                        overlayPath: String, assetPath: String?, targetInfo: ApplicationInfo?): CommandOutput {
         var output: CommandOutput

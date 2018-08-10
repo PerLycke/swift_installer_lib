@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.drawable.LayerDrawable
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v4.content.ContextCompat
@@ -24,7 +25,9 @@ class TutorialActivity : TutorialActivity() {
         super.onCreate(savedInstanceState)
 
         if (!resources.getBoolean(R.bool.allow_unsupported_systems)) {
-            if (!packageManager.hasSystemFeature("com.samsung.feature.samsung_experience_mobile")) {
+            val samsung = packageManager.getApplicationInfo(packageName,
+                    PackageManager.GET_META_DATA).metaData.getBoolean("is_samsung_only", false)
+            if (samsung && !packageManager.hasSystemFeature("com.samsung.feature.samsung_experience_mobile")) {
                 AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
                         .setTitle("Unsupported")
                         .setMessage("Only supports samsung devices for now.")
