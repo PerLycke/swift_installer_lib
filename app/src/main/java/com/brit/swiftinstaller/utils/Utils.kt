@@ -11,7 +11,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import com.brit.swiftinstaller.ui.applist.AppItem
-import android.util.Log
 
 
 @Suppress("unused")
@@ -104,8 +103,15 @@ object Utils {
     }*/
 
     fun isOverlayEnabled(context: Context, packageName: String): Boolean {
-        return isSamsungOreo(context) ||
-                runCommand("cmd overlay list").output!!.contains(packageName)
+        if (!isSamsungOreo(context)) {
+            val overlays = runCommand("cmd overlay list", true).output
+            for (overlay in overlays!!.split("\n")) {
+                if (overlay.startsWith("[x]") && overlay.contains(packageName)) {
+                    return true
+                }
+            }
+        }
+        return isSamsungOreo(context)
     }
 
     fun isSamsungOreo(context: Context): Boolean {
@@ -185,9 +191,7 @@ object Utils {
                 val pn = overlay.split("]")[1].trim()
                 if (overlay.startsWith("[ ]")) {
                     if (pn.endsWith(".swiftinstaller.overlay")) {
-                        val output = runCommand("cmd overlay enable $pn", true)
-                        Log.d("TEST_ENABLE", "output - ${output.output}")
-                        Log.d("TEST_ENABLE", "error - ${output.error}")
+                        runCommand("cmd overlay enable $pn", true)
                     }
                 }
             }
