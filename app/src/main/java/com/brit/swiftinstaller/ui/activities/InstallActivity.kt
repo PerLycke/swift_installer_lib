@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
+import android.os.Environment
 import android.support.v4.content.LocalBroadcastManager
 import android.view.View
 import android.widget.ProgressBar
@@ -18,6 +19,7 @@ import com.brit.swiftinstaller.utils.InstallerServiceHelper
 import com.brit.swiftinstaller.utils.ShellUtils
 import com.brit.swiftinstaller.utils.Utils
 import kotlinx.android.synthetic.main.progress_dialog_install.view.*
+import java.io.File
 import java.util.ArrayList
 import kotlin.collections.HashMap
 import kotlin.collections.set
@@ -57,6 +59,7 @@ class InstallActivity : ThemeActivity() {
         val intent = Intent(this, InstallSummaryActivity::class.java)
         intent.putExtra("errorMap", Utils.mapToBundle(errorMap))
         intent.putExtra("update", update)
+        File(Environment.getExternalStorageDirectory(), ".swift").deleteRecursively()
         errorMap.keys.forEach {
             if (apps.contains(it)) {
                 apps.remove(it)

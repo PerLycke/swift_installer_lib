@@ -35,6 +35,7 @@ object Utils {
                 continue
             }
             if (info != null) {
+                if (!info.enabled) continue
                 val item = AppItem()
                 item.packageName = pn
                 item.title = info.loadLabel(pm) as String
@@ -76,8 +77,8 @@ object Utils {
 
     fun isOverlayInstalled(context: Context, packageName: String): Boolean {
         return try {
-            context.packageManager.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES)
-            true
+            val ai = context.packageManager.getApplicationInfo(packageName, 0)
+            ai.enabled
         } catch (e: PackageManager.NameNotFoundException) {
             false
         }
