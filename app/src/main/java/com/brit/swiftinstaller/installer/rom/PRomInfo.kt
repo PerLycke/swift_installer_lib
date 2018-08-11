@@ -17,7 +17,6 @@ class PRomInfo(context: Context, name: String, version: String) : RomInfo(contex
     override fun installOverlay(context: Context, targetPackage: String, overlayPath: String) {
         val installed = Utils.isOverlayInstalled(context, Utils.getOverlayPackageName(targetPackage))
         val overlayPackage = Utils.getOverlayPackageName(targetPackage)
-        Log.d("TEST", "install overlay for $targetPackage")
         if (ShellUtils.isRootAvailable) {
             remountRW("/system")
             //runCommand("mkdir -p /data/swift/overlays/${Utils.getOverlayPackageName(targetPackage)}")
