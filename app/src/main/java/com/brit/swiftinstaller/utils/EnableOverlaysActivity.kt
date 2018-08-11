@@ -1,11 +1,12 @@
 package com.brit.swiftinstaller.utils
 
-import android.support.v7.app.AppCompatActivity
+import android.app.Activity
 
-class EnableOverlaysActivity : AppCompatActivity() {
+class EnableOverlaysActivity : Activity() {
 
     override fun onResume() {
         super.onResume()
         Utils.enableAllOverlays(this)
+        finish()
     }
 }
