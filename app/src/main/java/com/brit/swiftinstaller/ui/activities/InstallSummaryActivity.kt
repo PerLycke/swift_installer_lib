@@ -24,6 +24,7 @@ import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.utils.getAppVersion
 import com.brit.swiftinstaller.utils.removeAppToUpdate
 import com.brit.swiftinstaller.utils.setAppVersion
+import com.brit.swiftinstaller.utils.*
 import kotlinx.android.synthetic.main.activity_install_summary.*
 import kotlinx.android.synthetic.main.tab_layout_install_summary.*
 import java.lang.ref.WeakReference
@@ -85,10 +86,23 @@ class InstallSummaryActivity : ThemeActivity() {
         tab_install_summary_root.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
 
         val builder = AlertDialog.Builder(this)
-        .setTitle(R.string.reboot_to_finish)
-        .setMessage(R.string.examined_result_msg)
-        .setPositiveButton(R.string.got_it) { dialogInterface, _ ->
-            dialogInterface.dismiss()
+
+        if (!ShellUtils.isRootAvailable) {
+            builder.setTitle(R.string.reboot_to_finish)
+            builder.setMessage(R.string.examined_result_msg)
+            builder.setPositiveButton(R.string.got_it) { dialogInterface, _ ->
+                dialogInterface.dismiss()
+            }
+        } else {
+            builder.setTitle("Reboot now?")
+            builder.setMessage(R.string.examined_result_msg)
+            builder.setPositiveButton("Reboot Now") { dialogInterface, _ ->
+                runCommand("reboot", true)
+                dialogInterface.dismiss()
+            }
+            builder.setNegativeButton("Reboot Later") { dialogInterface, _ ->
+                dialogInterface.dismiss()
+            }
         }
 
         themeDialog()
