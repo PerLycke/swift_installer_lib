@@ -6,6 +6,7 @@ import android.content.pm.PackageInfo
 import android.content.res.AssetManager
 import android.graphics.Color
 import android.os.Environment
+import android.text.TextUtils
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.utils.*
@@ -100,9 +101,9 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     }
 
     private fun checkResourcePath(am: AssetManager, path: String, resourcePaths: ArrayList<String>) {
-        val variants = am.list(path)
-        if (!variants.contains("dark")
-                && !variants.contains("black") && !variants.contains("common")) {
+        val variants = am.list(path) ?: return
+        if (!variants.contains("props")
+                && !variants.contains("versions") && !variants.contains("common")) {
             addResourcePath(resourcePaths, path)
         } else {
             parseOverlayResourcePath(am, path, resourcePaths)
@@ -114,20 +115,30 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     }
 
     private fun parseOverlayAssetPath(am: AssetManager, path: String, assetPaths: ArrayList<String>) {
-        val variants = am.list("$path/assets")
+        val variants = am.list("$path/assets") ?: return
         if (variants.contains("common")) {
             assetPaths.add("$path/assets/common")
         }
     }
 
     private fun parseOverlayResourcePath(am: AssetManager, path: String, resourcePaths: ArrayList<String>) {
-        val variants = am.list(path)
+        val variants = am.list(path) ?: return
         if (variants.contains("common")) {
             checkResourcePath(am, "$path/common", resourcePaths)
-        }
-        for (variant in variants) {
-            if (variant == "versions") {
-                parseOverlayVersions(am, resourcePaths, "$path/versions")
+        } else if (variants.contains("versions")) {
+            parseOverlayVersions(am, resourcePaths, "$path/versions")
+        } else if (variants.contains("props")) {
+            val props = am.list("$path/props")
+            if (props != null) {
+                for (prop in props) {
+                    if (!TextUtils.equals(System.getProperty(prop, "prop"), "prop")) {
+                        val propVal = System.getProperty(prop)
+                        val vals = am.list("$path/prop/$prop") ?: continue
+                        if (vals.contains(propVal)) {
+                            checkResourcePath(am, "$path/props/$prop/$propVal", resourcePaths)
+                        }
+                    }
+                }
             }
         }
         if (variants.contains("icons") && useAospIcons(context)) {
@@ -151,7 +162,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     }
 
     private fun parseOverlayVersions(am: AssetManager, resourcePaths: ArrayList<String>, path: String) {
-        val vers = am.list(path)
+        val vers = am.list(path) ?: return
         if (vers.contains("common")) {
             checkResourcePath(am, "$path/common", resourcePaths)
         }
