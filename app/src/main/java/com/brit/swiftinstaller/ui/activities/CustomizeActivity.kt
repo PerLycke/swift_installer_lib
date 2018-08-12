@@ -10,6 +10,7 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.preference.PreferenceManager
@@ -456,12 +457,7 @@ class CustomizeActivity : ThemeActivity() {
             updateColor(accentColor, backgroundColor, false, true)
         }
 
-        material_theme.setOnCheckedChangeListener(baseThemeListener)
-        flat_theme.setOnCheckedChangeListener(baseThemeListener)
-        dark_notifications.setOnCheckedChangeListener(notifBgListener)
-        white_notifications.setOnCheckedChangeListener(notifBgListener)
-        shadow_disabled.setOnCheckedChangeListener(shadowListener)
-        shadow_enabled.setOnCheckedChangeListener(shadowListener)
+        // setup for AOSP
         if (packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA).metaData.getBoolean("is_samsung_only", false)) {
             aosp_icons.setOnCheckedChangeListener(iconListener)
             stock_icons.setOnCheckedChangeListener(iconListener)
@@ -470,12 +466,30 @@ class CustomizeActivity : ThemeActivity() {
         } else {
             icons_card.visibility = View.GONE
         }
-        right_clock.setOnCheckedChangeListener(clockListener)
-        left_clock.setOnCheckedChangeListener(clockListener)
-        centered_clock.setOnCheckedChangeListener(clockListener)
-        p_style.setOnCheckedChangeListener(styleListener)
-        default_style.setOnCheckedChangeListener(styleListener)
 
+        // setup for Pie
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            icons_card.visibility = View.GONE
+            clock_card.visibility = View.GONE
+            systemui_card.visibility = View.GONE
+        } else {
+            aosp_icons.setOnCheckedChangeListener(iconListener)
+            stock_icons.setOnCheckedChangeListener(iconListener)
+            stock_icons_multi.setOnCheckedChangeListener(iconListener)
+            p_icons.setOnCheckedChangeListener(iconListener)
+            right_clock.setOnCheckedChangeListener(clockListener)
+            left_clock.setOnCheckedChangeListener(clockListener)
+            centered_clock.setOnCheckedChangeListener(clockListener)
+            p_style.setOnCheckedChangeListener(styleListener)
+            default_style.setOnCheckedChangeListener(styleListener)
+        }
+
+        material_theme.setOnCheckedChangeListener(baseThemeListener)
+        flat_theme.setOnCheckedChangeListener(baseThemeListener)
+        dark_notifications.setOnCheckedChangeListener(notifBgListener)
+        white_notifications.setOnCheckedChangeListener(notifBgListener)
+        shadow_disabled.setOnCheckedChangeListener(shadowListener)
+        shadow_enabled.setOnCheckedChangeListener(shadowListener)
     }
 
     override fun onBackPressed() {
