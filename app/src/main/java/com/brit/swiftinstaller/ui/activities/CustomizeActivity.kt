@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
@@ -345,6 +346,7 @@ class CustomizeActivity : ThemeActivity() {
             updateColor(accentColor, backgroundColor, false, true)
         }
 
+
         val iconListener = CompoundButton.OnCheckedChangeListener { buttonView, _ ->
             when {
                 buttonView.id == R.id.aosp_icons -> {
@@ -460,10 +462,14 @@ class CustomizeActivity : ThemeActivity() {
         white_notifications.setOnCheckedChangeListener(notifBgListener)
         shadow_disabled.setOnCheckedChangeListener(shadowListener)
         shadow_enabled.setOnCheckedChangeListener(shadowListener)
-        aosp_icons.setOnCheckedChangeListener(iconListener)
-        stock_icons.setOnCheckedChangeListener(iconListener)
-        stock_icons_multi.setOnCheckedChangeListener(iconListener)
-        p_icons.setOnCheckedChangeListener(iconListener)
+        if (packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA).metaData.getBoolean("is_samsung_only", false)) {
+            aosp_icons.setOnCheckedChangeListener(iconListener)
+            stock_icons.setOnCheckedChangeListener(iconListener)
+            stock_icons_multi.setOnCheckedChangeListener(iconListener)
+            p_icons.setOnCheckedChangeListener(iconListener)
+        } else {
+            icons_card.visibility = View.GONE
+        }
         right_clock.setOnCheckedChangeListener(clockListener)
         left_clock.setOnCheckedChangeListener(clockListener)
         centered_clock.setOnCheckedChangeListener(clockListener)
