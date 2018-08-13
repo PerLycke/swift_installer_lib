@@ -10,6 +10,7 @@ import android.graphics.Paint
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.ui.applist.AppItem
 
 
@@ -22,10 +23,12 @@ object Utils {
     }
 
     fun sortedOverlaysList(context: Context): ArrayList<AppItem> {
+        val disabledOverlays = RomInfo.getRomInfo(context).getDisabledOverlays()
         val pm = context.packageManager
         val overlaysList = arrayListOf<AppItem>()
-        val getOverlays = context.assets.list("overlays")
-        for (pn: String in getOverlays) {
+        val overlays = context.assets.list("overlays") ?: emptyArray()
+        for (pn: String in overlays) {
+            if (disabledOverlays.contains(pn)) continue
             var info: ApplicationInfo?
             var pInfo: PackageInfo?
             try {
@@ -70,7 +73,7 @@ object Utils {
     fun bundleToMap(bundle: Bundle): HashMap<String, String> {
         val map = HashMap<String, String>()
         for (key in bundle.keySet()) {
-            map[key] = bundle.getString(key)
+            map[key] = bundle.getString(key) ?: ""
         }
         return map
     }
@@ -129,13 +132,15 @@ object Utils {
     }
 
     fun overlayHasVersion(context: Context, packageName: String): Boolean {
-        return context.assets.list("overlays/$packageName").contains("versions")
+        val array = context.assets.list("overlays/$packageName") ?: emptyArray()
+        return array.contains("versions")
     }
 
     fun checkVersionCompatible(context: Context, packageName: String): Boolean {
         val packageInfo = context.packageManager.getPackageInfo(packageName, 0)
-        if (context.assets.list("overlays/$packageName").contains("versions")) {
-            val vers = context.assets.list("overlays/$packageName/versions")
+        val array = context.assets.list("overlays/$packageName") ?: emptyArray()
+        if (array.contains("versions")) {
+            val vers = context.assets.list("overlays/$packageName/versions") ?: emptyArray()
             for (ver in vers) {
                 if (packageInfo.versionName.startsWith(ver)) {
                     return true
@@ -149,7 +154,8 @@ object Utils {
 
     fun getAvailableOverlayVersions(context: Context, packageName: String): String {
         val versions = StringBuilder()
-        for (version in context.assets.list("overlays/$packageName/versions")) {
+        val vers = context.assets.list("overlays/$packageName/versions") ?: emptyArray()
+        for (version in vers) {
             if (version != "common") {
                 versions.append("v$version, ")
             }
@@ -168,7 +174,8 @@ object Utils {
 
     fun getInstalledOverlays(context: Context): ArrayList<String> {
         val apps = ArrayList<String>()
-        for (app in context.assets.list("overlays")) {
+        val overlays = context.assets.list("overlays") ?: emptyArray()
+        for (app in overlays) {
             if (isOverlayInstalled(context, Utils.getOverlayPackageName(app))) {
                 apps.add(app)
             }

@@ -17,6 +17,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.ui.applist.AppItem
 import com.brit.swiftinstaller.ui.applist.AppListFragment
@@ -45,53 +46,18 @@ class OverlaysActivity : ThemeActivity() {
         private const val INSTALL_TAB = 0
         private const val ACTIVE_TAB = 1
         const val UPDATE_TAB = 2
-
-        private val requiredApps = Array(29) {
-            when (it) {
-                0 -> "android"
-                1 -> "com.android.systemui"
-                2 -> "com.amazon.clouddrive.photos"
-                3 -> "com.android.settings"
-                4 -> "com.android.systemui"
-                5 -> "com.anydo"
-                6 -> "com.apple.android.music"
-                7 -> "com.ebay.mobile"
-                8 -> "com.embermitre.pixolor.app"
-                9 -> "com.google.android.apps.genie.geniewidget"
-                10 -> "com.google.android.apps.inbox"
-                11 -> "com.google.android.apps.messaging"
-                12 -> "com.google.android.gm"
-                13 -> "com.google.android.talk"
-                14 -> "com.mxtech.videoplayer.ad"
-                15 -> "com.mxtech.videoplayer.pro"
-                16 -> "com.pandora.android"
-                17 -> "com.simplecity.amp.pro"
-                18 -> "com.Slack"
-                19 -> "com.samsung.android.incallui"
-                20 -> "com.twitter.android"
-                21 -> "com.samsung.android.contacts"
-                22 -> "com.samsung.android.scloud"
-                23 -> "com.samsung.android.themestore"
-                24 -> "com.samsung.android.lool"
-                25 -> "com.samsung.android.samsungpassautofill"
-                26 -> "com.google.android.gms"
-                27 -> "com.sec.android.daemonapp"
-                28 -> "de.axelspringer.yana.zeropage"
-                else -> ""
-            }
-        }
     }
 
     private var mPagerAdapter: AppsTabPagerAdapter? = null
     private lateinit var mViewPager: ViewPager
-    private var overlaysList = arrayListOf<AppItem>()
+    private var overlaysList = java.util.ArrayList<AppItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_overlays)
 
         val bundle = intent.extras
-        overlaysList = bundle.getParcelableArrayList("overlays_list")
+        overlaysList = bundle?.getParcelableArrayList("overlays_list") ?: java.util.ArrayList()
 
         select_all_btn.visibility = View.INVISIBLE
         select_all_btn.isClickable = false
@@ -131,7 +97,8 @@ class OverlaysActivity : ThemeActivity() {
                 }
             }
         })
-        mPagerAdapter!!.setRequiredApps(INSTALL_TAB, requiredApps)
+        mPagerAdapter!!.setRequiredApps(INSTALL_TAB,
+                RomInfo.getRomInfo(this).getRequiredApps())
 
         search_view.setOnSearchClickListener {
             toolbar_overlays_main_content.visibility = View.GONE

@@ -14,13 +14,55 @@ import java.io.File
 
 
 @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
-open class RomInfo constructor(var context: Context, var name: String,
-                               var version: String) {
+open class RomInfo constructor(var context: Context) {
 
     var defaultAccent: Int = 0
 
     init {
         defaultAccent = context.getColor(R.color.minimal_blue)
+    }
+
+    open fun getDisabledOverlays(): ArrayList<String> {
+        val disable = ArrayList<String>()
+        disable.add("com.android.emergency")
+        return disable
+    }
+
+    open fun getRequiredApps(): Array<String> {
+        return Array(29) {
+            when (it) {
+                0 -> "android"
+                1 -> "com.android.systemui"
+                2 -> "com.amazon.clouddrive.photos"
+                3 -> "com.android.settings"
+                4 -> "com.android.systemui"
+                5 -> "com.anydo"
+                6 -> "com.apple.android.music"
+                7 -> "com.ebay.mobile"
+                8 -> "com.embermitre.pixolor.app"
+                9 -> "com.google.android.apps.genie.geniewidget"
+                10 -> "com.google.android.apps.inbox"
+                11 -> "com.google.android.apps.messaging"
+                12 -> "com.google.android.gm"
+                13 -> "com.google.android.talk"
+                14 -> "com.mxtech.videoplayer.ad"
+                15 -> "com.mxtech.videoplayer.pro"
+                16 -> "com.pandora.android"
+                17 -> "com.simplecity.amp.pro"
+                18 -> "com.Slack"
+                19 -> "com.samsung.android.incallui"
+                20 -> "com.twitter.android"
+                21 -> "com.samsung.android.contacts"
+                22 -> "com.samsung.android.scloud"
+                23 -> "com.samsung.android.themestore"
+                24 -> "com.samsung.android.lool"
+                25 -> "com.samsung.android.samsungpassautofill"
+                26 -> "com.google.android.gms"
+                27 -> "com.sec.android.daemonapp"
+                28 -> "de.axelspringer.yana.zeropage"
+                else -> ""
+            }
+        }
     }
 
     open fun installOverlay(context: Context, targetPackage: String, overlayPath: String) {
@@ -125,9 +167,10 @@ open class RomInfo constructor(var context: Context, var name: String,
         fun getRomInfo(context: Context): RomInfo {
             if (sInfo == null) {
                 sInfo = when {
-                    Build.VERSION_CODES.P == Build.VERSION.SDK_INT -> PRomInfo(context, Build.VERSION.CODENAME, Build.VERSION.RELEASE)
-                    Utils.isSamsungOreo(context) -> RomInfo(context, Build.VERSION.CODENAME, Build.VERSION.RELEASE)
-                    else -> AOSPRomInfo(context, Build.VERSION.CODENAME, Build.VERSION.RELEASE)
+                    Build.VERSION_CODES.P == Build.VERSION.SDK_INT -> PRomInfo(context)
+                    Utils.isSamsungOreo(context) -> RomInfo(context)
+                    System.getProperty("ro.oxygenos.version", "def") != "def" -> OOSRomInfo(context)
+                    else -> OreoRomInfo(context)
                 }
             }
             return sInfo!!
