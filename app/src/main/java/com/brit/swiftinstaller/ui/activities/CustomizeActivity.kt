@@ -82,7 +82,7 @@ class CustomizeActivity : ThemeActivity() {
 
         val bundle = intent.extras
         if (bundle != null) {
-            overlaysList = bundle.getParcelableArrayList("overlays_list")
+            overlaysList = bundle.getParcelableArrayList("overlays_list") ?: arrayListOf()
         }
 
         parentActivity = intent.getStringExtra("parentActivity")
@@ -142,9 +142,9 @@ class CustomizeActivity : ThemeActivity() {
                     dialogBg.findDrawableByLayerId(R.id.dialog_bg).setTint(backgroundColor)
                     builder.setTitle(title)
                     builder.setMessage(message)
-                    builder.setPositiveButton(R.string.ok, { dialogInterface, _ ->
+                    builder.setPositiveButton(R.string.ok) { dialogInterface, _ ->
                         dialogInterface.dismiss()
-                    })
+                    }
                     val dialog = builder.create()
                     dialog.show()
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(accentColor)
@@ -208,22 +208,22 @@ class CustomizeActivity : ThemeActivity() {
 
         accent_hex_input.onFocusChangeListener = onFocusChangeListener
         hex_input_bg.onFocusChangeListener = onFocusChangeListener
-        accent_hex_input.setOnKeyListener({ _, keyCode, event ->
+        accent_hex_input.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_UP) {
                 when (keyCode) {
                     KeyEvent.KEYCODE_BACK -> accent_hex_input.clearFocus()
                 }
             }
             false
-        })
-        hex_input_bg.setOnKeyListener({ _, keyCode, event ->
+        }
+        hex_input_bg.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_UP) {
                 when (keyCode) {
                     KeyEvent.KEYCODE_BACK -> hex_input_bg.clearFocus()
                 }
             }
             false
-        })
+        }
 
         accent_hex_input.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -733,14 +733,14 @@ class CustomizeActivity : ThemeActivity() {
                             val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
                             .setTitle(R.string.reboot_delay_title)
                             .setMessage(R.string.reboot_delay_msg)
-                            .setPositiveButton(R.string.proceed, { dialogInterface, _ ->
+                            .setPositiveButton(R.string.proceed) { dialogInterface, _ ->
                                 getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "default").apply()
                                 dialogInterface.dismiss()
                                 startActivity(intent)
-                            })
-                            .setNegativeButton(R.string.cancel, { dialogInterface, _ ->
-                                dialogInterface.dismiss()
-                            })
+                            }
+                                    .setNegativeButton(R.string.cancel) { dialogInterface, _ ->
+                                        dialogInterface.dismiss()
+                                    }
 
                             themeDialog()
                             val dialog = builder.create()
@@ -750,11 +750,11 @@ class CustomizeActivity : ThemeActivity() {
                             val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
                             .setTitle(R.string.installing_and_uninstalling_title)
                             .setMessage(R.string.installing_and_uninstalling_msg)
-                            .setPositiveButton(R.string.proceed, { dialogInterface, _ ->
+                            .setPositiveButton(R.string.proceed) { dialogInterface, _ ->
                                 PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("thisLaunched", true).apply()
                                 dialogInterface.dismiss()
                                 startActivity(intent)
-                            })
+                            }
 
                             themeDialog()
                             val dialog = builder.create()

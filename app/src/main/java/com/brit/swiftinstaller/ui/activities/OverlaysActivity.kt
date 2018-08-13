@@ -50,14 +50,14 @@ class OverlaysActivity : ThemeActivity() {
 
     private var mPagerAdapter: AppsTabPagerAdapter? = null
     private lateinit var mViewPager: ViewPager
-    private var overlaysList = java.util.ArrayList<AppItem>()
+    private var overlaysList = ArrayList<AppItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_overlays)
 
         val bundle = intent.extras
-        overlaysList = bundle?.getParcelableArrayList("overlays_list") ?: java.util.ArrayList()
+        overlaysList = bundle?.getParcelableArrayList("overlays_list") ?: arrayListOf()
 
         select_all_btn.visibility = View.INVISIBLE
         select_all_btn.isClickable = false
