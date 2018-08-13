@@ -3,8 +3,6 @@ package com.brit.swiftinstaller.ui.activities
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
 import android.graphics.Bitmap
 import android.graphics.PorterDuff
 import android.os.Bundle
@@ -13,7 +11,6 @@ import android.support.design.widget.BottomSheetDialog
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.SearchView
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
@@ -59,11 +56,6 @@ class OverlaysActivity : ThemeActivity() {
 
         val bundle = intent.extras
         overlaysList = bundle?.getParcelableArrayList("overlays_list") ?: arrayListOf()
-
-        select_all_btn.visibility = View.INVISIBLE
-        select_all_btn.isClickable = false
-        loading_progress.visibility = View.VISIBLE
-        loading_progress.indeterminateDrawable.setColorFilter(getAccentColor(this), PorterDuff.Mode.SRC_ATOP)
 
         mPagerAdapter = AppsTabPagerAdapter(supportFragmentManager,
                 false, INSTALL_TAB, ACTIVE_TAB, UPDATE_TAB)
@@ -224,49 +216,34 @@ class OverlaysActivity : ThemeActivity() {
     }
 
     fun updateAdapter() {
+        select_all_btn.visibility = View.INVISIBLE
+        select_all_btn.isClickable = false
+        loading_progress.visibility = View.VISIBLE
+        loading_progress.indeterminateDrawable.setColorFilter(getAccentColor(this), PorterDuff.Mode.SRC_ATOP)
         mPagerAdapter!!.clearApps()
         doAsync {
             val context = this@OverlaysActivity
             val updates = getAppsToUpdate(context)
             val pm = context.packageManager
-            val installTabList = arrayListOf<AppItem>()
-            val activeTabsList = arrayListOf<AppItem>()
-            val updatesTabList = arrayListOf<AppItem>()
             var hasUpdate = false
             for (item in overlaysList) {
-                var status: Int?
                 val pn = item.packageName
                 item.icon = pm.getApplicationIcon(item.packageName)
-                try {
-                    status = pm.getApplicationEnabledSetting(pn)
-                } catch (e: PackageManager.NameNotFoundException) {
-                    continue
-                }
                 if (isOverlayInstalled(context, getOverlayPackageName(pn))) {
                     if (isOverlayEnabled(context, getOverlayPackageName(pn))) {
-                        if (updates.contains(pn)
-                                && status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
-                            updatesTabList.add(item)
+                        if (updates.contains(pn)) {
+                            //updatesTabList.add(item)
+                            mPagerAdapter!!.addApp(UPDATE_TAB, item)
                             hasUpdate = true
                         } else {
-                            activeTabsList.add(item)
+                            mPagerAdapter!!.addApp(ACTIVE_TAB, item)
+                            //activeTabsList.add(item)
                         }
-                    } else if (status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
-                        installTabList.add(item)
-
                     }
-                } else if (status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
-                    installTabList.add(item)
+                } else {
+                    mPagerAdapter!!.addApp(INSTALL_TAB, item)
+                    //installTabList.add(item)
                 }
-            }
-            for (i in updatesTabList) {
-                mPagerAdapter!!.addApp(UPDATE_TAB, i)
-            }
-            for (i in activeTabsList) {
-                mPagerAdapter!!.addApp(ACTIVE_TAB, i)
-            }
-            for (i in installTabList) {
-                mPagerAdapter!!.addApp(INSTALL_TAB, i)
             }
 
             uiThread {
@@ -496,6 +473,8 @@ class OverlaysActivity : ThemeActivity() {
         val dialog = builder.create()
         dialog.show()
     }
+
+    @Suppress("UNUSED_PARAMETER")
     fun blockedPackagesInfo(view: View) {
         val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
                 .setTitle(R.string.blocked_packages_title)
