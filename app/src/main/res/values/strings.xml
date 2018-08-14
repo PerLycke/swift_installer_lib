@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
     <string name="aosp_icons">AOSP</string>
-    <string name="app_name">Swift Installer</string>
     <string name="apply">Apply</string>
     <string name="base_theme">Base theme</string>
     <string name="basic_usage">Basic usage</string>
@@ -34,7 +33,6 @@
     <string name="hex">HEX</string>
     <string name="hex_string">#%1$s</string>
     <string name="image">image</string>
-    <string name="info_card_compatibility_msg">Note that we cannot guarantee a stable experience if you use this app in combination with native Samsung themes or Substratum overlays.</string>
     <string name="info_card_failed_msg">One reason an app fails to install is that the app version doesn\'t match the overlays version. We usually update the theme and add support for new versions within a few days, so please be patient.</string>
     <string name="install_count">%1$d / %2$d</string>
     <string name="installing_and_uninstalling_msg">In the process of installing or uninstalling the Android System overlay some apps might force close. This is expected, and normal. Everything will work fine once you rebooted after installation is completed.</string>
@@ -131,4 +129,6 @@
     <string name="empty_list_inactive">All overlays active</string>
     <string name="empty_list_active">No active overlays</string>
     <string name="empty_list_updates">No updates available</string>
+    <string name="help_msg">Here are some useful links if you need help:</string>
+    <string name="link_telegram">Telegram chat support: https://goo.gl/tpPji0</string>
 </resources>

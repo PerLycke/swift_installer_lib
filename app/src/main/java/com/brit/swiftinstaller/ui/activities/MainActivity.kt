@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.card_install.*
 import kotlinx.android.synthetic.main.card_update.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.dialog_about.view.*
+import kotlinx.android.synthetic.main.dialog_help.view.*
 import kotlinx.android.synthetic.main.popup_menu.view.*
 import org.jetbrains.anko.doAsync
 
@@ -146,6 +147,22 @@ class MainActivity : ThemeActivity() {
             val dialog = builder.create()
 
             dialogView.about_ok_btn.setOnClickListener {
+                dialog.dismiss()
+            }
+            dialog.show()
+        }
+
+        popupView.popup_menu_help.setOnClickListener { _ ->
+            popup.dismiss()
+
+            val dialogView = View.inflate(this, R.layout.dialog_help, null)
+            val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+            builder.setView(dialogView)
+            themeDialog()
+
+            val dialog = builder.create()
+
+            dialogView.help_ok_btn.setOnClickListener {
                 dialog.dismiss()
             }
             dialog.show()
