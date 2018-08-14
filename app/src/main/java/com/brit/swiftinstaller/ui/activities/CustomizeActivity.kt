@@ -28,6 +28,7 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.ui.CircleDrawable
 import com.brit.swiftinstaller.ui.applist.AppItem
@@ -73,18 +74,14 @@ class CustomizeActivity : ThemeActivity() {
     private val handler = Handler()
     private var parentActivity: String? = "parent"
     private lateinit var bottomSheetDialog: BottomSheetDialog
-    private var overlaysList = ArrayList<AppItem>()
+    private var overlaysList = arrayListOf<AppItem>()
 
     private var recompile = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val bundle = intent.extras
-        if (bundle != null) {
-            overlaysList = bundle.getParcelableArrayList("overlays_list") ?: arrayListOf()
-        }
-
+        overlaysList = Utils.sortedOverlaysList(this)
         parentActivity = intent.getStringExtra("parentActivity")
         if (parentActivity == "tutorial") {
             doAsync {
@@ -507,7 +504,7 @@ class CustomizeActivity : ThemeActivity() {
     }
 
     private fun checkAndAddApp(apps: ArrayList<String>, app: String) {
-        if (!apps.contains(app) && Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
+        if (!apps.contains(app) && RomInfo.getRomInfo(this).isOverlayInstalled("android")) {
             apps.add(app)
             recompile = true
         }
@@ -766,7 +763,6 @@ class CustomizeActivity : ThemeActivity() {
                 if (parentActivity == "tutorial") {
                     val intent = Intent(this, OverlaysActivity::class.java)
                     val bundle = Bundle()
-                    bundle.putParcelableArrayList("overlays_list", overlaysList)
                     intent.putExtras(bundle)
                     startActivity(intent)
                 } else {

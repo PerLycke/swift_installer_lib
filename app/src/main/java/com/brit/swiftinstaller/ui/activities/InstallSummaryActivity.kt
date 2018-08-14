@@ -15,6 +15,7 @@ import android.support.design.widget.TabLayout
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AlertDialog
 import android.view.View
+import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.ui.applist.AppItem
@@ -214,7 +215,7 @@ class InstallSummaryActivity : ThemeActivity() {
                     item.versionName = pInfo.versionName
                     if (errorMap.keys.contains(pn)) {
                         onProgressUpdate(Progress(FAILED_TAB, item))
-                    } else if (Utils.isOverlayInstalled(context!!, Utils.getOverlayPackageName(pn))
+                    } else if (RomInfo.getRomInfo(context!!).isOverlayInstalled(pn)
                             && oInfo!!.versionCode > getAppVersion(context, pn)) {
                         setAppVersion(context, pn, oInfo.versionCode)
                         onProgressUpdate(Progress(SUCCESS_TAB, item))

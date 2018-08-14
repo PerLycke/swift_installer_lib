@@ -254,6 +254,16 @@ fun deleteFileShell(path: String): Boolean {
     return output.exitCode == 0
 }
 
+fun deleteFileRoot(path: String): Boolean {
+    val output = runCommand("rm -rf $path", true)
+    return output.exitCode == 0
+}
+
+fun fileExistsRoot(path: String) : Boolean {
+    val output = runCommand("test -f $path", true)
+    return output.exitCode == 0
+}
+
 @SuppressLint("PrivateApi")
 fun getProperty(name: String): String? {
     try {

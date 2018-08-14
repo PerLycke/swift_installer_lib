@@ -17,10 +17,11 @@ class InstallerService : JobService() {
                 jobFinished(params, false)
             }
         })
+        val apps = params.extras.getStringArray(InstallerServiceHelper.EXTRAS_APPS) ?: emptyArray()
         if (params.jobId == InstallerServiceHelper.INSTALL_JOB) {
-            om!!.installOverlays(params.extras.getStringArray(InstallerServiceHelper.EXTRAS_APPS))
+            om!!.installOverlays(apps)
         } else if (params.jobId == InstallerServiceHelper.UNINSTALL_JOB) {
-            om!!.uninstallOverlays(params.extras.getStringArray(InstallerServiceHelper.EXTRAS_APPS))
+            om!!.uninstallOverlays(apps)
         }
         return true
     }

@@ -15,6 +15,7 @@ import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.TextView
+import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.utils.*
 import kotlinx.android.synthetic.main.activity_app_list.*
@@ -173,7 +174,7 @@ class AppListFragment : Fragment() {
 
             fun bindAppItem(item: AppItem) {
                 val incompatible = !Utils.checkVersionCompatible(context!!, item.packageName)
-                val installed = Utils.isOverlayInstalled(context!!, Utils.getOverlayPackageName(item.packageName))
+                val installed = RomInfo.getRomInfo(context!!).isOverlayInstalled(item.packageName)
                 val hasVersions = Utils.overlayHasVersion(context!!, item.packageName)
                 val hasUpdate = getAppsToUpdate(context!!).contains(item.packageName)
                 val isRequired = requiredApps.contains(item.packageName)

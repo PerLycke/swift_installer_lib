@@ -32,7 +32,7 @@ const val KEY_ALPHA = "alpha"
 val NO_PERMISSION_PACKAGES = arrayListOf("com.sec.android.app.music", "com.sec.android.app.voicenote")
 
 fun getAccentColor(context: Context): Int {
-    return PreferenceManager.getDefaultSharedPreferences(context).getInt(KEY_ACCENT_COLOR, RomInfo.getRomInfo(context).defaultAccent)
+    return PreferenceManager.getDefaultSharedPreferences(context).getInt(KEY_ACCENT_COLOR, RomInfo.getRomInfo(context).getDefaultAccent())
 }
 
 fun setAccentColor(context: Context, color: Int) {
@@ -164,7 +164,7 @@ fun getAppVersion(context: Context, packageName: String): Int {
 fun getAppVersions(context: Context): Bundle {
     val versions = Bundle()
     val vers = PreferenceManager.getDefaultSharedPreferences(context).getStringSet(KEY_OVERLAY_VERSIONS, ArraySet<String>())
-    for (v in vers) {
+    for (v in vers ?: emptySet()) {
         val split = v.split("|")
         versions.putInt(split[0], Integer.parseInt(split[1]))
     }
@@ -180,7 +180,7 @@ fun setAppVersions(context: Context, versions: Bundle) {
 }
 
 fun getUserAccents(context: Context): IntArray {
-    val temp = PreferenceManager.getDefaultSharedPreferences(context).getString(KEY_USER_ACCENTS, "")
+    val temp = PreferenceManager.getDefaultSharedPreferences(context).getString(KEY_USER_ACCENTS, "")!!
     if (TextUtils.isEmpty(temp)) {
         return IntArray(0)
     }
@@ -193,7 +193,7 @@ fun getUserAccents(context: Context): IntArray {
 }
 
 fun getAppsToUpdate(context: Context): Set<String> {
-    return PreferenceManager.getDefaultSharedPreferences(context).getStringSet(KEY_OVERLAY_UPDATES, ArraySet<String>())
+    return PreferenceManager.getDefaultSharedPreferences(context).getStringSet(KEY_OVERLAY_UPDATES, ArraySet<String>()) ?: emptySet()
 }
 
 fun addAppToUpdate(context: Context, packageName: String) {
@@ -211,9 +211,10 @@ fun clearAppsToUpdate(context: Context) {
 }
 
 fun getAppsToInstall(context: Context): Set<String> {
-    return PreferenceManager.getDefaultSharedPreferences(context).getStringSet(KEY_OVERLAYS_TO_INSTALL, ArraySet<String>())
+    return PreferenceManager.getDefaultSharedPreferences(context).getStringSet(KEY_OVERLAYS_TO_INSTALL, ArraySet<String>()) ?: emptySet()
 }
 
+@Suppress("unused")
 fun addAppToInstall(context: Context, packageName: String) {
     val apps = getAppsToInstall(context)
     PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet(KEY_OVERLAYS_TO_INSTALL, apps.plus(packageName)).apply()
@@ -224,7 +225,7 @@ fun clearAppsToInstall(context: Context) {
 }
 
 fun getAppsToUninstall(context: Context): Set<String> {
-    return PreferenceManager.getDefaultSharedPreferences(context).getStringSet(KEY_OVERLAYS_TO_UNINSTALL, ArraySet<String>())
+    return PreferenceManager.getDefaultSharedPreferences(context).getStringSet(KEY_OVERLAYS_TO_UNINSTALL, ArraySet<String>()) ?: emptySet()
 }
 
 fun addAppToUninstall(context: Context, packageName: String) {

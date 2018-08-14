@@ -3,6 +3,7 @@ package com.brit.swiftinstaller.utils
 import android.content.Context
 import android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
 import android.os.AsyncTask
+import com.brit.swiftinstaller.installer.rom.RomInfo
 import java.lang.ref.WeakReference
 
 class UpdateChecker(context: Context, private val callback: Callback) : AsyncTask<Void, Void, UpdateChecker.Output>() {
@@ -16,9 +17,10 @@ class UpdateChecker(context: Context, private val callback: Callback) : AsyncTas
         val pm = mConRef.get()!!.packageManager
 
         clearAppsToUpdate(context!!)
-        for (packageName in context.assets.list("overlays")) {
-            if (Utils.isOverlayInstalled(context, Utils.getOverlayPackageName(packageName))
-                    && Utils.isOverlayInstalled(context, packageName)
+        val overlays = context.assets.list("overlays") ?: emptyArray()
+        for (packageName in overlays) {
+            if (RomInfo.getRomInfo(context).isOverlayInstalled(packageName)
+                    && Utils.isAppInstalled(context, packageName)
                     && pm.getApplicationEnabledSetting(packageName) != COMPONENT_ENABLED_STATE_DISABLED_USER) {
                 installedCount++
                 if (Utils.checkOverlayVersion(context, packageName)

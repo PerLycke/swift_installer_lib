@@ -22,10 +22,13 @@ object Utils {
         var packageName: String = ""
     }
 
+    private val sortedOverlays = arrayListOf<AppItem>()
+
     fun sortedOverlaysList(context: Context): ArrayList<AppItem> {
+        if (sortedOverlays.isNotEmpty()) return sortedOverlays
+        sortedOverlays.clear()
         val disabledOverlays = RomInfo.getRomInfo(context).getDisabledOverlays()
         val pm = context.packageManager
-        val overlaysList = arrayListOf<AppItem>()
         val overlays = context.assets.list("overlays") ?: emptyArray()
         for (pn: String in overlays) {
             if (disabledOverlays.contains(pn)) continue
@@ -44,13 +47,13 @@ object Utils {
                 item.title = info.loadLabel(pm) as String
                 item.versionCode = pInfo!!.versionCode
                 item.versionName = pInfo.versionName
-                overlaysList.add(item)
+                sortedOverlays.add(item)
             }
         }
-        overlaysList.sortWith(Comparator { o1, o2 ->
+        sortedOverlays.sortWith(Comparator { o1, o2 ->
             o1.title.compareTo(o2.title)
         })
-        return overlaysList
+        return sortedOverlays
     }
 
     fun getOverlayPackageName(pack: String): String {
@@ -78,7 +81,7 @@ object Utils {
         return map
     }
 
-    fun isOverlayInstalled(context: Context, packageName: String): Boolean {
+    fun isAppInstalled(context: Context, packageName: String): Boolean {
         return try {
             val ai = context.packageManager.getApplicationInfo(packageName, 0)
             ai.enabled
@@ -176,7 +179,7 @@ object Utils {
         val apps = ArrayList<String>()
         val overlays = context.assets.list("overlays") ?: emptyArray()
         for (app in overlays) {
-            if (isOverlayInstalled(context, Utils.getOverlayPackageName(app))) {
+            if (RomInfo.getRomInfo(context).isOverlayInstalled(app)) {
                 apps.add(app)
             }
         }

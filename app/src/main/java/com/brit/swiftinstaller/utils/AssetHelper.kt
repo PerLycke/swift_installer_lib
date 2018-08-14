@@ -12,14 +12,15 @@ class AssetHelper {
         fun copyAssetFolder(am: AssetManager?, assetPath: String, path: String,
                             cipher: Cipher?): Boolean {
             try {
-                val files = am!!.list(assetPath)
+                val files = am!!.list(assetPath) ?: emptyArray()
                 val f = File(path)
                 if (!f.exists() && !f.mkdirs()) {
                     throw RuntimeException("cannot create directory: $path")
                 }
                 var res = true
                 for (file in files) {
-                    res = if (am.list("$assetPath/$file").isEmpty()) {
+                    val assetList = am.list("$assetPath/$file") ?: emptyArray()
+                    res = if (assetList.isEmpty()) {
                         res and copyAsset(am, "$assetPath/$file", "$path/$file", cipher)
                     } else {
                         res and copyAssetFolder(am, "$assetPath/$file", "$path/$file", cipher)

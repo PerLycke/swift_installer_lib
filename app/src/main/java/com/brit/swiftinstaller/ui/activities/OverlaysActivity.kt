@@ -24,7 +24,6 @@ import com.brit.swiftinstaller.utils.*
 import com.brit.swiftinstaller.utils.Utils.createImage
 import com.brit.swiftinstaller.utils.Utils.getOverlayPackageName
 import com.brit.swiftinstaller.utils.Utils.isOverlayEnabled
-import com.brit.swiftinstaller.utils.Utils.isOverlayInstalled
 import kotlinx.android.synthetic.main.activity_overlays.*
 import kotlinx.android.synthetic.main.sheet_confirm_uninstall.view.*
 import kotlinx.android.synthetic.main.tab_layout_overlay.*
@@ -53,9 +52,6 @@ class OverlaysActivity : ThemeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_overlays)
-
-        val bundle = intent.extras
-        overlaysList = bundle?.getParcelableArrayList("overlays_list") ?: arrayListOf()
 
         mPagerAdapter = AppsTabPagerAdapter(supportFragmentManager,
                 false, INSTALL_TAB, ACTIVE_TAB, UPDATE_TAB)
@@ -115,7 +111,6 @@ class OverlaysActivity : ThemeActivity() {
         val textViewId = search_view.findViewById(android.support.v7.appcompat.R.id.search_src_text) as EditText
         setCursorPointerColor(textViewId, getAccentColor(this))
         setCursorDrawableColor(textViewId, getAccentColor(this))
-
 
         mViewPager = container
 
@@ -211,7 +206,6 @@ class OverlaysActivity : ThemeActivity() {
         if (select_all_btn.isChecked) {
             select_all_btn.isChecked = false
         }
-
         updateAdapter()
     }
 
@@ -222,6 +216,7 @@ class OverlaysActivity : ThemeActivity() {
         loading_progress.indeterminateDrawable.setColorFilter(getAccentColor(this), PorterDuff.Mode.SRC_ATOP)
         mPagerAdapter!!.clearApps()
         doAsync {
+            overlaysList = Utils.sortedOverlaysList(this@OverlaysActivity)
             val context = this@OverlaysActivity
             val updates = getAppsToUpdate(context)
             val pm = context.packageManager
@@ -229,7 +224,7 @@ class OverlaysActivity : ThemeActivity() {
             for (item in overlaysList) {
                 val pn = item.packageName
                 item.icon = pm.getApplicationIcon(item.packageName)
-                if (isOverlayInstalled(context, getOverlayPackageName(pn))) {
+                if (RomInfo.getRomInfo(context).isOverlayInstalled(pn)) {
                     if (isOverlayEnabled(context, getOverlayPackageName(pn))) {
                         if (updates.contains(pn)) {
                             //updatesTabList.add(item)

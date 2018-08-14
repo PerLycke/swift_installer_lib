@@ -23,10 +23,16 @@ class PRomInfo(context: Context) : RomInfo(context) {
     }
 
     override fun uninstallOverlay(context: Context, packageName: String) {
+        val overlayPackage = Utils.getOverlayPackageName(packageName)
         if (ShellUtils.isRootAvailable) {
-            runCommand("pm uninstall " + Utils.getOverlayPackageName(packageName), true)
-        } else {
-            addAppToUninstall(context, Utils.getOverlayPackageName(packageName))
+            remountRW("/system")
+            deleteFileRoot("$systemApp/$overlayPackage/")
+            remountRO("/system")
         }
+    }
+
+    override fun isOverlayInstalled(targetPackage: String): Boolean {
+        val overlayPackage = Utils.getOverlayPackageName(targetPackage)
+        return fileExistsRoot("$systemApp/$overlayPackage/$overlayPackage.apk")
     }
 }

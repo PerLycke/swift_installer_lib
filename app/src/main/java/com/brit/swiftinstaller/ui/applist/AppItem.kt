@@ -13,11 +13,11 @@ class AppItem() : Parcelable {
     var icon: Drawable? = null
 
     constructor(parcel: Parcel) : this() {
-        packageName = parcel.readString()
-        title = parcel.readString()
-        required = parcel.readString()
+        packageName = parcel.readString()!!
+        title = parcel.readString()!!
+        required = parcel.readString()!!
         versionCode = parcel.readInt()
-        versionName = parcel.readString()
+        versionName = parcel.readString()!!
     }
 
     override fun describeContents(): Int {

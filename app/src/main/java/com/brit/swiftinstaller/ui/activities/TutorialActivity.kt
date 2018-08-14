@@ -61,7 +61,6 @@ class TutorialActivity : TutorialActivity() {
         intent.putExtra("parentActivity", "tutorial")
         PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("appHasRunBefore", true).apply()
         val bundle = Bundle()
-        bundle.putParcelableArrayList("overlays_list", overlaysList)
         intent.putExtras(bundle)
         startActivity(intent)
         finish()

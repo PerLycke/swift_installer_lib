@@ -15,7 +15,6 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.PopupWindow
-import com.brit.swiftinstaller.ui.applist.AppItem
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.utils.MaterialPalette
 import com.brit.swiftinstaller.utils.UpdateChecker
@@ -24,15 +23,12 @@ import com.brit.swiftinstaller.utils.getAccentColor
 import kotlinx.android.synthetic.main.card_compatibility_info.*
 import kotlinx.android.synthetic.main.card_install.*
 import kotlinx.android.synthetic.main.card_update.*
-import com.brit.swiftinstaller.utils.getAppsToUpdate
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.dialog_about.view.*
 import kotlinx.android.synthetic.main.popup_menu.view.*
 import org.jetbrains.anko.doAsync
 
 class MainActivity : ThemeActivity() {
-
-    private var overlaysList = ArrayList<AppItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +39,6 @@ class MainActivity : ThemeActivity() {
 
         doAsync {
             Utils.enableAllOverlays(this@MainActivity)
-            overlaysList = Utils.sortedOverlaysList(this@MainActivity)
         }
 
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("not_closed", true)) {
@@ -73,7 +68,6 @@ class MainActivity : ThemeActivity() {
         card_install.setOnClickListener {
             val intent = Intent(this, OverlaysActivity::class.java)
             val bundle = Bundle()
-            bundle.putParcelableArrayList("overlays_list", overlaysList)
             intent.putExtras(bundle)
             startActivity(intent)
         }
@@ -82,7 +76,6 @@ class MainActivity : ThemeActivity() {
             val intent = Intent(this, OverlaysActivity::class.java)
             intent.putExtra("tab", OverlaysActivity.UPDATE_TAB)
             val bundle = Bundle()
-            bundle.putParcelableArrayList("overlays_list", overlaysList)
             intent.putExtras(bundle)
             startActivity(intent)
         }

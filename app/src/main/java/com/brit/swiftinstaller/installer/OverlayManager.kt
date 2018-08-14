@@ -112,7 +112,7 @@ class OverlayManager(private val context: Context) {
             task = OverlayTask(this)
         }
 
-        if (Utils.isOverlayInstalled(context, packageName)) {
+        if (Utils.isAppInstalled(context, packageName)) {
             task.initializeOverlayTask(context, packageName, index, false)
         }
 
