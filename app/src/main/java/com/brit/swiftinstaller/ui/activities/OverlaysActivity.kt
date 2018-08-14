@@ -113,6 +113,7 @@ class OverlaysActivity : ThemeActivity() {
         setCursorDrawableColor(textViewId, getAccentColor(this))
 
         mViewPager = container
+        mViewPager.offscreenPageLimit = 2
 
         select_all_btn.setOnClickListener {
             val checked = mPagerAdapter!!.getCheckedCount(container.currentItem)
