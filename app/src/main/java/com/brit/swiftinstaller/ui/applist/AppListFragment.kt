@@ -190,8 +190,7 @@ class AppListFragment : Fragment() {
                     appCheckBoxClickListener!!.onCheckBoxClick(mApps[mVisible[adapterPosition]])
                 }
                 appCheckBox.isChecked = mChecked.get(mVisible[adapterPosition], false)
-                appCheckBox.buttonTintList = ColorStateList(arrayOf<IntArray>(appCheckBox.drawableState),
-                        intArrayOf(context!!.getColor(R.color.light_grey)))
+                appCheckBox.alpha = 1.0f
                 alertIcon.visibility = View.GONE
                 alertIcon.setImageDrawable(context!!.getDrawable(R.drawable.ic_info))
                 required.visibility = View.GONE
@@ -210,11 +209,10 @@ class AppListFragment : Fragment() {
                     if (isRequired) {
                         appCheckBox.isChecked = true
                         appCheckBox.isClickable = false
+                        appCheckBox.alpha = 0.3f
                         required.visibility = View.VISIBLE
                         required.text = getString(R.string.required)
                         appName.setTextColor(Color.parseColor("#4dffffff"))
-                        appCheckBox.buttonTintList = ColorStateList(arrayOf<IntArray>(appCheckBox.drawableState),
-                                intArrayOf(Color.parseColor("#4dffffff")))
                         view.isClickable = false
                     }
                     if (incompatible) {
