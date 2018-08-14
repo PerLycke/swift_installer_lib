@@ -81,12 +81,9 @@ class CustomizeActivity : ThemeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        overlaysList = Utils.sortedOverlaysList(this)
         parentActivity = intent.getStringExtra("parentActivity")
-        if (parentActivity == "tutorial") {
-            doAsync {
-                overlaysList = Utils.sortedOverlaysList(this@CustomizeActivity)
-            }
+        doAsync {
+            overlaysList = Utils.sortedOverlaysList(this@CustomizeActivity)
         }
 
         setContentView(R.layout.activity_customize)
