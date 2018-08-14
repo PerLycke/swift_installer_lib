@@ -457,25 +457,15 @@ class CustomizeActivity : ThemeActivity() {
             stock_icons.setOnCheckedChangeListener(iconListener)
             stock_icons_multi.setOnCheckedChangeListener(iconListener)
             p_icons.setOnCheckedChangeListener(iconListener)
-        } else {
-            icons_card.visibility = View.GONE
-        }
-
-        // setup for Pie
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            icons_card.visibility = View.GONE
-            clock_card.visibility = View.GONE
-            systemui_card.visibility = View.GONE
-        } else {
-            aosp_icons.setOnCheckedChangeListener(iconListener)
-            stock_icons.setOnCheckedChangeListener(iconListener)
-            stock_icons_multi.setOnCheckedChangeListener(iconListener)
-            p_icons.setOnCheckedChangeListener(iconListener)
             right_clock.setOnCheckedChangeListener(clockListener)
             left_clock.setOnCheckedChangeListener(clockListener)
             centered_clock.setOnCheckedChangeListener(clockListener)
             p_style.setOnCheckedChangeListener(styleListener)
             default_style.setOnCheckedChangeListener(styleListener)
+        } else {
+            icons_card.visibility = View.GONE
+            clock_card.visibility = View.GONE
+            systemui_card.visibility = View.GONE
         }
 
         material_theme.setOnCheckedChangeListener(baseThemeListener)

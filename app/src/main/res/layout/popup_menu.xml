@@ -29,7 +29,7 @@
 
     <TextView
         android:id="@+id/popup_menu_help"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="?android:selectableItemBackgroundBorderless"
@@ -42,6 +42,7 @@
         android:textColor="@android:color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/popup_menu_about"
         app:layout_constraintStart_toStartOf="@+id/popup_menu_about"
         app:layout_constraintTop_toBottomOf="@+id/popup_menu_about" />
 </android.support.constraint.ConstraintLayout>
