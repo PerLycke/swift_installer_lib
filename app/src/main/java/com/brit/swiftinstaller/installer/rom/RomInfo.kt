@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.Build
 import android.support.v4.content.ContextCompat
 import com.brit.swiftinstaller.library.R
+import com.brit.swiftinstaller.ui.activities.CustomizeActivity
 import com.brit.swiftinstaller.utils.*
 import com.hololo.tutorial.library.PermissionStep
 import com.hololo.tutorial.library.Step
@@ -68,6 +69,10 @@ abstract class RomInfo constructor(var context: Context) {
 
     open fun isOverlayInstalled(targetPackage: String): Boolean {
         return Utils.isAppInstalled(context, Utils.getOverlayPackageName(targetPackage))
+    }
+
+    open fun getCustomizeFeatures() : Int {
+        return CustomizeActivity.SUPPORTS_CLOCK + CustomizeActivity.SUPPORTS_ICONS + CustomizeActivity.SUPPORTS_SYSTEMUI
     }
 
     abstract fun installOverlay(context: Context, targetPackage: String, overlayPath: String)

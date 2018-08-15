@@ -49,6 +49,12 @@ import org.jetbrains.anko.doAsync
 
 class CustomizeActivity : ThemeActivity() {
 
+    companion object {
+        final val SUPPORTS_ICONS = 0x01
+        final val SUPPORTS_CLOCK = 0x02
+        final val SUPPORTS_SYSTEMUI = 0x04
+    }
+
     private var settingsIcons: Array<ImageView?> = arrayOfNulls(3)
     private var systemUiIcons: Array<ImageView?> = arrayOfNulls(6)
 
@@ -450,20 +456,28 @@ class CustomizeActivity : ThemeActivity() {
             updateColor(accentColor, backgroundColor, false, true)
         }
 
-        // setup for AOSP
-        if (packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA).metaData.getBoolean("is_samsung_only", false)) {
+        val features = RomInfo.getRomInfo(this).getCustomizeFeatures()
+        if ((features and SUPPORTS_ICONS) != 0) {
             aosp_icons.setOnCheckedChangeListener(iconListener)
             stock_icons.setOnCheckedChangeListener(iconListener)
             stock_icons_multi.setOnCheckedChangeListener(iconListener)
             p_icons.setOnCheckedChangeListener(iconListener)
+        } else {
+            icons_card.visibility = View.GONE
+        }
+
+        if ((features and SUPPORTS_CLOCK) != 0) {
             right_clock.setOnCheckedChangeListener(clockListener)
             left_clock.setOnCheckedChangeListener(clockListener)
             centered_clock.setOnCheckedChangeListener(clockListener)
+        } else {
+            clock_card.visibility = View.GONE
+        }
+
+        if ((features and SUPPORTS_SYSTEMUI) != 0) {
             p_style.setOnCheckedChangeListener(styleListener)
             default_style.setOnCheckedChangeListener(styleListener)
         } else {
-            icons_card.visibility = View.GONE
-            clock_card.visibility = View.GONE
             systemui_card.visibility = View.GONE
         }
 
