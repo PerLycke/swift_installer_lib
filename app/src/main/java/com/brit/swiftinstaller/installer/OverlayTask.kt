@@ -130,13 +130,26 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         } else if (variants.contains("props")) {
             val props = am.list("$path/props")
             if (props != null) {
+                var found = false
                 for (prop in props) {
                     if (!TextUtils.equals(System.getProperty(prop, "prop"), "prop")) {
-                        val propVal = System.getProperty(prop)
+                        val propVal = System.getProperty(prop) ?: "default"
                         val vals = am.list("$path/prop/$prop") ?: continue
-                        if (vals.contains(propVal)) {
-                            checkResourcePath(am, "$path/props/$prop/$propVal", resourcePaths)
+                        if (vals.contains("common")) {
+                            found = true
+                            checkResourcePath(am, "$path/props/$prop/common", resourcePaths)
                         }
+                        for (`val` in vals) {
+                            if (`val` == propVal || `val`.startsWith(propVal)) {
+                                found = true
+                                checkResourcePath(am, "$path/props/$prop/$propVal", resourcePaths)
+                            }
+                        }
+                    }
+                }
+                if (!found) {
+                    if (props.contains("default")) {
+                        checkResourcePath(am, "$path/props/default", resourcePaths)
                     }
                 }
             }
