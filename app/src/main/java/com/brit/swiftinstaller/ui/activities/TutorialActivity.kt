@@ -25,7 +25,6 @@ import org.jetbrains.anko.doAsync
 class TutorialActivity : TutorialActivity() {
 
     private var notificationManager: NotificationManager? = null
-    private var overlaysList = arrayListOf<AppItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,10 +48,6 @@ class TutorialActivity : TutorialActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         } else {
-            doAsync {
-                overlaysList = Utils.sortedOverlaysList(this@TutorialActivity)
-            }
-
             setIndicator(R.drawable.tutorial_indicator)
             setIndicatorSelected(R.drawable.tutorial_indicator_selected)
 
@@ -65,8 +60,6 @@ class TutorialActivity : TutorialActivity() {
         val intent = Intent(this, CustomizeActivity::class.java)
         intent.putExtra("parentActivity", "tutorial")
         PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("appHasRunBefore", true).apply()
-        val bundle = Bundle()
-        intent.putExtras(bundle)
         startActivity(intent)
         finish()
     }

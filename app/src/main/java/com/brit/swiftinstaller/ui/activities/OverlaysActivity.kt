@@ -3,6 +3,8 @@ package com.brit.swiftinstaller.ui.activities
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
 import android.graphics.Bitmap
 import android.graphics.PorterDuff
 import android.os.Bundle
@@ -48,10 +50,14 @@ class OverlaysActivity : ThemeActivity() {
     private var mPagerAdapter: AppsTabPagerAdapter? = null
     private lateinit var mViewPager: ViewPager
     private var overlaysList = ArrayList<AppItem>()
+    private var hasUpdate = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_overlays)
+
+        val bundle = intent.extras
+        overlaysList = bundle?.getParcelableArrayList("overlays_list") ?: arrayListOf()
 
         mPagerAdapter = AppsTabPagerAdapter(supportFragmentManager,
                 false, INSTALL_TAB, ACTIVE_TAB, UPDATE_TAB)
@@ -217,29 +223,57 @@ class OverlaysActivity : ThemeActivity() {
         loading_progress.indeterminateDrawable.setColorFilter(getAccentColor(this), PorterDuff.Mode.SRC_ATOP)
         mPagerAdapter!!.clearApps()
         doAsync {
-            overlaysList = Utils.sortedOverlaysList(this@OverlaysActivity)
+            if (overlaysList.size == 0) {
+                overlaysList = Utils.sortedOverlaysList(this@OverlaysActivity)
+            }
             val context = this@OverlaysActivity
             val updates = getAppsToUpdate(context)
             val pm = context.packageManager
-            var hasUpdate = false
+            val installTabList = arrayListOf<AppItem>()
+            val activeTabsList = arrayListOf<AppItem>()
+            val updatesTabList = arrayListOf<AppItem>()
             for (item in overlaysList) {
+                var status: Int?
                 val pn = item.packageName
                 item.icon = pm.getApplicationIcon(item.packageName)
+                try {
+                    status = pm.getApplicationEnabledSetting(pn)
+                } catch (e: PackageManager.NameNotFoundException) {
+                    continue
+                }
                 if (RomInfo.getRomInfo(context).isOverlayInstalled(pn)) {
                     if (isOverlayEnabled(context, getOverlayPackageName(pn))) {
-                        if (updates.contains(pn)) {
-                            //updatesTabList.add(item)
-                            mPagerAdapter!!.addApp(UPDATE_TAB, item)
+                        if (updates.contains(pn)
+                                && status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
+                            updatesTabList.add(item)
                             hasUpdate = true
                         } else {
-                            mPagerAdapter!!.addApp(ACTIVE_TAB, item)
-                            //activeTabsList.add(item)
+                            activeTabsList.add(item)
                         }
+                    } else if (status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
+                        installTabList.add(item)
                     }
-                } else {
-                    mPagerAdapter!!.addApp(INSTALL_TAB, item)
-                    //installTabList.add(item)
+                } else if (status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
+                    installTabList.add(item)
                 }
+            }
+
+            uiThread {
+                publishApps(installTabList, activeTabsList, updatesTabList, hasUpdate)
+            }
+        }
+    }
+
+    fun publishApps(installTabList: ArrayList<AppItem>, activeTabsList: ArrayList<AppItem>, updatesTabList: ArrayList<AppItem>, hasUpdate: Boolean) {
+        doAsync {
+            for (i in installTabList) {
+                mPagerAdapter!!.addApp(INSTALL_TAB, i)
+            }
+            for (i in activeTabsList) {
+                mPagerAdapter!!.addApp(ACTIVE_TAB, i)
+            }
+            for (i in updatesTabList) {
+                mPagerAdapter!!.addApp(UPDATE_TAB, i)
             }
 
             uiThread {
@@ -249,8 +283,8 @@ class OverlaysActivity : ThemeActivity() {
                 if (hasUpdate) {
                     update_tab_indicator.visibility = View.VISIBLE
                 }
+                setBackgroundImage()
             }
-            setBackgroundImage()
         }
     }
 

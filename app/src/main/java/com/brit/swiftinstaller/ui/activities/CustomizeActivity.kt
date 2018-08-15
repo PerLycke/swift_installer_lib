@@ -79,7 +79,6 @@ class CustomizeActivity : ThemeActivity() {
     private val handler = Handler()
     private var parentActivity: String? = "parent"
     private lateinit var bottomSheetDialog: BottomSheetDialog
-    private var overlaysList = arrayListOf<AppItem>()
 
     private var recompile = false
 
@@ -87,9 +86,6 @@ class CustomizeActivity : ThemeActivity() {
         super.onCreate(savedInstanceState)
 
         parentActivity = intent.getStringExtra("parentActivity")
-        doAsync {
-            overlaysList = Utils.sortedOverlaysList(this@CustomizeActivity)
-        }
 
         setContentView(R.layout.activity_customize)
         handler.post {

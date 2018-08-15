@@ -16,6 +16,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.PopupWindow
 import com.brit.swiftinstaller.library.R
+import com.brit.swiftinstaller.ui.applist.AppItem
 import com.brit.swiftinstaller.utils.MaterialPalette
 import com.brit.swiftinstaller.utils.UpdateChecker
 import com.brit.swiftinstaller.utils.Utils
@@ -31,6 +32,8 @@ import org.jetbrains.anko.doAsync
 
 class MainActivity : ThemeActivity() {
 
+    private var overlaysList = ArrayList<AppItem>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -40,6 +43,7 @@ class MainActivity : ThemeActivity() {
 
         doAsync {
             Utils.enableAllOverlays(this@MainActivity)
+            overlaysList = Utils.sortedOverlaysList(this@MainActivity)
         }
 
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("not_closed", true)) {
@@ -69,6 +73,7 @@ class MainActivity : ThemeActivity() {
         card_install.setOnClickListener {
             val intent = Intent(this, OverlaysActivity::class.java)
             val bundle = Bundle()
+            bundle.putParcelableArrayList("overlays_list", overlaysList)
             intent.putExtras(bundle)
             startActivity(intent)
         }
@@ -77,6 +82,7 @@ class MainActivity : ThemeActivity() {
             val intent = Intent(this, OverlaysActivity::class.java)
             intent.putExtra("tab", OverlaysActivity.UPDATE_TAB)
             val bundle = Bundle()
+            bundle.putParcelableArrayList("overlays_list", overlaysList)
             intent.putExtras(bundle)
             startActivity(intent)
         }
