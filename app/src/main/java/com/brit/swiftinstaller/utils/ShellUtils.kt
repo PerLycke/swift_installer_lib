@@ -7,9 +7,10 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.os.Build
 import android.system.Os
-import android.text.TextUtils
 import android.util.Log
 import com.android.apksig.ApkSigner
+import com.topjohnwu.superuser.Shell
+import com.topjohnwu.superuser.io.SuFile
 import java.io.*
 import java.lang.reflect.InvocationTargetException
 import java.security.KeyStore
@@ -24,22 +25,12 @@ object ShellUtils {
 
     val isRootAvailable: Boolean
         get() {
-            return try {
-                var output: CommandOutput? = runCommand("id", true)
-                if (output != null && TextUtils.isEmpty(output.error) && output.exitCode == 0) {
-                    output.output != null && output.output!!.contains("uid=0")
-                } else {
-                    output = runCommand("echo _TEST_", true)
-                    output.output!!.contains("_TEST_")
-                }
-            } catch (e: Exception) {
-                false
-            }
+            return Shell.rootAccess()
         }
 
-    fun listFiles(path: String): Array<String> {
-        val output = runCommand("ls $path")
-        return output.output!!.split("\n".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+    fun listFiles(path: String): List<String> {
+        val f = SuFile(path)
+        return f.list().toList()
     }
 
     fun inputStreamToString(`is`: InputStream?): String {
@@ -47,12 +38,12 @@ object ShellUtils {
         return if (s.hasNext()) s.next() else ""
     }
 
-    fun copyFile(path: String, output: String) {
-        runCommand("cp $path $output", true)
+    fun copyFile(path: String, output: String): Boolean {
+        return SuFile(path).renameTo(SuFile(output))
     }
 
-    fun mkdir(path: String) {
-        runCommand("mkdir -p $path", true)
+    fun mkdir(path: String): Boolean {
+        return SuFile(path).mkdirs()
     }
 
     fun setPermissions(perms: Int, path: String) {
@@ -61,7 +52,6 @@ object ShellUtils {
 
     fun compileOverlay(context: Context, themePackage: String, res: String?, manifest: String,
                        overlayPath: String, assetPath: String?, targetInfo: ApplicationInfo?): CommandOutput {
-        var output: CommandOutput
         val overlay = File(overlayPath)
         @Suppress("LocalVariableName")
         val unsigned_unaligned = File(overlay.parent, "unsigned_unaligned" + overlay.name)
@@ -98,18 +88,7 @@ object ShellUtils {
             cmd.append(" -I ").append(targetInfo.sourceDir)
         }
         cmd.append(" -F ").append(unsigned_unaligned.absolutePath)
-        //ShellUtils.runCommand(cmd.toString());
-        try {
-            val aapt = Runtime.getRuntime().exec(cmd.toString().split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
-            val exitCode = aapt.waitFor()
-            val error = inputStreamToString(aapt.errorStream)
-            val out = inputStreamToString(aapt.inputStream)
-            output = CommandOutput(out, error, exitCode)
-            aapt.destroy()
-        } catch (e: Exception) {
-            output = CommandOutput("", "", 1)
-            e.printStackTrace()
-        }
+        var result = Shell.sh(cmd.toString()).exec()
 
         // Zipalign
         if (unsigned_unaligned.exists()) {
@@ -118,7 +97,7 @@ object ShellUtils {
             zipalign.append(" 4")
             zipalign.append(" ${unsigned_unaligned.absolutePath}")
             zipalign.append(" ${unsigned.absolutePath}")
-            output = runCommand(zipalign.toString())
+            result = Shell.sh(zipalign.toString()).exec()
         }
 
         if (unsigned.exists()) {
@@ -147,7 +126,7 @@ object ShellUtils {
                     .build()
                     .sign()
         }
-        return output
+        return resultToOutput(result)
     }
 
     private fun getAapt(context: Context): String? {
@@ -174,7 +153,7 @@ object ShellUtils {
         if (Arrays.toString(Build.SUPPORTED_ABIS).contains("86")) {
             return "86"
         } else {
-            if (Build.SUPPORTED_64_BIT_ABIS.size > 0) {
+            if (Build.SUPPORTED_64_BIT_ABIS.isNotEmpty()) {
                 return "64"
             }
         }
@@ -187,43 +166,13 @@ fun runCommand(cmd: String): CommandOutput {
 }
 
 fun runCommand(cmd: String, root: Boolean): CommandOutput {
-    var os: DataOutputStream? = null
-    var process: Process? = null
-    try {
 
-        process = Runtime.getRuntime().exec(if (root) "su" else "sh")
-        os = DataOutputStream(process!!.outputStream)
-        os.writeBytes(cmd + "\n")
-        os.flush()
-        os.writeBytes("exit\n")
-        os.flush()
-
-        val input = process.inputStream
-        val error = process.errorStream
-
-        val `in` = ShellUtils.inputStreamToString(input)
-        val err = ShellUtils.inputStreamToString(error)
-
-        input?.close()
-        error?.close()
-
-        process.waitFor()
-
-        return CommandOutput(`in`, err, process.exitValue())
-    } catch (e: IOException) {
-        //e.printStackTrace()
-        return CommandOutput("", "", 1)
-    } catch (e: InterruptedException) {
-        //e.printStackTrace()
-        return CommandOutput("", "", 1)
-    } finally {
-        try {
-            os?.close()
-            process?.destroy()
-        } catch (ignored: IOException) {
-        }
-
+    val result = if (root) {
+        Shell.su(cmd).exec()
+    } else {
+        Shell.sh(cmd).exec()
     }
+    return resultToOutput(result)
 }
 
 fun fileExists(path: String): Boolean {
@@ -284,5 +233,16 @@ fun getProperty(name: String): String? {
         e.printStackTrace()
         return null
     }
+}
 
+private fun resultToOutput(result: Shell.Result) : CommandOutput {
+    var out = ""
+    for (r in result.out) {
+        out += "${r.trim()}\n"
+    }
+    var err = ""
+    for (r in result.err) {
+        err += "${r.trim()}\n"
+    }
+    return CommandOutput(out, err, result.code)
 }

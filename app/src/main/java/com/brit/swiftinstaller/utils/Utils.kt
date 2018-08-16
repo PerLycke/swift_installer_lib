@@ -10,6 +10,7 @@ import android.graphics.Paint
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.ui.applist.AppItem
 
@@ -112,6 +113,7 @@ object Utils {
     fun isOverlayEnabled(context: Context, packageName: String): Boolean {
         if (!isSamsungOreo(context)) {
             val overlays = runCommand("cmd overlay list", true).output
+            Log.d("TEST", "overlays - $overlays")
             for (overlay in overlays!!.split("\n")) {
                 if (overlay.startsWith("[x]") && overlay.contains(packageName)) {
                     return true
@@ -127,6 +129,7 @@ object Utils {
     }
 
     fun checkAppVersion(context: Context, packageName: String): Boolean {
+        if (!isAppInstalled(context, Utils.getOverlayPackageName(packageName))) return false
         val appVersionCode = context.packageManager.getPackageInfo(packageName, 0).versionCode
         val curVersionCode = context.packageManager.getApplicationInfo(
                 Utils.getOverlayPackageName(packageName),
@@ -167,6 +170,7 @@ object Utils {
     }
 
     fun checkOverlayVersion(context: Context, packageName: String): Boolean {
+        if (!isAppInstalled(context, Utils.getOverlayPackageName(packageName))) return false
         val overlayVersion = Integer.parseInt(ShellUtils.inputStreamToString(context.assets.open(
                 "overlays/$packageName/version")).trim().replace("\"", ""))
         val currentVersion = context.packageManager.getApplicationInfo(

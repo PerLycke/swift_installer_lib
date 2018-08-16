@@ -3,6 +3,7 @@ package com.brit.swiftinstaller.installer.rom
 import android.content.Context
 import android.content.Intent
 import com.brit.swiftinstaller.utils.*
+import com.topjohnwu.superuser.io.SuFile
 
 class PRomInfo(context: Context) : RomInfo(context) {
 
@@ -33,6 +34,6 @@ class PRomInfo(context: Context) : RomInfo(context) {
 
     override fun isOverlayInstalled(targetPackage: String): Boolean {
         val overlayPackage = Utils.getOverlayPackageName(targetPackage)
-        return fileExistsRoot("$systemApp/$overlayPackage/$overlayPackage.apk")
+        return SuFile("$systemApp/$overlayPackage/$overlayPackage.apk").exists()
     }
 }

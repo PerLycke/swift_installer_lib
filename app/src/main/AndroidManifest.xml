@@ -12,6 +12,7 @@
     <uses-feature android:name="com.samsung.feature.samsung_experience_mobile" android:required="true" />
 
     <application
+        android:name="com.brit.swiftinstaller.SwiftApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
