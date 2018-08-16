@@ -7,10 +7,7 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.AsyncTask
-import android.os.Build
-import android.os.Bundle
-import android.os.Handler
+import android.os.*
 import android.support.design.widget.TabLayout
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AlertDialog
@@ -28,6 +25,7 @@ import com.brit.swiftinstaller.utils.setAppVersion
 import com.brit.swiftinstaller.utils.*
 import kotlinx.android.synthetic.main.activity_install_summary.*
 import kotlinx.android.synthetic.main.tab_layout_install_summary.*
+import java.io.File
 import java.lang.ref.WeakReference
 
 class InstallSummaryActivity : ThemeActivity() {
@@ -48,8 +46,8 @@ class InstallSummaryActivity : ThemeActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        InstallActivity().finish()
         setContentView(R.layout.activity_install_summary)
+        File(Environment.getExternalStorageDirectory(), ".swift").deleteRecursively()
 
         if (intent.extras != null && intent.extras!!.containsKey("errorMap")) {
             mErrorMap = Utils.bundleToMap(intent.getBundleExtra("errorMap"))

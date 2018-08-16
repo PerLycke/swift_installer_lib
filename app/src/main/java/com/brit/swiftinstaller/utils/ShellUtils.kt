@@ -118,7 +118,7 @@ object ShellUtils {
             zipalign.append(" 4")
             zipalign.append(" ${unsigned_unaligned.absolutePath}")
             zipalign.append(" ${unsigned.absolutePath}")
-            runCommand(zipalign.toString())
+            output = runCommand(zipalign.toString())
         }
 
         if (unsigned.exists()) {

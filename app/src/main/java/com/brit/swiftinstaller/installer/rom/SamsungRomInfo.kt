@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.support.v4.content.FileProvider
+import android.util.Log
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.utils.*
 import java.io.File
@@ -90,8 +91,9 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
                 } else {
                     appInstall.action = Intent.ACTION_INSTALL_PACKAGE
                     appInstall.data = FileProvider.getUriForFile(context,
-                            BuildConfig.APPLICATION_ID + ".myprovider",
+                            "com.brit.swiftinstaller.myprovider",
                             File(Utils.getOverlayPath(apps.elementAt(index))))
+                    Log.d("TEST", "file exists ? ${File(Utils.getOverlayPath(apps.elementAt(index))).exists()}")
                 }
                 appInstall.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 appInstall.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -131,6 +133,9 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
     }
 
     override fun installOverlay(context: Context, targetPackage: String, overlayPath: String) {
+        Log.d("TEST", "installOverlay")
+        Log.d("TEST", "path - $overlayPath")
+        Log.d("TEST", "exists - ${File(overlayPath).exists()}")
         if (ShellUtils.isRootAvailable) {
             runCommand("pm install -r $overlayPath", true)
         }

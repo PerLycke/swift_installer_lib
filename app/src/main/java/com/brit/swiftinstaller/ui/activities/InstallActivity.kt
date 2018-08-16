@@ -60,7 +60,6 @@ class InstallActivity : ThemeActivity() {
         val intent = Intent(this, InstallSummaryActivity::class.java)
         intent.putExtra("errorMap", Utils.mapToBundle(errorMap))
         intent.putExtra("update", update)
-        File(Environment.getExternalStorageDirectory(), ".swift").deleteRecursively()
         errorMap.keys.forEach {
             if (apps.contains(it)) {
                 apps.remove(it)
