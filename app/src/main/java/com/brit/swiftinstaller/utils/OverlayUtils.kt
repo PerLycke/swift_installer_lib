@@ -21,40 +21,9 @@ object OverlayUtils {
         return overlays.contains(packageName)
     }
 
-    private fun checkOverlay(context: Context, packageName: String) : Boolean {
-        val resourcePaths = ArrayList<String>()
-        val assets = ArrayList<String>()
-        parseOverlayResourcePath(context, "overlays/$packageName", packageName, resourcePaths)
-        for (path in resourcePaths) {
-            val list = context.assets.list(path) ?: emptyArray()
-            if (list.isNotEmpty()) {
-                for (l in list) {
-                    assets.add(l)
-                }
-            }
-        }
-        return assets.isEmpty()
-    }
-
-    private fun checkResourcePath(context: Context, path: String, packageName: String, resourcePaths: ArrayList<String>) {
-        val variants = context.assets.list(path) ?: return
-        if (!variants.contains("props")
-                && !variants.contains("versions") && !variants.contains("common")) {
-            addResourcePath(resourcePaths, path)
-        } else {
-            parseOverlayResourcePath(context, path, packageName, resourcePaths)
-        }
-    }
-
-    private fun addResourcePath(resourcePaths: ArrayList<String>, path: String) {
-        resourcePaths.add(path.trimEnd('/'))
-    }
-
-    fun parseOverlayAssetPath(am: AssetManager, path: String, assetPaths: ArrayList<String>) {
-        val variants = am.list("$path/assets") ?: return
-        if (variants.contains("common")) {
-            assetPaths.add("$path/assets/common")
-        }
+    fun hasOverlayOptions(context: Context, packageName: String): Boolean {
+        val options = context.assets.list("overlays/$packageName/options") ?: emptyArray()
+        return options.isNotEmpty()
     }
 
     fun parseOverlayResourcePath(context: Context, path: String, packageName: String, resourcePaths: ArrayList<String>) {
@@ -90,6 +59,17 @@ object OverlayUtils {
                     }
                 }
             }
+        } else if (variants.contains("options")) {
+            val optionsMap = getOverlayOptions(context, packageName)
+            val options = context.assets.list("$path/options") ?: emptyArray()
+            for (option in options) {
+                if (optionsMap.containsKey(option)) {
+                    val optionsArray = context.assets.list("$path/options/$option") ?: emptyArray()
+                    if (optionsArray.isNotEmpty()) {
+                        checkResourcePath(context, "$path/options/$option/${optionsMap[option]}", packageName, resourcePaths)
+                    }
+                }
+            }
         }
         if (variants.contains("icons") && useAospIcons(context)) {
             checkResourcePath(context, "$path/icons/aosp", packageName, resourcePaths)
@@ -108,6 +88,54 @@ object OverlayUtils {
         }
         if (variants.contains("style") && usePstyle(context)) {
             checkResourcePath(context, "$path/style/p", packageName, resourcePaths)
+        }
+    }
+
+    fun getOverlayOptions(context: Context, packageName: String) : HashMap<String, Array<String>> {
+        val optionsMap = HashMap<String, Array<String>>()
+        val options = context.assets.list("overlays/$packageName/options") ?: emptyArray()
+        for (option in options) {
+            val array = context.assets.list("overlays/$packageName/options/$option") ?: emptyArray()
+            if (array.isNotEmpty()) {
+                optionsMap[option] = array
+            }
+        }
+        return optionsMap
+    }
+
+    private fun checkOverlay(context: Context, packageName: String) : Boolean {
+        val resourcePaths = ArrayList<String>()
+        val assets = ArrayList<String>()
+        parseOverlayResourcePath(context, "overlays/$packageName", packageName, resourcePaths)
+        for (path in resourcePaths) {
+            val list = context.assets.list(path) ?: emptyArray()
+            if (list.isNotEmpty()) {
+                for (l in list) {
+                    assets.add(l)
+                }
+            }
+        }
+        return assets.isEmpty()
+    }
+
+    private fun checkResourcePath(context: Context, path: String, packageName: String, resourcePaths: ArrayList<String>) {
+        val variants = context.assets.list(path) ?: return
+        if (!variants.contains("props")
+                && !variants.contains("versions") && !variants.contains("common")) {
+            addResourcePath(resourcePaths, path)
+        } else {
+            parseOverlayResourcePath(context, path, packageName, resourcePaths)
+        }
+    }
+
+    private fun addResourcePath(resourcePaths: ArrayList<String>, path: String) {
+        resourcePaths.add(path.trimEnd('/'))
+    }
+
+    fun parseOverlayAssetPath(am: AssetManager, path: String, assetPaths: ArrayList<String>) {
+        val variants = am.list("$path/assets") ?: return
+        if (variants.contains("common")) {
+            assetPaths.add("$path/assets/common")
         }
     }
 

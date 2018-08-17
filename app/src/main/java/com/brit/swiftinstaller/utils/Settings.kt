@@ -1,12 +1,14 @@
 package com.brit.swiftinstaller.utils
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.text.TextUtils
 import android.util.ArraySet
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.R
+import org.json.JSONObject
 
 const val KEY_ACCENT_COLOR = "accent_color"
 const val KEY_BACKGROUND_COLOR = "background_color"
@@ -283,4 +285,30 @@ fun addAccentColor(context: Context, color: Int) {
         }
     }
     setUserAccents(context, newColors)
+}
+
+private fun getOverlayOptionsPrefs(context: Context) : SharedPreferences {
+    return context.getSharedPreferences("pref_app_options", Context.MODE_PRIVATE)
+}
+
+fun getOverlayOptions(context: Context, packageName: String): HashMap<String, String> {
+    val map = HashMap<String, String>()
+    val prefs = getOverlayOptionsPrefs(context)
+    val jsonString = prefs.getString(packageName, JSONObject().toString())
+    val json = JSONObject(jsonString)
+    val iter = json.keys()
+    while (iter.hasNext()) {
+        val key = iter.next()
+        val value = json.get(key)
+        map.put(key, value as String)
+    }
+    return map
+}
+
+fun setOverlayOption(context: Context, packageName: String, option: String, value: String) {
+    val prefs = getOverlayOptionsPrefs(context)
+    val json = JSONObject(getOverlayOptions(context, packageName))
+    json.put(option, value)
+    prefs.edit().remove(packageName).apply()
+    prefs.edit().putString(packageName, json.toString()).apply()
 }
