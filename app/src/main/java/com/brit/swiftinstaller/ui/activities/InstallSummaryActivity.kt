@@ -96,7 +96,7 @@ class InstallSummaryActivity : ThemeActivity() {
             builder.setTitle("Reboot now?")
             builder.setMessage(R.string.examined_result_msg)
             builder.setPositiveButton("Reboot Now") { dialogInterface, _ ->
-                runCommand("reboot", true)
+                runCommand("setprop ctl.restart zygote", true)
                 dialogInterface.dismiss()
             }
             builder.setNegativeButton("Reboot Later") { dialogInterface, _ ->
