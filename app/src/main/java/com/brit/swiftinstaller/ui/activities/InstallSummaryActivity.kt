@@ -195,13 +195,18 @@ class InstallSummaryActivity : ThemeActivity() {
             val context = mConRef.get()
             apps.addAll(errorMap.keys)
             for (pn: String in apps) {
+                if ( context == null) continue
                 var info: ApplicationInfo? = null
                 var pInfo: PackageInfo? = null
                 var oInfo: PackageInfo? = null
                 try {
                     info = pm.getApplicationInfo(pn, PackageManager.GET_META_DATA)
                     pInfo = pm.getPackageInfo(pn, 0)
-                    oInfo = pm.getPackageInfo(Utils.getOverlayPackageName(pn), 0)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        oInfo = pm.getPackageArchiveInfo("/system/app/${Utils.getOverlayPackageName(pn)}/${Utils.getOverlayPackageName(pn)}.apk", 0)
+                    } else {
+                        oInfo = pm.getPackageInfo(Utils.getOverlayPackageName(pn), 0)
+                    }
                 } catch (e: PackageManager.NameNotFoundException) {
                 }
                 if (info != null) {
@@ -213,7 +218,7 @@ class InstallSummaryActivity : ThemeActivity() {
                     item.versionName = pInfo.versionName
                     if (errorMap.keys.contains(pn)) {
                         onProgressUpdate(Progress(FAILED_TAB, item))
-                    } else if (RomInfo.getRomInfo(context!!).isOverlayInstalled(pn)
+                    } else if (RomInfo.getRomInfo(context).isOverlayInstalled(pn)
                             && oInfo!!.versionCode > getAppVersion(context, pn)) {
                         setAppVersion(context, pn, oInfo.versionCode)
                         onProgressUpdate(Progress(SUCCESS_TAB, item))
