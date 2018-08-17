@@ -59,17 +59,6 @@
             tools:ignore="RtlSymmetry">
 
             <TextView
-                android:id="@+id/toolbar_subtitle_bg_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-condensed"
-                android:text="@string/overlays_toolbar_bg"
-                android:textAppearance="@style/ToolbarSubtitle"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
                 android:id="@+id/toolbar_subtitle_current_accent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -81,27 +70,15 @@
                 app:layout_constraintTop_toTopOf="@+id/toolbar_subtitle_accent_title" />
 
             <TextView
-                android:id="@+id/toolbar_subtitle_current_bg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:fontFamily="sans-serif-condensed"
-                android:text="@string/dark"
-                android:textAppearance="@style/ToolbarSubtitle"
-                app:layout_constraintStart_toEndOf="@+id/toolbar_subtitle_bg_title"
-                app:layout_constraintTop_toTopOf="@+id/toolbar_subtitle_bg_title" />
-
-            <TextView
                 android:id="@+id/toolbar_subtitle_accent_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="@string/overlays_toolbar_accent"
                 android:textAppearance="@style/ToolbarSubtitle"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/toolbar_subtitle_current_bg"
-                app:layout_constraintTop_toTopOf="@+id/toolbar_subtitle_current_bg" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
 
@@ -113,7 +90,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:paddingEnd="70dp"
+        android:paddingEnd="106dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/toolbar_overlays_main_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -152,6 +129,23 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/app_options_btn"
+            android:layout_width="28dp"
+            android:layout_height="36dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:background="?android:selectableItemBackgroundBorderless"
+            android:paddingEnd="4dp"
+            android:onClick="appOptionsBtnClick"
+            android:tint="@color/light_grey"
+            app:layout_constraintBottom_toBottomOf="@+id/customize_btn"
+            app:layout_constraintEnd_toStartOf="@+id/customize_btn"
+            app:layout_constraintTop_toTopOf="@+id/customize_btn"
+            app:srcCompat="@drawable/ic_app_options"
+            android:contentDescription="@string/image" />
 
         <ImageView
             android:id="@+id/customize_btn"

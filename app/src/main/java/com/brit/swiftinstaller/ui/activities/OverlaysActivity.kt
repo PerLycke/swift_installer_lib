@@ -208,8 +208,6 @@ class OverlaysActivity : ThemeActivity() {
         toolbar_subtitle_current_accent.setTextColor(getAccentColor(this))
         toolbar_subtitle_current_accent.text = getString(R.string.hex_string,
                 String.format("%06x", getAccentColor(this)).substring(2))
-        toolbar_subtitle_current_bg.text = getString(R.string.hex_string,
-                String.format("%06x", getBackgroundColor(this)).substring(2))
         if (select_all_btn.isChecked) {
             select_all_btn.isChecked = false
         }
@@ -290,6 +288,11 @@ class OverlaysActivity : ThemeActivity() {
 
     fun customizeBtnClick(@Suppress("UNUSED_PARAMETER") view: View) {
         val intent = Intent(this, CustomizeActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun appOptionsBtnClick(@Suppress("UNUSED_PARAMETER") view: View) {
+        val intent = Intent(this, AppOptionsActivity::class.java)
         startActivity(intent)
     }
 

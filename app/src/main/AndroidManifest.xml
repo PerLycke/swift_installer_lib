@@ -53,6 +53,10 @@
             android:screenOrientation="portrait"
             android:excludeFromRecents="true"
             android:theme="@style/AppTheme.AlertDialog" />
+        <activity
+            android:name="com.brit.swiftinstaller.ui.activities.AppOptionsActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
 
         <service android:name="com.brit.swiftinstaller.InstallerService"
             android:permission="android.permission.BIND_JOB_SERVICE"
