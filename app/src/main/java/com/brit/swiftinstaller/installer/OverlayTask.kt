@@ -7,6 +7,7 @@ import android.content.res.AssetManager
 import android.graphics.Color
 import android.os.Environment
 import android.text.TextUtils
+import android.util.Log
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.utils.*
@@ -69,7 +70,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
             } else {
                 extractResources()
                 compileOverlay()
-                deleteFileShell(overlayDir.absolutePath)
+                //deleteFileShell(overlayDir.absolutePath)
             }
             mOm.handleState(this, OverlayManager.OVERLAY_INSTALLED)
         }
@@ -111,7 +112,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     }
 
     private fun addResourcePath(resourcePaths: ArrayList<String>, path: String) {
-        resourcePaths.add(path)
+        resourcePaths.add(path.trimEnd('/'))
     }
 
     private fun parseOverlayAssetPath(am: AssetManager, path: String, assetPaths: ArrayList<String>) {
@@ -132,9 +133,9 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
             if (props != null) {
                 var found = false
                 for (prop in props) {
-                    if (!TextUtils.equals(System.getProperty(prop, "prop"), "prop")) {
-                        val propVal = System.getProperty(prop) ?: "default"
-                        val vals = am.list("$path/prop/$prop") ?: continue
+                    if (!TextUtils.equals(getProperty(prop, "prop"), "prop")) {
+                        val propVal = getProperty(prop) ?: "default"
+                        val vals = am.list("$path/props/$prop") ?: continue
                         if (vals.contains("common")) {
                             found = true
                             checkResourcePath(am, "$path/props/$prop/common", resourcePaths)
@@ -304,7 +305,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     private fun generateManifest(path: String, targetPackage: String,
                                  appVersion: String, appVersionCode: Int, themeVersion: Int) {
         val manifest = StringBuilder()
-        manifest.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
+        manifest.append("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>\n")
         manifest.append("<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n")
         manifest.append("package=\"${Utils.getOverlayPackageName(targetPackage)}\"\n")
         manifest.append("android:versionCode=\"${getAppVersion(context, targetPackage) + 1}\"\n")
@@ -312,9 +313,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         if (!NO_PERMISSION_PACKAGES.contains(targetPackage)) {
             manifest.append("<uses-permission android:name=\"com.samsung.android.permission.SAMSUNG_OVERLAY_COMPONENT\" />\n")
         }
-        manifest.append("<overlay ")
-        manifest.append("android:priority=\"1\" ")
-        manifest.append("android:targetPackage=\"$targetPackage\"/>\n")
+        manifest.append("<overlay android:targetPackage=\"$targetPackage\"/>\n")
         manifest.append("<application android:allowBackup=\"false\" android:hasCode=\"false\">\n")
         manifest.append("<meta-data android:name=\"app_version\" android:value=\"v=$appVersion\"/>\n")
         manifest.append("<meta-data android:name=\"app_version_code\" android:value=\"$appVersionCode\"/>\n")

@@ -113,7 +113,6 @@ object Utils {
     fun isOverlayEnabled(context: Context, packageName: String): Boolean {
         if (!isSamsungOreo(context)) {
             val overlays = runCommand("cmd overlay list", true).output
-            Log.d("TEST", "overlays - $overlays")
             for (overlay in overlays!!.split("\n")) {
                 if (overlay.startsWith("[x]") && overlay.contains(packageName)) {
                     return true

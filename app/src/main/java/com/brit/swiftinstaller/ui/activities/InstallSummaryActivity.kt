@@ -47,7 +47,7 @@ class InstallSummaryActivity : ThemeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_install_summary)
-        File(Environment.getExternalStorageDirectory(), ".swift").deleteRecursively()
+        //File(Environment.getExternalStorageDirectory(), ".swift").deleteRecursively()
 
         if (intent.extras != null && intent.extras!!.containsKey("errorMap")) {
             mErrorMap = Utils.bundleToMap(intent.getBundleExtra("errorMap"))

@@ -235,6 +235,10 @@ fun getProperty(name: String): String? {
     }
 }
 
+fun getProperty(name: String, def: String): String {
+    return getProperty(name) ?: def
+}
+
 private fun resultToOutput(result: Shell.Result) : CommandOutput {
     var out = ""
     for (r in result.out) {
