@@ -16,6 +16,11 @@ object OverlayUtils {
         }
     }
 
+    fun hasOverlay(context: Context, packageName: String): Boolean {
+        val overlays = context.assets.list("overlays") ?: emptyArray()
+        return overlays.contains(packageName)
+    }
+
     private fun checkOverlay(context: Context, packageName: String) : Boolean {
         val resourcePaths = ArrayList<String>()
         val assets = ArrayList<String>()

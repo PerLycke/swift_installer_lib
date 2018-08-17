@@ -71,6 +71,9 @@ abstract class RomInfo constructor(var context: Context) {
         return Utils.isAppInstalled(context, Utils.getOverlayPackageName(targetPackage))
     }
 
+    open fun disableOverlay(targetPackage: String) {
+    }
+
     open fun getCustomizeFeatures() : Int {
         return CustomizeActivity.SUPPORTS_CLOCK + CustomizeActivity.SUPPORTS_ICONS + CustomizeActivity.SUPPORTS_SYSTEMUI
     }

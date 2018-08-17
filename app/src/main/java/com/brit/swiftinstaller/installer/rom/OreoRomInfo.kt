@@ -2,7 +2,6 @@ package com.brit.swiftinstaller.installer.rom
 
 import android.content.Context
 import android.content.Intent
-import com.brit.swiftinstaller.ui.activities.CustomizeActivity
 import com.brit.swiftinstaller.utils.*
 
 open class OreoRomInfo(context: Context) : RomInfo(context) {
@@ -25,5 +24,9 @@ open class OreoRomInfo(context: Context) : RomInfo(context) {
 
     override fun getCustomizeFeatures() : Int {
         return 0
+    }
+
+    override fun disableOverlay(targetPackage: String) {
+        runCommand("cmd overlay disable ${Utils.getOverlayPackageName(targetPackage)}", true)
     }
 }
