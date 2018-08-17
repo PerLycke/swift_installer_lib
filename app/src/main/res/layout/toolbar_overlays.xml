@@ -87,12 +87,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:paddingEnd="106dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/toolbar_overlays_main_content"
+        app:layout_constraintEnd_toStartOf="@+id/buttons"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="RtlSymmetry">
@@ -112,8 +110,43 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/buttons"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/app_options_btn"
+            android:layout_width="24dp"
+            android:layout_height="36dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginTop="8dp"
+            android:background="?android:selectableItemBackgroundBorderless"
+            android:contentDescription="@string/image"
+            android:onClick="appOptionsBtnClick"
+            android:scaleType="center"
+            android:tint="@color/light_grey"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/customize_btn"
+            app:layout_constraintEnd_toStartOf="@+id/customize_btn"
+            app:layout_constraintTop_toTopOf="@+id/customize_btn"
+            app:srcCompat="@drawable/ic_app_options" />
+
+        <ImageView
+            android:id="@+id/customize_btn"
+            android:layout_width="24dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="8dp"
+            android:background="?android:selectableItemBackgroundBorderless"
+            android:contentDescription="@string/image"
+            android:onClick="customizeBtnClick"
+            android:scaleType="center"
+            app:layout_constraintBottom_toBottomOf="@+id/select_all_btn"
+            app:layout_constraintEnd_toStartOf="@+id/select_all_btn"
+            app:layout_constraintTop_toTopOf="@+id/select_all_btn"
+            app:srcCompat="@drawable/ic_accent_new" />
 
         <ToggleButton
             android:id="@+id/select_all_btn"
@@ -129,37 +162,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/app_options_btn"
-            android:layout_width="28dp"
-            android:layout_height="36dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
-            android:background="?android:selectableItemBackgroundBorderless"
-            android:paddingEnd="4dp"
-            android:onClick="appOptionsBtnClick"
-            android:tint="@color/light_grey"
-            app:layout_constraintBottom_toBottomOf="@+id/customize_btn"
-            app:layout_constraintEnd_toStartOf="@+id/customize_btn"
-            app:layout_constraintTop_toTopOf="@+id/customize_btn"
-            app:srcCompat="@drawable/ic_app_options"
-            android:contentDescription="@string/image" />
-
-        <ImageView
-            android:id="@+id/customize_btn"
-            android:layout_width="24dp"
-            android:layout_height="36dp"
-            android:layout_marginEnd="8dp"
-            android:contentDescription="@string/image"
-            android:onClick="customizeBtnClick"
-            android:scaleType="center"
-            android:background="?android:selectableItemBackgroundBorderless"
-            app:layout_constraintBottom_toBottomOf="@+id/select_all_btn"
-            app:layout_constraintEnd_toStartOf="@+id/select_all_btn"
-            app:layout_constraintTop_toTopOf="@+id/select_all_btn"
-            app:srcCompat="@drawable/ic_accent_new" />
 
         <ProgressBar
             android:id="@+id/loading_progress"
