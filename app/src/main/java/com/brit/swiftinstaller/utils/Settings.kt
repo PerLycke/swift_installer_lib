@@ -29,6 +29,8 @@ const val KEY_OVERLAYS_TO_UNINSTALL = "overlays_to_uninstall"
 const val KEY_DARK_NOTIF_BG = "dark_notif_bg"
 const val KEY_ALPHA = "alpha"
 
+const val KEY_HIDDEN_APPS = "hidden_apps"
+
 val NO_PERMISSION_PACKAGES = arrayListOf("com.sec.android.app.music", "com.sec.android.app.voicenote")
 
 fun getAccentColor(context: Context): Int {
@@ -190,6 +192,20 @@ fun getUserAccents(context: Context): IntArray {
             .filterNot { TextUtils.isEmpty(col[it]) }
             .forEach { accents[it] = Integer.parseInt(col[it]) }
     return accents
+}
+
+fun getHiddenApps(context: Context): Set<String> {
+    return PreferenceManager.getDefaultSharedPreferences(context).getStringSet(KEY_HIDDEN_APPS, emptySet()) ?: emptySet()
+}
+
+fun addHiddenApp(context: Context, packageName: String) {
+    val apps = getHiddenApps(context)
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet(KEY_HIDDEN_APPS, apps.plus(packageName)).apply()
+}
+
+fun removeHiddenApp(context: Context, packageName: String) {
+    val apps = getHiddenApps(context)
+    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet(KEY_HIDDEN_APPS, apps.minus(packageName)).apply()
 }
 
 fun getAppsToUpdate(context: Context): Set<String> {

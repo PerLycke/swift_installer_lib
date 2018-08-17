@@ -14,6 +14,7 @@ import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.ui.applist.AppItem
+import com.brit.swiftinstaller.utils.OverlayUtils
 import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.utils.getBackgroundColor
 import com.brit.swiftinstaller.library.R
@@ -48,6 +49,11 @@ class TutorialActivity : TutorialActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         } else {
+
+            doAsync {
+                OverlayUtils.checkAndHideOverlays(this@TutorialActivity)
+            }
+
             setIndicator(R.drawable.tutorial_indicator)
             setIndicatorSelected(R.drawable.tutorial_indicator_selected)
 

@@ -236,7 +236,8 @@ fun getProperty(name: String): String? {
 }
 
 fun getProperty(name: String, def: String): String {
-    return getProperty(name) ?: def
+    val value = getProperty(name)
+    return if (value.isNullOrEmpty()) { def } else { value!! }
 }
 
 private fun resultToOutput(result: Shell.Result) : CommandOutput {

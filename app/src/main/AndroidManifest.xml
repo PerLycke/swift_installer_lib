@@ -67,6 +67,12 @@
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
+        
+        <receiver android:name="com.brit.swiftinstaller.utils.InstallerUpdateReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
 
         <receiver android:name="com.brit.swiftinstaller.utils.PackageListener" />
 

@@ -29,10 +29,12 @@ object Utils {
         if (sortedOverlays.isNotEmpty()) return sortedOverlays
         sortedOverlays.clear()
         val disabledOverlays = RomInfo.getRomInfo(context).getDisabledOverlays()
+        val hiddenOverlays = getHiddenApps(context)
         val pm = context.packageManager
         val overlays = context.assets.list("overlays") ?: emptyArray()
         for (pn: String in overlays) {
             if (disabledOverlays.contains(pn)) continue
+            if (hiddenOverlays.contains(pn)) continue
             var info: ApplicationInfo?
             var pInfo: PackageInfo?
             try {
