@@ -52,7 +52,7 @@
             android:name="com.brit.swiftinstaller.ui.activities.RebootActivity"
             android:screenOrientation="portrait"
             android:excludeFromRecents="true"
-            android:theme="@style/AppTheme.AlertDialog" />
+            android:theme="@style/AppTheme.AlertDialog.Reboot" />
         <activity
             android:name="com.brit.swiftinstaller.ui.activities.AppOptionsActivity"
             android:configChanges="orientation|keyboardHidden"

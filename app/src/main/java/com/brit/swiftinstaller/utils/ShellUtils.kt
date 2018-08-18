@@ -6,6 +6,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.os.Build
+import android.os.Handler
 import android.system.Os
 import android.util.Log
 import com.android.apksig.ApkSigner
@@ -250,4 +251,12 @@ private fun resultToOutput(result: Shell.Result) : CommandOutput {
         err += "${r.trim()}\n"
     }
     return CommandOutput(out, err, result.code)
+}
+
+fun reboot() {
+    runCommand("am broadcast android.intent.action.ACTION_SHUTDOWN", true)
+
+    Handler().postDelayed({
+        runCommand("setprop ctl.restart zygote", true)
+    }, 1500)
 }

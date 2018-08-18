@@ -14,6 +14,18 @@
         <item name="colorBackgroundFloating">#1b1b21</item>
         <item name="actionOverflowMenuStyle">@style/PopupMenuOverflow</item>
     </style>
+    <style name="AppTheme.Translucent" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@color/reboot_bg</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/AppTheme.WindowTransition</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="AppTheme.WindowTransition">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
     <style name="AppTheme.AlertDialog" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:windowBackground">@drawable/dialog_bg</item>
         <item name="android:colorAccent">@color/minimal_green</item>
@@ -21,6 +33,9 @@
         <item name="android:lineSpacingExtra">4dp</item>
         <item name="buttonBarStyle">@style/AppTheme.AlertDialog.ButtonBar</item>
         <item name="android:buttonBarStyle">@style/AppTheme.AlertDialog.ButtonBar</item>
+    </style>
+    <style name="AppTheme.AlertDialog.Reboot" parent="AppTheme.AlertDialog">
+        <item name="windowNoTitle">true</item>
     </style>
     <style name="AppTheme.AlertDialog.Error" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:windowBackground">@drawable/dialog_bg</item>

@@ -15,6 +15,7 @@
     <color name="radio_button_disabled">#B3ffffff</color>
     <color name="dialog_stroke">#14ffffff</color>
     <color name="item_background_color">#BFffffff</color>
+    <color name="reboot_bg">#BF000000</color>
 
     <!-- Minimal palette -->
     <color name="minimal_blue">#4A7CA5</color>

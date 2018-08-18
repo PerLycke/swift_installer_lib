@@ -1,15 +1,20 @@
 package com.brit.swiftinstaller.ui.activities
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
+import android.os.Handler
 import android.preference.PreferenceManager
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.utils.runCommand
+import com.brit.swiftinstaller.utils.reboot
 
 class RebootActivity : ThemeActivity() {
 
+    private val mHandler = Handler()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("should_notify", false).apply()
 
         val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
@@ -17,7 +22,12 @@ class RebootActivity : ThemeActivity() {
                 .setMessage(getString(R.string.reboot_dialog_msg))
                 .setPositiveButton(getString(R.string.reboot)) { dialogInterface, _ ->
                     dialogInterface.dismiss()
-                    runCommand("setprop ctl.restart zygote", true)
+                    val dialog = Dialog(this, R.style.AppTheme_Translucent)
+                    dialog.setContentView(R.layout.reboot)
+                    dialog.show()
+                    mHandler.post {
+                        reboot()
+                    }
                 }
                 .setNegativeButton(R.string.cancel) { dialogInterface, _ ->
                     dialogInterface.dismiss()

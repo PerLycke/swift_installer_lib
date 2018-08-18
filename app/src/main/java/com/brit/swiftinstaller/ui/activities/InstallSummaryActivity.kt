@@ -1,5 +1,6 @@
 package com.brit.swiftinstaller.ui.activities
 
+import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -38,6 +39,7 @@ class InstallSummaryActivity : ThemeActivity() {
     }
 
     private lateinit var mPagerAdapter: AppsTabPagerAdapter
+    private val mHandler = Handler()
 
     private var mErrorMap: HashMap<String, String> = HashMap()
     private lateinit var mApps: ArrayList<String>
@@ -96,8 +98,13 @@ class InstallSummaryActivity : ThemeActivity() {
             builder.setTitle("Reboot now?")
             builder.setMessage(R.string.examined_result_msg)
             builder.setPositiveButton("Reboot Now") { dialogInterface, _ ->
-                runCommand("setprop ctl.restart zygote", true)
                 dialogInterface.dismiss()
+                val dialog = Dialog(this, R.style.AppTheme_Translucent)
+                dialog.setContentView(R.layout.reboot)
+                dialog.show()
+                mHandler.post {
+                    reboot()
+                }
             }
             builder.setNegativeButton("Reboot Later") { dialogInterface, _ ->
                 dialogInterface.dismiss()

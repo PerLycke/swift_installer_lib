@@ -1,14 +1,19 @@
 package com.brit.swiftinstaller.ui.activities
 
+import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.v7.app.AlertDialog
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.utils.ShellUtils
+import com.brit.swiftinstaller.utils.reboot
 import com.brit.swiftinstaller.utils.runCommand
 
 class UninstallFinishedActivity : ThemeActivity() {
 
     private lateinit var dialog: AlertDialog
+    private val mHandler = Handler()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,8 +29,12 @@ class UninstallFinishedActivity : ThemeActivity() {
             }
         } else {
             builder.setPositiveButton("Reboot Now") { dialogInterface, _ ->
-                runCommand("setprop ctl.restart zygote", true)
-                finish()
+                val dialog = Dialog(this, R.style.AppTheme_Translucent)
+                dialog.setContentView(R.layout.reboot)
+                dialog.show()
+                mHandler.post {
+                    reboot()
+                }
             }
             builder.setNegativeButton("Reboot Later") { dialogInterface, _ ->
                 finish()
