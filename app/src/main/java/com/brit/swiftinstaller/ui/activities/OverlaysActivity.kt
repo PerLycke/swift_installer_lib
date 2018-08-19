@@ -240,16 +240,12 @@ class OverlaysActivity : ThemeActivity() {
                     continue
                 }
                 if (RomInfo.getRomInfo(context).isOverlayInstalled(pn)) {
-                    if (isOverlayEnabled(context, getOverlayPackageName(pn))) {
-                        if (updates.contains(pn)
-                                && status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
-                            updatesTabList.add(item)
-                            hasUpdate = true
-                        } else {
-                            activeTabsList.add(item)
-                        }
-                    } else if (status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
-                        installTabList.add(item)
+                    if (updates.contains(pn)
+                            && status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
+                        updatesTabList.add(item)
+                        hasUpdate = true
+                    } else {
+                        activeTabsList.add(item)
                     }
                 } else if (status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
                     installTabList.add(item)
