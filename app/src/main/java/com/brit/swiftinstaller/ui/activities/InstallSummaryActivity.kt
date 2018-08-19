@@ -264,10 +264,10 @@ class InstallSummaryActivity : ThemeActivity() {
                 try {
                     info = pm.getApplicationInfo(pn, PackageManager.GET_META_DATA)
                     pInfo = pm.getPackageInfo(pn, 0)
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                        oInfo = pm.getPackageArchiveInfo("/system/app/${Utils.getOverlayPackageName(pn)}/${Utils.getOverlayPackageName(pn)}.apk", 0)
+                    oInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        pm.getPackageArchiveInfo("/system/app/${Utils.getOverlayPackageName(pn)}/${Utils.getOverlayPackageName(pn)}.apk", 0)
                     } else {
-                        oInfo = pm.getPackageInfo(Utils.getOverlayPackageName(pn), 0)
+                        pm.getPackageInfo(Utils.getOverlayPackageName(pn), 0)
                     }
                 } catch (e: PackageManager.NameNotFoundException) {
                 }

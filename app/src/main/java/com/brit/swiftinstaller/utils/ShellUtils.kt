@@ -93,14 +93,14 @@ object ShellUtils {
         Log.d("TEST", "output - ${result.err}")
 
         // Zipalign
-        /*if (unsigned_unaligned.exists()) {
+        if (unsigned_unaligned.exists()) {
             val zipalign = StringBuilder()
             zipalign.append(getZipalign(context))
             zipalign.append(" 4")
             zipalign.append(" ${unsigned_unaligned.absolutePath}")
             zipalign.append(" ${unsigned.absolutePath}")
             result = Shell.sh(zipalign.toString()).exec()
-        }*/
+        }
 
         if (unsigned.exists()) {
             runCommand("chmod 777 $unsigned", false)
@@ -251,11 +251,7 @@ private fun resultToOutput(result: Shell.Result) : CommandOutput {
     for (r in result.err) {
         err += "${r.trim()}\n"
     }
-    return if (result.code == 1) {
-        CommandOutput(err, out, result.code)
-    } else {
-        CommandOutput(out, err, result.code)
-    }
+    return CommandOutput(out, err, result.code)
 }
 
 fun rebootCommand() {

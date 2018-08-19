@@ -107,13 +107,10 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         val output = ShellUtils.compileOverlay(context, BuildConfig.APPLICATION_ID, resDir.absolutePath,
                 overlayDir.absolutePath + "/AndroidManifest.xml",
                 overlayPath, assets, appInfo)
-        Log.d("TEST", "aapt - out = ${output.output}")
-        Log.d("TEST", "aapt -err = ${output.error}")
-        Log.d("TEST", "aapt - ec = ${output.exitCode}")
         if (output.exitCode == 0) {
             RomInfo.getRomInfo(context).installOverlay(context, packageName, overlayPath)
         } else {
-            errorLog = output.error
+            errorLog = output.output ?: ""
             mOm.handleState(this, OverlayManager.OVERLAY_FAILED)
         }
     }
