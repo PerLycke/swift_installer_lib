@@ -24,8 +24,6 @@ import com.brit.swiftinstaller.ui.applist.AppListFragment
 import com.brit.swiftinstaller.ui.applist.AppsTabPagerAdapter
 import com.brit.swiftinstaller.utils.*
 import com.brit.swiftinstaller.utils.Utils.createImage
-import com.brit.swiftinstaller.utils.Utils.getOverlayPackageName
-import com.brit.swiftinstaller.utils.Utils.isOverlayEnabled
 import kotlinx.android.synthetic.main.activity_overlays.*
 import kotlinx.android.synthetic.main.sheet_confirm_uninstall.view.*
 import kotlinx.android.synthetic.main.tab_layout_overlay.*
@@ -258,7 +256,7 @@ class OverlaysActivity : ThemeActivity() {
         }
     }
 
-    fun publishApps(installTabList: ArrayList<AppItem>, activeTabsList: ArrayList<AppItem>, updatesTabList: ArrayList<AppItem>, hasUpdate: Boolean) {
+    private fun publishApps(installTabList: ArrayList<AppItem>, activeTabsList: ArrayList<AppItem>, updatesTabList: ArrayList<AppItem>, hasUpdate: Boolean) {
         doAsync {
             for (i in installTabList) {
                 mPagerAdapter!!.addApp(INSTALL_TAB, i)

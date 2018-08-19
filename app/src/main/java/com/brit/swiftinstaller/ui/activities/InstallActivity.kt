@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.os.Environment
 import android.os.Handler
 import android.preference.PreferenceManager
 import android.support.v4.content.LocalBroadcastManager
@@ -20,7 +19,6 @@ import com.brit.swiftinstaller.utils.InstallerServiceHelper
 import com.brit.swiftinstaller.utils.ShellUtils
 import com.brit.swiftinstaller.utils.Utils
 import kotlinx.android.synthetic.main.progress_dialog_install.view.*
-import java.io.File
 import java.util.ArrayList
 import kotlin.collections.HashMap
 import kotlin.collections.set

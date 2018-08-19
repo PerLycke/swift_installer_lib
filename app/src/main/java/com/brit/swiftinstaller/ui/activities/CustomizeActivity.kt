@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
@@ -30,7 +29,6 @@ import android.widget.*
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.ui.CircleDrawable
-import com.brit.swiftinstaller.ui.applist.AppItem
 import com.brit.swiftinstaller.utils.*
 import com.brit.swiftinstaller.utils.ColorUtils.checkAccentColor
 import com.brit.swiftinstaller.utils.ColorUtils.checkBackgroundColor
@@ -45,14 +43,13 @@ import kotlinx.android.synthetic.main.customize_preview_settings.*
 import kotlinx.android.synthetic.main.customize_preview_sysui.*
 import kotlinx.android.synthetic.main.customize_systemui.*
 import kotlinx.android.synthetic.main.fab_sheet_personalize.view.*
-import org.jetbrains.anko.doAsync
 
 class CustomizeActivity : ThemeActivity() {
 
     companion object {
-        final val SUPPORTS_ICONS = 0x01
-        final val SUPPORTS_CLOCK = 0x02
-        final val SUPPORTS_SYSTEMUI = 0x04
+        const val SUPPORTS_ICONS = 0x01
+        const val SUPPORTS_CLOCK = 0x02
+        const val SUPPORTS_SYSTEMUI = 0x04
     }
 
     private var settingsIcons: Array<ImageView?> = arrayOfNulls(3)

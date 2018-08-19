@@ -300,7 +300,7 @@ fun getOverlayOptions(context: Context, packageName: String): HashMap<String, St
     while (iter.hasNext()) {
         val key = iter.next()
         val value = json.get(key)
-        map.put(key, value as String)
+        map[key] = value as String
     }
     return map
 }

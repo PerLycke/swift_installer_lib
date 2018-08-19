@@ -1,7 +1,6 @@
 package com.brit.swiftinstaller.utils
 
 import android.content.res.AssetManager
-import android.util.Log
 import java.io.*
 import javax.crypto.Cipher
 import javax.crypto.CipherInputStream

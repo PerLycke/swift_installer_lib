@@ -28,7 +28,7 @@
     <string name="enable_shadow_title">Enable shadow around text</string>
     <string name="examined_result_msg">After you examined the result, and optionally sent an error log, you need to manually reboot to finish the installation!</string>
     <string name="examined_result_msg_noerror">You need to reboot to finish the installation!</string>
-    <string name="examined_result_msg_error">Overlays failed to install. Click the info button next to the overlay\'s name to reveal why, and optionally send an email log.</string>
+    <string name="examined_result_msg_error">Overlays failed to install. Click the info button next to the overlay\'s name to reveal why, and optionally email a log to the support team.</string>
     <string name="flat">Flat</string>
     <string name="got_it">Got it!</string>
     <string name="hashtag">#</string>

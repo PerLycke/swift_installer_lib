@@ -92,6 +92,7 @@ class InstallSummaryActivity : ThemeActivity() {
         resultDialog()
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun fabFinishedClick(view: View) {
         val bottomSheetDialog = BottomSheetDialog(this)
         val sheetView = View.inflate(this, R.layout.sheet_reboot, null)
