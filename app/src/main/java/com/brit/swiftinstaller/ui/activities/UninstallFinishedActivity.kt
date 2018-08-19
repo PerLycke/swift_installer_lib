@@ -1,14 +1,12 @@
 package com.brit.swiftinstaller.ui.activities
 
 import android.app.Dialog
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AlertDialog
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.utils.ShellUtils
-import com.brit.swiftinstaller.utils.reboot
-import com.brit.swiftinstaller.utils.runCommand
+import com.brit.swiftinstaller.utils.rebootCommand
 
 class UninstallFinishedActivity : ThemeActivity() {
 
@@ -33,7 +31,7 @@ class UninstallFinishedActivity : ThemeActivity() {
                 dialog.setContentView(R.layout.reboot)
                 dialog.show()
                 mHandler.post {
-                    reboot()
+                    rebootCommand()
                 }
             }
             builder.setNegativeButton("Reboot Later") { dialogInterface, _ ->

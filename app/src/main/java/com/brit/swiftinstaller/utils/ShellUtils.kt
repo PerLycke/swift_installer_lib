@@ -253,7 +253,7 @@ private fun resultToOutput(result: Shell.Result) : CommandOutput {
     return CommandOutput(out, err, result.code)
 }
 
-fun reboot() {
+fun rebootCommand() {
     runCommand("am broadcast android.intent.action.ACTION_SHUTDOWN", true)
 
     Handler().postDelayed({

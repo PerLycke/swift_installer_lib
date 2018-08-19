@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.preference.PreferenceManager
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.utils.reboot
+import com.brit.swiftinstaller.utils.rebootCommand
 
 class RebootActivity : ThemeActivity() {
 
@@ -26,7 +26,7 @@ class RebootActivity : ThemeActivity() {
                     dialog.setContentView(R.layout.reboot)
                     dialog.show()
                     mHandler.post {
-                        reboot()
+                        rebootCommand()
                     }
                 }
                 .setNegativeButton(R.string.cancel) { dialogInterface, _ ->

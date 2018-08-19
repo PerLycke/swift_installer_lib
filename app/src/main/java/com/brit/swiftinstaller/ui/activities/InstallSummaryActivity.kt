@@ -9,6 +9,7 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.*
+import android.support.design.widget.BottomSheetDialog
 import android.support.design.widget.TabLayout
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AlertDialog
@@ -25,6 +26,7 @@ import com.brit.swiftinstaller.utils.removeAppToUpdate
 import com.brit.swiftinstaller.utils.setAppVersion
 import com.brit.swiftinstaller.utils.*
 import kotlinx.android.synthetic.main.activity_install_summary.*
+import kotlinx.android.synthetic.main.sheet_reboot.view.*
 import kotlinx.android.synthetic.main.tab_layout_install_summary.*
 import java.io.File
 import java.lang.ref.WeakReference
@@ -46,6 +48,8 @@ class InstallSummaryActivity : ThemeActivity() {
 
     private var update = false
 
+    private var dialog: AlertDialog? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_install_summary)
@@ -57,10 +61,14 @@ class InstallSummaryActivity : ThemeActivity() {
 
         update = intent.getBooleanExtra("update", false)
 
-        if (mErrorMap.isNotEmpty()) {
-            send_email_layout.visibility = View.VISIBLE
-            send_email_btn.setOnClickListener {
-                sendErrorLog()
+        if (RomInfo.getRomInfo(this).needsSecondReboot()) {
+            fab_install_finished.show()
+        } else {
+            if (mErrorMap.isNotEmpty()) {
+                send_email_layout.visibility = View.VISIBLE
+                send_email_btn.setOnClickListener {
+                    sendErrorLog()
+                }
             }
         }
 
@@ -70,12 +78,12 @@ class InstallSummaryActivity : ThemeActivity() {
         mPagerAdapter.setAlertIconClickListener(object : AppListFragment.AlertIconClickListener {
             override fun onAlertIconClick(appItem: AppItem) {
                 val dialog = AlertDialog.Builder(this@InstallSummaryActivity, R.style.AppTheme_AlertDialog_Error)
-                .setTitle(appItem.title)
-                .setIcon(appItem.icon)
-                .setMessage(mErrorMap[appItem.packageName])
-                .setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, _: Int ->
-                    dialogInterface.dismiss()
-                }
+                        .setTitle(appItem.title)
+                        .setIcon(appItem.icon)
+                        .setMessage(mErrorMap[appItem.packageName])
+                        .setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, _: Int ->
+                            dialogInterface.dismiss()
+                        }
                 themeDialog()
                 dialog.show()
             }
@@ -99,12 +107,7 @@ class InstallSummaryActivity : ThemeActivity() {
             builder.setMessage(R.string.examined_result_msg)
             builder.setPositiveButton("Reboot Now") { dialogInterface, _ ->
                 dialogInterface.dismiss()
-                val dialog = Dialog(this, R.style.AppTheme_Translucent)
-                dialog.setContentView(R.layout.reboot)
-                dialog.show()
-                mHandler.post {
-                    reboot()
-                }
+                reboot()
             }
             builder.setNegativeButton("Reboot Later") { dialogInterface, _ ->
                 dialogInterface.dismiss()
@@ -112,8 +115,39 @@ class InstallSummaryActivity : ThemeActivity() {
         }
 
         themeDialog()
-        val dialog = builder.create()
-        dialog.show()
+        dialog = builder.create()
+        dialog?.show()
+    }
+
+    fun fabFinishedClick(view: View) {
+        val bottomSheetDialog = BottomSheetDialog(this)
+        val sheetView = View.inflate(this, R.layout.sheet_reboot, null)
+        bottomSheetDialog.setContentView(sheetView)
+        sheetView.setBackgroundColor(getBackgroundColor(this))
+        bottomSheetDialog.show()
+
+        val sendLog = sheetView.findViewById<View>(R.id.send_email_layout)
+
+        if (mErrorMap.isNotEmpty()) {
+            sendLog.visibility = View.VISIBLE
+            sendLog.setOnClickListener {
+                sendErrorLog()
+            }
+        }
+
+        sheetView.reboot_layout.setOnClickListener { _ ->
+            bottomSheetDialog.dismiss()
+            reboot()
+        }
+    }
+
+    private fun reboot() {
+        val rebootDialog = Dialog(this, R.style.AppTheme_Translucent)
+        rebootDialog.setContentView(R.layout.reboot)
+        rebootDialog.show()
+        mHandler.post {
+            rebootCommand()
+        }
     }
 
     override fun onAttachedToWindow() {
