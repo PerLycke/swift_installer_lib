@@ -36,4 +36,8 @@ class PRomInfo(context: Context) : RomInfo(context) {
         val overlayPackage = Utils.getOverlayPackageName(targetPackage)
         return SuFile("$systemApp/$overlayPackage/$overlayPackage.apk").exists()
     }
+
+    override fun getCustomizeFeatures() : Int {
+        return 0
+    }
 }
