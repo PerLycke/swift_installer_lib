@@ -57,7 +57,7 @@ class OverlaysActivity : ThemeActivity() {
         setContentView(R.layout.activity_overlays)
 
         val bundle = intent.extras
-        overlaysList = bundle?.getParcelableArrayList("overlays_list") ?: arrayListOf()
+        //overlaysList = bundle?.getParcelableArrayList("overlays_list") ?: arrayListOf()
 
         mPagerAdapter = AppsTabPagerAdapter(supportFragmentManager,
                 false, INSTALL_TAB, ACTIVE_TAB, UPDATE_TAB)
@@ -221,9 +221,9 @@ class OverlaysActivity : ThemeActivity() {
         loading_progress.indeterminateDrawable.setColorFilter(getAccentColor(this), PorterDuff.Mode.SRC_ATOP)
         mPagerAdapter!!.clearApps()
         doAsync {
-            if (overlaysList.size == 0) {
+            //if (overlaysList.size == 0) {
                 overlaysList = Utils.sortedOverlaysList(this@OverlaysActivity)
-            }
+            //}
             val context = this@OverlaysActivity
             val updates = getAppsToUpdate(context)
             val pm = context.packageManager

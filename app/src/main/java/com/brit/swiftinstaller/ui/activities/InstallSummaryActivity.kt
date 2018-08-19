@@ -145,44 +145,35 @@ class InstallSummaryActivity : ThemeActivity() {
     }
 
     private fun resultDialog() {
+        val builder = AlertDialog.Builder(this)
 
-        val rebootMsg = if (mApps.size.equals(0)) {
+        builder.setTitle(if (mApps.size == 0) {
+            R.string.installation_failed
+        } else if (!ShellUtils.isRootAvailable) {
+            R.string.reboot_to_finish
+        } else {
+            R.string.reboot_now_title
+        })
+
+        builder.setMessage(if (mApps.isEmpty()) {
             R.string.examined_result_msg_error
-        } else if (mErrorMap.isNotEmpty() && mApps.size > 0) {
+        } else if (mErrorMap.isNotEmpty() && mApps.isNotEmpty()) {
             R.string.examined_result_msg
         } else {
             R.string.examined_result_msg_noerror
-        }
+        })
 
-        val dialogTitle = if (mApps.size.equals(0)) {
-            getString(R.string.installation_failed)
-        } else {
-            getString(R.string.reboot_now_title)
-        }
-
-        val builder = AlertDialog.Builder(this)
-
-        if (!ShellUtils.isRootAvailable) {
-            builder.setTitle(R.string.reboot_to_finish)
-            builder.setMessage(rebootMsg)
-            builder.setPositiveButton(R.string.got_it) { dialogInterface, _ ->
+        if (ShellUtils.isRootAvailable && mApps.isNotEmpty()) {
+            builder.setNegativeButton(R.string.reboot_later) { dialogInterface, _ ->
                 dialogInterface.dismiss()
             }
+            builder.setPositiveButton(R.string.reboot_now) { dialogInterface, _ ->
+                dialogInterface.dismiss()
+                reboot()
+            }
         } else {
-            builder.setTitle(dialogTitle)
-            builder.setMessage(rebootMsg)
-            if (mApps.size > 0) {
-                builder.setPositiveButton(R.string.reboot_now) { dialogInterface, _ ->
-                    dialogInterface.dismiss()
-                    reboot()
-                }
-                builder.setNegativeButton(R.string.reboot_later) { dialogInterface, _ ->
-                    dialogInterface.dismiss()
-                }
-            } else {
-                builder.setPositiveButton(R.string.got_it) { dialogInterface, _ ->
-                    dialogInterface.dismiss()
-                }
+            builder.setPositiveButton(R.string.got_it) { dialogInterface, _ ->
+                dialogInterface.dismiss()
             }
         }
 

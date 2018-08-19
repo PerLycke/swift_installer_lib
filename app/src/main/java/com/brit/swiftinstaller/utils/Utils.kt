@@ -26,7 +26,7 @@ object Utils {
     private val sortedOverlays = arrayListOf<AppItem>()
 
     fun sortedOverlaysList(context: Context): ArrayList<AppItem> {
-        if (sortedOverlays.isNotEmpty()) return sortedOverlays
+        //if (sortedOverlays.isNotEmpty()) return sortedOverlays
         sortedOverlays.clear()
         val disabledOverlays = RomInfo.getRomInfo(context).getDisabledOverlays()
         val hiddenOverlays = getHiddenApps(context)
