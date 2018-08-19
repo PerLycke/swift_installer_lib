@@ -15,6 +15,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.PopupWindow
+import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.ui.applist.AppItem
 import com.brit.swiftinstaller.utils.MaterialPalette
@@ -54,7 +55,8 @@ class MainActivity : ThemeActivity() {
             }
         }
 
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("should_notify", true)) {
+        if (RomInfo.getRomInfo(this).needsSecondReboot() &&
+                PreferenceManager.getDefaultSharedPreferences(this).getBoolean("should_notify", true)) {
             card_reboot.visibility = View.VISIBLE
             PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("should_notify", false).apply()
             card_reboot.setOnClickListener {
