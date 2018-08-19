@@ -26,7 +26,9 @@
     <string name="dark_notifications_preview_normal">A preview of normal dark notifications</string>
     <string name="disable">Disable</string>
     <string name="enable_shadow_title">Enable shadow around text</string>
-    <string name="examined_result_msg">After you examined the result, and optionally sent an error log if something failed, you need to manually reboot to finish the installation!\n\nYou don\'t need to reboot if all overlays failed to install.</string>
+    <string name="examined_result_msg">After you examined the result, and optionally sent an error log, you need to manually reboot to finish the installation!</string>
+    <string name="examined_result_msg_noerror">You need to reboot to finish the installation!</string>
+    <string name="examined_result_msg_error">Overlays failed to install. Click the info button next to the overlay\'s name to reveal why, and optionally send an email log.</string>
     <string name="flat">Flat</string>
     <string name="got_it">Got it!</string>
     <string name="hashtag">#</string>
@@ -138,4 +140,6 @@
     <string name="info_card_reboot_msg">New overlays was enabled at boot. The last step is to make a quick reboot in order for all apps to reload with the new colors. <b>Tap here to proceed.</b></string>
     <string name="wait">Please wait…</string>
     <string name="reboot_now">Reboot now</string>
+    <string name="installation_failed">Installation failed</string>
+    <string name="reboot_now_title">Reboot now?</string>
 </resources>

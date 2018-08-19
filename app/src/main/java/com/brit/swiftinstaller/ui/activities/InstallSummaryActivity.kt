@@ -20,10 +20,6 @@ import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.ui.applist.AppItem
 import com.brit.swiftinstaller.ui.applist.AppListFragment
 import com.brit.swiftinstaller.ui.applist.AppsTabPagerAdapter
-import com.brit.swiftinstaller.utils.Utils
-import com.brit.swiftinstaller.utils.getAppVersion
-import com.brit.swiftinstaller.utils.removeAppToUpdate
-import com.brit.swiftinstaller.utils.setAppVersion
 import com.brit.swiftinstaller.utils.*
 import kotlinx.android.synthetic.main.activity_install_summary.*
 import kotlinx.android.synthetic.main.sheet_reboot.view.*
@@ -94,29 +90,7 @@ class InstallSummaryActivity : ThemeActivity() {
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tab_install_summary_root))
         tab_install_summary_root.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
 
-        val builder = AlertDialog.Builder(this)
-
-        if (!ShellUtils.isRootAvailable) {
-            builder.setTitle(R.string.reboot_to_finish)
-            builder.setMessage(R.string.examined_result_msg)
-            builder.setPositiveButton(R.string.got_it) { dialogInterface, _ ->
-                dialogInterface.dismiss()
-            }
-        } else {
-            builder.setTitle("Reboot now?")
-            builder.setMessage(R.string.examined_result_msg)
-            builder.setPositiveButton("Reboot Now") { dialogInterface, _ ->
-                dialogInterface.dismiss()
-                reboot()
-            }
-            builder.setNegativeButton("Reboot Later") { dialogInterface, _ ->
-                dialogInterface.dismiss()
-            }
-        }
-
-        themeDialog()
-        dialog = builder.create()
-        dialog?.show()
+        resultDialog()
     }
 
     fun fabFinishedClick(view: View) {
@@ -167,6 +141,59 @@ class InstallSummaryActivity : ThemeActivity() {
             mErrorMap = Utils.bundleToMap(intent.getBundleExtra("errorMap"))
         } else {
             mErrorMap.clear()
+        }
+    }
+
+    private fun resultDialog() {
+
+        val rebootMsg = if (mApps.size.equals(0)) {
+            R.string.examined_result_msg_error
+        } else if (mErrorMap.isNotEmpty() && mApps.size > 0) {
+            R.string.examined_result_msg
+        } else {
+            R.string.examined_result_msg_noerror
+        }
+
+        val dialogTitle = if (mApps.size.equals(0)) {
+            getString(R.string.installation_failed)
+        } else {
+            getString(R.string.reboot_now_title)
+        }
+
+        val builder = AlertDialog.Builder(this)
+
+        if (!ShellUtils.isRootAvailable) {
+            builder.setTitle(R.string.reboot_to_finish)
+            builder.setMessage(rebootMsg)
+            builder.setPositiveButton(R.string.got_it) { dialogInterface, _ ->
+                dialogInterface.dismiss()
+            }
+        } else {
+            builder.setTitle(dialogTitle)
+            builder.setMessage(rebootMsg)
+            if (mApps.size > 0) {
+                builder.setPositiveButton(R.string.reboot_now) { dialogInterface, _ ->
+                    dialogInterface.dismiss()
+                    reboot()
+                }
+                builder.setNegativeButton(R.string.reboot_later) { dialogInterface, _ ->
+                    dialogInterface.dismiss()
+                }
+            } else {
+                builder.setPositiveButton(R.string.got_it) { dialogInterface, _ ->
+                    dialogInterface.dismiss()
+                }
+            }
+        }
+
+        themeDialog()
+        dialog = builder.create()
+        dialog?.show()
+
+        if (mApps.size > 0) {
+            container.currentItem = 0
+        } else {
+            container.currentItem = 1
         }
     }
 

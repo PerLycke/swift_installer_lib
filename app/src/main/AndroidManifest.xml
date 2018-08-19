@@ -39,7 +39,6 @@
             android:theme="@style/AppTheme.BottomSheetDialog" />
         <activity android:name="com.brit.swiftinstaller.ui.activities.InstallSummaryActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
         <activity android:name="com.brit.swiftinstaller.ui.activities.UninstallFinishedActivity"
             android:launchMode="singleInstance"
