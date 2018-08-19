@@ -22,7 +22,6 @@ import com.brit.swiftinstaller.ui.applist.AppListFragment
 import com.brit.swiftinstaller.ui.applist.AppsTabPagerAdapter
 import com.brit.swiftinstaller.utils.*
 import kotlinx.android.synthetic.main.activity_install_summary.*
-import kotlinx.android.synthetic.main.sheet_reboot.view.*
 import kotlinx.android.synthetic.main.tab_layout_install_summary.*
 import java.io.File
 import java.lang.ref.WeakReference
@@ -101,6 +100,7 @@ class InstallSummaryActivity : ThemeActivity() {
         bottomSheetDialog.show()
 
         val sendLog = sheetView.findViewById<View>(R.id.send_email_layout)
+        val reboot = sheetView.findViewById<View>(R.id.reboot_layout)
 
         if (mErrorMap.isNotEmpty()) {
             sendLog.visibility = View.VISIBLE
@@ -109,9 +109,12 @@ class InstallSummaryActivity : ThemeActivity() {
             }
         }
 
-        sheetView.reboot_layout.setOnClickListener { _ ->
-            bottomSheetDialog.dismiss()
-            reboot()
+        if (mPagerAdapter.getAppsCount(0) > 0) {
+            reboot.visibility = View.VISIBLE
+            reboot.setOnClickListener {
+                bottomSheetDialog.dismiss()
+                reboot()
+            }
         }
     }
 

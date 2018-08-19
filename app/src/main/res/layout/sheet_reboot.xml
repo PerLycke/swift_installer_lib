@@ -15,6 +15,7 @@
         android:layout_height="match_parent"
         android:background="?android:selectableItemBackground"
         android:clickable="true"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -24,11 +25,11 @@
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:contentDescription="@string/image"
+            android:tint="@color/minimal_orange"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_reboot"
-            android:tint="@color/minimal_orange" />
+            app:srcCompat="@drawable/ic_reboot" />
 
         <TextView
             android:id="@+id/reboot_txt"
