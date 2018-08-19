@@ -5,6 +5,7 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.graphics.Color
 import android.os.Environment
+import android.util.Log
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.utils.*
@@ -106,6 +107,9 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         val output = ShellUtils.compileOverlay(context, BuildConfig.APPLICATION_ID, resDir.absolutePath,
                 overlayDir.absolutePath + "/AndroidManifest.xml",
                 overlayPath, assets, appInfo)
+        Log.d("TEST", "aapt - out = ${output.output}")
+        Log.d("TEST", "aapt -err = ${output.error}")
+        Log.d("TEST", "aapt - ec = ${output.exitCode}")
         if (output.exitCode == 0) {
             RomInfo.getRomInfo(context).installOverlay(context, packageName, overlayPath)
         } else {

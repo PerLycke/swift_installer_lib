@@ -11,6 +11,7 @@ class SwiftApplication : ContainerApp() {
         super.onCreate()
 
         Shell.Config.verboseLogging(BuildConfig.DEBUG)
+        Shell.Config.setFlags(Shell.FLAG_REDIRECT_STDERR)
         BusyBox.setup(this)
     }
 }
