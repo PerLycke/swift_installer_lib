@@ -183,7 +183,6 @@ class InstallActivity : ThemeActivity() {
                     }
                 }
                 intent.action == Notifier.ACTION_INSTALL_COMPLETE -> {
-                    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("should_notify", true).apply()
                     installComplete()
                 }
                 intent.action == Notifier.ACTION_UNINSTALL_COMPLETE -> {

@@ -9,6 +9,7 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.*
+import android.preference.PreferenceManager
 import android.support.design.widget.BottomSheetDialog
 import android.support.design.widget.TabLayout
 import android.support.v4.content.LocalBroadcastManager
@@ -68,6 +69,9 @@ class InstallSummaryActivity : ThemeActivity() {
         }
 
         mApps = intent.getStringArrayListExtra("apps")
+        if (mApps.isNotEmpty()) {
+            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("should_notify", true).apply()
+        }
 
         mPagerAdapter = AppsTabPagerAdapter(supportFragmentManager, true, SUCCESS_TAB, FAILED_TAB)
         mPagerAdapter.setAlertIconClickListener(object : AppListFragment.AlertIconClickListener {
