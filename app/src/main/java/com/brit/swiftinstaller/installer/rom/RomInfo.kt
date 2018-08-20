@@ -78,6 +78,8 @@ abstract class RomInfo constructor(var context: Context) {
         return CustomizeActivity.SUPPORTS_CLOCK + CustomizeActivity.SUPPORTS_ICONS + CustomizeActivity.SUPPORTS_SYSTEMUI
     }
 
+    open fun useHotSwap(): Boolean { return false }
+
     abstract fun installOverlay(context: Context, targetPackage: String, overlayPath: String)
     abstract fun postInstall(uninstall: Boolean, apps: ArrayList<String>, oppositeApps: ArrayList<String>?, intent: Intent?)
     abstract fun uninstallOverlay(context: Context, packageName: String)

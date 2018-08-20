@@ -261,3 +261,9 @@ fun rebootCommand() {
         runCommand("setprop ctl.restart zygote", true)
     }, 1500)
 }
+
+fun restartSysUi() {
+    Handler().postDelayed({
+        runCommand("killall com.android.systemui", true)
+    }, 750)
+}

@@ -546,6 +546,9 @@ class CustomizeActivity : ThemeActivity() {
             val oldCenteredClock = useCenteredClock(this)
             val oldPStyle = usePstyle(this)
 
+            fun hotSwapPrefOn() = PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("hotswap", true).apply()
+            fun hotSwapPrefOff() = PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("hotswap", false).apply()
+
             val iconOverlays = listOf(
                     "com.samsung.android.lool",
                     "com.samsung.android.themestore",
@@ -557,21 +560,29 @@ class CustomizeActivity : ThemeActivity() {
 
             if (oldAccent != accentColor) {
                 setAccentColor(this, accentColor)
+                if (RomInfo.getRomInfo(this).useHotSwap()) {
+                    hotSwapPrefOn()
+                } else {
+                    hotSwapPrefOff()
+                }
                 checkAndAddApp(apps, "android")
             }
 
             if (oldBackground != backgroundColor) {
                 setBackgroundColor(this, backgroundColor)
+                hotSwapPrefOff()
                 checkAndAddApp(apps, "android")
             }
 
             if (oldAlpha != alpha) {
                 setAlphaValue(this, alpha)
+                hotSwapPrefOff()
                 checkAndAddApp(apps, "android")
             }
 
             if (usePalette != oldPalette) {
                 setUseBackgroundPalette(this, usePalette)
+                hotSwapPrefOff()
                 checkAndAddApp(apps, "android")
             }
 
@@ -580,11 +591,13 @@ class CustomizeActivity : ThemeActivity() {
                     notifShadow = false
                 }
                 setUseDarkNotifBg(this, darkNotif)
+                hotSwapPrefOff()
                 checkAndAddApp(apps, "android")
             }
 
             if (notifShadow != oldShadow) {
                 setUseSenderNameFix(this, notifShadow)
+                hotSwapPrefOff()
                 checkAndAddApp(apps, "android")
             }
 
@@ -593,6 +606,7 @@ class CustomizeActivity : ThemeActivity() {
                 setUseStockAccentIcons(this, false)
                 setUseStockMultiIcons(this, false)
                 setUsePIcons(this, false)
+                hotSwapPrefOff()
                 for (i in iconOverlays) {
                     checkAndAddApp(apps, i)
                 }
@@ -603,6 +617,7 @@ class CustomizeActivity : ThemeActivity() {
                 setUseStockAccentIcons(this, true)
                 setUseStockMultiIcons(this, false)
                 setUsePIcons(this, false)
+                hotSwapPrefOff()
                 for (i in iconOverlays) {
                     checkAndAddApp(apps, i)
                 }
@@ -613,6 +628,7 @@ class CustomizeActivity : ThemeActivity() {
                 setUseStockAccentIcons(this, false)
                 setUseStockMultiIcons(this, true)
                 setUsePIcons(this, false)
+                hotSwapPrefOff()
                 for (i in iconOverlays) {
                     checkAndAddApp(apps, i)
                 }
@@ -623,6 +639,7 @@ class CustomizeActivity : ThemeActivity() {
                 setUseAospIcons(this, false)
                 setUseStockAccentIcons(this, false)
                 setUsePIcons(this, true)
+                hotSwapPrefOff()
                 for (i in iconOverlays) {
                     checkAndAddApp(apps, i)
                 }
@@ -632,6 +649,7 @@ class CustomizeActivity : ThemeActivity() {
                 setUseLeftClock(this, false)
                 setUseCenteredClock(this, false)
                 setUseRightClock(this, true)
+                hotSwapPrefOff()
                 checkAndAddApp(apps,"com.android.systemui")
             }
 
@@ -639,6 +657,7 @@ class CustomizeActivity : ThemeActivity() {
                 setUseCenteredClock(this, false)
                 setUseRightClock(this, false)
                 setUseLeftClock(this, true)
+                hotSwapPrefOff()
                 checkAndAddApp(apps,"com.android.systemui")
             }
 
@@ -646,11 +665,13 @@ class CustomizeActivity : ThemeActivity() {
                 setUseLeftClock(this, false)
                 setUseRightClock(this, false)
                 setUseCenteredClock(this, true)
+                hotSwapPrefOff()
                 checkAndAddApp(apps,"com.android.systemui")
             }
 
             if (usePStyle != oldPStyle) {
                 setUsePStyle(this, usePStyle)
+                hotSwapPrefOff()
                 checkAndAddApp(apps,"com.android.systemui")
                 checkAndAddApp(apps,"android")
             }
@@ -709,7 +730,6 @@ class CustomizeActivity : ThemeActivity() {
                 val launch = getSharedPreferences("launched", Context.MODE_PRIVATE).getString("launched","first")
                 val thisLaunch = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("thisLaunched", false)
                 intent.putStringArrayListExtra("apps", apps)
-
 
                 if (launch == "default" && thisLaunch) {
                     startActivity(intent)

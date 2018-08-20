@@ -162,7 +162,12 @@ class InstallActivity : ThemeActivity() {
 
     override fun finish() {
         super.finish()
-        if (dialog != null && dialog!!.isShowing) dialog?.cancel()
+
+        if (dialog != null) {
+            if (dialog!!.isShowing && !this.isFinishing) {
+                dialog?.cancel()
+            }
+        }
     }
 
     inner class InstallListener : BroadcastReceiver() {

@@ -40,4 +40,6 @@ class PRomInfo(context: Context) : RomInfo(context) {
     override fun getCustomizeFeatures() : Int {
         return 0
     }
+
+    override fun useHotSwap(): Boolean { return true }
 }

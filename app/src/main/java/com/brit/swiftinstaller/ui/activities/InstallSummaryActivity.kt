@@ -51,13 +51,15 @@ class InstallSummaryActivity : ThemeActivity() {
         setContentView(R.layout.activity_install_summary)
         File(Environment.getExternalStorageDirectory(), ".swift").deleteRecursively()
 
+        val hotSwap = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("hotswap", false)
+
         if (intent.extras != null && intent.extras!!.containsKey("errorMap")) {
             mErrorMap = Utils.bundleToMap(intent.getBundleExtra("errorMap"))
         }
 
         update = intent.getBooleanExtra("update", false)
 
-        if (ShellUtils.isRootAvailable) {
+        if (ShellUtils.isRootAvailable && !hotSwap) {
             fab_install_finished.show()
         } else {
             if (mErrorMap.isNotEmpty()) {
@@ -69,7 +71,7 @@ class InstallSummaryActivity : ThemeActivity() {
         }
 
         mApps = intent.getStringArrayListExtra("apps")
-        if (mApps.isNotEmpty()) {
+        if (mApps.isNotEmpty() && !hotSwap) {
             PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("should_notify", true).apply()
         }
 
@@ -93,7 +95,12 @@ class InstallSummaryActivity : ThemeActivity() {
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tab_install_summary_root))
         tab_install_summary_root.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
 
-        resultDialog()
+        if (!hotSwap || !Utils.isOverlayEnabled(this, "android")) {
+            resultDialog()
+        } else {
+            restartSysUi()
+            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("hotswap", false).apply()
+        }
     }
 
     @Suppress("UNUSED_PARAMETER")
