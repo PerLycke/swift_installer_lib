@@ -288,13 +288,13 @@ class InstallSummaryActivity : ThemeActivity() {
                     item.packageName = pn
                     item.icon = pm.getApplicationIcon(item.packageName)
                     item.title = info.loadLabel(pm) as String
-                    item.versionCode = pInfo!!.versionCode
+                    item.versionCode = pInfo!!.getVersionCode()
                     item.versionName = pInfo.versionName
                     if (errorMap.keys.contains(pn)) {
                         onProgressUpdate(Progress(FAILED_TAB, item))
                     } else if (RomInfo.getRomInfo(context).isOverlayInstalled(pn)
-                            && oInfo!!.versionCode > getAppVersion(context, pn)) {
-                        setAppVersion(context, pn, oInfo.versionCode)
+                            && oInfo!!.getVersionCode() > getAppVersion(context, pn)) {
+                        setAppVersion(context, pn, oInfo.getVersionCode())
                         onProgressUpdate(Progress(SUCCESS_TAB, item))
                         removeAppToUpdate(context, item.packageName)
                     } else {

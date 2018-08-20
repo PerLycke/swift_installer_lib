@@ -8,7 +8,7 @@ class AppItem() : Parcelable {
     var packageName: String = ""
     var title: String = ""
     private var required: String = ""
-    var versionCode: Int = 0
+    var versionCode: Long = 0
     var versionName: String = ""
     var icon: Drawable? = null
 
@@ -16,7 +16,7 @@ class AppItem() : Parcelable {
         packageName = parcel.readString()!!
         title = parcel.readString()!!
         required = parcel.readString()!!
-        versionCode = parcel.readInt()
+        versionCode = parcel.readLong()
         versionName = parcel.readString()!!
     }
 
@@ -28,7 +28,7 @@ class AppItem() : Parcelable {
         dest?.writeString(packageName)
         dest?.writeString(title)
         dest?.writeString(required)
-        dest?.writeInt(versionCode)
+        dest?.writeLong(versionCode)
         dest?.writeString(versionName)
     }
 

@@ -26,7 +26,7 @@ class UninstallFinishedActivity : ThemeActivity() {
                 finish()
             }
         } else {
-            builder.setPositiveButton("Reboot Now") { dialogInterface, _ ->
+            builder.setPositiveButton("Reboot Now") { _, _ ->
                 val dialog = Dialog(this, R.style.AppTheme_Translucent)
                 dialog.setContentView(R.layout.reboot)
                 dialog.show()
@@ -34,7 +34,7 @@ class UninstallFinishedActivity : ThemeActivity() {
                     rebootCommand()
                 }
             }
-            builder.setNegativeButton("Reboot Later") { dialogInterface, _ ->
+            builder.setNegativeButton("Reboot Later") { _, _ ->
                 finish()
             }
         }

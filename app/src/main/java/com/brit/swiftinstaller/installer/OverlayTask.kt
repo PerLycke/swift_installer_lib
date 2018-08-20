@@ -5,7 +5,6 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.graphics.Color
 import android.os.Environment
-import android.util.Log
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.utils.*
@@ -96,7 +95,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
             applyBackground()
         }
         generateManifest(overlayDir.absolutePath, packageName, packageInfo.versionName,
-                packageInfo.versionCode, Utils.getThemeVersion(context, packageName))
+                packageInfo.getVersionCode(), Utils.getThemeVersion(context, packageName))
     }
 
     private fun compileOverlay() {
@@ -215,7 +214,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     }
 
     private fun generateManifest(path: String, targetPackage: String,
-                                 appVersion: String, appVersionCode: Int, themeVersion: Int) {
+                                 appVersion: String, appVersionCode: Long, themeVersion: Int) {
         val manifest = StringBuilder()
         manifest.append("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>\n")
         manifest.append("<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n")

@@ -47,7 +47,7 @@ object Utils {
                 val item = AppItem()
                 item.packageName = pn
                 item.title = info.loadLabel(pm) as String
-                item.versionCode = pInfo!!.versionCode
+                item.versionCode = pInfo!!.getVersionCode()
                 item.versionName = pInfo.versionName
                 sortedOverlays.add(item)
             }
@@ -130,7 +130,7 @@ object Utils {
 
     fun checkAppVersion(context: Context, packageName: String): Boolean {
         if (!isAppInstalled(context, Utils.getOverlayPackageName(packageName))) return false
-        val appVersionCode = context.packageManager.getPackageInfo(packageName, 0).versionCode
+        val appVersionCode = context.packageManager.getPackageInfo(packageName, 0).getVersionCode()
         val curVersionCode = context.packageManager.getApplicationInfo(
                 Utils.getOverlayPackageName(packageName),
                 PackageManager.GET_META_DATA).metaData.getInt("app_version_code")

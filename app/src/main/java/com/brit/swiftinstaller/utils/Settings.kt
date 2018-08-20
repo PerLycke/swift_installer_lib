@@ -155,14 +155,14 @@ fun getHideFailedInfoCard(context: Context): Boolean {
     return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_HIDE_INFO_CARD, false)
 }
 
-fun setAppVersion(context: Context, packageName: String, version: Int) {
+fun setAppVersion(context: Context, packageName: String, version: Long) {
     val versions = getAppVersions(context)
-    versions.putInt(packageName, version)
+    versions.putLong(packageName, version)
     setAppVersions(context, versions)
 }
 
-fun getAppVersion(context: Context, packageName: String): Int {
-    return getAppVersions(context).getInt(packageName, 0)
+fun getAppVersion(context: Context, packageName: String): Long {
+    return getAppVersions(context).getLong(packageName, 0)
 }
 
 fun getAppVersions(context: Context): Bundle {
@@ -170,7 +170,7 @@ fun getAppVersions(context: Context): Bundle {
     val vers = PreferenceManager.getDefaultSharedPreferences(context).getStringSet(KEY_OVERLAY_VERSIONS, ArraySet<String>())
     for (v in vers ?: emptySet()) {
         val split = v.split("|")
-        versions.putInt(split[0], Integer.parseInt(split[1]))
+        versions.putLong(split[0], Integer.parseInt(split[1]).toLong())
     }
     return versions
 }
@@ -178,7 +178,7 @@ fun getAppVersions(context: Context): Bundle {
 fun setAppVersions(context: Context, versions: Bundle) {
     val set = ArraySet<String>()
     for (key in versions.keySet()) {
-        set.add("$key|${versions.getInt(key)}")
+        set.add("$key|${versions.getLong(key)}")
     }
     PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet(KEY_OVERLAY_VERSIONS, set).apply()
 }
