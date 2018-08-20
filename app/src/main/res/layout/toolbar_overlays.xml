@@ -128,7 +128,6 @@
             android:onClick="appOptionsBtnClick"
             android:scaleType="center"
             android:tint="@color/light_grey"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/customize_btn"
             app:layout_constraintEnd_toStartOf="@+id/customize_btn"
             app:layout_constraintTop_toTopOf="@+id/customize_btn"
