@@ -21,11 +21,6 @@ object OverlayUtils {
         return overlays.contains(packageName)
     }
 
-    fun hasOverlayOptions(context: Context, packageName: String): Boolean {
-        val options = context.assets.list("overlays/$packageName/options") ?: emptyArray()
-        return options.isNotEmpty()
-    }
-
     fun parseOverlayResourcePath(context: Context, path: String, packageName: String, resourcePaths: ArrayList<String>) {
         val am = context.assets
         val variants = am.list(path) ?: return
@@ -59,17 +54,6 @@ object OverlayUtils {
                     }
                 }
             }
-        } else if (variants.contains("options")) {
-            val optionsMap = getOverlayOptions(context, packageName)
-            val options = context.assets.list("$path/options") ?: emptyArray()
-            for (option in options) {
-                if (optionsMap.containsKey(option)) {
-                    val optionsArray = context.assets.list("$path/options/$option") ?: emptyArray()
-                    if (optionsArray.isNotEmpty()) {
-                        checkResourcePath(context, "$path/options/$option/${optionsMap[option]}", packageName, resourcePaths)
-                    }
-                }
-            }
         }
         if (variants.contains("icons") && useAospIcons(context)) {
             checkResourcePath(context, "$path/icons/aosp", packageName, resourcePaths)
@@ -89,18 +73,6 @@ object OverlayUtils {
         if (variants.contains("style") && usePstyle(context)) {
             checkResourcePath(context, "$path/style/p", packageName, resourcePaths)
         }
-    }
-
-    fun getOverlayOptions(context: Context, packageName: String) : HashMap<String, Array<String>> {
-        val optionsMap = HashMap<String, Array<String>>()
-        val options = context.assets.list("overlays/$packageName/options") ?: emptyArray()
-        for (option in options) {
-            val array = context.assets.list("overlays/$packageName/options/$option") ?: emptyArray()
-            if (array.isNotEmpty()) {
-                optionsMap[option] = array
-            }
-        }
-        return optionsMap
     }
 
     private fun checkOverlay(context: Context, packageName: String) : Boolean {

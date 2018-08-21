@@ -117,24 +117,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/app_options_btn"
-            android:layout_width="24dp"
-            android:layout_height="36dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="14dp"
-            android:layout_marginTop="8dp"
-            android:background="?android:selectableItemBackgroundBorderless"
-            android:contentDescription="@string/image"
-            android:onClick="appOptionsBtnClick"
-            android:scaleType="center"
-            android:tint="@color/light_grey"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/customize_btn"
-            app:layout_constraintEnd_toStartOf="@+id/customize_btn"
-            app:layout_constraintTop_toTopOf="@+id/customize_btn"
-            app:srcCompat="@drawable/ic_app_options" />
-
-        <ImageView
             android:id="@+id/customize_btn"
             android:layout_width="24dp"
             android:layout_height="36dp"

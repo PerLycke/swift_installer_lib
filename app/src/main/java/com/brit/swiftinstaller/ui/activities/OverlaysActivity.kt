@@ -285,11 +285,6 @@ class OverlaysActivity : ThemeActivity() {
         startActivity(intent)
     }
 
-    fun appOptionsBtnClick(@Suppress("UNUSED_PARAMETER") view: View) {
-        val intent = Intent(this, AppOptionsActivity::class.java)
-        startActivity(intent)
-    }
-
     interface Callback {
         fun updateApps(tab: Int, item: AppItem)
     }
