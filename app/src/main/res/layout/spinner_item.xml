@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@android:id/text1"
-    android:singleLine="true"
+    style="@style/TextAppearance.AppCompat.Small"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    style="@style/TextAppearance.AppCompat.Small"
-    android:gravity="center_vertical" />
+    android:gravity="center_vertical"
+    android:singleLine="true"
+    android:textColor="@android:color/white"
+    tools:text="Testing spinner opiton 1" />

@@ -2,6 +2,7 @@ package com.brit.swiftinstaller.ui.activities
 
 import android.content.res.Resources
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -75,7 +76,7 @@ class AppOptionsActivity : ThemeActivity() {
         inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
             private var appName: TextView = view.findViewById(R.id.app_item_name)
             private var appIcon: ImageView = view.findViewById(R.id.app_item_image)
-            private var options: LinearLayout = view.findViewById(R.id.app_options)
+            private var options: ConstraintLayout = view.findViewById(R.id.app_options)
 
             fun bindAppItem(item: AppItem) {
                 appName.text = item.title

@@ -44,7 +44,8 @@ object IdLists {
             R.id.tab_install_summary_root,
             R.id.tabs_overlays_root,
             R.id.toolbar_install_summary_root,
-            R.id.toolbar_overlays_root
+            R.id.toolbar_overlays_root,
+            R.id.app_options_root
 
     )
 
