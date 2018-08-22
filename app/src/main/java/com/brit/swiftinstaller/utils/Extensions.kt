@@ -33,7 +33,7 @@ fun AssetManager.extractAsset(assetPath: String, devicePath: String, cipher: Cip
             res = if (assetList.isEmpty()) {
                 res and handleExtractAsset(this, "$assetPath/$file", "$devicePath/$file", cipher)
             } else {
-                res and extractAsset(assetPath, devicePath, cipher)
+                res and extractAsset("$assetPath/$file", "$devicePath/$file", cipher)
             }
         }
         return res
