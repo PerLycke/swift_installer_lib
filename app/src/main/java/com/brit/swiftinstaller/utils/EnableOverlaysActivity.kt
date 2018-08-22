@@ -17,12 +17,13 @@ class EnableOverlaysActivity : Activity() {
     override fun onResume() {
         super.onResume()
 
-        Utils.enableAllOverlays(this)
-
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("should_notify", false)) {
-            notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            sendNotification()
+        if (!Utils.enableAllOverlays(this)) {
+            return finish()
         }
+
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("reboot_card", true).apply()
+        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        sendNotification()
         finish()
     }
 

@@ -52,9 +52,9 @@ class MainActivity : ThemeActivity() {
         }
 
         if (ShellUtils.isRootAvailable &&
-                PreferenceManager.getDefaultSharedPreferences(this).getBoolean("should_notify", true)) {
+                PreferenceManager.getDefaultSharedPreferences(this).getBoolean("reboot_card", true)) {
             card_reboot.visibility = View.VISIBLE
-            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("should_notify", false).apply()
+            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("reboot_card", false).apply()
             card_reboot.setOnClickListener {
                 card_reboot.visibility = View.GONE
                 val intent = Intent(this, RebootActivity::class.java)

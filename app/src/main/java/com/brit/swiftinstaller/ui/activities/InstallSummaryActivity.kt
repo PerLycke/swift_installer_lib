@@ -71,9 +71,6 @@ class InstallSummaryActivity : ThemeActivity() {
         }
 
         mApps = intent.getStringArrayListExtra("apps")
-        if (mApps.isNotEmpty() && !hotSwap) {
-            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("should_notify", true).apply()
-        }
 
         mPagerAdapter = AppsTabPagerAdapter(supportFragmentManager, true, SUCCESS_TAB, FAILED_TAB)
         mPagerAdapter.setAlertIconClickListener(object : AppListFragment.AlertIconClickListener {

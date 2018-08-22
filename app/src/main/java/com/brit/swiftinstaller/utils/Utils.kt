@@ -199,7 +199,8 @@ object Utils {
         return bitmap
     }
 
-    fun enableAllOverlays(context: Context) {
+    fun enableAllOverlays(context: Context) : Boolean {
+        var hasEnabledOverlays = false
         val overlays = runCommand("cmd overlay list", true).output
         for (overlay in overlays!!.split("\n")) {
             if (overlay.startsWith("[")) {
@@ -207,10 +208,12 @@ object Utils {
                 if (overlay.startsWith("[ ]")) {
                     if (pn.endsWith(".swiftinstaller.overlay")) {
                         runCommand("cmd overlay enable $pn", true)
+                        hasEnabledOverlays = true
                     }
                 }
             }
         }
+        return hasEnabledOverlays
     }
 
     /*fun makeKey(key: File) {

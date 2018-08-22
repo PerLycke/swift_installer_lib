@@ -15,7 +15,7 @@ class RebootActivity : ThemeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("should_notify", false).apply()
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("reboot_card", false).apply()
 
         val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
                 .setTitle(getString(R.string.reboot_dialog_title))
