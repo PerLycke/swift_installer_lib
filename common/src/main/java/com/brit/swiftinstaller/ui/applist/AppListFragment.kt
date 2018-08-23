@@ -103,7 +103,9 @@ class AppListFragment : Fragment() {
 
     fun selectAll(checked: Boolean) {
         for (index in mApps.indices) {
-            mChecked.put(index, checked)
+            if (Utils.checkVersionCompatible(context!!, mApps[index].packageName)) {
+                mChecked.put(index, checked)
+            }
         }
     }
 

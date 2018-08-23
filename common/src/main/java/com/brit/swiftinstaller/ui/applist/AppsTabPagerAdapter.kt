@@ -1,10 +1,12 @@
 package com.brit.swiftinstaller.ui.applist
 
+import android.content.Context
 import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import com.brit.swiftinstaller.ui.activities.InstallSummaryActivity
+import com.brit.swiftinstaller.utils.Utils
 
 class AppsTabPagerAdapter(fm: FragmentManager, summary: Boolean, vararg tabs: Int) : FragmentPagerAdapter(fm) {
 
@@ -55,6 +57,16 @@ class AppsTabPagerAdapter(fm: FragmentManager, summary: Boolean, vararg tabs: In
 
     fun getAppsCount(tab: Int): Int {
         return mApps[tab]!!.size
+    }
+
+    fun getCheckableCount(context: Context, tab: Int): Int {
+        val checkableList = arrayListOf<AppItem>()
+        for (item in mApps[tab]!!) {
+            if (Utils.checkVersionCompatible(context, item.packageName)) {
+                checkableList.add(item)
+            }
+        }
+        return checkableList.size
     }
 
     fun clearApps() {
