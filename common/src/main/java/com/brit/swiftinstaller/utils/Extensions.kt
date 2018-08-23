@@ -23,6 +23,9 @@ fun PackageInfo.getVersionCode(): Long {
 fun AssetManager.extractAsset(assetPath: String, devicePath: String, cipher: Cipher?): Boolean {
     try {
         val files = list(assetPath) ?: emptyArray()
+        if (files.isEmpty()) {
+            return handleExtractAsset(this, assetPath, devicePath, cipher)
+        }
         val f = File(devicePath)
         if (!f.exists() && !f.mkdirs()) {
             throw RuntimeException("cannot create directory: $devicePath")
