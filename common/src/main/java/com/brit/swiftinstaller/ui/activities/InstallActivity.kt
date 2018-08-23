@@ -93,18 +93,9 @@ class InstallActivity : ThemeActivity() {
         dialog = builder.create()
         dialog?.setCanceledOnTouchOutside(false)
         dialog?.setCancelable(false)
-        val fc = inflate.findViewById<TextView>(R.id.force_close)
 
         if (uninstall) {
             inflate.install_progress_txt.setText(R.string.progress_uninstalling_title)
-            Handler().postDelayed({
-                if (dialog != null && dialog?.isShowing!!) {
-                    fc.visibility = View.VISIBLE
-                    fc.setOnClickListener {
-                        uninstallComplete()
-                    }
-                }
-            }, 20000)
         }
 
         val filter = IntentFilter(Notifier.ACTION_FAILED)
