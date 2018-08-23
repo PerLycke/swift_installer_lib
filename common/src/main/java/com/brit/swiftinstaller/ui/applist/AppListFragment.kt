@@ -1,23 +1,25 @@
 package com.brit.swiftinstaller.ui.applist
 
+import android.app.AlertDialog
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.util.ArrayMap
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.CompoundButton
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.utils.*
 import kotlinx.android.synthetic.main.activity_app_list.*
+import kotlinx.android.synthetic.main.app_item.view.*
+import kotlinx.android.synthetic.main.app_option_item.view.*
 import kotlinx.android.synthetic.main.failed_info_card.view.*
 
 class AppListFragment : Fragment() {
@@ -196,6 +198,21 @@ class AppListFragment : Fragment() {
                 downloadIcon.visibility = View.GONE
                 blockedPackagesAlert.visibility = View.GONE
 
+                val appOptions = OverlayUtils.getOverlayOptions(context!!, item.packageName)
+                if (appOptions.isNotEmpty()) {
+                    view.options_icon.visibility = View.VISIBLE
+                    view.options_icon.setOnClickListener {
+                        val dialog = AlertDialog.Builder(context!!)
+                        dialog.setTitle(item.title)
+                        dialog.setIcon(item.icon)
+                        dialog.setAdapter(OptionsAdapter(context!!, appOptions)) { _, _ ->
+                        }
+                        dialog.show()
+                    }
+                } else {
+                    view.options_icon.visibility = View.GONE
+                }
+
                 if (mSummary) {
                     appCheckBox.visibility = View.GONE
                     appCheckBox.isEnabled = false
@@ -251,6 +268,28 @@ class AppListFragment : Fragment() {
             }
         }
 
+    }
+
+    class OptionsAdapter(context: Context, val options: ArrayMap<String, Array<String>>) : ArrayAdapter<String>(context, R.layout.app_option_item) {
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+            val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.app_option_item, parent, false)
+
+            view.options_title.text = options.keyAt(position)
+            val opts = options[options.keyAt(position)]
+            if (opts!!.contains("on")) {
+                view.checkbox.visibility = View.VISIBLE
+                view.spinner.visibility = View.GONE
+            } else {
+                view.spinner.visibility = View.VISIBLE
+                view.checkbox.visibility = View.GONE
+                view.spinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, opts)
+            }
+            return view
+        }
+
+        override fun getCount(): Int {
+            return options.size
+        }
     }
 
     interface AlertIconClickListener {

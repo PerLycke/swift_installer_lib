@@ -2,8 +2,21 @@ package com.brit.swiftinstaller.utils
 
 import android.content.Context
 import android.content.res.AssetManager
+import android.support.v4.util.ArrayMap
 
 object OverlayUtils {
+
+    fun getOverlayOptions(context: Context, packageName: String) : ArrayMap<String, Array<String>> {
+        val optionsMap = ArrayMap<String, Array<String>>()
+        val options = context.assets.list("overlays/$packageName/options") ?: emptyArray()
+        for (option in options) {
+            val array = context.assets.list("overlays/$packageName/options/$option") ?: emptyArray()
+            if (array.isNotEmpty()) {
+                optionsMap[option] = array
+            }
+        }
+        return optionsMap
+    }
 
     fun checkAndHideOverlays(context: Context) {
         val overlays = context.assets.list("overlays") ?: emptyArray()
@@ -51,6 +64,17 @@ object OverlayUtils {
                 if (!found) {
                     if (props.contains("default")) {
                         checkResourcePath(context, "$path/props/default", packageName, resourcePaths)
+                    }
+                }
+            }
+        } else if (variants.contains("options")) {
+            val optionsMap = getOverlayOptions(context, packageName)
+            val options = context.assets.list("$path/options") ?: emptyArray()
+            for (option in options) {
+                if (optionsMap.containsKey(option)) {
+                    val optionsArray = context.assets.list("$path/options/$option") ?: emptyArray()
+                    if (optionsArray.isNotEmpty()) {
+                        checkResourcePath(context, "$path/options/$option/${optionsMap[option]}", packageName, resourcePaths)
                     }
                 }
             }
