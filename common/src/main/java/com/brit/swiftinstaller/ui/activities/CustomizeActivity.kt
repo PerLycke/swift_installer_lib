@@ -740,21 +740,26 @@ class CustomizeActivity : ThemeActivity() {
                             startActivity(intent)
                         }
                         "second" -> {
-                            val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                            .setTitle(R.string.reboot_delay_title)
-                            .setMessage(R.string.reboot_delay_msg)
-                            .setPositiveButton(R.string.proceed) { dialogInterface, _ ->
+                            if (applicationContext.packageName == "com.brit.swiftinstaller") {
+                                val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+                                        .setTitle(R.string.reboot_delay_title)
+                                        .setMessage(R.string.reboot_delay_msg)
+                                        .setPositiveButton(R.string.proceed) { dialogInterface, _ ->
+                                            getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "default").apply()
+                                            dialogInterface.dismiss()
+                                            startActivity(intent)
+                                        }
+                                        .setNegativeButton(R.string.cancel) { dialogInterface, _ ->
+                                            dialogInterface.dismiss()
+                                        }
+
+                                themeDialog()
+                                val dialog = builder.create()
+                                dialog.show()
+                            } else {
                                 getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "default").apply()
-                                dialogInterface.dismiss()
                                 startActivity(intent)
                             }
-                                    .setNegativeButton(R.string.cancel) { dialogInterface, _ ->
-                                        dialogInterface.dismiss()
-                                    }
-
-                            themeDialog()
-                            val dialog = builder.create()
-                            dialog.show()
                         }
                         else -> {
                             val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
