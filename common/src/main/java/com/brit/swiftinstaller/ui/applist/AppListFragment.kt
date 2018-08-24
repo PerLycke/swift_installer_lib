@@ -202,12 +202,31 @@ class AppListFragment : Fragment() {
 
                 val appOptions = OverlayUtils.getOverlayOptions(context!!, item.packageName)
                 if (appOptions.isNotEmpty()) {
+                    val optionsSelection = ArrayList<String>()
+                    val selected = getSelectedOverlayOptions(context!!, item.packageName)
+                    for (i in appOptions.keys.indices) {
+                        if (selected.containsKey(appOptions.keyAt(i))) {
+                            optionsSelection.add(i, selected[appOptions.keyAt(i)] ?: "")
+                        }
+                    }
                     view.options_icon.visibility = View.VISIBLE
                     view.options_icon.setOnClickListener {
                         val dialog = AlertDialog.Builder(context!!)
                         dialog.setTitle(item.title)
                         dialog.setIcon(item.icon)
-                        dialog.setAdapter(OptionsAdapter(context!!, appOptions)) { _, _ ->
+                        dialog.setAdapter(OptionsAdapter(context!!, appOptions, optionsSelection)) { _, _ ->
+                        }
+                        dialog.setPositiveButton("Apply") { _, _ ->
+                            for (pos in appOptions.keys.indices) {
+                                val value = optionsSelection.elementAtOrNull(pos)
+                                if (value != null) {
+                                    setOverlayOption(context!!, item.packageName,
+                                            appOptions.keyAt(pos), value)
+                                }
+                            }
+                        }
+                        dialog.setNegativeButton(R.string.cancel) { dialogInterface, _ ->
+                            dialogInterface.dismiss()
                         }
                         dialog.show()
                     }
@@ -272,7 +291,7 @@ class AppListFragment : Fragment() {
 
     }
 
-    class OptionsAdapter(context: Context, val options: ArrayMap<String, Array<String>>) : ArrayAdapter<String>(context, R.layout.app_option_item) {
+    class OptionsAdapter(context: Context, val options: ArrayMap<String, Array<String>>, val selection: ArrayList<String>) : ArrayAdapter<String>(context, R.layout.app_option_item) {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.app_option_item, parent, false)
 
@@ -280,11 +299,30 @@ class AppListFragment : Fragment() {
             val opts = options[options.keyAt(position)]
             if (opts!!.contains("on")) {
                 view.checkbox.visibility = View.VISIBLE
+                view.checkbox.setOnCheckedChangeListener { _, b ->
+                    selection.removeAt(position)
+                    selection.add(position, if (b) { "on" } else { "off" })
+                }
+                view.checkbox.isChecked = (selection.elementAtOrNull(position) ?: "off") == "on"
                 view.spinner.visibility = View.GONE
             } else {
                 view.spinner.visibility = View.VISIBLE
                 view.checkbox.visibility = View.GONE
                 view.spinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, opts)
+                view.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                        selection.removeAt(position)
+                        selection.add(position, opts[p2])
+                    }
+
+                    override fun onNothingSelected(p0: AdapterView<*>?) {
+                    }
+
+                }
+                val sel = selection.elementAtOrNull(position)
+                if (sel != null && opts.contains(sel)) {
+                    view.spinner.setSelection(opts.indexOf(sel))
+                }
             }
             return view
         }

@@ -3,6 +3,7 @@ package com.brit.swiftinstaller.utils
 import android.content.Context
 import android.content.res.AssetManager
 import android.support.v4.util.ArrayMap
+import java.util.*
 
 object OverlayUtils {
 
@@ -39,9 +40,11 @@ object OverlayUtils {
         val variants = am.list(path) ?: return
         if (variants.contains("common")) {
             checkResourcePath(context, "$path/common", packageName, resourcePaths)
-        } else if (variants.contains("versions")) {
+        }
+        if (variants.contains("versions")) {
             parseOverlayVersions(context, packageName, resourcePaths, "$path/versions")
-        } else if (variants.contains("props")) {
+        }
+        if (variants.contains("props")) {
             val props = am.list("$path/props")
             if (props != null) {
                 var found = false
@@ -67,8 +70,9 @@ object OverlayUtils {
                     }
                 }
             }
-        } else if (variants.contains("options")) {
-            val optionsMap = getOverlayOptions(context, packageName)
+        }
+        if (variants.contains("options")) {
+            val optionsMap = getSelectedOverlayOptions(context, packageName)
             val options = context.assets.list("$path/options") ?: emptyArray()
             for (option in options) {
                 if (optionsMap.containsKey(option)) {

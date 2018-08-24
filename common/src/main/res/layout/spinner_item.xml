@@ -8,4 +8,5 @@
     android:gravity="center_vertical"
     android:singleLine="true"
     android:textColor="@android:color/white"
-    tools:text="Testing spinner opiton 1" />
+    android:padding="2dp"
+    tools:text="Testing spinner option 1" />

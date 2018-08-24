@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.support.v4.util.ArrayMap
 import android.text.TextUtils
 import android.util.ArraySet
 import com.brit.swiftinstaller.installer.rom.RomInfo
@@ -268,8 +269,8 @@ fun setUserAccents(context: Context, colors: IntArray) {
 private fun getOverlayOptionsPrefs(context: Context) : SharedPreferences {
     return context.getSharedPreferences("pref_app_options", Context.MODE_PRIVATE)
 }
-fun getOverlayOptions(context: Context, packageName: String): HashMap<String, String> {
-    val map = HashMap<String, String>()
+fun getSelectedOverlayOptions(context: Context, packageName: String): ArrayMap<String, String> {
+    val map = ArrayMap<String, String>()
     val prefs = getOverlayOptionsPrefs(context)
     val jsonString = prefs.getString(packageName, JSONObject().toString())
     val json = JSONObject(jsonString)
@@ -283,7 +284,7 @@ fun getOverlayOptions(context: Context, packageName: String): HashMap<String, St
 }
 fun setOverlayOption(context: Context, packageName: String, option: String, value: String) {
     val prefs = getOverlayOptionsPrefs(context)
-    val json = JSONObject(getOverlayOptions(context, packageName))
+    val json = JSONObject(getSelectedOverlayOptions(context, packageName))
     json.put(option, value)
     prefs.edit().remove(packageName).apply()
     prefs.edit().putString(packageName, json.toString()).apply()
