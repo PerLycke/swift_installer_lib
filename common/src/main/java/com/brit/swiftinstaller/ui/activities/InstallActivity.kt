@@ -6,11 +6,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.os.Handler
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.brit.swiftinstaller.installer.Notifier
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.R
