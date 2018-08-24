@@ -19,7 +19,10 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat"
         app:subtitleTextAppearance="@style/ToolbarSubtitle"
         app:title="Swift Installer"
-        app:titleTextAppearance="@style/ToolbarTitle" />
+        app:titleTextAppearance="@style/ToolbarTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/menu"

@@ -40,6 +40,9 @@ android {
             outputFileName = "Installer_Samsung${versionName}_${versionCode}.apk"
         }
     }
+    lintOptions {
+        disable 'InvalidPackage'
+    }
 }
 
 Properties props = new Properties()
