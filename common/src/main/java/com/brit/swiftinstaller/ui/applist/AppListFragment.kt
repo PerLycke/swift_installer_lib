@@ -300,7 +300,8 @@ class AppListFragment : Fragment() {
             if (opts!!.contains("on")) {
                 view.checkbox.visibility = View.VISIBLE
                 view.checkbox.setOnCheckedChangeListener { _, b ->
-                    selection.removeAt(position)
+                    if (selection.elementAtOrNull(position) != null)
+                        selection.removeAt(position)
                     selection.add(position, if (b) { "on" } else { "off" })
                 }
                 view.checkbox.isChecked = (selection.elementAtOrNull(position) ?: "off") == "on"
@@ -311,7 +312,8 @@ class AppListFragment : Fragment() {
                 view.spinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, opts)
                 view.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                        selection.removeAt(position)
+                        if (selection.elementAtOrNull(position) != null)
+                            selection.removeAt(position)
                         selection.add(position, opts[p2])
                     }
 
