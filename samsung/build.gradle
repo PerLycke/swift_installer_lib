@@ -35,6 +35,9 @@ android {
             signingConfig signingConfigs.release
         }
     }
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "Installer_Samsung${versionName}_${versionCode}.apk"
 }
 
 Properties props = new Properties()
