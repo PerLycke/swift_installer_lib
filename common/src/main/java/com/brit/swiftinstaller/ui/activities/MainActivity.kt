@@ -52,7 +52,7 @@ class MainActivity : ThemeActivity() {
         }
 
         if (ShellUtils.isRootAvailable &&
-                PreferenceManager.getDefaultSharedPreferences(this).getBoolean("reboot_card", true)) {
+                PreferenceManager.getDefaultSharedPreferences(this).getBoolean("reboot_card", false)) {
             card_reboot.visibility = View.VISIBLE
             PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("reboot_card", false).apply()
             card_reboot.setOnClickListener {
