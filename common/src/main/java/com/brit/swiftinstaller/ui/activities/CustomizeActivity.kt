@@ -50,6 +50,7 @@ class CustomizeActivity : ThemeActivity() {
         const val SUPPORTS_ICONS = 0x01
         const val SUPPORTS_CLOCK = 0x02
         const val SUPPORTS_SYSTEMUI = 0x04
+        const val SUPPORTS_SHADOW = 0x08
     }
 
     private var settingsIcons: Array<ImageView?> = arrayOfNulls(3)
@@ -76,6 +77,7 @@ class CustomizeActivity : ThemeActivity() {
     private val handler = Handler()
     private var parentActivity: String? = "parent"
     private lateinit var bottomSheetDialog: BottomSheetDialog
+    private var supportsShadow = false
 
     private var recompile = false
 
@@ -316,12 +318,16 @@ class CustomizeActivity : ThemeActivity() {
             if (compoundButton.id == R.id.dark_notifications) {
                 dark_notifications.isChecked = b
                 white_notifications.isChecked = !b
-                shadowFixLayout.visibility = View.VISIBLE
-                customizations_scrollview.postDelayed({ customizations_scrollview.fullScroll(ScrollView.FOCUS_DOWN) }, 200)
+                if (supportsShadow) {
+                    shadowFixLayout.visibility = View.VISIBLE
+                    customizations_scrollview.postDelayed({ customizations_scrollview.fullScroll(ScrollView.FOCUS_DOWN) }, 200)
+                }
             } else {
                 dark_notifications.isChecked = !b
                 white_notifications.isChecked = b
-                shadowFixLayout.visibility = View.GONE
+                if (supportsShadow) {
+                    shadowFixLayout.visibility = View.GONE
+                }
             }
             darkNotif = dark_notifications.isChecked
             updateColor(accentColor, backgroundColor, false, true)
@@ -474,12 +480,18 @@ class CustomizeActivity : ThemeActivity() {
             systemui_card.visibility = View.GONE
         }
 
+        if ((features and SUPPORTS_SHADOW) != 0) {
+            shadow_disabled.setOnCheckedChangeListener(shadowListener)
+            shadow_enabled.setOnCheckedChangeListener(shadowListener)
+            supportsShadow = true
+        } else {
+            shadowFixLayout.visibility = View.GONE
+        }
+
         material_theme.setOnCheckedChangeListener(baseThemeListener)
         flat_theme.setOnCheckedChangeListener(baseThemeListener)
         dark_notifications.setOnCheckedChangeListener(notifBgListener)
         white_notifications.setOnCheckedChangeListener(notifBgListener)
-        shadow_disabled.setOnCheckedChangeListener(shadowListener)
-        shadow_enabled.setOnCheckedChangeListener(shadowListener)
     }
 
     override fun onBackPressed() {
@@ -970,14 +982,18 @@ class CustomizeActivity : ThemeActivity() {
             }
             preview_sysui_sender.text = getString(R.string.dark_notifications)
             preview_sysui_msg.setTextColor(Color.parseColor("#b3ffffff"))
-            shadowFixLayout.visibility = View.VISIBLE
+            if (supportsShadow) {
+                shadowFixLayout.visibility = View.VISIBLE
+            }
         } else {
             preview_sysui_sender.text = getString(R.string.white_notifications)
             preview_sysui_msg.text = getString(R.string.white_notifications_preview)
             notif_bg_layout.drawable.setTint(Color.parseColor("#f5f5f5"))
             preview_sysui_sender.setTextColor(Color.BLACK)
             preview_sysui_msg.setTextColor(Color.parseColor("#8a000000"))
-            shadowFixLayout.visibility = View.GONE
+            if (supportsShadow) {
+                shadowFixLayout.visibility = View.GONE
+            }
         }
     }
 
