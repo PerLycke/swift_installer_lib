@@ -50,46 +50,37 @@
         app:layout_constraintStart_toEndOf="@+id/clock_category_title"
         app:layout_constraintTop_toTopOf="@+id/clock_category_title" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="8dp"
+    <RadioButton
+        android:id="@+id/right_clock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline12"
+        android:fontFamily="sans-serif"
+        android:text="@string/right"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="@+id/guideline11"
-        app:layout_constraintTop_toBottomOf="@+id/clock_category_title">
+        app:layout_constraintTop_toBottomOf="@+id/clock_category_title" />
 
-        <RadioButton
-            android:id="@+id/right_clock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="@string/right"
-            android:visibility="visible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <RadioButton
+        android:id="@+id/left_clock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/left"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@+id/right_clock"
+        app:layout_constraintTop_toBottomOf="@+id/right_clock" />
 
-        <RadioButton
-            android:id="@+id/left_clock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="sans-serif"
-            android:text="@string/left"
-            android:visibility="visible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/right_clock" />
-
-        <RadioButton
-            android:id="@+id/centered_clock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="sans-serif"
-            android:text="@string/centered"
-            android:visibility="visible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/left_clock" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <RadioButton
+        android:id="@+id/centered_clock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/centered"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@+id/left_clock"
+        app:layout_constraintTop_toBottomOf="@+id/left_clock" />
 
 </merge>

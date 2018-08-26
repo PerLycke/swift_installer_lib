@@ -50,57 +50,48 @@
         app:layout_constraintStart_toEndOf="@+id/icons_category_title"
         app:layout_constraintTop_toTopOf="@+id/icons_category_title" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="8dp"
+    <RadioButton
+        android:id="@+id/stock_icons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/stock_icons"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@+id/aosp_icons"
+        app:layout_constraintTop_toBottomOf="@+id/aosp_icons" />
+
+    <RadioButton
+        android:id="@+id/stock_icons_multi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/stock_icons_multi"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@+id/stock_icons"
+        app:layout_constraintTop_toBottomOf="@+id/stock_icons" />
+
+    <RadioButton
+        android:id="@+id/p_icons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/android_p"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@+id/stock_icons_multi"
+        app:layout_constraintTop_toBottomOf="@+id/stock_icons_multi" />
+
+    <RadioButton
+        android:id="@+id/aosp_icons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        android:fontFamily="sans-serif"
+        android:text="@string/aosp_icons"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/icons_category_title">
-
-        <RadioButton
-            android:id="@+id/stock_icons"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="sans-serif"
-            android:text="@string/stock_icons"
-            android:visibility="visible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/aosp_icons" />
-
-        <RadioButton
-            android:id="@+id/stock_icons_multi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="sans-serif"
-            android:text="@string/stock_icons_multi"
-            android:visibility="visible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/stock_icons" />
-
-        <RadioButton
-            android:id="@+id/p_icons"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="sans-serif"
-            android:text="@string/android_p"
-            android:visibility="visible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/stock_icons_multi" />
-
-        <RadioButton
-            android:id="@+id/aosp_icons"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="@string/aosp_icons"
-            android:visibility="visible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintTop_toBottomOf="@+id/icons_category_title" />
 
 </merge>
