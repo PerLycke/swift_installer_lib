@@ -9,14 +9,13 @@ import android.graphics.Bitmap
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Environment
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.tabs.TabLayout
-import androidx.viewpager.widget.ViewPager
-import androidx.appcompat.widget.SearchView
+import android.os.Handler
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
+import androidx.viewpager.widget.ViewPager
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.ui.applist.AppItem
@@ -24,6 +23,8 @@ import com.brit.swiftinstaller.ui.applist.AppListFragment
 import com.brit.swiftinstaller.ui.applist.AppsTabPagerAdapter
 import com.brit.swiftinstaller.utils.*
 import com.brit.swiftinstaller.utils.Utils.createImage
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_overlays.*
 import kotlinx.android.synthetic.main.sheet_confirm_uninstall.view.*
 import kotlinx.android.synthetic.main.tab_layout_overlay.*
@@ -49,6 +50,8 @@ class OverlaysActivity : ThemeActivity() {
     private lateinit var mViewPager: ViewPager
     private var overlaysList = ArrayList<AppItem>()
     private var hasUpdate = false
+    private var checked = 0
+    private var apps = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,12 +84,18 @@ class OverlaysActivity : ThemeActivity() {
                 if (select_all_btn.isChecked) {
                     select_all_btn.isChecked = false
                 }
+                Handler().post {
+                    checked = mPagerAdapter!!.getCheckedCount(container.currentItem)
+                }
             }
         })
         mPagerAdapter!!.setViewClickListener(object : AppListFragment.ViewClickListener {
             override fun onClick(appItem: AppItem) {
                 if (select_all_btn.isChecked) {
                     select_all_btn.isChecked = false
+                }
+                Handler().post {
+                    checked = mPagerAdapter!!.getCheckedCount(container.currentItem)
                 }
             }
         })
@@ -120,8 +129,6 @@ class OverlaysActivity : ThemeActivity() {
         mViewPager.offscreenPageLimit = 2
 
         select_all_btn.setOnClickListener {
-            val checked = mPagerAdapter!!.getCheckedCount(container.currentItem)
-            val apps = mPagerAdapter!!.getCheckableCount(this, container.currentItem)
             if (checked == apps) {
                 mPagerAdapter!!.selectAll(container.currentItem, false)
                 if (select_all_btn.isChecked) {
@@ -131,6 +138,9 @@ class OverlaysActivity : ThemeActivity() {
                 mPagerAdapter!!.selectAll(container.currentItem, true)
             }
             mPagerAdapter!!.notifyFragmentDataSetChanged(container.currentItem)
+            Handler().post {
+                checked = mPagerAdapter!!.getCheckedCount(container.currentItem)
+            }
         }
 
         container.adapter = mPagerAdapter
@@ -272,6 +282,8 @@ class OverlaysActivity : ThemeActivity() {
                 select_all_btn.visibility = View.VISIBLE
                 select_all_btn.isClickable = true
                 loading_progress.visibility = View.INVISIBLE
+                checked = mPagerAdapter!!.getCheckedCount(container.currentItem)
+                apps = mPagerAdapter!!.getCheckableCount(this@OverlaysActivity, container.currentItem)
                 if (hasUpdate) {
                     update_tab_indicator.visibility = View.VISIBLE
                 }
