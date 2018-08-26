@@ -148,4 +148,5 @@
     <string name="link_apps">Supported apps: https://goo.gl/gS84kK</string>
     <string name="no_root_msg">Root access is required for the Installer to work. We inform about this in the Play Store description. You can request a refund in Play Store or email us for a manual refund. Email is swiftuserhelp@gmail.com</string>
     <string name="exit">Exit</string>
+    <string name="transparency">Transparency</string>
 </resources>

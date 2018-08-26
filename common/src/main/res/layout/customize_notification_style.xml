@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineSys1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineSys2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.85" />
+
+    <TextView
+        android:id="@+id/qs_category_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="18dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/notification_style"
+        android:textAllCaps="true"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/qs_category_divider"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="8dp"
+        android:background="@color/divider"
+        android:contentDescription="@string/image"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/qs_category_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/qs_category_title"
+        app:layout_constraintTop_toTopOf="@+id/qs_category_title" />
+
+    <RadioButton
+        android:id="@+id/default_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/default_style"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@+id/guidelineSys1"
+        app:layout_constraintTop_toBottomOf="@+id/qs_category_title" />
+
+    <RadioButton
+        android:id="@+id/p_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/android_p_rounded_style"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@+id/default_style"
+        app:layout_constraintTop_toBottomOf="@+id/default_style" />
+
+    <ImageView
+        android:id="@+id/rounded_divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="4dp"
+        android:background="@color/divider"
+        android:contentDescription="@string/image"
+        app:layout_constraintBottom_toBottomOf="@+id/p_style"
+        app:layout_constraintEnd_toStartOf="@+id/roundedInfo"
+        app:layout_constraintStart_toEndOf="@+id/p_style"
+        app:layout_constraintTop_toTopOf="@+id/p_style" />
+
+    <TextView
+        android:id="@+id/roundedInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:paddingStart="8dp"
+        android:paddingBottom="8dp"
+        android:text="@string/rounded_info"
+        app:layout_constraintBottom_toBottomOf="@+id/rounded_divider"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineSys2"
+        app:layout_constraintTop_toTopOf="@+id/rounded_divider"
+        tools:ignore="RtlSymmetry" />
+
+</merge>

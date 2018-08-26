@@ -155,7 +155,7 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
         if (Build.VERSION.SDK_INT == 26) {
             return super.getCustomizeFeatures()
         } else {
-            return CustomizeActivity.SUPPORTS_CLOCK + CustomizeActivity.SUPPORTS_ICONS + CustomizeActivity.SUPPORTS_SYSTEMUI +
+            return CustomizeActivity.SUPPORTS_CLOCK + CustomizeActivity.SUPPORTS_ICONS + CustomizeActivity.SUPPORTS_TRANSPARENCY +
                     CustomizeActivity.SUPPORTS_SHADOW
         }
     }

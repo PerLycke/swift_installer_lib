@@ -12,11 +12,6 @@ import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.preference.PreferenceManager
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import androidx.core.content.ContextCompat
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.viewpager.widget.PagerAdapter
-import androidx.viewpager.widget.ViewPager
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
@@ -26,6 +21,10 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.core.content.ContextCompat
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.ui.CircleDrawable
@@ -33,15 +32,17 @@ import com.brit.swiftinstaller.utils.*
 import com.brit.swiftinstaller.utils.ColorUtils.checkAccentColor
 import com.brit.swiftinstaller.utils.ColorUtils.checkBackgroundColor
 import com.brit.swiftinstaller.utils.ColorUtils.convertToColorInt
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_customize.*
 import kotlinx.android.synthetic.main.customize_accent.*
 import kotlinx.android.synthetic.main.customize_background.*
 import kotlinx.android.synthetic.main.customize_clock.*
 import kotlinx.android.synthetic.main.customize_icons.*
+import kotlinx.android.synthetic.main.customize_notification_style.*
 import kotlinx.android.synthetic.main.customize_notifications.*
 import kotlinx.android.synthetic.main.customize_preview_settings.*
 import kotlinx.android.synthetic.main.customize_preview_sysui.*
-import kotlinx.android.synthetic.main.customize_systemui.*
+import kotlinx.android.synthetic.main.customize_transparency.*
 import kotlinx.android.synthetic.main.fab_sheet_personalize.view.*
 
 class CustomizeActivity : ThemeActivity() {
@@ -49,9 +50,9 @@ class CustomizeActivity : ThemeActivity() {
     companion object {
         const val SUPPORTS_ICONS = 0x01
         const val SUPPORTS_CLOCK = 0x02
-        const val SUPPORTS_SYSTEMUI = 0x04
+        const val SUPPORTS_TRANSPARENCY = 0x04
         const val SUPPORTS_SHADOW = 0x08
-        const val SUPPORTS_ROUNDED = 0x10
+        const val SUPPORTS_NOTIF_STYLE = 0x10
     }
 
     private var settingsIcons: Array<ImageView?> = arrayOfNulls(3)
@@ -79,6 +80,7 @@ class CustomizeActivity : ThemeActivity() {
     private var parentActivity: String? = "parent"
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private var supportsShadow = false
+    private var supportsTransparency = false
 
     private var recompile = false
 
@@ -86,6 +88,7 @@ class CustomizeActivity : ThemeActivity() {
         super.onCreate(savedInstanceState)
 
         parentActivity = intent.getStringExtra("parentActivity")
+        supportsTransparency = RomInfo.getRomInfo(this).getCustomizeFeatures() and SUPPORTS_TRANSPARENCY != 0
 
         setContentView(R.layout.activity_customize)
         handler.post {
@@ -149,22 +152,24 @@ class CustomizeActivity : ThemeActivity() {
             baseThemeInfo.setOnClickListener(infoListener(getString(R.string.base_theme_dialog_title), getString(R.string.base_theme_dialog_info)))
             roundedInfo.setOnClickListener(infoListener(getString(R.string.rounded_dialog_title), getString(R.string.rounded_dialog_info)))
 
-            alpha_value.text = getString(R.string.alpha_value, alpha)
-            alpha_seekbar.progress = alpha
-            alpha_seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                    alpha_value.text = getString(R.string.alpha_value, progress)
-                    val overlay = ColorUtils.addAlphaColor(backgroundColor, alpha_seekbar.progress)
-                    preview_wallpaper.setColorFilter(overlay, PorterDuff.Mode.SRC_OVER)
-                }
-                override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                    alpha = alpha_seekbar.progress
-                }
-                override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                }
-            })
+            if (supportsTransparency) {
+                alpha_value.text = getString(R.string.alpha_value, alpha)
+                alpha_seekbar.progress = alpha
+                alpha_seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                        alpha_value.text = getString(R.string.alpha_value, progress)
+                        val overlay = ColorUtils.addAlphaColor(backgroundColor, alpha_seekbar.progress)
+                        preview_wallpaper.setColorFilter(overlay, PorterDuff.Mode.SRC_OVER)
+                    }
+                    override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                        alpha = alpha_seekbar.progress
+                    }
+                    override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                    }
+                })
 
-            preview_wallpaper.clipToOutline = true
+                preview_wallpaper.clipToOutline = true
+            }
         }
     }
 
@@ -474,11 +479,8 @@ class CustomizeActivity : ThemeActivity() {
             clock_card.visibility = View.GONE
         }
 
-        if ((features and SUPPORTS_SYSTEMUI) != 0) {
-            p_style.setOnCheckedChangeListener(styleListener)
-            default_style.setOnCheckedChangeListener(styleListener)
-        } else {
-            systemui_card.visibility = View.GONE
+        if ((features and SUPPORTS_TRANSPARENCY) == 0) {
+            transparency_card.visibility = View.GONE
         }
 
         if ((features and SUPPORTS_SHADOW) != 0) {
@@ -489,8 +491,11 @@ class CustomizeActivity : ThemeActivity() {
             shadowFixLayout.visibility = View.GONE
         }
 
-        if ((features and SUPPORTS_ROUNDED) == 0) {
-            roundedStyleLayout.visibility = View.GONE
+        if ((features and SUPPORTS_NOTIF_STYLE) != 0) {
+            p_style.setOnCheckedChangeListener(styleListener)
+            default_style.setOnCheckedChangeListener(styleListener)
+        } else {
+            notification_style_card.visibility = View.GONE
         }
 
         material_theme.setOnCheckedChangeListener(baseThemeListener)
@@ -935,8 +940,10 @@ class CustomizeActivity : ThemeActivity() {
             personalize_fab.background.setTint(accentColor)
             baseThemeInfo.setTextColor(accentColor)
             roundedInfo.setTextColor(accentColor)
-            alpha_seekbar.thumb.setColorFilter(accentColor, PorterDuff.Mode.SRC_ATOP)
-            alpha_seekbar.progressDrawable.setColorFilter(accentColor, PorterDuff.Mode.SRC_ATOP)
+            if (supportsTransparency) {
+                alpha_seekbar.thumb.setColorFilter(accentColor, PorterDuff.Mode.SRC_ATOP)
+                alpha_seekbar.progressDrawable.setColorFilter(accentColor, PorterDuff.Mode.SRC_ATOP)
+            }
         }
 
         if (force || this.backgroundColor != backgroundColor) {
