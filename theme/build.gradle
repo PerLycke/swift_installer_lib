@@ -18,7 +18,7 @@ ext {
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.brit.swiftinstaller.aosp"
+        applicationId "com.brit.swiftinstaller"
         minSdkVersion 26
         targetSdkVersion 28
         versionCode 63
