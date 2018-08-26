@@ -9,6 +9,23 @@
     android:paddingTop="8dp"
     tools:layout_editor_absoluteY="25dp">
 
+    <TextView
+        android:id="@+id/force_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="8dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="8dp"
+        android:text="@string/force_close"
+        android:textAllCaps="true"
+        android:textColor="@color/minimal_red"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/installing_title"
         android:layout_width="match_parent"

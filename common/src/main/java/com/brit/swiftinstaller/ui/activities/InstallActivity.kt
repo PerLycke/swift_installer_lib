@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -29,6 +30,7 @@ class InstallActivity : ThemeActivity() {
     private lateinit var progressCount: TextView
     private lateinit var progressPercent: TextView
     private val installListener = InstallListener()
+    private val mHandler = Handler()
 
     private var uninstall = false
     private var update = false
@@ -92,9 +94,18 @@ class InstallActivity : ThemeActivity() {
         dialog = builder.create()
         dialog?.setCanceledOnTouchOutside(false)
         dialog?.setCancelable(false)
+        val fc = inflate.findViewById<TextView>(R.id.force_close)
 
         if (uninstall) {
             inflate.install_progress_txt.setText(R.string.progress_uninstalling_title)
+            mHandler.postDelayed({
+                if (dialog != null && dialog?.isShowing!!) {
+                    fc.visibility = View.VISIBLE
+                    fc.setOnClickListener {
+                        uninstallComplete()
+                    }
+                }
+            }, 60000)
         }
 
         val filter = IntentFilter(Notifier.ACTION_FAILED)
