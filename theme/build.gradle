@@ -84,7 +84,7 @@ dependencies {
 
 // Themers, do not touch this! This is our function to help us encrypt your assets!
 task encryptAssets {
-    if (!SHOULD_ENCRYPT_ASSETS) {
+    if (!shouldEncrypt()) {
         println("Skipping assets encryption...")
         return
     }
@@ -172,4 +172,9 @@ gradle.buildFinished {
         }
         tempAssets.deleteDir()
     }
+}
+
+boolean shouldEncrypt() {
+    ArrayList<String> tasks = project.gradle.startParameter.taskNames
+    return SHOULD_ENCRYPT_ASSETS && Arrays.toString(tasks).toLowerCase().contains("release")
 }
