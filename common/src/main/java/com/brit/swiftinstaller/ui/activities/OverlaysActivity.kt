@@ -155,6 +155,9 @@ class OverlaysActivity : ThemeActivity() {
             }
 
             override fun onPageSelected(position: Int) {
+                doAsync {
+                    apps = mPagerAdapter!!.getCheckableCount(this@OverlaysActivity, container.currentItem)
+                }
                 val checked = mPagerAdapter!!.getCheckedCount(position)
                 select_all_btn.isChecked =
                         checked == mPagerAdapter!!.getAppsCount(position) && checked > 0
@@ -278,13 +281,13 @@ class OverlaysActivity : ThemeActivity() {
             for (i in updatesTabList) {
                 mPagerAdapter!!.addApp(UPDATE_TAB, i)
             }
+            checked = mPagerAdapter!!.getCheckedCount(container.currentItem)
+            apps = mPagerAdapter!!.getCheckableCount(this@OverlaysActivity, container.currentItem)
 
             uiThread {
                 select_all_btn.visibility = View.VISIBLE
                 select_all_btn.isClickable = true
                 loading_progress.visibility = View.INVISIBLE
-                checked = mPagerAdapter!!.getCheckedCount(container.currentItem)
-                apps = mPagerAdapter!!.getCheckableCount(this@OverlaysActivity, container.currentItem)
                 if (hasUpdate) {
                     update_tab_indicator.visibility = View.VISIBLE
                 }

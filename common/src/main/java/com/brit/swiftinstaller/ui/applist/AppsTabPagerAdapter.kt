@@ -5,6 +5,7 @@ import android.os.Handler
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.ui.activities.InstallSummaryActivity
 import com.brit.swiftinstaller.utils.Utils
 
@@ -62,7 +63,8 @@ class AppsTabPagerAdapter(fm: FragmentManager, summary: Boolean, vararg tabs: In
     fun getCheckableCount(context: Context, tab: Int): Int {
         val checkableList = arrayListOf<AppItem>()
         for (item in mApps[tab]!!) {
-            if (Utils.checkVersionCompatible(context, item.packageName)) {
+            if (Utils.checkVersionCompatible(context, item.packageName) ||
+                    RomInfo.getRomInfo(context).isOverlayInstalled(item.packageName)) {
                 checkableList.add(item)
             }
         }
