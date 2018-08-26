@@ -52,6 +52,7 @@ class OverlaysActivity : ThemeActivity() {
     private var hasUpdate = false
     private var checked = 0
     private var apps = 0
+    private val mHandler = Handler()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +85,7 @@ class OverlaysActivity : ThemeActivity() {
                 if (select_all_btn.isChecked) {
                     select_all_btn.isChecked = false
                 }
-                Handler().post {
+                mHandler.post {
                     checked = mPagerAdapter!!.getCheckedCount(container.currentItem)
                 }
             }
@@ -94,7 +95,7 @@ class OverlaysActivity : ThemeActivity() {
                 if (select_all_btn.isChecked) {
                     select_all_btn.isChecked = false
                 }
-                Handler().post {
+                mHandler.post {
                     checked = mPagerAdapter!!.getCheckedCount(container.currentItem)
                 }
             }
@@ -138,7 +139,7 @@ class OverlaysActivity : ThemeActivity() {
                 mPagerAdapter!!.selectAll(container.currentItem, true)
             }
             mPagerAdapter!!.notifyFragmentDataSetChanged(container.currentItem)
-            Handler().post {
+            mHandler.post {
                 checked = mPagerAdapter!!.getCheckedCount(container.currentItem)
             }
         }
