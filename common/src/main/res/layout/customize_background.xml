@@ -41,8 +41,8 @@
         android:id="@+id/bg_category_divider"
         android:layout_width="0dp"
         android:layout_height="2dp"
-        android:layout_marginEnd="32dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="32dp"
         android:background="@color/divider"
         android:contentDescription="@string/image"
         android:visibility="visible"
@@ -51,381 +51,327 @@
         app:layout_constraintStart_toEndOf="@+id/bg_category"
         app:layout_constraintTop_toTopOf="@+id/bg_category" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/customize_base_layout"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/customize_base_theme_title"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        android:fontFamily="sans-serif"
+        android:text="@string/base_theme"
+        android:textAppearance="@android:style/TextAppearance.Material.Small"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toBottomOf="@+id/bg_category">
+        app:layout_constraintTop_toBottomOf="@+id/bg_category" />
 
-        <TextView
-            android:id="@+id/customize_base_theme_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="@string/base_theme"
-            android:textAppearance="@android:style/TextAppearance.Material.Small"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/customize_base_theme_divider"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="16dp"
-            android:background="@color/divider"
-            android:contentDescription="@string/image"
-            app:layout_constraintBottom_toBottomOf="@+id/customize_base_theme_title"
-            app:layout_constraintEnd_toStartOf="@+id/baseThemeInfo"
-            app:layout_constraintStart_toEndOf="@+id/customize_base_theme_title"
-            app:layout_constraintTop_toTopOf="@+id/customize_base_theme_title" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/customize_base_theme_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:layout_constraintBottom_toBottomOf="@+id/customize_base_layout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/customize_base_theme_title"
-            app:layout_constraintVertical_bias="0.0">
-
-            <RadioButton
-                android:id="@+id/material_theme"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/material"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <RadioButton
-                android:id="@+id/flat_theme"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/flat"
-                app:layout_constraintStart_toStartOf="@+id/material_theme"
-                app:layout_constraintTop_toBottomOf="@+id/material_theme" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:id="@+id/baseThemeInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:paddingBottom="8dp"
-            android:paddingStart="8dp"
-            android:text="@string/whats_this"
-            android:background="?android:selectableItemBackgroundBorderless"
-            app:layout_constraintBottom_toBottomOf="@+id/customize_base_theme_divider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/customize_base_theme_divider"
-            tools:ignore="RtlSymmetry" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/custom_bg_main_layout"
+    <ImageView
+        android:id="@+id/customize_base_theme_divider"
         android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/divider"
+        android:contentDescription="@string/image"
+        app:layout_constraintBottom_toBottomOf="@+id/customize_base_theme_title"
+        app:layout_constraintEnd_toStartOf="@+id/baseThemeInfo"
+        app:layout_constraintStart_toEndOf="@+id/customize_base_theme_title"
+        app:layout_constraintTop_toTopOf="@+id/customize_base_theme_title" />
+
+    <TextView
+        android:id="@+id/baseThemeInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:paddingStart="8dp"
+        android:paddingBottom="8dp"
+        android:text="@string/whats_this"
+        app:layout_constraintBottom_toBottomOf="@+id/customize_base_theme_divider"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toTopOf="@+id/customize_base_theme_divider"
+        tools:ignore="RtlSymmetry" />
+
+    <RadioButton
+        android:id="@+id/material_theme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:checked="true"
+        android:text="@string/material"
+        app:layout_constraintStart_toStartOf="@+id/customize_base_theme_title"
+        app:layout_constraintTop_toBottomOf="@+id/customize_base_theme_title" />
+
+    <RadioButton
+        android:id="@+id/flat_theme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/flat"
+        app:layout_constraintStart_toStartOf="@+id/material_theme"
+        app:layout_constraintTop_toBottomOf="@+id/material_theme" />
+
+    <TextView
+        android:id="@+id/custom_bg_title"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        android:fontFamily="sans-serif"
+        android:text="@string/custom_background"
+        android:textAppearance="@android:style/TextAppearance.Material.Small"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toBottomOf="@+id/customize_base_layout">
+        app:layout_constraintTop_toBottomOf="@+id/flat_theme" />
 
-        <TextView
-            android:id="@+id/custom_bg_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="@string/custom_background"
-            android:textAppearance="@android:style/TextAppearance.Material.Small"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/custom_bg_divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="16dp"
+        android:background="@color/divider"
+        android:contentDescription="@string/image"
+        app:layout_constraintBottom_toBottomOf="@+id/custom_bg_title"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintStart_toEndOf="@+id/custom_bg_title"
+        app:layout_constraintTop_toTopOf="@+id/custom_bg_title" />
 
-        <ImageView
-            android:id="@+id/custom_bg_divider"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginStart="16dp"
-            android:background="@color/divider"
-            android:contentDescription="@string/image"
-            app:layout_constraintBottom_toBottomOf="@+id/custom_bg_title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/custom_bg_title"
-            app:layout_constraintTop_toTopOf="@+id/custom_bg_title" />
+    <ImageView
+        android:id="@+id/custom_dark_bg_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/image"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/custom_dark_bg"
+        app:layout_constraintEnd_toEndOf="@+id/custom_dark_bg"
+        app:layout_constraintStart_toStartOf="@+id/custom_dark_bg"
+        app:layout_constraintTop_toTopOf="@+id/custom_dark_bg"
+        app:srcCompat="@drawable/bg_circle_active_stroke" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/custom_bg_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/custom_bg_title">
+    <ImageView
+        android:id="@+id/custom_dark_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:contentDescription="@string/image"
+        app:layout_constraintEnd_toStartOf="@+id/custom_black_bg"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toBottomOf="@+id/custom_bg_title"
+        app:srcCompat="@drawable/bg_circle_dark" />
 
-            <ImageView
-                android:id="@+id/custom_dark_bg_indicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/image"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/custom_dark_bg"
-                app:layout_constraintEnd_toEndOf="@+id/custom_dark_bg"
-                app:layout_constraintStart_toStartOf="@+id/custom_dark_bg"
-                app:layout_constraintTop_toTopOf="@+id/custom_dark_bg"
-                app:srcCompat="@drawable/bg_circle_active_stroke" />
+    <TextView
+        android:id="@+id/custom_dark_bg_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/swift_dark"
+        app:layout_constraintEnd_toEndOf="@+id/custom_dark_bg"
+        app:layout_constraintStart_toStartOf="@+id/custom_dark_bg"
+        app:layout_constraintTop_toBottomOf="@+id/custom_dark_bg" />
 
-            <ImageView
-                android:id="@+id/custom_dark_bg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="2dp"
-                android:contentDescription="@string/image"
-                android:background="?android:selectableItemBackgroundBorderless"
-                app:layout_constraintEnd_toStartOf="@+id/custom_black_bg"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="spread_inside"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/bg_circle_dark" />
+    <ImageView
+        android:id="@+id/custom_black_bg_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/image"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/custom_black_bg"
+        app:layout_constraintEnd_toEndOf="@+id/custom_black_bg"
+        app:layout_constraintStart_toStartOf="@+id/custom_black_bg"
+        app:layout_constraintTop_toTopOf="@+id/custom_black_bg"
+        app:srcCompat="@drawable/bg_circle_active_stroke" />
 
-            <TextView
-                android:id="@+id/custom_dark_bg_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:fontFamily="sans-serif"
-                android:text="@string/swift_dark"
-                app:layout_constraintEnd_toEndOf="@+id/custom_dark_bg"
-                app:layout_constraintStart_toStartOf="@+id/custom_dark_bg"
-                app:layout_constraintTop_toBottomOf="@+id/custom_dark_bg" />
+    <ImageView
+        android:id="@+id/custom_black_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:contentDescription="@string/image"
+        app:layout_constraintEnd_toStartOf="@+id/custom_style_bg"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/custom_dark_bg"
+        app:layout_constraintTop_toTopOf="@+id/custom_dark_bg"
+        app:srcCompat="@drawable/bg_circle_black" />
 
-            <ImageView
-                android:id="@+id/custom_black_bg_indicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/image"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/custom_black_bg"
-                app:layout_constraintEnd_toEndOf="@+id/custom_black_bg"
-                app:layout_constraintStart_toStartOf="@+id/custom_black_bg"
-                app:layout_constraintTop_toTopOf="@+id/custom_black_bg"
-                app:srcCompat="@drawable/bg_circle_active_stroke" />
+    <TextView
+        android:id="@+id/custom_black_bg_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/swift_black"
+        app:layout_constraintEnd_toEndOf="@+id/custom_black_bg"
+        app:layout_constraintStart_toStartOf="@+id/custom_black_bg"
+        app:layout_constraintTop_toBottomOf="@+id/custom_black_bg" />
 
-            <ImageView
-                android:id="@+id/custom_black_bg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:contentDescription="@string/image"
-                android:background="?android:selectableItemBackgroundBorderless"
-                app:layout_constraintEnd_toStartOf="@+id/custom_style_bg"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/custom_dark_bg"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/bg_circle_black" />
+    <ImageView
+        android:id="@+id/custom_style_bg_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/image"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/custom_style_bg"
+        app:layout_constraintEnd_toEndOf="@+id/custom_style_bg"
+        app:layout_constraintStart_toStartOf="@+id/custom_style_bg"
+        app:layout_constraintTop_toTopOf="@+id/custom_style_bg"
+        app:srcCompat="@drawable/bg_circle_active_stroke" />
 
-            <TextView
-                android:id="@+id/custom_black_bg_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="sans-serif"
-                android:text="@string/swift_black"
-                app:layout_constraintEnd_toEndOf="@+id/custom_black_bg"
-                app:layout_constraintStart_toStartOf="@+id/custom_black_bg"
-                app:layout_constraintTop_toBottomOf="@+id/custom_black_bg" />
+    <ImageView
+        android:id="@+id/custom_style_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:contentDescription="@string/image"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/custom_black_bg"
+        app:layout_constraintTop_toTopOf="@+id/custom_black_bg"
+        app:srcCompat="@drawable/bg_circle_style" />
 
-            <ImageView
-                android:id="@+id/custom_style_bg_indicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/image"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/custom_style_bg"
-                app:layout_constraintEnd_toEndOf="@+id/custom_style_bg"
-                app:layout_constraintStart_toStartOf="@+id/custom_style_bg"
-                app:layout_constraintTop_toTopOf="@+id/custom_style_bg"
-                app:srcCompat="@drawable/bg_circle_active_stroke" />
+    <TextView
+        android:id="@+id/custom_style_bg_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/swift_style"
+        app:layout_constraintEnd_toEndOf="@+id/custom_style_bg"
+        app:layout_constraintStart_toStartOf="@+id/custom_style_bg"
+        app:layout_constraintTop_toBottomOf="@+id/custom_style_bg" />
 
-            <ImageView
-                android:id="@+id/custom_style_bg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="2dp"
-                android:contentDescription="@string/image"
-                android:background="?android:selectableItemBackgroundBorderless"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/custom_black_bg"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/bg_circle_style" />
+    <ImageView
+        android:id="@+id/custom_nature_bg_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/image"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/custom_nature_bg"
+        app:layout_constraintEnd_toEndOf="@+id/custom_nature_bg"
+        app:layout_constraintStart_toStartOf="@+id/custom_nature_bg"
+        app:layout_constraintTop_toTopOf="@+id/custom_nature_bg"
+        app:srcCompat="@drawable/bg_circle_active_stroke" />
 
-            <TextView
-                android:id="@+id/custom_style_bg_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="sans-serif"
-                android:text="@string/swift_style"
-                app:layout_constraintEnd_toEndOf="@+id/custom_style_bg"
-                app:layout_constraintStart_toStartOf="@+id/custom_style_bg"
-                app:layout_constraintTop_toBottomOf="@+id/custom_style_bg" />
+    <ImageView
+        android:id="@+id/custom_nature_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:contentDescription="@string/image"
+        app:layout_constraintStart_toStartOf="@+id/custom_dark_bg"
+        app:layout_constraintTop_toBottomOf="@+id/custom_dark_bg_txt"
+        app:srcCompat="@drawable/bg_circle_nature" />
 
-            <ImageView
-                android:id="@+id/custom_nature_bg_indicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/image"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/custom_nature_bg"
-                app:layout_constraintEnd_toEndOf="@+id/custom_nature_bg"
-                app:layout_constraintStart_toStartOf="@+id/custom_nature_bg"
-                app:layout_constraintTop_toTopOf="@+id/custom_nature_bg"
-                app:srcCompat="@drawable/bg_circle_active_stroke" />
+    <TextView
+        android:id="@+id/custom_nature_bg_txt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/bg_nature"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/custom_nature_bg"
+        app:layout_constraintStart_toStartOf="@+id/custom_nature_bg"
+        app:layout_constraintTop_toBottomOf="@+id/custom_nature_bg" />
 
-            <ImageView
-                android:id="@+id/custom_nature_bg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:contentDescription="@string/image"
-                android:background="?android:selectableItemBackgroundBorderless"
-                app:layout_constraintEnd_toEndOf="@+id/custom_dark_bg"
-                app:layout_constraintStart_toStartOf="@+id/custom_dark_bg"
-                app:layout_constraintTop_toBottomOf="@+id/custom_dark_bg_txt"
-                app:srcCompat="@drawable/bg_circle_nature" />
+    <ImageView
+        android:id="@+id/custom_ocean_bg_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/image"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/custom_ocean_bg"
+        app:layout_constraintEnd_toEndOf="@+id/custom_ocean_bg"
+        app:layout_constraintStart_toStartOf="@+id/custom_ocean_bg"
+        app:layout_constraintTop_toTopOf="@+id/custom_ocean_bg"
+        app:srcCompat="@drawable/bg_circle_active_stroke" />
 
-            <TextView
-                android:id="@+id/custom_nature_bg_txt"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="sans-serif"
-                android:text="@string/bg_nature"
-                android:textAlignment="center"
-                app:layout_constraintEnd_toEndOf="@+id/custom_nature_bg"
-                app:layout_constraintStart_toStartOf="@+id/custom_nature_bg"
-                app:layout_constraintTop_toBottomOf="@+id/custom_nature_bg" />
+    <ImageView
+        android:id="@+id/custom_ocean_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:contentDescription="@string/image"
+        app:layout_constraintEnd_toStartOf="@+id/custom_night_bg"
+        app:layout_constraintStart_toEndOf="@+id/custom_nature_bg"
+        app:layout_constraintTop_toTopOf="@+id/custom_nature_bg"
+        app:srcCompat="@drawable/bg_circle_ocean" />
 
-            <ImageView
-                android:id="@+id/custom_ocean_bg_indicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/image"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/custom_ocean_bg"
-                app:layout_constraintEnd_toEndOf="@+id/custom_ocean_bg"
-                app:layout_constraintStart_toStartOf="@+id/custom_ocean_bg"
-                app:layout_constraintTop_toTopOf="@+id/custom_ocean_bg"
-                app:srcCompat="@drawable/bg_circle_active_stroke" />
+    <TextView
+        android:id="@+id/custom_ocean_bg_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/bg_ocean"
+        app:layout_constraintEnd_toEndOf="@+id/custom_ocean_bg"
+        app:layout_constraintStart_toStartOf="@+id/custom_ocean_bg"
+        app:layout_constraintTop_toBottomOf="@+id/custom_ocean_bg" />
 
-            <ImageView
-                android:id="@+id/custom_ocean_bg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:contentDescription="@string/image"
-                android:background="?android:selectableItemBackgroundBorderless"
-                app:layout_constraintEnd_toEndOf="@+id/custom_black_bg"
-                app:layout_constraintStart_toStartOf="@+id/custom_black_bg"
-                app:layout_constraintTop_toBottomOf="@+id/custom_black_bg_txt"
-                app:srcCompat="@drawable/bg_circle_ocean" />
+    <ImageView
+        android:id="@+id/custom_night_bg_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/image"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/custom_night_bg"
+        app:layout_constraintEnd_toEndOf="@+id/custom_night_bg"
+        app:layout_constraintStart_toStartOf="@+id/custom_night_bg"
+        app:layout_constraintTop_toTopOf="@+id/custom_night_bg"
+        app:srcCompat="@drawable/bg_circle_active_stroke" />
 
-            <TextView
-                android:id="@+id/custom_ocean_bg_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="sans-serif"
-                android:text="@string/bg_ocean"
-                app:layout_constraintEnd_toEndOf="@+id/custom_ocean_bg"
-                app:layout_constraintStart_toStartOf="@+id/custom_ocean_bg"
-                app:layout_constraintTop_toBottomOf="@+id/custom_ocean_bg" />
+    <ImageView
+        android:id="@+id/custom_night_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:contentDescription="@string/image"
+        app:layout_constraintEnd_toEndOf="@+id/custom_style_bg"
+        app:layout_constraintTop_toTopOf="@+id/custom_ocean_bg"
+        app:srcCompat="@drawable/bg_circle_night" />
 
+    <TextView
+        android:id="@+id/custom_night_bg_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/night"
+        app:layout_constraintEnd_toEndOf="@+id/custom_night_bg"
+        app:layout_constraintStart_toStartOf="@+id/custom_night_bg"
+        app:layout_constraintTop_toBottomOf="@+id/custom_night_bg" />
 
-            <ImageView
-                android:id="@+id/custom_night_bg_indicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/image"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/custom_night_bg"
-                app:layout_constraintEnd_toEndOf="@+id/custom_night_bg"
-                app:layout_constraintStart_toStartOf="@+id/custom_night_bg"
-                app:layout_constraintTop_toTopOf="@+id/custom_night_bg"
-                app:srcCompat="@drawable/bg_circle_active_stroke" />
+    <TextView
+        android:id="@+id/hashtag_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:text="@string/hashtag"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/hex_input_bg"
+        app:layout_constraintEnd_toStartOf="@+id/hex_input_bg"
+        app:layout_constraintTop_toTopOf="@+id/hex_input_bg" />
 
-            <ImageView
-                android:id="@+id/custom_night_bg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
-                android:contentDescription="@string/image"
-                android:background="?android:selectableItemBackgroundBorderless"
-                app:layout_constraintEnd_toEndOf="@+id/custom_style_bg"
-                app:layout_constraintStart_toStartOf="@+id/custom_style_bg"
-                app:layout_constraintTop_toBottomOf="@+id/custom_style_bg_txt"
-                app:srcCompat="@drawable/bg_circle_night" />
-
-            <TextView
-                android:id="@+id/custom_night_bg_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="sans-serif"
-                android:text="@string/night"
-                app:layout_constraintEnd_toEndOf="@+id/custom_night_bg"
-                app:layout_constraintStart_toStartOf="@+id/custom_night_bg"
-                app:layout_constraintTop_toBottomOf="@+id/custom_night_bg" />
-
-
-            <com.brit.swiftinstaller.utils.BaseTextInputEditText
-                android:id="@+id/hex_input_bg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:backgroundTint="@color/minimal_green"
-                android:digits="0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,A,B,C,D,E,F"
-                android:ems="6"
-                android:fontFamily="sans-serif"
-                android:hint="@string/hex"
-                android:imeOptions="actionDone"
-                android:inputType="textNoSuggestions|textVisiblePassword"
-                android:maxLength="6"
-                android:singleLine="true"
-                app:layout_constraintEnd_toEndOf="@+id/custom_night_bg"
-                app:layout_constraintTop_toBottomOf="@+id/custom_ocean_bg_txt" />
-
-            <TextView
-                android:id="@+id/hashtag_bg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:text="@string/hashtag"
-                android:textSize="24sp"
-                app:layout_constraintBottom_toBottomOf="@+id/hex_input_bg"
-                app:layout_constraintEnd_toStartOf="@+id/hex_input_bg"
-                app:layout_constraintTop_toTopOf="@+id/hex_input_bg" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <com.brit.swiftinstaller.utils.BaseTextInputEditText
+        android:id="@+id/hex_input_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="@color/minimal_green"
+        android:digits="0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,A,B,C,D,E,F"
+        android:ems="6"
+        android:fontFamily="sans-serif"
+        android:hint="@string/hex"
+        android:imeOptions="actionDone"
+        android:inputType="textNoSuggestions|textVisiblePassword"
+        android:maxLength="6"
+        android:singleLine="true"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toBottomOf="@+id/custom_ocean_bg_txt" />
 
 </merge>

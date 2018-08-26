@@ -167,9 +167,9 @@ class CustomizeActivity : ThemeActivity() {
                     override fun onStartTrackingTouch(seekBar: SeekBar?) {
                     }
                 })
-
-                preview_wallpaper.clipToOutline = true
             }
+
+            preview_wallpaper.clipToOutline = true
         }
     }
 
