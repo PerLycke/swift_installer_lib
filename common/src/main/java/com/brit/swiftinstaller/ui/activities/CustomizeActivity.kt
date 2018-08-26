@@ -51,6 +51,7 @@ class CustomizeActivity : ThemeActivity() {
         const val SUPPORTS_CLOCK = 0x02
         const val SUPPORTS_SYSTEMUI = 0x04
         const val SUPPORTS_SHADOW = 0x08
+        const val SUPPORTS_ROUNDED = 0x10
     }
 
     private var settingsIcons: Array<ImageView?> = arrayOfNulls(3)
@@ -486,6 +487,10 @@ class CustomizeActivity : ThemeActivity() {
             supportsShadow = true
         } else {
             shadowFixLayout.visibility = View.GONE
+        }
+
+        if ((features and SUPPORTS_ROUNDED) == 0) {
+            roundedStyleLayout.visibility = View.GONE
         }
 
         material_theme.setOnCheckedChangeListener(baseThemeListener)

@@ -75,7 +75,8 @@ abstract class RomInfo constructor(var context: Context) {
     }
 
     open fun getCustomizeFeatures() : Int {
-        return CustomizeActivity.SUPPORTS_CLOCK + CustomizeActivity.SUPPORTS_ICONS + CustomizeActivity.SUPPORTS_SYSTEMUI + CustomizeActivity.SUPPORTS_SHADOW
+        return CustomizeActivity.SUPPORTS_CLOCK + CustomizeActivity.SUPPORTS_ICONS + CustomizeActivity.SUPPORTS_SYSTEMUI +
+                CustomizeActivity.SUPPORTS_SHADOW + CustomizeActivity.SUPPORTS_ROUNDED
     }
 
     open fun useHotSwap(): Boolean { return false }

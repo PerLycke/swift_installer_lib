@@ -3,9 +3,11 @@ package com.brit.swiftinstaller.installer.rom
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import androidx.core.content.FileProvider
 import android.util.Log
 import com.brit.swiftinstaller.library.BuildConfig
+import com.brit.swiftinstaller.ui.activities.CustomizeActivity
 import com.brit.swiftinstaller.utils.*
 import java.io.File
 
@@ -146,6 +148,15 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
             runCommand("pm uninstall " + Utils.getOverlayPackageName(packageName), true)
         } else {
             addAppToUninstall(context, Utils.getOverlayPackageName(packageName))
+        }
+    }
+
+    override fun getCustomizeFeatures(): Int {
+        if (Build.VERSION.SDK_INT == 26) {
+            return super.getCustomizeFeatures()
+        } else {
+            return CustomizeActivity.SUPPORTS_CLOCK + CustomizeActivity.SUPPORTS_ICONS + CustomizeActivity.SUPPORTS_SYSTEMUI +
+                    CustomizeActivity.SUPPORTS_SHADOW
         }
     }
 }
