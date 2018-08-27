@@ -23,7 +23,7 @@ class UpdateChecker(context: Context, private val callback: Callback) : AsyncTas
                     && Utils.isAppInstalled(context, packageName)
                     && pm.getApplicationEnabledSetting(packageName) != COMPONENT_ENABLED_STATE_DISABLED_USER) {
                 installedCount++
-                if (Utils.checkOverlayVersion(context, packageName)
+                if (OverlayUtils.checkOverlayVersion(context, packageName)
                         || Utils.checkAppVersion(context, packageName)) {
                     updates.add(packageName)
                     addAppToUpdate(context, packageName)

@@ -280,7 +280,7 @@ class InstallSummaryActivity : ThemeActivity() {
                     if (errorMap.keys.contains(pn)) {
                         onProgressUpdate(Progress(FAILED_TAB, item))
                     } else if (RomInfo.getRomInfo(context).isOverlayInstalled(pn)) {
-                        if (update && oInfo!!.getVersionCode() != getAppVersion(context, pn)) {
+                        if (update && oInfo!!.getVersionCode() != OverlayUtils.getOverlayVersion(context, item.packageName)) {
                             errorMap[pn] = "Update Failed"
                             onProgressUpdate(Progress(FAILED_TAB, item))
                         } else {

@@ -2,7 +2,6 @@ package com.brit.swiftinstaller.utils
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Bundle
 import android.preference.PreferenceManager
 import android.text.TextUtils
 import android.util.ArraySet
@@ -24,7 +23,6 @@ const val KEY_USE_LEFT_CLOCK = "use_left_clock"
 const val KEY_USE_CENTERED_CLOCK = "use_centered_clock"
 const val KEY_USE_P_STYLE = "use_p_style"
 const val KEY_HIDE_INFO_CARD = "hide_failed_info"
-const val KEY_OVERLAY_VERSIONS = "overlay_versions"
 const val KEY_USER_ACCENTS = "user_accents"
 const val KEY_OVERLAY_UPDATES = "overlays_to_update"
 const val KEY_OVERLAYS_TO_INSTALL = "overlays_to_install"
@@ -154,34 +152,6 @@ fun setHideFailedInfoCard(context: Context, hide: Boolean) {
 
 fun getHideFailedInfoCard(context: Context): Boolean {
     return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_HIDE_INFO_CARD, false)
-}
-
-fun setAppVersion(context: Context, packageName: String, version: Long) {
-    val versions = getAppVersions(context)
-    versions.putLong(packageName, version)
-    setAppVersions(context, versions)
-}
-
-fun getAppVersion(context: Context, packageName: String): Long {
-    return getAppVersions(context).getLong(packageName, 0)
-}
-
-fun getAppVersions(context: Context): Bundle {
-    val versions = Bundle()
-    val vers = PreferenceManager.getDefaultSharedPreferences(context).getStringSet(KEY_OVERLAY_VERSIONS, ArraySet<String>())
-    for (v in vers ?: emptySet()) {
-        val split = v.split("|")
-        versions.putLong(split[0], Integer.parseInt(split[1]).toLong())
-    }
-    return versions
-}
-
-fun setAppVersions(context: Context, versions: Bundle) {
-    val set = ArraySet<String>()
-    for (key in versions.keySet()) {
-        set.add("$key|${versions.getLong(key)}")
-    }
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet(KEY_OVERLAY_VERSIONS, set).apply()
 }
 
 fun getUserAccents(context: Context): IntArray {

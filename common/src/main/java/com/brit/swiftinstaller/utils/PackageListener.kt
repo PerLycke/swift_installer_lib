@@ -25,16 +25,6 @@ class PackageListener : BroadcastReceiver() {
                 if (OverlayUtils.hasOverlay(context, packageName)) {
                     // show notification that newly installed app can be themed
                 }
-                if (OverlayUtils.isSwiftOverlay(packageName)) {
-                    try {
-                        val oInfo = context.packageManager.getPackageInfo(packageName, 0)
-                        if (oInfo.getVersionCode() > getAppVersion(context, packageName)) {
-                            setAppVersion(context, packageName, oInfo.getVersionCode())
-                        }
-                    } catch (e: PackageManager.NameNotFoundException) {
-                        // ignore
-                    }
-                }
             }
 
             Intent.ACTION_PACKAGE_REPLACED -> {

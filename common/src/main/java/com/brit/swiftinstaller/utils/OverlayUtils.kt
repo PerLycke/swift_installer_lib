@@ -1,7 +1,6 @@
 package com.brit.swiftinstaller.utils
 
 import android.content.Context
-import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.res.AssetManager
 import android.util.Log
@@ -12,6 +11,19 @@ object OverlayUtils {
 
     fun isSwiftOverlay(packageName: String) : Boolean {
         return packageName.endsWith(".swiftinstaller.overlay")
+    }
+
+    fun getOverlayVersion(context: Context, targetPackage: String): Long {
+        return Integer.parseInt(ShellUtils.inputStreamToString(context.assets.open(
+                "overlays/$targetPackage/version")).trim().replace("\"", "")).toLong()
+    }
+
+    fun checkOverlayVersion(context: Context, packageName: String): Boolean {
+        if (!Utils.isAppInstalled(context, Utils.getOverlayPackageName(packageName))) return false
+        val overlayVersion = getOverlayVersion(context, packageName)
+        val currentVersion = context.packageManager.getPackageInfo(
+                Utils.getOverlayPackageName(packageName), 0).getVersionCode()
+        return overlayVersion > currentVersion
     }
 
     fun getOverlayOptions(context: Context, packageName: String) : ArrayMap<String, Array<String>> {

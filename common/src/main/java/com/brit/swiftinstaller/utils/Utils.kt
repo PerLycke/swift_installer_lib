@@ -12,7 +12,6 @@ import android.os.Bundle
 import android.os.Environment
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.ui.applist.AppItem
-import com.google.gson.JsonObject
 import org.json.JSONObject
 
 @Suppress("unused")
@@ -93,11 +92,6 @@ object Utils {
         }
     }
 
-    fun getThemeVersion(context: Context, targetPackage: String): Int {
-        return Integer.parseInt(ShellUtils.inputStreamToString(context.assets.open(
-                "overlays/$targetPackage/version")).trim().replace("\"", ""))
-    }
-
     /*fun checkOverlayStatus() : Boolean {
         try {
             val pi = Class.forName("android.content.pm.PackageInfo")
@@ -170,16 +164,6 @@ object Utils {
         return versions.substring(0, versions.length - 2)
     }
 
-    fun checkOverlayVersion(context: Context, packageName: String): Boolean {
-        if (!isAppInstalled(context, Utils.getOverlayPackageName(packageName))) return false
-        val overlayVersion = Integer.parseInt(ShellUtils.inputStreamToString(context.assets.open(
-                "overlays/$packageName/version")).trim().replace("\"", ""))
-        val currentVersion = context.packageManager.getApplicationInfo(
-                Utils.getOverlayPackageName(packageName),
-                PackageManager.GET_META_DATA).metaData.getInt("overlay_version")
-        return overlayVersion > currentVersion
-    }
-
     fun getInstalledOverlays(context: Context): ArrayList<String> {
         val apps = ArrayList<String>()
         val overlays = context.assets.list("overlays") ?: emptyArray()
@@ -229,7 +213,7 @@ object Utils {
         val jsonObject = JSONObject(json)
         val map = HashMap<String, String>()
         for (key in jsonObject.keys()) {
-            map.put(key, jsonObject[key] as String)
+            map[key] = jsonObject[key] as String
         }
         return map
     }

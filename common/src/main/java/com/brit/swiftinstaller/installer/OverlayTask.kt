@@ -96,7 +96,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
             applyBackground()
         }
         generateManifest(overlayDir.absolutePath, packageName, packageInfo.versionName,
-                packageInfo.getVersionCode(), Utils.getThemeVersion(context, packageName))
+                packageInfo.getVersionCode(), OverlayUtils.getOverlayVersion(context, packageName))
     }
 
     private fun compileOverlay() {
@@ -215,13 +215,13 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     }
 
     private fun generateManifest(path: String, targetPackage: String,
-                                 appVersion: String, appVersionCode: Long, themeVersion: Int) {
+                                 appVersion: String, appVersionCode: Long, overlayVersion: Long) {
         val manifest = StringBuilder()
         manifest.append("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>\n")
         manifest.append("<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n")
         manifest.append("package=\"${Utils.getOverlayPackageName(targetPackage)}\"\n")
-        manifest.append("android:versionCode=\"${getAppVersion(context, targetPackage) + 1}\"\n")
-        manifest.append("android:versionName=\"${getAppVersion(context, targetPackage) + 1}\">\n")
+        manifest.append("android:versionCode=\"$overlayVersion\"\n")
+        manifest.append("android:versionName=\"$overlayVersion\">\n")
         if (!NO_PERMISSION_PACKAGES.contains(targetPackage)) {
             manifest.append("<uses-permission android:name=\"com.samsung.android.permission.SAMSUNG_OVERLAY_COMPONENT\" />\n")
         }
@@ -229,7 +229,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         manifest.append("<application android:allowBackup=\"false\" android:hasCode=\"false\">\n")
         manifest.append("<meta-data android:name=\"app_version\" android:value=\"v=$appVersion\"/>\n")
         manifest.append("<meta-data android:name=\"app_version_code\" android:value=\"$appVersionCode\"/>\n")
-        manifest.append("<meta-data android:name=\"overlay_version\" android:value=\"$themeVersion\"/>\n")
+        manifest.append("<meta-data android:name=\"overlay_version\" android:value=\"$overlayVersion\"/>\n")
         manifest.append("<meta-data android:name=\"target_package\" android:value=\"$targetPackage\"/>\n")
         manifest.append("</application>\n")
         manifest.append("</manifest>")
