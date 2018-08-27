@@ -124,6 +124,9 @@ object OverlayUtils {
     }
 
     private fun checkOverlay(context: Context, packageName: String) : Boolean {
+        val variants = context.assets.list("overlays/$packageName") ?: emptyArray()
+        if (variants.contains("versions")) return false
+
         val resourcePaths = ArrayList<String>()
         val assets = ArrayList<String>()
         parseOverlayResourcePath(context, "overlays/$packageName", packageName, resourcePaths)
