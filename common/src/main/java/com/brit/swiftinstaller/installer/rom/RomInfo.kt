@@ -99,7 +99,7 @@ abstract class RomInfo constructor(var context: Context) {
                 sInfo = when {
                     Build.VERSION_CODES.P == Build.VERSION.SDK_INT -> PRomInfo(context)
                     Utils.isSamsungOreo(context) -> SamsungRomInfo(context)
-                    System.getProperty("ro.oxygenos.version", "def") != "def" -> OOSRomInfo(context)
+                    getProperty("ro.oxygen.version", "def") != "def" -> OOSRomInfo(context)
                     else -> OreoRomInfo(context)
                 }
             }
