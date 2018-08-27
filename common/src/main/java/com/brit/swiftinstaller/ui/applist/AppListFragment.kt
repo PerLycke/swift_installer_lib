@@ -105,8 +105,12 @@ class AppListFragment : Fragment() {
 
     fun selectAll(checked: Boolean) {
         for (index in mApps.indices) {
-            if (checkVersionCompatible(context!!, mApps[index].packageName) ||
-                    RomInfo.getRomInfo(context!!).isOverlayInstalled(mApps[index].packageName)) {
+            if (context != null) {
+                if (checkVersionCompatible(context!!, mApps[index].packageName) ||
+                        RomInfo.getRomInfo(context!!).isOverlayInstalled(mApps[index].packageName)) {
+                    mChecked.put(index, checked)
+                }
+            } else {
                 mChecked.put(index, checked)
             }
         }
