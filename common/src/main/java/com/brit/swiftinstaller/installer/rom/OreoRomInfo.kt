@@ -3,6 +3,7 @@ package com.brit.swiftinstaller.installer.rom
 import android.content.Context
 import android.content.Intent
 import com.brit.swiftinstaller.ui.activities.CustomizeActivity
+import com.brit.swiftinstaller.utils.OverlayUtils.getOverlayPackageName
 import com.brit.swiftinstaller.utils.ShellUtils
 import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.utils.runCommand
@@ -18,7 +19,7 @@ open class OreoRomInfo(context: Context) : RomInfo(context) {
     override fun postInstall(uninstall: Boolean, apps: ArrayList<String>, oppositeApps: ArrayList<String>?, intent: Intent?) {
         if (ShellUtils.isRootAvailable && !uninstall) {
             for (app in apps) {
-                runCommand("cmd overlay enable " + Utils.getOverlayPackageName(app), true)
+                runCommand("cmd overlay enable " + getOverlayPackageName(app), true)
             }
         }
 
@@ -35,7 +36,7 @@ open class OreoRomInfo(context: Context) : RomInfo(context) {
 
     override fun uninstallOverlay(context: Context, packageName: String) {
         if (ShellUtils.isRootAvailable) {
-            runCommand("pm uninstall " + Utils.getOverlayPackageName(packageName), true)
+            runCommand("pm uninstall " + getOverlayPackageName(packageName), true)
         }
     }
 
@@ -44,6 +45,6 @@ open class OreoRomInfo(context: Context) : RomInfo(context) {
     }
 
     override fun disableOverlay(targetPackage: String) {
-        runCommand("cmd overlay disable ${Utils.getOverlayPackageName(targetPackage)}", true)
+        runCommand("cmd overlay disable ${getOverlayPackageName(targetPackage)}", true)
     }
 }

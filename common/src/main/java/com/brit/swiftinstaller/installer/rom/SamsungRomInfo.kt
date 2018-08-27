@@ -9,6 +9,8 @@ import android.util.Log
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.ui.activities.CustomizeActivity
 import com.brit.swiftinstaller.utils.*
+import com.brit.swiftinstaller.utils.OverlayUtils.getOverlayPackageName
+import com.brit.swiftinstaller.utils.OverlayUtils.getOverlayPath
 import java.io.File
 
 class SamsungRomInfo(context: Context) : RomInfo(context) {
@@ -97,13 +99,13 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
                 if (uninstall) {
                     appInstall.action = Intent.ACTION_UNINSTALL_PACKAGE
                     appInstall.data = Uri.fromParts("package",
-                            Utils.getOverlayPackageName(apps.elementAt(index)), null)
+                            getOverlayPackageName(apps.elementAt(index)), null)
                 } else {
                     appInstall.action = Intent.ACTION_INSTALL_PACKAGE
                     appInstall.data = FileProvider.getUriForFile(context,
                             "com.brit.swiftinstaller.myprovider",
-                            File(Utils.getOverlayPath(apps.elementAt(index))))
-                    Log.d("TEST", "file exists ? ${File(Utils.getOverlayPath(apps.elementAt(index))).exists()}")
+                            File(getOverlayPath(apps.elementAt(index))))
+                    Log.d("TEST", "file exists ? ${File(getOverlayPath(apps.elementAt(index))).exists()}")
                 }
                 appInstall.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 appInstall.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -124,12 +126,12 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
                 if (!uninstall) {
                     appInstall.action = Intent.ACTION_UNINSTALL_PACKAGE
                     appInstall.data = Uri.fromParts("package",
-                            Utils.getOverlayPackageName(oppositeApps[it]), null)
+                            getOverlayPackageName(oppositeApps[it]), null)
                 } else {
                     appInstall.action = Intent.ACTION_INSTALL_PACKAGE
                     appInstall.data = FileProvider.getUriForFile(context,
                             BuildConfig.APPLICATION_ID + ".myprovider",
-                            File(Utils.getOverlayPath(oppositeApps[it])))
+                            File(getOverlayPath(oppositeApps[it])))
                 }
                 appInstall.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 appInstall.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -153,9 +155,9 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
 
     override fun uninstallOverlay(context: Context, packageName: String) {
         if (ShellUtils.isRootAvailable) {
-            runCommand("pm uninstall " + Utils.getOverlayPackageName(packageName), true)
+            runCommand("pm uninstall " + getOverlayPackageName(packageName), true)
         } else {
-            addAppToUninstall(context, Utils.getOverlayPackageName(packageName))
+            addAppToUninstall(context, getOverlayPackageName(packageName))
         }
     }
 

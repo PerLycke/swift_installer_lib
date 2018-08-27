@@ -3,6 +3,7 @@ package com.brit.swiftinstaller.installer.rom
 import android.content.Context
 import android.content.Intent
 import com.brit.swiftinstaller.utils.*
+import com.brit.swiftinstaller.utils.OverlayUtils.getOverlayPackageName
 import com.topjohnwu.superuser.io.SuFile
 
 class PRomInfo(context: Context) : RomInfo(context) {
@@ -10,7 +11,7 @@ class PRomInfo(context: Context) : RomInfo(context) {
     private val systemApp = "/system/app"
 
     override fun installOverlay(context: Context, targetPackage: String, overlayPath: String) {
-        val overlayPackage = Utils.getOverlayPackageName(targetPackage)
+        val overlayPackage = getOverlayPackageName(targetPackage)
         if (ShellUtils.isRootAvailable) {
             remountRW("/system")
             ShellUtils.mkdir("$systemApp/$overlayPackage")
@@ -34,7 +35,7 @@ class PRomInfo(context: Context) : RomInfo(context) {
     }
 
     override fun uninstallOverlay(context: Context, packageName: String) {
-        val overlayPackage = Utils.getOverlayPackageName(packageName)
+        val overlayPackage = getOverlayPackageName(packageName)
         if (ShellUtils.isRootAvailable) {
             remountRW("/system")
             deleteFileRoot("$systemApp/$overlayPackage/")
@@ -43,7 +44,7 @@ class PRomInfo(context: Context) : RomInfo(context) {
     }
 
     override fun isOverlayInstalled(targetPackage: String): Boolean {
-        val overlayPackage = Utils.getOverlayPackageName(targetPackage)
+        val overlayPackage = getOverlayPackageName(targetPackage)
         return SuFile("$systemApp/$overlayPackage/$overlayPackage.apk").exists()
     }
 

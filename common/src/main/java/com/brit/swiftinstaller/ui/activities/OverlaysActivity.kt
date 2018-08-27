@@ -22,6 +22,7 @@ import com.brit.swiftinstaller.ui.applist.AppItem
 import com.brit.swiftinstaller.ui.applist.AppListFragment
 import com.brit.swiftinstaller.ui.applist.AppsTabPagerAdapter
 import com.brit.swiftinstaller.utils.*
+import com.brit.swiftinstaller.utils.OverlayUtils.getAvailableOverlayVersions
 import com.brit.swiftinstaller.utils.Utils.createImage
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
@@ -71,7 +72,7 @@ class OverlaysActivity : ThemeActivity() {
                         .setIcon(appItem.icon)
                         .setMessage("Version support info:" +
                                 "\nCurrent Version: ${packageInfo.versionName}" +
-                                "\nAvailable Versions: ${Utils.getAvailableOverlayVersions(
+                                "\nAvailable Versions: ${getAvailableOverlayVersions(
                                         this@OverlaysActivity, appItem.packageName)}")
                         .setPositiveButton(android.R.string.ok) { dialogInterface, _ ->
                             dialogInterface.dismiss()

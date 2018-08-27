@@ -9,9 +9,9 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.ui.applist.AppItem
+import com.brit.swiftinstaller.utils.OverlayUtils.getOverlayPackageName
 import org.json.JSONObject
 
 @Suppress("unused")
@@ -58,15 +58,6 @@ object Utils {
         return sortedOverlays
     }
 
-    fun getOverlayPackageName(pack: String): String {
-        return "$pack.swiftinstaller.overlay"
-    }
-
-    fun getOverlayPath(packageName: String): String {
-        return Environment.getExternalStorageDirectory().absolutePath + "/.swift/" +
-                "/overlays/compiled/" + Utils.getOverlayPackageName(packageName) + ".apk"
-    }
-
     fun mapToBundle(map: HashMap<String, String>): Bundle {
         val bundle = Bundle()
         for (key in map.keys) {
@@ -106,73 +97,18 @@ object Utils {
         return false
     }*/
 
-    fun isOverlayEnabled(context: Context, packageName: String): Boolean {
-        if (!isSamsungOreo(context)) {
-            val overlays = runCommand("cmd overlay list", true).output
-            for (overlay in overlays!!.split("\n")) {
-                if (overlay.startsWith("[x]") && overlay.contains(packageName)) {
-                    return true
-                }
-            }
-        }
-        return isSamsungOreo(context)
-    }
-
     fun isSamsungOreo(context: Context): Boolean {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
                 context.packageManager.hasSystemFeature("com.samsung.feature.samsung_experience_mobile")
     }
 
     fun checkAppVersion(context: Context, packageName: String): Boolean {
-        if (!isAppInstalled(context, Utils.getOverlayPackageName(packageName))) return false
+        if (!isAppInstalled(context, getOverlayPackageName(packageName))) return false
         val appVersionCode = context.packageManager.getPackageInfo(packageName, 0).getVersionCode()
         val curVersionCode = context.packageManager.getApplicationInfo(
-                Utils.getOverlayPackageName(packageName),
+                getOverlayPackageName(packageName),
                 PackageManager.GET_META_DATA).metaData.getInt("app_version_code")
         return appVersionCode > curVersionCode
-    }
-
-    fun overlayHasVersion(context: Context, packageName: String): Boolean {
-        val array = context.assets.list("overlays/$packageName") ?: emptyArray()
-        return array.contains("versions")
-    }
-
-    fun checkVersionCompatible(context: Context, packageName: String): Boolean {
-        val packageInfo = context.packageManager.getPackageInfo(packageName, 0)
-        val array = context.assets.list("overlays/$packageName") ?: emptyArray()
-        if (array.contains("versions")) {
-            val vers = context.assets.list("overlays/$packageName/versions") ?: emptyArray()
-            for (ver in vers) {
-                if (packageInfo.versionName.startsWith(ver)) {
-                    return true
-                }
-            }
-        } else {
-            return true
-        }
-        return false
-    }
-
-    fun getAvailableOverlayVersions(context: Context, packageName: String): String {
-        val versions = StringBuilder()
-        val vers = context.assets.list("overlays/$packageName/versions") ?: emptyArray()
-        for (version in vers) {
-            if (version != "common") {
-                versions.append("v$version, ")
-            }
-        }
-        return versions.substring(0, versions.length - 2)
-    }
-
-    fun getInstalledOverlays(context: Context): ArrayList<String> {
-        val apps = ArrayList<String>()
-        val overlays = context.assets.list("overlays") ?: emptyArray()
-        for (app in overlays) {
-            if (RomInfo.getRomInfo(context).isOverlayInstalled(app)) {
-                apps.add(app)
-            }
-        }
-        return apps
     }
 
     fun createImage(width:Int, height:Int, color:Int):Bitmap {

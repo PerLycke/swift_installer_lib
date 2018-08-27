@@ -9,6 +9,9 @@ import android.util.Log
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.utils.*
+import com.brit.swiftinstaller.utils.OverlayUtils.checkVersionCompatible
+import com.brit.swiftinstaller.utils.OverlayUtils.getOverlayPackageName
+import com.brit.swiftinstaller.utils.OverlayUtils.getOverlayPath
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
@@ -44,7 +47,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
             assetDir.deleteRecursively()
         resDir.mkdirs()
         assetDir.mkdirs()
-        this.overlayPath = Utils.getOverlayPath(packageName)
+        this.overlayPath = getOverlayPath(packageName)
         if (!File(overlayPath).parentFile.exists())
             File(overlayPath).parentFile.mkdirs()
         if (File(overlayPath).exists())
@@ -62,7 +65,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
             RomInfo.getRomInfo(context).uninstallOverlay(context, packageName)
             mOm.handleState(this, OverlayManager.OVERLAY_UNINSTALLED)
         } else {
-            if (!Utils.checkVersionCompatible(context, packageName)) {
+            if (!checkVersionCompatible(context, packageName)) {
                 errorLog = "Version Incompatible"
                 mOm.handleState(this, OverlayManager.OVERLAY_FAILED)
             } else {
@@ -219,7 +222,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         val manifest = StringBuilder()
         manifest.append("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>\n")
         manifest.append("<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n")
-        manifest.append("package=\"${Utils.getOverlayPackageName(targetPackage)}\"\n")
+        manifest.append("package=\"${getOverlayPackageName(targetPackage)}\"\n")
         manifest.append("android:versionCode=\"$overlayVersion\"\n")
         manifest.append("android:versionName=\"$overlayVersion\">\n")
         if (!NO_PERMISSION_PACKAGES.contains(targetPackage)) {

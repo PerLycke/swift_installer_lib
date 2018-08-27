@@ -26,6 +26,8 @@ import com.brit.swiftinstaller.ui.applist.AppItem
 import com.brit.swiftinstaller.ui.applist.AppListFragment
 import com.brit.swiftinstaller.ui.applist.AppsTabPagerAdapter
 import com.brit.swiftinstaller.utils.*
+import com.brit.swiftinstaller.utils.OverlayUtils.getOverlayPackageName
+import com.brit.swiftinstaller.utils.OverlayUtils.isOverlayEnabled
 import kotlinx.android.synthetic.main.activity_install_summary.*
 import kotlinx.android.synthetic.main.tab_layout_install_summary.*
 import java.io.File
@@ -140,7 +142,7 @@ class InstallSummaryActivity : ThemeActivity() {
         if (ShellUtils.isRootAvailable && !hotSwap) {
             fab_install_finished.show()
         }
-        if (!hotSwap || !Utils.isOverlayEnabled(this, "android")) {
+        if (!hotSwap || !isOverlayEnabled(this, "android")) {
             resultDialog()
         } else {
             restartSysUi()
@@ -264,9 +266,9 @@ class InstallSummaryActivity : ThemeActivity() {
                     info = pm.getApplicationInfo(pn, PackageManager.GET_META_DATA)
                     pInfo = pm.getPackageInfo(pn, 0)
                     oInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                        pm.getPackageArchiveInfo("/system/app/${Utils.getOverlayPackageName(pn)}/${Utils.getOverlayPackageName(pn)}.apk", 0)
+                        pm.getPackageArchiveInfo("/system/app/${getOverlayPackageName(pn)}/${getOverlayPackageName(pn)}.apk", 0)
                     } else {
-                        pm.getPackageInfo(Utils.getOverlayPackageName(pn), 0)
+                        pm.getPackageInfo(getOverlayPackageName(pn), 0)
                     }
                 } catch (e: PackageManager.NameNotFoundException) {
                 }

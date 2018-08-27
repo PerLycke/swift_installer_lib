@@ -17,6 +17,8 @@ import android.widget.*
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.utils.*
+import com.brit.swiftinstaller.utils.OverlayUtils.checkVersionCompatible
+import com.brit.swiftinstaller.utils.OverlayUtils.overlayHasVersion
 import kotlinx.android.synthetic.main.activity_app_list.*
 import kotlinx.android.synthetic.main.app_item.view.*
 import kotlinx.android.synthetic.main.app_option_item.view.*
@@ -103,7 +105,7 @@ class AppListFragment : Fragment() {
 
     fun selectAll(checked: Boolean) {
         for (index in mApps.indices) {
-            if (Utils.checkVersionCompatible(context!!, mApps[index].packageName) ||
+            if (checkVersionCompatible(context!!, mApps[index].packageName) ||
                     RomInfo.getRomInfo(context!!).isOverlayInstalled(mApps[index].packageName)) {
                 mChecked.put(index, checked)
             }
@@ -177,9 +179,9 @@ class AppListFragment : Fragment() {
             }
 
             fun bindAppItem(item: AppItem) {
-                val incompatible = !Utils.checkVersionCompatible(context!!, item.packageName)
+                val incompatible = !checkVersionCompatible(context!!, item.packageName)
                 val installed = RomInfo.getRomInfo(context!!).isOverlayInstalled(item.packageName)
-                val hasVersions = Utils.overlayHasVersion(context!!, item.packageName)
+                val hasVersions = overlayHasVersion(context!!, item.packageName)
                 val hasUpdate = getAppsToUpdate(context!!).contains(item.packageName)
                 val isRequired = requiredApps.contains(item.packageName)
                 appName.text = item.title

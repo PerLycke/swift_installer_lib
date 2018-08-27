@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.ui.activities.CustomizeActivity
 import com.brit.swiftinstaller.utils.*
+import com.brit.swiftinstaller.utils.OverlayUtils.getOverlayPackageName
 import com.hololo.tutorial.library.PermissionStep
 import com.hololo.tutorial.library.Step
 import com.hololo.tutorial.library.TutorialActivity
@@ -68,7 +69,7 @@ abstract class RomInfo constructor(var context: Context) {
     }
 
     open fun isOverlayInstalled(targetPackage: String): Boolean {
-        return Utils.isAppInstalled(context, Utils.getOverlayPackageName(targetPackage))
+        return Utils.isAppInstalled(context, getOverlayPackageName(targetPackage))
     }
 
     open fun disableOverlay(targetPackage: String) {

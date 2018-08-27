@@ -3,10 +3,10 @@ package com.brit.swiftinstaller.utils
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.util.Log
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.BuildConfig
+import com.brit.swiftinstaller.utils.OverlayUtils.getOverlayPackageName
 
 class PackageListener : BroadcastReceiver() {
 
@@ -16,7 +16,7 @@ class PackageListener : BroadcastReceiver() {
         val packageName = intent.data?.schemeSpecificPart ?: ""
         when (intent.action) {
             Intent.ACTION_PACKAGE_FULLY_REMOVED -> {
-                if (RomInfo.getRomInfo(context).isOverlayInstalled(Utils.getOverlayPackageName(packageName))) {
+                if (RomInfo.getRomInfo(context).isOverlayInstalled(getOverlayPackageName(packageName))) {
                     RomInfo.getRomInfo(context).uninstallOverlay(context, packageName)
                 }
             }
@@ -28,7 +28,7 @@ class PackageListener : BroadcastReceiver() {
             }
 
             Intent.ACTION_PACKAGE_REPLACED -> {
-                if (RomInfo.getRomInfo(context).isOverlayInstalled(Utils.getOverlayPackageName(packageName))) {
+                if (RomInfo.getRomInfo(context).isOverlayInstalled(getOverlayPackageName(packageName))) {
                     RomInfo.getRomInfo(context).disableOverlay(packageName)
                 }
             }
