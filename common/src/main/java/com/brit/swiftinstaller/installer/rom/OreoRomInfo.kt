@@ -47,4 +47,6 @@ open class OreoRomInfo(context: Context) : RomInfo(context) {
     override fun disableOverlay(targetPackage: String) {
         runCommand("cmd overlay disable ${getOverlayPackageName(targetPackage)}", true)
     }
+
+    override fun useHotSwap(): Boolean { return true }
 }
