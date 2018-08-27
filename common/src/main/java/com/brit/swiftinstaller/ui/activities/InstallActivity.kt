@@ -87,6 +87,11 @@ class InstallActivity : ThemeActivity() {
         update = intent.getBooleanExtra("update", false)
         apps = intent.getStringArrayListExtra("apps")
 
+        if (apps.contains("android")) {
+            apps.remove("android")
+            apps.add("android")
+        }
+
         val inflate = View.inflate(this, R.layout.progress_dialog_install, null)
         val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
 

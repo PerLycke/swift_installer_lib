@@ -4,14 +4,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
-import androidx.collection.ArrayMap
 import android.text.TextUtils
 import android.util.ArraySet
+import androidx.collection.ArrayMap
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.R
 import org.json.JSONObject
-import java.util.*
-import kotlin.collections.HashMap
 
 const val KEY_ACCENT_COLOR = "accent_color"
 const val KEY_BACKGROUND_COLOR = "background_color"

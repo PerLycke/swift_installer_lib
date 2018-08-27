@@ -3,7 +3,9 @@ package com.brit.swiftinstaller.installer.rom
 import android.content.Context
 import android.content.Intent
 import com.brit.swiftinstaller.ui.activities.CustomizeActivity
-import com.brit.swiftinstaller.utils.*
+import com.brit.swiftinstaller.utils.ShellUtils
+import com.brit.swiftinstaller.utils.Utils
+import com.brit.swiftinstaller.utils.runCommand
 
 open class OreoRomInfo(context: Context) : RomInfo(context) {
 
@@ -15,10 +17,6 @@ open class OreoRomInfo(context: Context) : RomInfo(context) {
 
     override fun postInstall(uninstall: Boolean, apps: ArrayList<String>, oppositeApps: ArrayList<String>?, intent: Intent?) {
         if (ShellUtils.isRootAvailable && !uninstall) {
-            if (apps.contains("android")) {
-                apps.remove("android")
-                apps.add("android")
-            }
             for (app in apps) {
                 runCommand("cmd overlay enable " + Utils.getOverlayPackageName(app), true)
             }
