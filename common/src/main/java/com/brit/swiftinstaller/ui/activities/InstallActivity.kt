@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -17,6 +18,7 @@ import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.utils.InstallerServiceHelper
 import com.brit.swiftinstaller.utils.ShellUtils
+import com.brit.swiftinstaller.utils.getAccentColor
 import com.brit.swiftinstaller.utils.swift
 import kotlinx.android.synthetic.main.progress_dialog_install.view.*
 import java.util.ArrayList
@@ -46,6 +48,7 @@ class InstallActivity : ThemeActivity() {
     fun updateProgress(label: String?, prog: Int, max: Int, uninstall: Boolean) {
         val progress = prog + 1
         if (progressBar.progress < progress) {
+            progressBar.isIndeterminate = false
             progressBar.progress = progress
             progressBar.max = max
             progressBar.postInvalidate()
@@ -124,7 +127,8 @@ class InstallActivity : ThemeActivity() {
                 .registerReceiver(installListener, filter)
 
         progressBar = inflate.install_progress_bar
-        progressBar.isIndeterminate = uninstall
+        progressBar.indeterminateTintList = ColorStateList.valueOf(getAccentColor(this))
+        progressBar.progressTintList = ColorStateList.valueOf(getAccentColor(this))
         progressCount = inflate.install_progress_count
         progressPercent = inflate.install_progress_percent
 
