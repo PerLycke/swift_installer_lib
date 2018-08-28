@@ -5,7 +5,7 @@ import android.content.Context
 class OOSRomInfo(context: Context) : OreoRomInfo(context) {
 
     override fun getRequiredApps(): Array<String> {
-        return Array(21) {
+        return Array(20) {
             when (it) {
                 0 -> "android"
                 1 -> "com.android.systemui"
@@ -27,7 +27,6 @@ class OOSRomInfo(context: Context) : OreoRomInfo(context) {
                 17 -> "com.Slack"
                 18 -> "com.twitter.android"
                 19 -> "com.google.android.gms"
-                20 -> "de.axelspringer.yana.zeropage"
                 else -> ""
             }
         }
