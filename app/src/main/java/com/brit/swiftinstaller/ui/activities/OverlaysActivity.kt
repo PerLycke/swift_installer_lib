@@ -16,8 +16,8 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.viewpager.widget.ViewPager
-import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.ui.applist.AppItem
 import com.brit.swiftinstaller.ui.applist.AppListFragment
 import com.brit.swiftinstaller.ui.applist.AppsTabPagerAdapter
@@ -265,14 +265,6 @@ class OverlaysActivity : ThemeActivity() {
                 }
             }
 
-            uiThread {
-                publishApps(installTabList, activeTabsList, updatesTabList, hasUpdate)
-            }
-        }
-    }
-
-    private fun publishApps(installTabList: ArrayList<AppItem>, activeTabsList: ArrayList<AppItem>, updatesTabList: ArrayList<AppItem>, hasUpdate: Boolean) {
-        doAsync {
             for (i in installTabList) {
                 mPagerAdapter!!.addApp(INSTALL_TAB, i)
             }
@@ -282,17 +274,21 @@ class OverlaysActivity : ThemeActivity() {
             for (i in updatesTabList) {
                 mPagerAdapter!!.addApp(UPDATE_TAB, i)
             }
-            checked = mPagerAdapter!!.getCheckedCount(container.currentItem)
-            apps = mPagerAdapter!!.getCheckableCount(this@OverlaysActivity, container.currentItem)
 
-            uiThread {
-                select_all_btn.visibility = View.VISIBLE
-                select_all_btn.isClickable = true
-                loading_progress.visibility = View.INVISIBLE
-                if (hasUpdate) {
-                    update_tab_indicator.visibility = View.VISIBLE
+            uiThread { _ ->
+                doAsync {
+                    checked = mPagerAdapter!!.getCheckedCount(container.currentItem)
+                    apps = mPagerAdapter!!.getCheckableCount(this@OverlaysActivity, container.currentItem)
+                    uiThread { _ ->
+                        if (hasUpdate) {
+                            update_tab_indicator.visibility = View.VISIBLE
+                        }
+                        setBackgroundImage()
+                        loading_progress.visibility = View.INVISIBLE
+                        select_all_btn.visibility = View.VISIBLE
+                        select_all_btn.isClickable = true
+                    }
                 }
-                setBackgroundImage()
             }
         }
     }
