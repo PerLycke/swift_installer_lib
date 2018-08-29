@@ -9,8 +9,6 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="com.samsung.android.permission.MODIFY_THEME" />
 
-    <uses-feature android:name="com.samsung.feature.samsung_experience_mobile" android:required="true" />
-
     <application
         android:name="com.brit.swiftinstaller.SwiftApplication"
         android:allowBackup="false"

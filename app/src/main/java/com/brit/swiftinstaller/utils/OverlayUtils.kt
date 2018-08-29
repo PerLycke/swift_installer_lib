@@ -37,8 +37,8 @@ object OverlayUtils {
                 "/overlays/compiled/" + getOverlayPackageName(packageName) + ".apk"
     }
 
-    fun isOverlayEnabled(context: Context, packageName: String): Boolean {
-        if (!Utils.isSamsungOreo(context)) {
+    fun isOverlayEnabled(packageName: String): Boolean {
+        if (!Utils.isSamsungOreo()) {
             val overlays = runCommand("cmd overlay list", true).output
             for (overlay in overlays!!.split("\n")) {
                 if (overlay.startsWith("[x]") && overlay.contains(packageName)) {
@@ -46,7 +46,7 @@ object OverlayUtils {
                 }
             }
         }
-        return Utils.isSamsungOreo(context)
+        return Utils.isSamsungOreo()
     }
 
     fun overlayHasVersion(context: Context, packageName: String): Boolean {

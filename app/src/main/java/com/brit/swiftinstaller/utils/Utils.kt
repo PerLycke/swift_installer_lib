@@ -97,9 +97,9 @@ object Utils {
         return false
     }*/
 
-    fun isSamsungOreo(context: Context): Boolean {
+    fun isSamsungOreo(): Boolean {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
-                context.packageManager.hasSystemFeature("com.samsung.feature.samsung_experience_mobile")
+                getProperty("ro.config.knox", "def") != "def"
     }
 
     fun checkAppVersion(context: Context, packageName: String): Boolean {

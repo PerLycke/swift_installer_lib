@@ -8,6 +8,7 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -37,6 +38,8 @@ class MainActivity : ThemeActivity() {
         setSupportActionBar(main_toolbar)
 
         update_checker_spinner.indeterminateDrawable.setColorFilter(getAccentColor(this), PorterDuff.Mode.SRC_ATOP)
+
+        Log.d("wwo", "${Utils.isSamsungOreo()}")
 
         doAsync {
             Utils.enableAllOverlays(this@MainActivity)

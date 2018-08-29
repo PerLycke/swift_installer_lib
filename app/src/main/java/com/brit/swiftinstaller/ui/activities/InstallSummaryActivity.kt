@@ -142,7 +142,7 @@ class InstallSummaryActivity : ThemeActivity() {
         if (ShellUtils.isRootAvailable && !hotSwap) {
             fab_install_finished.show()
         }
-        if (!hotSwap || !isOverlayEnabled(this, "android")) {
+        if (!hotSwap || !isOverlayEnabled("android")) {
             resultDialog()
         } else {
             restartSysUi()

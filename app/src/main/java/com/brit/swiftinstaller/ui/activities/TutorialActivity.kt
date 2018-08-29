@@ -48,7 +48,7 @@ class TutorialActivity : TutorialActivity() {
             startActivity(intent)
         } else {
 
-            if (!Utils.isSamsungOreo(this) && !ShellUtils.isRootAvailable) {
+            if (!Utils.isSamsungOreo() && !ShellUtils.isRootAvailable) {
                 val dialog = Dialog(this, R.style.AppTheme)
                 val layout = LayoutInflater.from(this).inflate(R.layout.no_root, null)
                 dialog.setContentView(layout)

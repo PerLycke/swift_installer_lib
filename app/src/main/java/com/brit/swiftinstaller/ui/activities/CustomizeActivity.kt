@@ -762,7 +762,7 @@ class CustomizeActivity : ThemeActivity() {
                             startActivity(intent)
                         }
                         "second" -> {
-                            if (!Utils.isSamsungOreo(this)) {
+                            if (!Utils.isSamsungOreo()) {
                                 getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "default").apply()
                                 startActivity(intent)
                             } else {
