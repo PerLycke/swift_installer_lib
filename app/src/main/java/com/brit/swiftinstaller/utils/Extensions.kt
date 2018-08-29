@@ -2,6 +2,7 @@ package com.brit.swiftinstaller.utils
 
 import android.content.Context
 import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.content.res.AssetManager
 import android.os.Build
 import com.brit.swiftinstaller.SwiftApplication
@@ -24,6 +25,15 @@ fun PackageInfo.getVersionCode(): Long {
 
 val Context.swift: SwiftApplication
     get() = applicationContext as SwiftApplication
+
+fun PackageManager.getOverlayInfo(targetPackage: String) : PackageInfo {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        getPackageArchiveInfo("/system/app/${OverlayUtils.getOverlayPackageName(
+                targetPackage)}/${OverlayUtils.getOverlayPackageName(targetPackage)}.apk", 0)
+    } else {
+        getPackageInfo(OverlayUtils.getOverlayPackageName(targetPackage), 0)
+    }
+}
 
 fun AssetManager.extractAsset(assetPath: String, devicePath: String, cipher: Cipher?): Boolean {
     try {

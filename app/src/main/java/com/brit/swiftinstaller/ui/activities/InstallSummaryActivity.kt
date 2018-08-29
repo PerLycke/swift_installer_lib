@@ -26,7 +26,6 @@ import com.brit.swiftinstaller.ui.applist.AppItem
 import com.brit.swiftinstaller.ui.applist.AppListFragment
 import com.brit.swiftinstaller.ui.applist.AppsTabPagerAdapter
 import com.brit.swiftinstaller.utils.*
-import com.brit.swiftinstaller.utils.OverlayUtils.getOverlayPackageName
 import com.brit.swiftinstaller.utils.OverlayUtils.isOverlayEnabled
 import kotlinx.android.synthetic.main.activity_install_summary.*
 import kotlinx.android.synthetic.main.tab_layout_install_summary.*
@@ -265,11 +264,7 @@ class InstallSummaryActivity : ThemeActivity() {
                 try {
                     info = pm.getApplicationInfo(pn, PackageManager.GET_META_DATA)
                     pInfo = pm.getPackageInfo(pn, 0)
-                    oInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                        pm.getPackageArchiveInfo("/system/app/${getOverlayPackageName(pn)}/${getOverlayPackageName(pn)}.apk", 0)
-                    } else {
-                        pm.getPackageInfo(getOverlayPackageName(pn), 0)
-                    }
+                    oInfo = pm.getOverlayInfo(pn)
                 } catch (e: PackageManager.NameNotFoundException) {
                 }
                 if (info != null) {

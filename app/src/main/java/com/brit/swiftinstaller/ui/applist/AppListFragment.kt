@@ -272,7 +272,7 @@ class AppListFragment : Fragment() {
                             required.visibility = View.GONE
                         }
                     }
-                    if (hasUpdate) {
+                    if (hasUpdate && installed) {
                         appName.setTextColor(context!!.getColor(R.color.minimal_orange))
                     }
                     if (hasVersions) {
