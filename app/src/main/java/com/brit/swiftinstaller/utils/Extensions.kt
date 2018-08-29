@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.content.res.AssetManager
 import android.os.Build
 import com.brit.swiftinstaller.SwiftApplication
+import org.json.JSONObject
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException

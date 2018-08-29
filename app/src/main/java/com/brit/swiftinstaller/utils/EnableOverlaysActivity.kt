@@ -9,6 +9,7 @@ import android.content.Intent
 import android.preference.PreferenceManager
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.activities.RebootActivity
+import com.brit.swiftinstaller.utils.OverlayUtils.enableAllOverlays
 
 class EnableOverlaysActivity : Activity() {
 
@@ -17,7 +18,7 @@ class EnableOverlaysActivity : Activity() {
     override fun onResume() {
         super.onResume()
 
-        if (!Utils.enableAllOverlays(this)) {
+        if (!enableAllOverlays()) {
             return finish()
         }
 

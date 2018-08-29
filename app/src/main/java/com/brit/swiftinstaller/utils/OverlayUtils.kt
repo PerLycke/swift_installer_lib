@@ -114,6 +114,23 @@ object OverlayUtils {
         }
     }
 
+    fun enableAllOverlays() : Boolean {
+        var hasEnabledOverlays = false
+        val overlays = runCommand("cmd overlay list", true).output
+        for (overlay in overlays!!.split("\n")) {
+            if (overlay.startsWith("[")) {
+                val pn = overlay.split("]")[1].trim()
+                if (overlay.startsWith("[ ]")) {
+                    if (pn.endsWith(".swiftinstaller.overlay")) {
+                        runCommand("cmd overlay enable $pn", true)
+                        hasEnabledOverlays = true
+                    }
+                }
+            }
+        }
+        return hasEnabledOverlays
+    }
+
     fun hasOverlay(context: Context, packageName: String): Boolean {
         val overlays = context.assets.list("overlays") ?: emptyArray()
         return overlays.contains(packageName)

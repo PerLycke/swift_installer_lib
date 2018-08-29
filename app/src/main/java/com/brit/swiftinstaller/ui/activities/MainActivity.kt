@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.applist.AppItem
 import com.brit.swiftinstaller.utils.*
+import com.brit.swiftinstaller.utils.OverlayUtils.enableAllOverlays
 import kotlinx.android.synthetic.main.card_compatibility_info.*
 import kotlinx.android.synthetic.main.card_install.*
 import kotlinx.android.synthetic.main.card_update.*
@@ -42,7 +43,7 @@ class MainActivity : ThemeActivity() {
         Log.d("wwo", "${Utils.isSamsungOreo()}")
 
         doAsync {
-            Utils.enableAllOverlays(this@MainActivity)
+            enableAllOverlays()
             overlaysList = Utils.sortedOverlaysList(this@MainActivity)
         }
 
