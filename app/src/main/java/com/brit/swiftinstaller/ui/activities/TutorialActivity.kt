@@ -1,19 +1,34 @@
 package com.brit.swiftinstaller.ui.activities
 
 import android.Manifest
+import android.app.AlertDialog
 import android.os.Bundle
 import com.brit.swiftinstaller.R
 import com.hololo.tutorial.library.Step
 import com.hololo.tutorial.library.TutorialActivity
 import android.content.Intent
+import android.graphics.Color
 import android.preference.PreferenceManager
 import android.support.v4.content.ContextCompat
+import android.view.View
 import com.hololo.tutorial.library.PermissionStep
 
 class TutorialActivity : TutorialActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        if (!packageManager.hasSystemFeature("com.samsung.device") &&
+                !resources.getBoolean(R.bool.allow_unsupported_systems)) {
+            AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+                    .setTitle("Unsupported")
+                    .setMessage("Only supports samsung devices for now.")
+                    .setPositiveButton("EXIT", { _, _ ->
+                        finish()
+                    })
+                    .show()
+            return
+        }
 
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("appHasRunBefore", false)) {
             startActivity(Intent(this, MainActivity::class.java))
