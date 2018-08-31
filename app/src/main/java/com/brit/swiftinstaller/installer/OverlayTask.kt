@@ -23,6 +23,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     lateinit var packageInfo: PackageInfo
     lateinit var appInfo: ApplicationInfo
     lateinit var resDir: File
+    lateinit var assetDir: File
     lateinit var overlayDir: File
     lateinit var overlayPath: String
     var errorLog = ""
@@ -36,9 +37,13 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         this.appInfo = context.packageManager.getApplicationInfo(packageName, 0)
         this.overlayDir = File(Environment.getExternalStorageDirectory(), ".swift/overlays/$packageName")
         this.resDir = File(overlayDir, "res")
+        this.assetDir = File(overlayDir, "assets")
         if (resDir.exists())
             resDir.deleteRecursively()
+        if (assetDir.exists())
+            assetDir.deleteRecursively()
         resDir.mkdirs()
+        assetDir.mkdirs()
         this.overlayPath = Utils.getOverlayPath(packageName)
         if (!File(overlayPath).parentFile.exists())
             File(overlayPath).parentFile.mkdirs()
@@ -77,14 +82,15 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         resDir.mkdirs()
 
         val am = context.assets
+        val resourcePaths = ArrayList<String>()
         val assetPaths = ArrayList<String>()
-        try {
-            parseOverlayAssetPath(am, "overlays/$packageName", assetPaths, black)
-        } catch (ignored: Exception) {
+        parseOverlayResourcePath(am, "overlays/$packageName", resourcePaths, black)
+        parseOverlayAssetPath(am, "overlays/$packageName", assetPaths, black)
+        for (path in resourcePaths) {
+            Log.d("TEST", "resource path - $path")
+            AssetHelper.copyAssetFolder(am, path, resDir.absolutePath, null)
         }
-
         for (path in assetPaths) {
-            Log.d("TEST", "asset path - $path")
             AssetHelper.copyAssetFolder(am, path, resDir.absolutePath, null)
         }
         if (packageName == "android") {
@@ -94,46 +100,56 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
                 packageInfo.versionCode, Utils.getThemeVersion(context, packageName))
     }
 
-    private fun checkAssetPath(am: AssetManager, path: String, assetPaths: ArrayList<String>, black: Boolean) {
+    private fun checkResourcePath(am: AssetManager, path: String, resourcePaths: ArrayList<String>, black: Boolean) {
         val variants = am.list(path)
         if (!variants.contains("dark")
                 && !variants.contains("black") && !variants.contains("common")) {
-            addAssetPath(assetPaths, path)
+            addResourcePath(resourcePaths, path)
         } else {
-            parseOverlayAssetPath(am, path, assetPaths, black)
+            parseOverlayResourcePath(am, path, resourcePaths, black)
         }
     }
 
-    private fun addAssetPath(assetPaths: ArrayList<String>, asset: String) {
-        assetPaths.add(asset)
+    private fun addResourcePath(resourcePaths: ArrayList<String>, path: String) {
+        resourcePaths.add(path)
     }
 
     private fun parseOverlayAssetPath(am: AssetManager, path: String, assetPaths: ArrayList<String>, black: Boolean) {
+        val variants = am.list("$path/assets")
+        if (variants.contains("common")) {
+            assetPaths.add("$path/assets/common")
+        }
+        if (variants.contains("black") && black) {
+            assetPaths.add("$path/assets/black")
+        } else if (variants.contains("dark") && !black) {
+            assetPaths.add("$path/assets/dark")
+        }
+    }
+
+    private fun parseOverlayResourcePath(am: AssetManager, path: String, resourcePaths: ArrayList<String>, black: Boolean) {
         val variants = am.list(path)
         if (variants.contains("common")) {
-            checkAssetPath(am, "$path/common", assetPaths, black)
+            checkResourcePath(am, "$path/common", resourcePaths, black)
         }
         for (variant in variants) {
             if (variant == "versions") {
-                parseOverlayVersions(am, assetPaths, "$path/versions", black)
+                parseOverlayVersions(am, resourcePaths, "$path/versions", black)
             } else if (!black && variant == "dark") {
-                checkAssetPath(am, "$path/dark", assetPaths, black)
+                checkResourcePath(am, "$path/dark", resourcePaths, black)
             } else if (black && variant == "black") {
-                checkAssetPath(am, "$path/black", assetPaths, black)
-            } else {
-                //checkAssetPath(am, path, assetPaths, black)
+                checkResourcePath(am, "$path/black", resourcePaths, black)
             }
         }
     }
 
-    private fun parseOverlayVersions(am: AssetManager, assetPaths: ArrayList<String>, path: String, black: Boolean) {
+    private fun parseOverlayVersions(am: AssetManager, resourcePaths: ArrayList<String>, path: String, black: Boolean) {
         val vers = am.list(path)
         if (vers.contains("common")) {
-            checkAssetPath(am,"$path/common", assetPaths, black)
+            checkResourcePath(am,"$path/common", resourcePaths, black)
         }
         for (ver in vers) {
             if (packageInfo.versionName.startsWith(ver)) {
-                checkAssetPath(am, "$path/$ver", assetPaths, black)
+                checkResourcePath(am, "$path/$ver", resourcePaths, black)
             }
         }
     }
