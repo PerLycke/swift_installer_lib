@@ -14,8 +14,8 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.PopupWindow
-import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.applist.AppItem
+import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.utils.MaterialPalette
 import com.brit.swiftinstaller.utils.UpdateChecker
 import com.brit.swiftinstaller.utils.Utils
@@ -133,7 +133,7 @@ class MainActivity : ThemeActivity() {
         val b = popupView.background as LayerDrawable
         b.findDrawableByLayerId(R.id.background_popup).setTint(MaterialPalette.get(this).cardBackgroud)
 
-        popupView.popup_menu_about.setOnClickListener {
+        popupView.popup_menu_about.setOnClickListener { _ ->
             popup.dismiss()
 
             val dialogView = View.inflate(this, R.layout.dialog_about, null)

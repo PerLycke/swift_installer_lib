@@ -1,6 +1,6 @@
 package com.brit.swiftinstaller.utils
 
-import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.library.R
 
 object IdLists {
 

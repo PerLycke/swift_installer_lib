@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.brit.swiftinstaller">
+    package="com.brit.swiftinstaller.library">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -34,36 +34,36 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activities.MainActivity"
+            android:name="com.brit.swiftinstaller.ui.activities.MainActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activities.OverlaysActivity"
+            android:name="com.brit.swiftinstaller.ui.activities.OverlaysActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activities.CustomizeActivity"
+            android:name="com.brit.swiftinstaller.ui.activities.CustomizeActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activities.InstallActivity"
+            android:name="com.brit.swiftinstaller.ui.activities.InstallActivity"
             android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.BottomSheetDialog" />
-        <activity android:name=".ui.activities.InstallSummaryActivity"
+        <activity android:name="com.brit.swiftinstaller.ui.activities.InstallSummaryActivity"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.activities.UninstallFinishedActivity"
+        <activity android:name="com.brit.swiftinstaller.ui.activities.UninstallFinishedActivity"
             android:launchMode="singleInstance"
             android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.BottomSheetDialog" />
 
-        <service android:name=".InstallerService"
+        <service android:name="com.brit.swiftinstaller.InstallerService"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:exported="true"/>
 
         <receiver
-            android:name=".utils.BootReceiver"
+            android:name="com.brit.swiftinstaller.utils.BootReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -72,10 +72,10 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".utils.PackageListener" />
+        <receiver android:name="com.brit.swiftinstaller.utils.PackageListener" />
 
         <provider
-            android:name=".utils.SwiftFileProvider"
+            android:name="com.brit.swiftinstaller.utils.SwiftFileProvider"
             android:authorities="${applicationId}.myprovider"
             android:exported="false"
             android:grantUriPermissions="true">

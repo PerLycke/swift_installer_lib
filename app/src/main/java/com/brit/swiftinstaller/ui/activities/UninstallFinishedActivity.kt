@@ -2,7 +2,7 @@ package com.brit.swiftinstaller.ui.activities
 
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
-import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.library.R
 
 class UninstallFinishedActivity : ThemeActivity() {
 
@@ -15,10 +15,10 @@ class UninstallFinishedActivity : ThemeActivity() {
         val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
         .setTitle(R.string.reboot)
         .setMessage(R.string.reboot_manually)
-        .setPositiveButton(R.string.reboot_later, { dialogInterface, _ ->
+        .setPositiveButton(R.string.reboot_later) { dialogInterface, _ ->
             dialogInterface.dismiss()
             finish()
-        })
+        }
 
         dialog = builder.create()
         dialog.setCancelable(false)

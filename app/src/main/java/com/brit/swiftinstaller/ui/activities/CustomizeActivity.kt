@@ -1,5 +1,6 @@
 package com.brit.swiftinstaller.ui.activities
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -25,7 +26,7 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.ui.CircleDrawable
 import com.brit.swiftinstaller.ui.applist.AppItem
 import com.brit.swiftinstaller.utils.*
@@ -170,6 +171,7 @@ class CustomizeActivity : ThemeActivity() {
         }
     }
 
+    @SuppressLint("RestrictedApi")
     private fun showFab() {
         handler.postDelayed({
             if (personalize_fab.visibility == View.GONE) {
@@ -184,6 +186,7 @@ class CustomizeActivity : ThemeActivity() {
         }, 300)
     }
 
+    @SuppressLint("RestrictedApi")
     private fun hideFab() {
         if (personalize_fab.visibility == View.VISIBLE) {
             personalize_fab.visibility = View.GONE
@@ -315,7 +318,7 @@ class CustomizeActivity : ThemeActivity() {
             updateColor(accentColor, backgroundColor, false, true)
         }
 
-        val notifBglistener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
+        val notifBgListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
             if (compoundButton.id == R.id.dark_notifications) {
                 dark_notifications.isChecked = b
                 white_notifications.isChecked = !b
@@ -453,8 +456,8 @@ class CustomizeActivity : ThemeActivity() {
 
         material_theme.setOnCheckedChangeListener(baseThemeListener)
         flat_theme.setOnCheckedChangeListener(baseThemeListener)
-        dark_notifications.setOnCheckedChangeListener(notifBglistener)
-        white_notifications.setOnCheckedChangeListener(notifBglistener)
+        dark_notifications.setOnCheckedChangeListener(notifBgListener)
+        white_notifications.setOnCheckedChangeListener(notifBgListener)
         shadow_disabled.setOnCheckedChangeListener(shadowListener)
         shadow_enabled.setOnCheckedChangeListener(shadowListener)
         aosp_icons.setOnCheckedChangeListener(iconListener)

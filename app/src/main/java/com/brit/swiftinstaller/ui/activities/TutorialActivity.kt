@@ -7,10 +7,12 @@ import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v4.content.ContextCompat
-import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.ui.applist.AppItem
 import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.utils.getBackgroundColor
+import android.util.Log
+import com.brit.swiftinstaller.library.R
 import com.hololo.tutorial.library.PermissionStep
 import com.hololo.tutorial.library.Step
 import com.hololo.tutorial.library.TutorialActivity

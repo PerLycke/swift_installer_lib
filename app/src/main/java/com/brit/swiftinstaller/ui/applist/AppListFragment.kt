@@ -15,7 +15,7 @@ import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.TextView
-import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.utils.*
 import kotlinx.android.synthetic.main.activity_app_list.*
 import kotlinx.android.synthetic.main.failed_info_card.view.*

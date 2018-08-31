@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.text.TextUtils
 import android.util.ArraySet
-import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.installer.rom.RomInfo
+import com.brit.swiftinstaller.library.R
 
 const val KEY_ACCENT_COLOR = "accent_color"
 const val KEY_BACKGROUND_COLOR = "background_color"

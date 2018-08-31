@@ -11,9 +11,9 @@ import android.support.v4.content.LocalBroadcastManager
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
-import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.installer.Notifier
 import com.brit.swiftinstaller.installer.rom.RomInfo
+import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.utils.InstallerServiceHelper
 import com.brit.swiftinstaller.utils.ShellUtils
 import com.brit.swiftinstaller.utils.Utils

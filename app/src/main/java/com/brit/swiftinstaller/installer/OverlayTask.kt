@@ -6,8 +6,8 @@ import android.content.pm.PackageInfo
 import android.content.res.AssetManager
 import android.graphics.Color
 import android.os.Environment
-import com.brit.swiftinstaller.BuildConfig
 import com.brit.swiftinstaller.installer.rom.RomInfo
+import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.utils.*
 import java.io.BufferedWriter
 import java.io.File
@@ -197,9 +197,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
             e.printStackTrace()
         } finally {
             try {
-                if (writer != null) {
-                    writer.close()
-                }
+                writer?.close()
             } catch (e: IOException) {
                 e.printStackTrace()
             }
@@ -257,9 +255,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
             e.printStackTrace()
         } finally {
             try {
-                if (writer != null) {
-                    writer.close()
-                }
+                writer?.close()
             } catch (e: IOException) {
                 e.printStackTrace()
             }
@@ -311,9 +307,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
             e.printStackTrace()
         } finally {
             try {
-                if (writer != null) {
-                    writer.close()
-                }
+                writer?.close()
             } catch (e: IOException) {
                 e.printStackTrace()
             }

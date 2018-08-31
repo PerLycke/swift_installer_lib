@@ -15,8 +15,8 @@ import android.support.design.widget.TabLayout
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AlertDialog
 import android.view.View
-import com.brit.swiftinstaller.BuildConfig
-import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.library.BuildConfig
+import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.ui.applist.AppItem
 import com.brit.swiftinstaller.ui.applist.AppListFragment
 import com.brit.swiftinstaller.ui.applist.AppsTabPagerAdapter
@@ -49,7 +49,7 @@ class InstallSummaryActivity : ThemeActivity() {
         InstallActivity().finish()
         setContentView(R.layout.activity_install_summary)
 
-        if (intent.extras.containsKey("errorMap")) {
+        if (intent.extras != null && intent.extras!!.containsKey("errorMap")) {
             mErrorMap = Utils.bundleToMap(intent.getBundleExtra("errorMap"))
         }
 
@@ -87,9 +87,9 @@ class InstallSummaryActivity : ThemeActivity() {
         val builder = AlertDialog.Builder(this)
         .setTitle(R.string.reboot_to_finish)
         .setMessage(R.string.examined_result_msg)
-        .setPositiveButton(R.string.got_it, { dialogInterface, _ ->
+        .setPositiveButton(R.string.got_it) { dialogInterface, _ ->
             dialogInterface.dismiss()
-        })
+        }
 
         themeDialog()
         val dialog = builder.create()
@@ -109,7 +109,7 @@ class InstallSummaryActivity : ThemeActivity() {
     override fun onResume() {
         super.onResume()
         mApps = intent.getStringArrayListExtra("apps")
-        if (intent.extras.containsKey("errorMap")) {
+        if (intent.extras != null && intent.extras!!.containsKey("errorMap")) {
             mErrorMap = Utils.bundleToMap(intent.getBundleExtra("errorMap"))
         } else {
             mErrorMap.clear()
@@ -119,7 +119,7 @@ class InstallSummaryActivity : ThemeActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         mApps = intent.getStringArrayListExtra("apps")
-        if (intent.extras.containsKey("errorMap")) {
+        if (intent.extras != null && intent.extras!!.containsKey("errorMap")) {
             mErrorMap = Utils.bundleToMap(intent.getBundleExtra("errorMap"))
         } else {
             mErrorMap.clear()
@@ -134,7 +134,7 @@ class InstallSummaryActivity : ThemeActivity() {
     private fun sendErrorLog() {
         val emailIntent = Intent(Intent.ACTION_SENDTO)
         emailIntent.data = Uri.parse("mailto:")
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, Array(1, { "swiftuserhelp@gmail.com" }))
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, Array(1) { "swiftuserhelp@gmail.com" })
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Swift Installer: Error Log")
 
         val text = StringBuilder()

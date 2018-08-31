@@ -7,12 +7,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.support.v4.content.FileProvider
-import com.brit.swiftinstaller.BuildConfig
-import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.library.BuildConfig
+import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.utils.*
 import java.io.File
 
 
+@Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
 class RomInfo internal constructor(var context: Context, var name: String,
                                    var version: String) {
 
@@ -22,7 +23,7 @@ class RomInfo internal constructor(var context: Context, var name: String,
         defaultAccent = context.getColor(R.color.minimal_blue)
     }
 
-    fun installOverlay(context: Context, targetPackage: String, overlayPath: String) {
+    open fun installOverlay(context: Context, targetPackage: String, overlayPath: String) {
         val installed = Utils.isOverlayInstalled(context, Utils.getOverlayPackageName(targetPackage))
         if (ShellUtils.isRootAvailable) {
             runCommand("pm install -r $overlayPath", true)
@@ -36,7 +37,7 @@ class RomInfo internal constructor(var context: Context, var name: String,
         }
     }
 
-    fun postInstall(uninstall: Boolean, apps: ArrayList<String>, oppositeApps: ArrayList<String>?, intent: Intent?) {
+    open fun postInstall(uninstall: Boolean, apps: ArrayList<String>, oppositeApps: ArrayList<String>?, intent: Intent?) {
         val extraIntent = intent != null
 
         if (ShellUtils.isRootAvailable) {
@@ -58,7 +59,7 @@ class RomInfo internal constructor(var context: Context, var name: String,
             apps.size
         } else {
             apps.size + 1
-        }, { i ->
+        }) { i ->
             val index = if (extraIntent) {
                 i - 1
             } else {
@@ -83,14 +84,14 @@ class RomInfo internal constructor(var context: Context, var name: String,
                 intent!!.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 intent
             }
-        })
+        }
 
         if (!intents.isEmpty()) {
             context.startActivities(intents)
         }
 
         if (oppositeApps != null && !oppositeApps.isEmpty()) {
-            val oppositeIntents = Array(oppositeApps.size, {
+            val oppositeIntents = Array(oppositeApps.size) {
                 val appInstall = Intent()
                 if (!uninstall) {
                     appInstall.action = Intent.ACTION_UNINSTALL_PACKAGE
@@ -105,7 +106,7 @@ class RomInfo internal constructor(var context: Context, var name: String,
                 appInstall.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 appInstall.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 appInstall
-            })
+            }
             context.startActivities(oppositeIntents)
         }
 
@@ -113,7 +114,7 @@ class RomInfo internal constructor(var context: Context, var name: String,
         clearAppsToInstall(context)
     }
 
-    fun uninstallOverlay(context: Context, packageName: String) {
+    open fun uninstallOverlay(context: Context, packageName: String) {
         if (ShellUtils.isRootAvailable) {
             runCommand("pm uninstall " + Utils.getOverlayPackageName(packageName), true)
         } else {

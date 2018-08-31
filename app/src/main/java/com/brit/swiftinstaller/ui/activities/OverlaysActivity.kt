@@ -17,7 +17,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
-import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.ui.applist.AppItem
 import com.brit.swiftinstaller.ui.applist.AppListFragment
 import com.brit.swiftinstaller.ui.applist.AppsTabPagerAdapter
@@ -46,7 +46,7 @@ class OverlaysActivity : ThemeActivity() {
         private const val ACTIVE_TAB = 1
         const val UPDATE_TAB = 2
 
-        private val requiredApps = Array(29, {
+        private val requiredApps = Array(29) {
             when (it) {
                 0 -> "android"
                 1 -> "com.android.systemui"
@@ -79,7 +79,7 @@ class OverlaysActivity : ThemeActivity() {
                 28 -> "de.axelspringer.yana.zeropage"
                 else -> ""
             }
-        })
+        }
     }
 
     private var mPagerAdapter: AppsTabPagerAdapter? = null
@@ -332,14 +332,14 @@ class OverlaysActivity : ThemeActivity() {
                             val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
                                     .setTitle(R.string.reboot_delay_title)
                                     .setMessage(R.string.reboot_delay_msg)
-                                    .setPositiveButton(R.string.proceed, { dialogInterface, _ ->
+                                    .setPositiveButton(R.string.proceed) { dialogInterface, _ ->
                                         getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "default").apply()
                                         dialogInterface.dismiss()
                                         installAction()
-                                    })
-                                    .setNegativeButton(R.string.cancel, { dialogInterface, _ ->
+                                    }
+                                    .setNegativeButton(R.string.cancel) { dialogInterface, _ ->
                                         dialogInterface.dismiss()
-                                    })
+                                    }
 
                             themeDialog()
                             val dialog = builder.create()
@@ -462,24 +462,21 @@ class OverlaysActivity : ThemeActivity() {
         val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
                 .setTitle(R.string.gboard_dialog_title)
                 .setMessage(R.string.gboard_bg_info)
-                .setPositiveButton(R.string.save, { dialogInterface, _ ->
+                .setPositiveButton(R.string.save) { dialogInterface, _ ->
                     val bitmap = createImage(512,512, getBackgroundColor(this))
                     val downloads = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
                     val image = File(downloads, "swift_bg.png")
                     var success = false
                     val outStream: FileOutputStream
-                    try
-                    {
+                    try {
                         outStream = FileOutputStream(image)
                         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream)
                         outStream.flush()
                         outStream.close()
                         success = true
-                    }
-                    catch (e: FileNotFoundException) {
+                    } catch (e: FileNotFoundException) {
                         e.printStackTrace()
-                    }
-                    catch (e: IOException) {
+                    } catch (e: IOException) {
                         e.printStackTrace()
                     }
 
@@ -492,10 +489,10 @@ class OverlaysActivity : ThemeActivity() {
                     }
 
                     dialogInterface.dismiss()
-                })
-                .setNegativeButton(R.string.cancel, { dialogInterface, _ ->
+                }
+                .setNegativeButton(R.string.cancel) { dialogInterface, _ ->
                     dialogInterface.dismiss()
-                })
+                }
         themeDialog()
         val dialog = builder.create()
         dialog.show()
@@ -504,9 +501,9 @@ class OverlaysActivity : ThemeActivity() {
         val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
                 .setTitle(R.string.blocked_packages_title)
                 .setMessage(R.string.blocked_packages_message)
-                .setNegativeButton(R.string.ok, { dialogInterface, _ ->
+                .setNegativeButton(R.string.ok) { dialogInterface, _ ->
                     dialogInterface.dismiss()
-                })
+                }
         themeDialog()
         val dialog = builder.create()
         dialog.show()

@@ -147,12 +147,8 @@ object ShellUtils {
             return null
         } finally {
             try {
-                if (`in` != null) {
-                    `in`.close()
-                }
-                if (out != null) {
-                    out.close()
-                }
+                `in`?.close()
+                out?.close()
             } catch (e: IOException) {
                 e.printStackTrace()
             }
@@ -197,12 +193,8 @@ fun runCommand(cmd: String, root: Boolean): CommandOutput {
         return CommandOutput("", "", 1)
     } finally {
         try {
-            if (os != null) {
-                os.close()
-            }
-            if (process != null) {
-                process.destroy()
-            }
+            os?.close()
+            process?.destroy()
         } catch (ignored: IOException) {
         }
 

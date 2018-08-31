@@ -14,7 +14,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.utils.*
 
 @SuppressLint("Registered")

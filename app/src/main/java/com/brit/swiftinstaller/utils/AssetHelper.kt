@@ -66,12 +66,8 @@ class AssetHelper {
                 return false
             } finally {
                 try {
-                    if (`in` != null) {
-                        `in`.close()
-                    }
-                    if (out != null) {
-                        out.close()
-                    }
+                    `in`?.close()
+                    out?.close()
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }
