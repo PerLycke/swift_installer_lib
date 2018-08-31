@@ -3,11 +3,12 @@ package com.brit.swiftinstaller.ui.activities
 import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v4.content.ContextCompat
-import android.view.View
 import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.utils.getBackgroundColor
 import com.hololo.tutorial.library.PermissionStep
 import com.hololo.tutorial.library.Step
 import com.hololo.tutorial.library.TutorialActivity
@@ -32,7 +33,7 @@ class TutorialActivity : TutorialActivity() {
                 return
             }
         }
-
+        
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("appHasRunBefore", false)) {
             startActivity(Intent(this, MainActivity::class.java))
         } else {
