@@ -16,17 +16,21 @@ class TutorialActivity : TutorialActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
-        if (!packageManager.hasSystemFeature("com.samsung.device") &&
-                !resources.getBoolean(R.bool.allow_unsupported_systems)) {
-            AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                    .setTitle("Unsupported")
-                    .setMessage("Only supports samsung devices for now.")
-                    .setPositiveButton("EXIT", { _, _ ->
-                        finish()
-                    })
-                    .show()
-            return
+
+        if (!resources.getBoolean(R.bool.allow_unsupported_systems)) {
+            packageManager.systemAvailableFeatures.forEach {
+                Log.d("TEST", "feature - ${it.name}")
+            }
+            if (!packageManager.hasSystemFeature("com.samsung.feature.samsung_experience_mobile")) {
+                AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+                        .setTitle("Unsupported")
+                        .setMessage("Only supports samsung devices for now.")
+                        .setPositiveButton("EXIT", { _, _ ->
+                            finish()
+                        })
+                        .show()
+                return
+            }
         }
 
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("appHasRunBefore", false)) {
