@@ -68,7 +68,7 @@ dependencies {
     implementation 'com.android.tools.build:apksig:3.1.4'
     implementation 'org.bouncycastle:bcprov-jdk16:1.45'
     implementation 'commons-io:commons-io:2.5'
-    implementation project(':TutorialView')
+    implementation project(':tutorial-view')
     implementation "org.jetbrains.anko:anko-commons:0.10.4"
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.github.topjohnwu:libsu:2.0.1'
