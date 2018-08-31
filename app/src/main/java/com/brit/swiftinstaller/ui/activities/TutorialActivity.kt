@@ -19,9 +19,6 @@ class TutorialActivity : TutorialActivity() {
         super.onCreate(savedInstanceState)
 
         if (!resources.getBoolean(R.bool.allow_unsupported_systems)) {
-            packageManager.systemAvailableFeatures.forEach {
-                Log.d("TEST", "feature - ${it.name}")
-            }
             if (!packageManager.hasSystemFeature("com.samsung.feature.samsung_experience_mobile")) {
                 AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
                         .setTitle("Unsupported")
@@ -33,7 +30,7 @@ class TutorialActivity : TutorialActivity() {
                 return
             }
         }
-        
+
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("appHasRunBefore", false)) {
             startActivity(Intent(this, MainActivity::class.java))
         } else {
