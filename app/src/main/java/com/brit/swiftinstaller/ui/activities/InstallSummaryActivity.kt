@@ -149,7 +149,7 @@ class InstallSummaryActivity : ThemeActivity() {
                 text.append("\n")
                 text.append("App Package: " + item.packageName)
                 text.append("\n")
-                text.append("App Version: " + item.version)
+                text.append("App Version: " + item.versionName)
                 text.append("\n")
                 text.append("Error Log: " + mErrorMap[item.packageName])
                 text.append("\n")
@@ -192,7 +192,8 @@ class InstallSummaryActivity : ThemeActivity() {
                     item.packageName = pn
                     item.icon = info.loadIcon(pm)
                     item.title = info.loadLabel(pm) as String
-                    item.version = pInfo!!.versionCode
+                    item.versionCode = pInfo!!.versionCode
+                    item.versionName = pInfo.versionName
                     if (errorMap.keys.contains(pn)) {
                         onProgressUpdate(Progress(FAILED_TAB, item))
                     } else if (Utils.isOverlayInstalled(context!!, Utils.getOverlayPackageName(pn))

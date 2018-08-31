@@ -8,7 +8,6 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.AsyncTask
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.design.widget.BottomSheetDialog
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
@@ -224,7 +223,8 @@ class OverlaysActivity : ThemeActivity() {
                     item.packageName = pn
                     item.icon = info.loadIcon(pm)
                     item.title = info.loadLabel(pm) as String
-                    item.version = pInfo!!.versionCode
+                    item.versionCode = pInfo!!.versionCode
+                    item.versionName = pInfo.versionName
                     if (isOverlayInstalled(context, getOverlayPackageName(pn))) {
                         if (isOverlayEnabled(context, getOverlayPackageName(pn))) {
                             if (updates.contains(pn)) {
@@ -262,27 +262,29 @@ class OverlaysActivity : ThemeActivity() {
             val launch = getSharedPreferences("launched", Context.MODE_PRIVATE).getString("launched","first")
             bottomSheetDialog.dismiss()
 
-            if (launch == "default") {
-                installAction()
-            } else if (launch == "first") {
-                getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "second").apply()
-                installAction()
-            } else if (launch == "second"){
-                val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                themeDialog()
-                builder.setTitle(R.string.reboot_delay_title)
-                builder.setMessage(R.string.reboot_delay_msg)
-                builder.setPositiveButton(R.string.proceed, { dialogInterface, _ ->
-                    getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "default").apply()
-                    dialogInterface.dismiss()
+            when (launch) {
+                "default" -> installAction()
+                "first" -> {
+                    getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "second").apply()
                     installAction()
-                })
-                builder.setNegativeButton(R.string.cancel, { dialogInterface, _ ->
-                    dialogInterface.dismiss()
-                })
+                }
+                "second" -> {
+                    val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+                    themeDialog()
+                    builder.setTitle(R.string.reboot_delay_title)
+                    builder.setMessage(R.string.reboot_delay_msg)
+                    builder.setPositiveButton(R.string.proceed, { dialogInterface, _ ->
+                        getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "default").apply()
+                        dialogInterface.dismiss()
+                        installAction()
+                    })
+                    builder.setNegativeButton(R.string.cancel, { dialogInterface, _ ->
+                        dialogInterface.dismiss()
+                    })
 
-                val dialog = builder.create()
-                dialog.show()
+                    val dialog = builder.create()
+                    dialog.show()
+                }
             }
         }
 
