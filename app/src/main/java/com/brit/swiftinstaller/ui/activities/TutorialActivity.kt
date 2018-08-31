@@ -17,7 +17,7 @@ import com.hololo.tutorial.library.TutorialActivity
 import org.jetbrains.anko.doAsync
 
 class TutorialActivity : TutorialActivity() {
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
