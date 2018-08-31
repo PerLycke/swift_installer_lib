@@ -14,6 +14,7 @@ import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.utils.OverlayUtils
+import com.brit.swiftinstaller.utils.ShellUtils
 import com.brit.swiftinstaller.utils.getBackgroundColor
 import com.brit.swiftinstaller.library.R
 import com.hololo.tutorial.library.PermissionStep
@@ -27,8 +28,8 @@ class TutorialActivity : TutorialActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
-        if (RomInfo.getRomInfo(this).needsSecondReboot()) {
+
+        if (ShellUtils.isRootAvailable) {
             notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
             createNotificationChannel(

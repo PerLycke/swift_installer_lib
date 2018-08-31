@@ -18,10 +18,7 @@ import android.widget.PopupWindow
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.ui.applist.AppItem
-import com.brit.swiftinstaller.utils.MaterialPalette
-import com.brit.swiftinstaller.utils.UpdateChecker
-import com.brit.swiftinstaller.utils.Utils
-import com.brit.swiftinstaller.utils.getAccentColor
+import com.brit.swiftinstaller.utils.*
 import kotlinx.android.synthetic.main.card_compatibility_info.*
 import kotlinx.android.synthetic.main.card_install.*
 import kotlinx.android.synthetic.main.card_update.*
@@ -55,7 +52,7 @@ class MainActivity : ThemeActivity() {
             }
         }
 
-        if (RomInfo.getRomInfo(this).needsSecondReboot() &&
+        if (ShellUtils.isRootAvailable &&
                 PreferenceManager.getDefaultSharedPreferences(this).getBoolean("should_notify", true)) {
             card_reboot.visibility = View.VISIBLE
             PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("should_notify", false).apply()

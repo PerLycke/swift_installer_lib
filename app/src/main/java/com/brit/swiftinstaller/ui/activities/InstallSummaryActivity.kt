@@ -57,7 +57,7 @@ class InstallSummaryActivity : ThemeActivity() {
 
         update = intent.getBooleanExtra("update", false)
 
-        if (RomInfo.getRomInfo(this).needsSecondReboot()) {
+        if (ShellUtils.isRootAvailable) {
             fab_install_finished.show()
         } else {
             if (mErrorMap.isNotEmpty()) {
