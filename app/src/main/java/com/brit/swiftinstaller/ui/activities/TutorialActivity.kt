@@ -13,9 +13,7 @@ import android.text.TextUtils
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.ui.applist.AppItem
 import com.brit.swiftinstaller.utils.OverlayUtils
-import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.utils.getBackgroundColor
 import com.brit.swiftinstaller.library.R
 import com.hololo.tutorial.library.PermissionStep
@@ -29,6 +27,15 @@ class TutorialActivity : TutorialActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        if (RomInfo.getRomInfo(this).needsSecondReboot()) {
+            notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+            createNotificationChannel(
+                    "com.brit.swiftinstaller",
+                    "Swift overlays enabling",
+                    "The notification notifies you when overlays are being enabled on boot")
+        }
 
         if (!resources.getBoolean(R.bool.allow_unsupported_systems)) {
             val samsung = packageManager.getApplicationInfo(packageName,

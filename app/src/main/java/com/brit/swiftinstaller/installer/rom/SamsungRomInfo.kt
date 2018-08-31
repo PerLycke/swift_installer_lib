@@ -148,4 +148,6 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
             addAppToUninstall(context, Utils.getOverlayPackageName(packageName))
         }
     }
+
+    override fun needsSecondReboot(): Boolean { return false }
 }

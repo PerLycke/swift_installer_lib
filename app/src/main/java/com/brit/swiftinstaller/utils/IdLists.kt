@@ -55,6 +55,7 @@ object IdLists {
             R.id.card_install_bg,
             R.id.card_personalize_bg,
             R.id.card_compatibility_bg,
+            R.id.card_reboot_bg,
             R.id.update_info,
             R.id.installed_info
     )

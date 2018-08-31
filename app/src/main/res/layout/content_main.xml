@@ -36,6 +36,19 @@
         android:contentDescription="@string/image" />
 
     <include
+        android:id="@+id/card_reboot"
+        layout="@layout/card_reboot"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_toolbar" />
+
+    <include
         android:id="@+id/card_compatibility"
         layout="@layout/card_compatibility_info"
         android:layout_width="0dp"
@@ -46,7 +59,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/card_reboot" />
 
     <include
         android:id="@+id/card_update"

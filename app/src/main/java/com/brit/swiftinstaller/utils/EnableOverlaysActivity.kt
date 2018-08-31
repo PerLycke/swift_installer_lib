@@ -17,13 +17,11 @@ class EnableOverlaysActivity : Activity() {
     override fun onResume() {
         super.onResume()
 
-        val shouldNotify = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("should_notify", false)
-        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
         Utils.enableAllOverlays(this)
-        if (shouldNotify) {
+
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("should_notify", false)) {
+            notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             sendNotification()
-            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("should_notify", false).apply()
         }
         finish()
     }

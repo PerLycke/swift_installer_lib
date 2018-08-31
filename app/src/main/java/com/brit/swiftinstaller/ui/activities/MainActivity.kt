@@ -54,6 +54,16 @@ class MainActivity : ThemeActivity() {
             }
         }
 
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("should_notify", true)) {
+            card_reboot.visibility = View.VISIBLE
+            card_reboot.setOnClickListener {
+                PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("should_notify", false).apply()
+                card_reboot.visibility = View.GONE
+                val intent = Intent(this, RebootActivity::class.java)
+                startActivity(intent)
+            }
+        }
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
