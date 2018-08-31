@@ -15,16 +15,6 @@ buildscript {
     }
 }
 
-ext {
-    // Encryption values, do not touch as we generate a random key every time you compile!
-    byte[] key = new byte[16]
-    new Random().nextBytes(key)
-    KEY = key
-    byte[] iv = new byte[16]
-    new Random().nextBytes(iv)
-    IV_KEY = iv
-}
-
 allprojects {
     repositories {
         google()
