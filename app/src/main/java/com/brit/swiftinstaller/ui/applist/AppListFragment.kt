@@ -11,7 +11,10 @@ import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.CheckBox
+import android.widget.CompoundButton
+import android.widget.ImageView
+import android.widget.TextView
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.utils.getAppsToUpdate
@@ -149,8 +152,8 @@ class AppListFragment : Fragment() {
             private var alertIcon: ImageView = view.findViewById(R.id.alert_icon)
             private var required: TextView = view.findViewById(R.id.required)
 
-            private val checkListener : (CompoundButton, Boolean) -> Unit
-            private val clickListener : (View) -> Unit
+            private val checkListener: (CompoundButton, Boolean) -> Unit
+            private val clickListener: (View) -> Unit
 
             init {
                 clickListener = {

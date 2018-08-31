@@ -17,7 +17,7 @@ import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.*
 
 @SuppressLint("Registered")
-open class ThemeActivity: AppCompatActivity() {
+open class ThemeActivity : AppCompatActivity() {
     private var mBlackBackground = false
 
     private val backgroundIDs = ArrayList<Int>()

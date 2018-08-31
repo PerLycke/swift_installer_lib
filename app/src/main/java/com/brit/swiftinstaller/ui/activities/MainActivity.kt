@@ -12,17 +12,20 @@ import android.preference.PreferenceManager
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatDelegate
 import android.support.v7.widget.Toolbar
-import android.view.*
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.PopupWindow
 import android.widget.Toast
 import com.brit.swiftinstaller.R
-import com.brit.swiftinstaller.utils.*
-import kotlinx.android.synthetic.main.dialog_about.view.*
+import com.brit.swiftinstaller.utils.MaterialPalette
+import com.brit.swiftinstaller.utils.UpdateChecker
+import com.brit.swiftinstaller.utils.getAppsToUpdate
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.dialog_about.view.*
 import kotlinx.android.synthetic.main.popup_menu.view.*
 
 class MainActivity : ThemeActivity() {

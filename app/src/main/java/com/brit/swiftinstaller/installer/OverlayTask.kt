@@ -7,8 +7,8 @@ import android.content.res.AssetManager
 import android.graphics.Color
 import android.os.Environment
 import com.brit.swiftinstaller.BuildConfig
-import com.brit.swiftinstaller.utils.*
 import com.brit.swiftinstaller.installer.rom.RomInfo
+import com.brit.swiftinstaller.utils.*
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
@@ -138,7 +138,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     private fun parseOverlayVersions(am: AssetManager, resourcePaths: ArrayList<String>, path: String) {
         val vers = am.list(path)
         if (vers.contains("common")) {
-            checkResourcePath(am,"$path/common", resourcePaths)
+            checkResourcePath(am, "$path/common", resourcePaths)
         }
         for (ver in vers) {
             if (packageInfo.versionName.startsWith(ver)) {

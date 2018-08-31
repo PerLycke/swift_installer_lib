@@ -8,6 +8,8 @@ import android.graphics.Color
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.support.v4.content.LocalBroadcastManager
+import android.support.v4.view.PagerAdapter
+import android.support.v4.view.ViewPager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -21,16 +23,14 @@ import com.brit.swiftinstaller.utils.*
 import com.brit.swiftinstaller.utils.ColorUtils.checkAccentColor
 import com.brit.swiftinstaller.utils.ColorUtils.checkBackgroundColor
 import com.brit.swiftinstaller.utils.ColorUtils.convertToColorInt
+import kotlinx.android.synthetic.main.activity_customize.*
 import kotlinx.android.synthetic.main.customize_accent.*
 import kotlinx.android.synthetic.main.customize_background.*
-import kotlinx.android.synthetic.main.customize_preview_settings.*
-import kotlinx.android.synthetic.main.toolbar_customize.*
-import android.support.v4.view.PagerAdapter
-import android.support.v4.view.ViewPager
-import kotlinx.android.synthetic.main.activity_customize.*
 import kotlinx.android.synthetic.main.customize_icons.*
 import kotlinx.android.synthetic.main.customize_notifications.*
+import kotlinx.android.synthetic.main.customize_preview_settings.*
 import kotlinx.android.synthetic.main.customize_preview_sysui.*
+import kotlinx.android.synthetic.main.toolbar_customize.*
 
 class CustomizeActivity : ThemeActivity() {
 
@@ -137,17 +137,17 @@ class CustomizeActivity : ThemeActivity() {
             if (useAospIcons != oldIcons) {
                 setUseAospIcons(this, useAospIcons)
                 if (Utils.isOverlayInstalled(this, Utils.getOverlayPackageName("android"))) {
-                recompile = true
-                apps.add("com.samsung.android.lool")
-                apps.add("com.samsung.android.themestore")
-                apps.add("com.android.settings")
-                apps.add("com.android.systemui")
+                    recompile = true
+                    apps.add("com.samsung.android.lool")
+                    apps.add("com.samsung.android.themestore")
+                    apps.add("com.android.settings")
+                    apps.add("com.android.systemui")
                 }
             }
 
             if (recompile && apps.isNotEmpty()) {
 
-                val receiver = object: BroadcastReceiver() {
+                val receiver = object : BroadcastReceiver() {
                     override fun onReceive(context: Context, intent: Intent) {
                         if (intent.action == InstallSummaryActivity.ACTION_INSTALL_CANCELLED) {
                             if (oldAccent != getAccentColor(context)) {
@@ -179,7 +179,7 @@ class CustomizeActivity : ThemeActivity() {
             }
         }
 
-        accent_hex_input.addTextChangedListener(object: TextWatcher {
+        accent_hex_input.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
 
@@ -321,7 +321,7 @@ class CustomizeActivity : ThemeActivity() {
         } else {
             View.GONE
         }
-        custom_black_bg_indicator.visibility = if(backgroundColor == convertToColorInt("000000")) {
+        custom_black_bg_indicator.visibility = if (backgroundColor == convertToColorInt("000000")) {
             View.VISIBLE
         } else {
             View.GONE
@@ -356,7 +356,11 @@ class CustomizeActivity : ThemeActivity() {
     private fun updateIcons() {
         for (icon in settingsIcons) {
             if (icon != null) {
-                val idName = "ic_${resources.getResourceEntryName(icon.id)}_${if (useAospIcons) {"aosp"} else {"stock"}}"
+                val idName = "ic_${resources.getResourceEntryName(icon.id)}_${if (useAospIcons) {
+                    "aosp"
+                } else {
+                    "stock"
+                }}"
                 val id = resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName", null, null)
                 if (id > 0) {
                     icon.setImageDrawable(getDrawable(id))
@@ -365,7 +369,11 @@ class CustomizeActivity : ThemeActivity() {
         }
         for (icon in systemUiIcons) {
             if (icon != null) {
-                val idName = "ic_${resources.getResourceEntryName(icon.id)}_${if (useAospIcons) {"aosp"} else {"stock"}}"
+                val idName = "ic_${resources.getResourceEntryName(icon.id)}_${if (useAospIcons) {
+                    "aosp"
+                } else {
+                    "stock"
+                }}"
                 val id = resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName", null, null)
                 if (id > 0) {
                     icon.setImageDrawable(getDrawable(id))

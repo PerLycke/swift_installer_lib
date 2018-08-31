@@ -93,9 +93,9 @@ object ColorUtils {
         val ng = Color.green(newColor)
         val nb = Color.blue(newColor)
 
-        Log.d(TAG, "red factor ${(nr.toDouble()/or)}")
-        Log.d(TAG, "green factor ${ng.toDouble()/og}")
-        Log.d(TAG, "blue factor ${nb.toDouble()/ob}")
+        Log.d(TAG, "red factor ${(nr.toDouble() / or)}")
+        Log.d(TAG, "green factor ${ng.toDouble() / og}")
+        Log.d(TAG, "blue factor ${nb.toDouble() / ob}")
     }
 
     fun printRGB(color: Int) {

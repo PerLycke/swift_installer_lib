@@ -6,11 +6,12 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.graphics.drawable.LayerDrawable
 import android.net.Uri
-import android.os.*
+import android.os.AsyncTask
+import android.os.Build
+import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.TabLayout
-import android.support.v4.content.ContextCompat
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AlertDialog
 import android.util.Log
@@ -22,12 +23,9 @@ import com.brit.swiftinstaller.ui.applist.AppListFragment
 import com.brit.swiftinstaller.ui.applist.AppsTabPagerAdapter
 import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.utils.getAppVersion
-import com.brit.swiftinstaller.utils.getBackgroundColor
 import com.brit.swiftinstaller.utils.setAppVersion
-import kotlin.collections.ArrayList
 import kotlinx.android.synthetic.main.activity_install_summary.*
 import kotlinx.android.synthetic.main.tab_layout_install_summary.*
-import org.bouncycastle.jce.provider.PBE
 import java.lang.ref.WeakReference
 
 class InstallSummaryActivity : ThemeActivity() {
@@ -213,7 +211,8 @@ class InstallSummaryActivity : ThemeActivity() {
         override fun onProgressUpdate(vararg progress: Progress?) {
             super.onProgressUpdate(*progress)
             mHandler.post {
-                mCallback.updateApps(progress[0]!!.tab, progress[0]!!.item) }
+                mCallback.updateApps(progress[0]!!.tab, progress[0]!!.item)
+            }
         }
 
     }

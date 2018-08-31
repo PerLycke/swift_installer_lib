@@ -48,7 +48,7 @@ object ShellUtils {
     }
 
     fun compileOverlay(context: Context, themePackage: String, res: String?, manifest: String,
-                       overlayPath: String, assetPath: String?, targetInfo: ApplicationInfo?) : CommandOutput {
+                       overlayPath: String, assetPath: String?, targetInfo: ApplicationInfo?): CommandOutput {
         var output: CommandOutput
         val overlay = File(overlayPath)
         val unsigned = File(overlay.parent, "unsigned_" + overlay.name)

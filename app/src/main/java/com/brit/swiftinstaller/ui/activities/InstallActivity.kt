@@ -13,12 +13,15 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.installer.Notifier
+import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.utils.InstallerServiceHelper
 import com.brit.swiftinstaller.utils.ShellUtils
 import com.brit.swiftinstaller.utils.Utils
-import com.brit.swiftinstaller.installer.rom.RomInfo
 import kotlinx.android.synthetic.main.progress_dialog_install.view.*
 import java.util.ArrayList
+import kotlin.collections.HashMap
+import kotlin.collections.forEach
+import kotlin.collections.set
 
 
 @Suppress("UNUSED_PARAMETER")

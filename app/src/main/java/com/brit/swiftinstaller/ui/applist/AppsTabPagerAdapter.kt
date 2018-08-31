@@ -14,7 +14,7 @@ class AppsTabPagerAdapter(fm: FragmentManager, val summary: Boolean, vararg tabs
     private val requiredApps = HashMap<Int, Array<String>>()
 
     init {
-        for(index in tabs) {
+        for (index in tabs) {
             mFragments.add(AppListFragment.instance(summary,
                     (index == InstallSummaryActivity.FAILED_TAB)))
             mApps[index] = ArrayList()

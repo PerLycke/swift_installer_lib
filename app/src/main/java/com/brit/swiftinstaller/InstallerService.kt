@@ -3,7 +3,7 @@ package com.brit.swiftinstaller
 import android.app.job.JobParameters
 import android.app.job.JobService
 import com.brit.swiftinstaller.installer.OverlayManager
-import com.brit.swiftinstaller.utils.*
+import com.brit.swiftinstaller.utils.InstallerServiceHelper
 
 class InstallerService : JobService() {
     override fun onStopJob(params: JobParameters?): Boolean {

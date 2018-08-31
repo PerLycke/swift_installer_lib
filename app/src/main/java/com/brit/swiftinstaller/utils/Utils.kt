@@ -5,9 +5,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import com.brit.swiftinstaller.R
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 
 @Suppress("unused")

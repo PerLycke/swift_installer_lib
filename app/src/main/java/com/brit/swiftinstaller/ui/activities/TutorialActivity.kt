@@ -2,16 +2,15 @@ package com.brit.swiftinstaller.ui.activities
 
 import android.Manifest
 import android.app.AlertDialog
-import android.os.Bundle
-import com.brit.swiftinstaller.R
-import com.hololo.tutorial.library.Step
-import com.hololo.tutorial.library.TutorialActivity
 import android.content.Intent
-import android.graphics.Color
+import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v4.content.ContextCompat
 import android.view.View
+import com.brit.swiftinstaller.R
 import com.hololo.tutorial.library.PermissionStep
+import com.hololo.tutorial.library.Step
+import com.hololo.tutorial.library.TutorialActivity
 
 class TutorialActivity : TutorialActivity() {
 
