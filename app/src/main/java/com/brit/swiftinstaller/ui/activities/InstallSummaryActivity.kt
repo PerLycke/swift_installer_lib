@@ -11,9 +11,9 @@ import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import com.google.android.material.tabs.TabLayout
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.appcompat.app.AlertDialog
+import android.support.design.widget.TabLayout
+import android.support.v4.content.LocalBroadcastManager
+import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.View
 import com.brit.swiftinstaller.BuildConfig
@@ -83,8 +83,8 @@ class InstallSummaryActivity : ThemeActivity() {
         })
 
         container.adapter = mPagerAdapter
-        container.addOnPageChangeListener(com.google.android.material.tabs.TabLayout.TabLayoutOnPageChangeListener(tab_install_summary_root))
-        tab_install_summary_root.addOnTabSelectedListener(com.google.android.material.tabs.TabLayout.ViewPagerOnTabSelectedListener(container))
+        container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tab_install_summary_root))
+        tab_install_summary_root.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
 
         val builder = AlertDialog.Builder(this)
 
@@ -205,7 +205,7 @@ class InstallSummaryActivity : ThemeActivity() {
                         onProgressUpdate(Progress(SUCCESS_TAB, item))
                     } else {
                         errorMap[pn] = "Install Cancelled"
-                        androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(context.applicationContext).sendBroadcast(Intent(ACTION_INSTALL_CANCELLED))
+                        LocalBroadcastManager.getInstance(context.applicationContext).sendBroadcast(Intent(ACTION_INSTALL_CANCELLED))
                         onProgressUpdate(Progress(FAILED_TAB, item))
                     }
                 }

@@ -1,7 +1,7 @@
 package com.brit.swiftinstaller.ui.activities
 
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
+import android.support.v7.app.AlertDialog
 import com.brit.swiftinstaller.R
 
 class UninstallFinishedActivity : ThemeActivity() {

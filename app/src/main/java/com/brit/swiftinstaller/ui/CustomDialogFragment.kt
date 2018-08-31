@@ -2,12 +2,12 @@ package com.brit.swiftinstaller.ui
 
 import android.app.Dialog
 import android.os.Bundle
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
-import androidx.appcompat.app.AppCompatActivity
+import android.support.v4.app.DialogFragment
+import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 
 @Suppress("unused")
-class CustomDialogFragment : androidx.fragment.app.DialogFragment() {
+class CustomDialogFragment : DialogFragment() {
 
     private var mCreator: DialogCreator? = null
 
@@ -29,7 +29,7 @@ class CustomDialogFragment : androidx.fragment.app.DialogFragment() {
             dialogFragment.show(activity.supportFragmentManager, "custom")
         }
 
-        fun showDialog(fragment: androidx.fragment.app.Fragment, creator: DialogCreator) {
+        fun showDialog(fragment: Fragment, creator: DialogCreator) {
             val dialogFragment = newInstance(creator)
             dialogFragment.setTargetFragment(fragment, 0)
             dialogFragment.show(fragment.fragmentManager, creator.toString())

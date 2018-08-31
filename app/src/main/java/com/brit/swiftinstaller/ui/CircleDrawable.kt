@@ -2,9 +2,9 @@ package com.brit.swiftinstaller.ui
 
 import android.graphics.*
 import android.graphics.drawable.Drawable
-import androidx.annotation.ColorInt
-import androidx.annotation.FloatRange
-import androidx.annotation.IntRange
+import android.support.annotation.ColorInt
+import android.support.annotation.FloatRange
+import android.support.annotation.IntRange
 
 class CircleDrawable(color: Int) : Drawable() {
 

@@ -10,7 +10,7 @@
         android:id="@+id/failed_info"
         layout="@layout/failed_info_card" />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/app_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -8,10 +8,10 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.AsyncTask
 import android.os.Bundle
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.tabs.TabLayout
-import androidx.viewpager.widget.ViewPager
-import androidx.appcompat.widget.SearchView
+import android.support.design.widget.BottomSheetDialog
+import android.support.design.widget.TabLayout
+import android.support.v4.view.ViewPager
+import android.support.v7.widget.SearchView
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -69,7 +69,7 @@ class OverlaysActivity : ThemeActivity() {
     }
 
     private var mPagerAdapter: AppsTabPagerAdapter? = null
-    private lateinit var mViewPager: androidx.viewpager.widget.ViewPager
+    private lateinit var mViewPager: ViewPager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -137,9 +137,9 @@ class OverlaysActivity : ThemeActivity() {
         }
 
         container.adapter = mPagerAdapter
-        container.addOnPageChangeListener(com.google.android.material.tabs.TabLayout.TabLayoutOnPageChangeListener(tabs_overlays_root))
-        tabs_overlays_root.addOnTabSelectedListener(com.google.android.material.tabs.TabLayout.ViewPagerOnTabSelectedListener(container))
-        container.addOnPageChangeListener(object : androidx.viewpager.widget.ViewPager.OnPageChangeListener {
+        container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs_overlays_root))
+        tabs_overlays_root.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
+        container.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
             }
 
@@ -253,7 +253,7 @@ class OverlaysActivity : ThemeActivity() {
     }
 
     fun fabClick(@Suppress("UNUSED_PARAMETER") view: View) {
-        val bottomSheetDialog = com.google.android.material.bottomsheet.BottomSheetDialog(this)
+        val bottomSheetDialog = BottomSheetDialog(this)
         val sheetView = View.inflate(this, R.layout.sheet_overlays_fab, null)
         bottomSheetDialog.setContentView(sheetView)
         bottomSheetDialog.window.decorView.findViewById<View>(R.id.design_bottom_sheet).setBackgroundColor(getBackgroundColor(this))
@@ -341,7 +341,7 @@ class OverlaysActivity : ThemeActivity() {
     }
 
     private fun uninstallAction() {
-        val bottomSheetDialog = com.google.android.material.bottomsheet.BottomSheetDialog(this)
+        val bottomSheetDialog = BottomSheetDialog(this)
         val sheetView = View.inflate(this, R.layout.sheet_confirm_uninstall, null)
         bottomSheetDialog.setContentView(sheetView)
         bottomSheetDialog.window.decorView.findViewById<View>(R.id.design_bottom_sheet).setBackgroundColor(getBackgroundColor(this))

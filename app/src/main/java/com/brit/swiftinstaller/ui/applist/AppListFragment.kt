@@ -4,9 +4,10 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +16,6 @@ import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.utils.getAppsToUpdate
@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.failed_info_card.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AppListFragment : androidx.fragment.app.Fragment() {
+class AppListFragment : Fragment() {
 
     var mApps: ArrayList<AppItem> = ArrayList()
     var mVisible: ArrayList<Int> = ArrayList()
@@ -38,7 +38,6 @@ class AppListFragment : androidx.fragment.app.Fragment() {
     private val mChecked = SparseBooleanArray()
 
     var alertIconClickListener: AlertIconClickListener? = null
-    var appListView: RecyclerView? = null
 
     private var mSummary = false
     private var mFailedTab = false
@@ -70,7 +69,6 @@ class AppListFragment : androidx.fragment.app.Fragment() {
             view.failed_info.visibility = View.GONE
             setHideFailedInfoCard(context!!, true)
         }
-        appListView = view.findViewById(R.id.app_list_view)
         return view
     }
 
@@ -85,16 +83,16 @@ class AppListFragment : androidx.fragment.app.Fragment() {
                 }
             }
         }
-        if (appListView != null && !appListView!!.isComputingLayout) {
-            appListView?.adapter?.notifyDataSetChanged()
+        if (app_list_view != null && !app_list_view.isComputingLayout) {
+            app_list_view.adapter?.notifyDataSetChanged()
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        appListView?.adapter = AppAdapter()
-        appListView?.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
+        app_list_view.adapter = AppAdapter()
+        app_list_view.layoutManager = LinearLayoutManager(activity)
     }
 
     fun getCheckedItems(): ArrayList<AppItem> {
@@ -122,8 +120,8 @@ class AppListFragment : androidx.fragment.app.Fragment() {
         })
         mVisible.addAll(mApps.indices)
         mHandler.post {
-            if (appListView != null && !appListView!!.isComputingLayout) {
-                appListView?.adapter?.notifyDataSetChanged()
+            if (app_list_view != null && !app_list_view.isComputingLayout) {
+                app_list_view.adapter?.notifyDataSetChanged()
             }
         }
     }
@@ -132,7 +130,7 @@ class AppListFragment : androidx.fragment.app.Fragment() {
         requiredApps = apps
     }
 
-    inner class AppAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<AppAdapter.ViewHolder>() {
+    inner class AppAdapter : RecyclerView.Adapter<AppAdapter.ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             return ViewHolder(LayoutInflater.from(activity).inflate(
@@ -147,7 +145,7 @@ class AppListFragment : androidx.fragment.app.Fragment() {
             return mVisible.size
         }
 
-        inner class ViewHolder(val view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
+        inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
             private var appName: TextView = view.findViewById(R.id.app_item_name)
             private var packageName: TextView = view.findViewById(R.id.app_name)
             private var appIcon: ImageView = view.findViewById(R.id.app_item_image)
