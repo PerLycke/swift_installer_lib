@@ -159,6 +159,18 @@
             app:layout_constraintEnd_toStartOf="@+id/select_all_btn"
             app:layout_constraintTop_toTopOf="@+id/select_all_btn"
             app:srcCompat="@drawable/ic_accent_new" />
+
+        <ProgressBar
+            android:id="@+id/loading_progress"
+            style="?android:attr/progressBarStyle"
+            android:indeterminate="true"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/select_all_btn"
+            app:layout_constraintEnd_toEndOf="@+id/select_all_btn"
+            app:layout_constraintStart_toStartOf="@+id/select_all_btn"
+            app:layout_constraintTop_toTopOf="@+id/select_all_btn" />
+
     </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

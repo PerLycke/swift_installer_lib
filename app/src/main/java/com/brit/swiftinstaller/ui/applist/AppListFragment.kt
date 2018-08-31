@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.SparseBooleanArray
@@ -159,81 +158,66 @@ class AppListFragment : Fragment() {
             }
 
             fun bindAppItem(item: AppItem) {
+                val incompatible = !Utils.checkVersionCompatible(context!!, item.packageName)
+                val installed = Utils.isOverlayInstalled(context!!, Utils.getOverlayPackageName(item.packageName))
+                val hasVersions = Utils.overlayHasVersion(context!!, item.packageName)
+                val hasUpdate = getAppsToUpdate(context!!).contains(item.packageName)
+                val isRequired = requiredApps.contains(item.packageName)
                 appName.text = item.title
+                appName.setTextColor(context!!.getColor(android.R.color.white))
+                appName.alpha = 1.0f
                 appIcon.setImageDrawable(item.icon)
-                if (requiredApps.contains(item.packageName)) {
-                    appCheckBox.setOnCheckedChangeListener(null)
-                    view.setOnClickListener(null)
-                    appCheckBox.isChecked = true
-                    appCheckBox.isClickable = false
-                    view.isEnabled = false
-                    required.visibility = View.VISIBLE
-                    appCheckBox.buttonTintList = ColorStateList(arrayOf<IntArray>(appCheckBox.drawableState),
-                            intArrayOf(Color.parseColor("#4dffffff")))
-
-                    //val states = arrayOf<IntArray>(intArrayOf(android.R.attr.state_checked))
-                    //val colors = intArrayOf(Color.parseColor("#4dffffff"))
-                    //appCheckBox.setButtonTintList(ColorStateList(states, colors))
-                } else {
-                    appCheckBox.setOnCheckedChangeListener(checkListener)
-                    appCheckBox.isChecked = mChecked.get(mVisible[adapterPosition], false)
-                    view.setOnClickListener(clickListener)
-                    view.isEnabled = true
-                    required.visibility = View.GONE
-                    appCheckBox.buttonTintList = null
-                }
                 packageName.text = item.packageName
-
+                view.setOnClickListener(clickListener)
+                appCheckBox.visibility = View.VISIBLE
                 appCheckBox.setOnCheckedChangeListener(checkListener)
+                appCheckBox.isChecked = mChecked.get(mVisible[adapterPosition], false)
+                appCheckBox.buttonTintList = null
+                alertIcon.visibility = View.GONE
+                alertIcon.setImageDrawable(context!!.getDrawable(R.drawable.ic_info))
+                required.visibility = View.GONE
+                downloadIcon.visibility = View.GONE
 
                 if (mSummary) {
                     appCheckBox.visibility = View.GONE
                     appCheckBox.isEnabled = false
                     if (mFailedTab) {
                         alertIcon.visibility = View.VISIBLE
-                        alertIcon.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_alert))
+                        alertIcon.setImageDrawable(context!!.getDrawable(R.drawable.ic_alert))
                     }
                 } else {
-                    if (!Utils.checkVersionCompatible(context!!, item.packageName)) {
-                        appName.alpha = 0.3f
-                        alertIcon.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_alert))
-                        if (Utils.isOverlayInstalled(context!!, Utils.getOverlayPackageName(item.packageName))) {
-                            appCheckBox.visibility = View.VISIBLE
-                            appCheckBox.isEnabled = true
-                            required.visibility = View.VISIBLE
-                            required.text = getString(R.string.unsupported)
-                        } else {
-                            appCheckBox.visibility = View.GONE
-                            appCheckBox.isEnabled = false
-                        }
-                    } else {
-                        appName.alpha = 1.0f
-                        appCheckBox.visibility = View.VISIBLE
-                        alertIcon.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_info))
-                    }
-                    if (Utils.isOverlayInstalled(context!!, item.packageName)
-                            && getAppsToUpdate(context!!).contains(item.packageName)) {
-                        appName.setTextColor(context!!.getColor(R.color.minimal_orange))
-                    } else if (requiredApps.contains(item.packageName)) {
+                    if (isRequired) {
+                        appCheckBox.isChecked = true
+                        appCheckBox.isClickable = false
+                        required.visibility = View.VISIBLE
                         appName.setTextColor(Color.parseColor("#4dffffff"))
-                    } else {
-                        appName.setTextColor(context!!.getColor(android.R.color.white))
+                        appCheckBox.buttonTintList = ColorStateList(arrayOf<IntArray>(appCheckBox.drawableState),
+                                intArrayOf(Color.parseColor("#4dffffff")))
                     }
-                    if (Utils.overlayHasVersion(context!!, item.packageName)) {
+                    if (incompatible) {
+                        appName.alpha = 0.3f
+                        alertIcon.setImageDrawable(context!!.getDrawable(R.drawable.ic_alert))
+                        required.visibility = View.VISIBLE
+                        required.text = getString(R.string.unsupported)
+                        if (!installed) {
+                            appCheckBox.visibility = View.GONE
+                            appCheckBox.isClickable = false
+                            view.isClickable = false
+                        }
+                    }
+                    if (hasUpdate) {
+                        appName.setTextColor(context!!.getColor(R.color.minimal_orange))
+                    }
+                    if (hasVersions) {
                         alertIcon.visibility = View.VISIBLE
-                    } else {
-                        alertIcon.visibility = View.GONE
+                    }
+                    if (appName.text.contains("Gboard")) {
+                        downloadIcon.visibility = View.VISIBLE
+                        downloadIcon.setColorFilter(getAccentColor(context!!))
                     }
                 }
 
-                if (appName.text.contains("Gboard") && appCheckBox.visibility == View.VISIBLE) {
-                    downloadIcon.visibility = View.VISIBLE
-                    downloadIcon.setColorFilter(getAccentColor(context!!))
-                } else {
-                    downloadIcon.visibility = View.GONE
-                }
-
-                if (alertIconClickListener != null) {
+                if (alertIcon.visibility == View.VISIBLE) {
                     alertIcon.setOnClickListener {
                         alertIconClickListener!!.onAlertIconClick(mApps[mVisible[adapterPosition]])
                     }

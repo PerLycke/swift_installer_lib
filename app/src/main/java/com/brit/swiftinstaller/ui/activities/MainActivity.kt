@@ -28,11 +28,10 @@ import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.dialog_about.view.*
 import kotlinx.android.synthetic.main.popup_menu.view.*
 import org.jetbrains.anko.doAsync
-import java.util.*
 
 class MainActivity : ThemeActivity() {
 
-    var overlaysList = arrayListOf<AppItem>()
+    private var overlaysList = ArrayList<AppItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,28 +53,17 @@ class MainActivity : ThemeActivity() {
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-            // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
                 ActivityCompat.requestPermissions(this,
                         arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
                         101)
 
             } else {
-
-                // No explanation needed, we can request the permission.
-
                 ActivityCompat.requestPermissions(this,
                         arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
                         101)
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
             }
         }
 
@@ -90,6 +78,9 @@ class MainActivity : ThemeActivity() {
         card_update.setOnClickListener {
             val intent = Intent(this, OverlaysActivity::class.java)
             intent.putExtra("tab", OverlaysActivity.UPDATE_TAB)
+            val bundle = Bundle()
+            bundle.putParcelableArrayList("overlays_list", overlaysList)
+            intent.putExtras(bundle)
             startActivity(intent)
         }
 
@@ -97,11 +88,6 @@ class MainActivity : ThemeActivity() {
             val intent = Intent(this, CustomizeActivity::class.java)
             startActivity(intent)
         }
-    }
-
-    fun SharedPreferences.Editor.putIntegerArrayList(key: String, list: ArrayList<String>?): SharedPreferences.Editor {
-        putString(key, list?.joinToString(",") ?: "")
-        return this
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,

@@ -8,13 +8,16 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v4.content.ContextCompat
 import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.ui.applist.AppItem
+import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.utils.getBackgroundColor
 import com.hololo.tutorial.library.PermissionStep
 import com.hololo.tutorial.library.Step
 import com.hololo.tutorial.library.TutorialActivity
+import org.jetbrains.anko.doAsync
 
 class TutorialActivity : TutorialActivity() {
-
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -32,8 +35,13 @@ class TutorialActivity : TutorialActivity() {
         }
 
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("appHasRunBefore", false)) {
-            startActivity(Intent(this, MainActivity::class.java))
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         } else {
+            doAsync {
+                overlaysList = Utils.sortedOverlaysList(this@TutorialActivity)
+            }
+
             setIndicator(R.drawable.tutorial_indicator)
             setIndicatorSelected(R.drawable.tutorial_indicator_selected)
 
@@ -73,8 +81,13 @@ class TutorialActivity : TutorialActivity() {
 
     override fun finishTutorial() {
         super.finishTutorial()
+        val intent = Intent(this, CustomizeActivity::class.java)
+        intent.putExtra("parentActivity", "tutorial")
         PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("appHasRunBefore", true).apply()
-        startActivity(Intent(this, CustomizeActivity::class.java).putExtra("parentActivity", "tutorial"))
+        val bundle = Bundle()
+        bundle.putParcelableArrayList("overlays_list", overlaysList)
+        intent.putExtras(bundle)
+        startActivity(intent)
         finish()
     }
 }

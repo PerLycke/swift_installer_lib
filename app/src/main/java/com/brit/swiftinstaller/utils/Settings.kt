@@ -1,16 +1,12 @@
 package com.brit.swiftinstaller.utils
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.text.TextUtils
 import android.util.ArraySet
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.installer.rom.RomInfo
-import com.brit.swiftinstaller.ui.applist.AppItem
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 
 const val KEY_ACCENT_COLOR = "accent_color"
 const val KEY_BACKGROUND_COLOR = "background_color"
@@ -32,7 +28,6 @@ const val KEY_OVERLAYS_TO_INSTALL = "overlays_to_install"
 const val KEY_OVERLAYS_TO_UNINSTALL = "overlays_to_uninstall"
 const val KEY_DARK_NOTIF_BG = "dark_notif_bg"
 const val KEY_ALPHA = "alpha"
-const val KEY_SORTED_LIST = "sorted_list"
 
 fun getAccentColor(context: Context): Int {
     return PreferenceManager.getDefaultSharedPreferences(context).getInt(KEY_ACCENT_COLOR, RomInfo.getRomInfo(context).defaultAccent)

@@ -27,6 +27,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.ui.CircleDrawable
+import com.brit.swiftinstaller.ui.applist.AppItem
 import com.brit.swiftinstaller.utils.*
 import com.brit.swiftinstaller.utils.ColorUtils.checkAccentColor
 import com.brit.swiftinstaller.utils.ColorUtils.checkBackgroundColor
@@ -41,6 +42,7 @@ import kotlinx.android.synthetic.main.customize_preview_settings.*
 import kotlinx.android.synthetic.main.customize_preview_sysui.*
 import kotlinx.android.synthetic.main.customize_systemui.*
 import kotlinx.android.synthetic.main.fab_sheet_personalize.view.*
+import org.jetbrains.anko.doAsync
 
 class CustomizeActivity : ThemeActivity() {
 
@@ -68,13 +70,24 @@ class CustomizeActivity : ThemeActivity() {
     private val handler = Handler()
     private var parentActivity: String? = "parent"
     private lateinit var bottomSheetDialog: BottomSheetDialog
+    private var overlaysList = ArrayList<AppItem>()
 
     private var recompile = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val bundle = intent.extras
+        if (bundle != null) {
+            overlaysList = bundle.getParcelableArrayList("overlays_list")
+        }
+
         parentActivity = intent.getStringExtra("parentActivity")
+        if (parentActivity == "tutorial") {
+            doAsync {
+                overlaysList = Utils.sortedOverlaysList(this@CustomizeActivity)
+            }
+        }
 
         setContentView(R.layout.activity_customize)
         handler.post {
@@ -718,7 +731,11 @@ class CustomizeActivity : ThemeActivity() {
                 }
             } else {
                 if (parentActivity == "tutorial") {
-                    startActivity(Intent(this, OverlaysActivity::class.java))
+                    val intent = Intent(this, OverlaysActivity::class.java)
+                    val bundle = Bundle()
+                    bundle.putParcelableArrayList("overlays_list", overlaysList)
+                    intent.putExtras(bundle)
+                    startActivity(intent)
                 } else {
                     finish()
                 }

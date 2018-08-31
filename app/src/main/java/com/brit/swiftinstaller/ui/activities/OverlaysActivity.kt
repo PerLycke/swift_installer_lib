@@ -6,7 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
 import android.graphics.Bitmap
-import android.os.AsyncTask
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Environment
 import android.support.design.widget.BottomSheetDialog
@@ -29,11 +29,12 @@ import kotlinx.android.synthetic.main.activity_overlays.*
 import kotlinx.android.synthetic.main.tab_layout_overlay.*
 import kotlinx.android.synthetic.main.tab_overlays_updates.*
 import kotlinx.android.synthetic.main.toolbar_overlays.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
-import java.lang.ref.WeakReference
 
 class OverlaysActivity : ThemeActivity() {
 
@@ -80,15 +81,19 @@ class OverlaysActivity : ThemeActivity() {
 
     private var mPagerAdapter: AppsTabPagerAdapter? = null
     private lateinit var mViewPager: ViewPager
-    var overlaysList = arrayListOf<AppItem>()
+    private var overlaysList = arrayListOf<AppItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_overlays)
 
-        val bundle = getIntent().getExtras()
+        val bundle = intent.extras
         overlaysList = bundle.getParcelableArrayList("overlays_list")
 
+        select_all_btn.visibility = View.INVISIBLE
+        select_all_btn.isClickable = false
+        loading_progress.visibility = View.VISIBLE
+        loading_progress.indeterminateDrawable.setColorFilter(getAccentColor(this), PorterDuff.Mode.SRC_ATOP)
 
         mPagerAdapter = AppsTabPagerAdapter(supportFragmentManager,
                 false, INSTALL_TAB, ACTIVE_TAB, UPDATE_TAB)
@@ -110,17 +115,6 @@ class OverlaysActivity : ThemeActivity() {
             }
         })
         mPagerAdapter!!.setRequiredApps(INSTALL_TAB, requiredApps)
-
-        UpdateChecker(this, object : UpdateChecker.Callback() {
-            override fun finished(installedCount: Int, updates: ArrayList<String>) {
-                if (updates.isEmpty()) {
-                    update_tab_indicator.visibility = View.GONE
-                } else {
-                    update_tab_indicator.visibility = View.VISIBLE
-                }
-            }
-
-        }).execute()
 
         search_view.setOnSearchClickListener {
             toolbar_overlays_main_content.visibility = View.GONE
@@ -180,13 +174,64 @@ class OverlaysActivity : ThemeActivity() {
         toolbar_subtitle_current_bg.text = getString(R.string.hex_string,
                 String.format("%06x", getBackgroundColor(this)).substring(2))
 
-        mPagerAdapter!!.clearApps()
+        updateAdapter()
+    }
 
-        AppLoader(this, object : Callback {
-            override fun updateApps(tab: Int, item: AppItem) {
-                mPagerAdapter!!.addApp(tab, item)
+    fun updateAdapter() {
+        mPagerAdapter!!.clearApps()
+        doAsync {
+            val context = this@OverlaysActivity
+            val updates = getAppsToUpdate(context)
+            val pm = context.packageManager
+            val installTabList = arrayListOf<AppItem>()
+            val activeTabsList = arrayListOf<AppItem>()
+            val updatesTabList = arrayListOf<AppItem>()
+            var hasUpdate = false
+            for (item in overlaysList) {
+                var status: Int?
+                val pn = item.packageName
+                item.icon = pm.getApplicationIcon(item.packageName)
+                try {
+                    status = pm.getApplicationEnabledSetting(pn)
+                } catch (e: PackageManager.NameNotFoundException) {
+                    continue
+                }
+                if (isOverlayInstalled(context, getOverlayPackageName(pn))) {
+                    if (isOverlayEnabled(context, getOverlayPackageName(pn))) {
+                        if (updates.contains(pn)
+                                && status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
+                            updatesTabList.add(item)
+                            hasUpdate = true
+                        } else {
+                            activeTabsList.add(item)
+                        }
+                    } else if (status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
+                        installTabList.add(item)
+
+                    }
+                } else if (status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
+                    installTabList.add(item)
+                }
             }
-        }, overlaysList).execute()
+            for (i in updatesTabList) {
+                mPagerAdapter!!.addApp(UPDATE_TAB, i)
+            }
+            for (i in activeTabsList) {
+                mPagerAdapter!!.addApp(ACTIVE_TAB, i)
+            }
+            for (i in installTabList) {
+                mPagerAdapter!!.addApp(INSTALL_TAB, i)
+            }
+
+            uiThread {
+                select_all_btn.visibility = View.VISIBLE
+                select_all_btn.isClickable = true
+                loading_progress.visibility = View.INVISIBLE
+                if (hasUpdate) {
+                    update_tab_indicator.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
     fun customizeBtnClick(@Suppress("UNUSED_PARAMETER") view: View) {
@@ -210,53 +255,6 @@ class OverlaysActivity : ThemeActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    class AppLoader(context: Context, private val mCallback: Callback, list: ArrayList<AppItem>)
-        : AsyncTask<Void, AppLoader.Progress, Void>() {
-
-        private val mConRef: WeakReference<Context> = WeakReference(context)
-        private val overlaysList = list
-
-        class Progress(val tab: Int, val item: AppItem)
-
-        override fun doInBackground(vararg params: Void?): Void? {
-            assert(mConRef.get() != null)
-            val pm = mConRef.get()!!.packageManager
-            val context = mConRef.get()
-            val updates = getAppsToUpdate(context!!)
-            for (item in overlaysList) {
-                var status: Int?
-                val pn = item.packageName
-                item.icon = pm.getApplicationIcon(item.packageName)
-                try {
-                    status = pm.getApplicationEnabledSetting(pn)
-                } catch (e: PackageManager.NameNotFoundException) {
-                    continue
-                }
-                if (isOverlayInstalled(context, getOverlayPackageName(pn))) {
-                    if (isOverlayEnabled(context, getOverlayPackageName(pn))) {
-                        if (updates.contains(pn)
-                                && status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
-                            publishProgress(Progress(UPDATE_TAB, item))
-                        } else {
-                            publishProgress(Progress(ACTIVE_TAB, item))
-                        }
-                    } else if (status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
-                        publishProgress(Progress(INSTALL_TAB, item))
-                    }
-                } else if (status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
-                    publishProgress(Progress(INSTALL_TAB, item))
-                }
-            }
-            return null
-        }
-
-        override fun onProgressUpdate(vararg progress: Progress?) {
-            super.onProgressUpdate(*progress)
-            mCallback.updateApps(progress[0]!!.tab, progress[0]!!.item)
-        }
-
     }
 
     fun fabClick(@Suppress("UNUSED_PARAMETER") view: View) {
@@ -385,14 +383,8 @@ class OverlaysActivity : ThemeActivity() {
         }
         UpdateChecker(this, object : UpdateChecker.Callback() {
             override fun finished(installedCount: Int, updates: ArrayList<String>) {
-                mPagerAdapter!!.clearApps()
-                AppLoader(this@OverlaysActivity, object : Callback {
-                    override fun updateApps(tab: Int, item: AppItem) {
-                        mPagerAdapter!!.addApp(tab, item)
-                    }
-                }, overlaysList).execute()
+                updateAdapter()
             }
-
         }).execute()
         val intent = Intent(this, InstallActivity::class.java)
         val apps = ArrayList<String>()
