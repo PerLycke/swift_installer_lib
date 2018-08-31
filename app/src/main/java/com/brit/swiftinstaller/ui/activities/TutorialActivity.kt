@@ -14,7 +14,7 @@ import com.hololo.tutorial.library.Step
 import com.hololo.tutorial.library.TutorialActivity
 
 class TutorialActivity : TutorialActivity() {
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

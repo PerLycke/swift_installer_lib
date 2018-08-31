@@ -118,7 +118,6 @@ class InstallSummaryActivity : ThemeActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        Log.d("TEST", "onNewIntent")
         mApps = intent.getStringArrayListExtra("apps")
         if (intent.extras.containsKey("errorMap")) {
             mErrorMap = Utils.bundleToMap(intent.getBundleExtra("errorMap"))

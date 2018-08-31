@@ -481,8 +481,6 @@ class CustomizeActivity : ThemeActivity() {
         systemUiIcons[3] = systemui_flashlight_icon
         systemUiIcons[4] = systemui_sound_icon
         systemUiIcons[5] = systemui_rotation_icon
-
-        Log.d("TEST", "name - ${resources.getResourceEntryName(R.id.settings_connections_icon)}")
     }
 
     private fun setBgIndicator() {
@@ -555,8 +553,6 @@ class CustomizeActivity : ThemeActivity() {
     }
 
     fun updateColor(accentColor: Int, backgroundColor: Int, updateHex: Boolean, force: Boolean) {
-        Log.d("TEST", "accent - ${Integer.toHexString(accentColor)}")
-        Log.d("TEST", "background - ${Integer.toHexString(backgroundColor)}")
         updateColors(backgroundColor, usePalette)
         if (force || this.accentColor != accentColor) {
             this.accentColor = accentColor
@@ -602,7 +598,6 @@ class CustomizeActivity : ThemeActivity() {
         }
         if (force || this.backgroundColor != backgroundColor) {
             materialPalette = MaterialPalette.createPalette(backgroundColor, usePalette)
-            Log.d("TEST", "MaterialPalette : $materialPalette")
             this.backgroundColor = backgroundColor
             if (updateHex && hex_input_bg.text.toString() != Integer.toHexString(backgroundColor).substring(2))
                 hex_input_bg.setText(Integer.toHexString(backgroundColor).substring(2), TextView.BufferType.EDITABLE)

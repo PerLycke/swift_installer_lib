@@ -138,8 +138,6 @@ class InstallActivity : ThemeActivity() {
                     var count = apps.size
                     override fun onReceive(context: Context?, intent: Intent?) {
                         count--
-                        Log.d("TEST", "count - $count")
-                        Log.d("TEST", "data - ${intent!!.data}")
                         if (count == 0) {
                             uninstallComplete()
                             context!!.unregisterReceiver(this)
@@ -170,7 +168,6 @@ class InstallActivity : ThemeActivity() {
 
     inner class InstallListener : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            Log.d("TEST", "action - ${intent.action}")
             when {
                 intent.action == Notifier.ACTION_INSTALLED || intent.action == Notifier.ACTION_UNINSTALLED -> {
                     val pn = intent.getStringExtra(Notifier.EXTRA_PACKAGE_NAME)
