@@ -9,8 +9,6 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="com.samsung.android.permission.MODIFY_THEME" />
 
-    <uses-feature android:name="com.samsung.feature.samsung_experience_mobile" android:required="true" />
-
     <application
         android:name="com.brit.swiftinstaller.SwiftApplication"
         android:allowBackup="false"
@@ -19,23 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning"
-        tools:replace="android:allowBackup">
-
-        <meta-data android:name="is_samsung_only" android:value="true"/>
-
-        <activity
-            android:name="com.brit.swiftinstaller.ui.activities.TutorialActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:noHistory="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.TutorialStyle">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        tools:ignore="GoogleAppIndexingWarning">
+        
         <activity
             android:name="com.brit.swiftinstaller.ui.activities.MainActivity"
             android:configChanges="orientation|keyboardHidden"
