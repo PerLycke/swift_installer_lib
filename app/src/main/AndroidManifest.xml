@@ -21,6 +21,9 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup">
+
+        <meta-data android:name="is_samsung_only" android:value="true"/>
+
         <activity
             android:name="com.brit.swiftinstaller.ui.activities.TutorialActivity"
             android:configChanges="orientation|keyboardHidden"

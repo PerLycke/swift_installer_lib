@@ -6,6 +6,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -41,6 +42,21 @@ class TutorialActivity : TutorialActivity() {
                     "com.brit.swiftinstaller",
                     "Swift overlays enabling",
                     "The notification notifies you when overlays are being enabled on boot")
+        }
+
+        if (!resources.getBoolean(R.bool.allow_unsupported_systems)) {
+            val samsung = packageManager.getApplicationInfo(packageName,
+                    PackageManager.GET_META_DATA).metaData.getBoolean("is_samsung_only", false)
+            if (samsung && !packageManager.hasSystemFeature("com.samsung.feature.samsung_experience_mobile")) {
+                AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+                        .setTitle("Unsupported")
+                        .setMessage("Only supports samsung devices for now.")
+                        .setPositiveButton("EXIT") { _, _ ->
+                            finish()
+                        }
+                        .show()
+                return
+            }
         }
 
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("appHasRunBefore", false)) {
