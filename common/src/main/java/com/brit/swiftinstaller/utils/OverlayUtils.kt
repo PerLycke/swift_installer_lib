@@ -2,7 +2,7 @@ package com.brit.swiftinstaller.utils
 
 import android.content.Context
 import android.content.res.AssetManager
-import android.support.v4.util.ArrayMap
+import androidx.collection.ArrayMap
 import java.util.*
 
 object OverlayUtils {

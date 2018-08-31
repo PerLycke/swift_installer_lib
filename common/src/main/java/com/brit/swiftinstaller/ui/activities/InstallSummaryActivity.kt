@@ -10,10 +10,10 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.*
 import android.preference.PreferenceManager
-import android.support.design.widget.BottomSheetDialog
-import android.support.design.widget.TabLayout
-import android.support.v4.content.LocalBroadcastManager
-import android.support.v7.app.AlertDialog
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.tabs.TabLayout
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.appcompat.app.AlertDialog
 import android.view.View
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.BuildConfig

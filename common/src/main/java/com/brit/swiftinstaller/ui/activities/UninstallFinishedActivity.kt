@@ -3,7 +3,7 @@ package com.brit.swiftinstaller.ui.activities
 import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
-import android.support.v7.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.utils.ShellUtils
 import com.brit.swiftinstaller.utils.rebootCommand

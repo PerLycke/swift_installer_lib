@@ -3,7 +3,7 @@ package com.brit.swiftinstaller.utils
 import android.app.Activity
 import android.content.Context
 import android.graphics.Rect
-import android.support.v7.widget.AppCompatEditText
+import androidx.appcompat.widget.AppCompatEditText
 import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.inputmethod.InputMethodManager

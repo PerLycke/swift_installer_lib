@@ -5,16 +5,16 @@
     android:id="@+id/customize_bg_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:parentTag="android.support.constraint.ConstraintLayout">
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.15" />
 
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
         app:layout_constraintStart_toEndOf="@+id/bg_category"
         app:layout_constraintTop_toTopOf="@+id/bg_category" />
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/customize_base_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
             app:layout_constraintStart_toEndOf="@+id/customize_base_theme_title"
             app:layout_constraintTop_toTopOf="@+id/customize_base_theme_title" />
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/customize_base_theme_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
                 app:layout_constraintStart_toStartOf="@+id/material_theme"
                 app:layout_constraintTop_toBottomOf="@+id/material_theme" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/baseThemeInfo"
@@ -131,9 +131,9 @@
             app:layout_constraintTop_toTopOf="@+id/customize_base_theme_divider"
             tools:ignore="RtlSymmetry" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/custom_bg_main_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -165,7 +165,7 @@
             app:layout_constraintStart_toEndOf="@+id/custom_bg_title"
             app:layout_constraintTop_toTopOf="@+id/custom_bg_title" />
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/custom_bg_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -424,8 +424,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/hex_input_bg"
                 app:layout_constraintTop_toTopOf="@+id/hex_input_bg" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </merge>

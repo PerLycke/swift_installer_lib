@@ -9,10 +9,10 @@ import android.graphics.Bitmap
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Environment
-import android.support.design.widget.BottomSheetDialog
-import android.support.design.widget.TabLayout
-import android.support.v4.view.ViewPager
-import android.support.v7.widget.SearchView
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.tabs.TabLayout
+import androidx.viewpager.widget.ViewPager
+import androidx.appcompat.widget.SearchView
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
@@ -112,7 +112,7 @@ class OverlaysActivity : ThemeActivity() {
             onClose()
             false
         }
-        val textViewId = search_view.findViewById(android.support.v7.appcompat.R.id.search_src_text) as EditText
+        val textViewId = search_view.findViewById(androidx.appcompat.R.id.search_src_text) as EditText
         setCursorPointerColor(textViewId, getAccentColor(this))
         setCursorDrawableColor(textViewId, getAccentColor(this))
 

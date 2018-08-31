@@ -3,7 +3,7 @@ package com.brit.swiftinstaller.installer.rom
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.support.v4.content.FileProvider
+import androidx.core.content.FileProvider
 import android.util.Log
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.utils.*

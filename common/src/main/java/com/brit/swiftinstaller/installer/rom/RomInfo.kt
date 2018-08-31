@@ -6,7 +6,7 @@ import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.ui.activities.CustomizeActivity
 import com.brit.swiftinstaller.utils.*
