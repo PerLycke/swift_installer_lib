@@ -21,6 +21,16 @@ class PRomInfo(context: Context) : RomInfo(context) {
     }
 
     override fun postInstall(uninstall: Boolean, apps: ArrayList<String>, oppositeApps: ArrayList<String>?, intent: Intent?) {
+
+        if (!uninstall && oppositeApps != null && oppositeApps.isNotEmpty()) {
+            for (app in oppositeApps) {
+                uninstallOverlay(context, app)
+            }
+        }
+
+        if (intent != null) {
+            context.applicationContext.startActivity(intent)
+        }
     }
 
     override fun uninstallOverlay(context: Context, packageName: String) {

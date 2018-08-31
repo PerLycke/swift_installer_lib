@@ -8,7 +8,11 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.*
+import android.os.AsyncTask
+import android.os.Build
+import android.os.Bundle
+import android.os.Environment
+import android.os.Handler
 import android.preference.PreferenceManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
@@ -40,9 +44,9 @@ class InstallSummaryActivity : ThemeActivity() {
     private val mHandler = Handler()
 
     private var mErrorMap: HashMap<String, String> = HashMap()
-    private lateinit var mApps: ArrayList<String>
+    private var mApps = arrayListOf<String>()
 
-    private var update = false
+    var update = false
 
     private var dialog: AlertDialog? = null
 
@@ -51,26 +55,7 @@ class InstallSummaryActivity : ThemeActivity() {
         setContentView(R.layout.activity_install_summary)
         File(Environment.getExternalStorageDirectory(), ".swift").deleteRecursively()
 
-        val hotSwap = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("hotswap", false)
-
-        if (intent.extras != null && intent.extras!!.containsKey("errorMap")) {
-            mErrorMap = Utils.bundleToMap(intent.getBundleExtra("errorMap"))
-        }
-
         update = intent.getBooleanExtra("update", false)
-
-        if (ShellUtils.isRootAvailable && !hotSwap) {
-            fab_install_finished.show()
-        } else {
-            if (mErrorMap.isNotEmpty()) {
-                send_email_layout.visibility = View.VISIBLE
-                send_email_btn.setOnClickListener {
-                    sendErrorLog()
-                }
-            }
-        }
-
-        mApps = intent.getStringArrayListExtra("apps")
 
         mPagerAdapter = AppsTabPagerAdapter(supportFragmentManager, true, SUCCESS_TAB, FAILED_TAB)
         mPagerAdapter.setAlertIconClickListener(object : AppListFragment.AlertIconClickListener {
@@ -92,12 +77,7 @@ class InstallSummaryActivity : ThemeActivity() {
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tab_install_summary_root))
         tab_install_summary_root.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
 
-        if (!hotSwap || !Utils.isOverlayEnabled(this, "android")) {
-            resultDialog()
-        } else {
-            restartSysUi()
-            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("hotswap", false).apply()
-        }
+        //updateList()
     }
 
     @Suppress("UNUSED_PARAMETER")
@@ -136,24 +116,41 @@ class InstallSummaryActivity : ThemeActivity() {
         }
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
+    private fun updateList() {
+        mApps.clear()
+        mApps.addAll(swift.installApps)
+        mErrorMap.clear()
+        mErrorMap.putAll(swift.errorMap)
         mPagerAdapter.clearApps()
-        AppLoader(this, mApps, mErrorMap, object : OverlaysActivity.Callback {
+        AppLoader(this, mApps, mErrorMap, update, object : OverlaysActivity.Callback {
             override fun updateApps(tab: Int, item: AppItem) {
                 mPagerAdapter.addApp(tab, item)
             }
         }).execute()
+
+        if (!ShellUtils.isRootAvailable && mErrorMap.isNotEmpty()) {
+            send_email_layout.visibility = View.VISIBLE
+            send_email_btn.setOnClickListener {
+                sendErrorLog()
+            }
+        }
+
+        val hotSwap = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("hotswap", false)
+
+        if (ShellUtils.isRootAvailable && !hotSwap) {
+            fab_install_finished.show()
+        }
+        if (!hotSwap || !Utils.isOverlayEnabled(this, "android")) {
+            resultDialog()
+        } else {
+            restartSysUi()
+            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("hotswap", false).apply()
+        }
     }
 
-    override fun onResume() {
-        super.onResume()
-        mApps = intent.getStringArrayListExtra("apps")
-        if (intent.extras != null && intent.extras!!.containsKey("errorMap")) {
-            mErrorMap = Utils.bundleToMap(intent.getBundleExtra("errorMap"))
-        } else {
-            mErrorMap.clear()
-        }
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        updateList()
     }
 
     private fun resultDialog() {
@@ -200,18 +197,9 @@ class InstallSummaryActivity : ThemeActivity() {
         }
     }
 
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        mApps = intent.getStringArrayListExtra("apps")
-        if (intent.extras != null && intent.extras!!.containsKey("errorMap")) {
-            mErrorMap = Utils.bundleToMap(intent.getBundleExtra("errorMap"))
-        } else {
-            mErrorMap.clear()
-        }
-    }
-
     override fun onBackPressed() {
         super.onBackPressed()
+        finish()
         startActivity(Intent(this, MainActivity::class.java))
     }
 
@@ -252,6 +240,7 @@ class InstallSummaryActivity : ThemeActivity() {
 
     class AppLoader(context: Context, val apps: ArrayList<String>,
                     private val errorMap: HashMap<String, String>,
+                    private val update: Boolean,
                     private val mCallback: OverlaysActivity.Callback) :
             AsyncTask<Void, AppLoader.Progress, Void>() {
 
@@ -264,9 +253,10 @@ class InstallSummaryActivity : ThemeActivity() {
             assert(mConRef.get() != null)
             val pm = mConRef.get()!!.packageManager
             val context = mConRef.get()
+
             apps.addAll(errorMap.keys)
             for (pn: String in apps) {
-                if ( context == null) continue
+                if (context == null) continue
                 var info: ApplicationInfo? = null
                 var pInfo: PackageInfo? = null
                 var oInfo: PackageInfo? = null
@@ -289,11 +279,14 @@ class InstallSummaryActivity : ThemeActivity() {
                     item.versionName = pInfo.versionName
                     if (errorMap.keys.contains(pn)) {
                         onProgressUpdate(Progress(FAILED_TAB, item))
-                    } else if (RomInfo.getRomInfo(context).isOverlayInstalled(pn)
-                            && oInfo!!.getVersionCode() > getAppVersion(context, pn)) {
-                        setAppVersion(context, pn, oInfo.getVersionCode())
-                        onProgressUpdate(Progress(SUCCESS_TAB, item))
-                        removeAppToUpdate(context, item.packageName)
+                    } else if (RomInfo.getRomInfo(context).isOverlayInstalled(pn)) {
+                        if (update && oInfo!!.getVersionCode() != getAppVersion(context, pn)) {
+                            errorMap[pn] = "Update Failed"
+                            onProgressUpdate(Progress(FAILED_TAB, item))
+                        } else {
+                            onProgressUpdate(Progress(SUCCESS_TAB, item))
+                            removeAppToUpdate(context, item.packageName)
+                        }
                     } else {
                         errorMap[pn] = "Install Cancelled"
                         LocalBroadcastManager.getInstance(context.applicationContext).sendBroadcast(Intent(ACTION_INSTALL_CANCELLED))

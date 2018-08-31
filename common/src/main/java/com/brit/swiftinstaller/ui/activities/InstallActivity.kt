@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -16,7 +17,7 @@ import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.utils.InstallerServiceHelper
 import com.brit.swiftinstaller.utils.ShellUtils
-import com.brit.swiftinstaller.utils.Utils
+import com.brit.swiftinstaller.utils.swift
 import kotlinx.android.synthetic.main.progress_dialog_install.view.*
 import java.util.ArrayList
 import kotlin.collections.HashMap
@@ -56,20 +57,21 @@ class InstallActivity : ThemeActivity() {
     private fun installComplete() {
         LocalBroadcastManager.getInstance(applicationContext).unregisterReceiver(installListener)
         val intent = Intent(this, InstallSummaryActivity::class.java)
-        intent.putExtra("errorMap", Utils.mapToBundle(errorMap))
         intent.putExtra("update", update)
         errorMap.keys.forEach {
             if (apps.contains(it)) {
                 apps.remove(it)
             }
         }
-        intent.putExtra("apps", apps)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        if (ShellUtils.isRootAvailable) {
-            startActivity(intent)
-        } else {
-            RomInfo.getRomInfo(this).postInstall(false, apps, updateAppsToUninstall, intent)
+        apps.forEach {
+            Log.d("TEST", "app - $it")
         }
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        swift.installApps.clear()
+        swift.installApps.addAll(apps)
+        swift.errorMap.clear()
+        swift.errorMap.putAll(errorMap)
+        RomInfo.getRomInfo(this).postInstall(false, apps, updateAppsToUninstall, intent)
         finish()
     }
 

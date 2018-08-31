@@ -12,7 +12,8 @@ import android.os.Bundle
 import android.os.Environment
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.ui.applist.AppItem
-
+import com.google.gson.JsonObject
+import org.json.JSONObject
 
 @Suppress("unused")
 object Utils {
@@ -214,6 +215,23 @@ object Utils {
             }
         }
         return hasEnabledOverlays
+    }
+
+    fun mapToJsonString(map: HashMap<String, String>): String {
+        val json = JSONObject()
+        for (key in map.keys) {
+            json.put(key, map[key])
+        }
+        return json.toString()
+    }
+
+    fun jsonStringToMap(json: String): HashMap<String, String> {
+        val jsonObject = JSONObject(json)
+        val map = HashMap<String, String>()
+        for (key in jsonObject.keys()) {
+            map.put(key, jsonObject[key] as String)
+        }
+        return map
     }
 
     /*fun makeKey(key: File) {

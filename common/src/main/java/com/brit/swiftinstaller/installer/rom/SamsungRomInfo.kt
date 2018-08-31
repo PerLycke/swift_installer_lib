@@ -60,6 +60,14 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
         val extraIntent = intent != null
 
         if (ShellUtils.isRootAvailable) {
+            if (!uninstall && oppositeApps != null && oppositeApps.isNotEmpty()) {
+                for (app in oppositeApps) {
+                    uninstallOverlay(context, app)
+                }
+            }
+            if (intent != null) {
+                context.applicationContext.startActivity(intent)
+            }
             return
         }
 
@@ -152,10 +160,10 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
     }
 
     override fun getCustomizeFeatures(): Int {
-        if (Build.VERSION.SDK_INT == 26) {
-            return super.getCustomizeFeatures()
+        return if (Build.VERSION.SDK_INT == 26) {
+            super.getCustomizeFeatures()
         } else {
-            return CustomizeActivity.SUPPORTS_CLOCK + CustomizeActivity.SUPPORTS_ICONS + CustomizeActivity.SUPPORTS_TRANSPARENCY +
+            CustomizeActivity.SUPPORTS_CLOCK + CustomizeActivity.SUPPORTS_ICONS + CustomizeActivity.SUPPORTS_TRANSPARENCY +
                     CustomizeActivity.SUPPORTS_SHADOW
         }
     }

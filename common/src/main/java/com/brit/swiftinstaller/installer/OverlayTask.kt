@@ -5,6 +5,7 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.graphics.Color
 import android.os.Environment
+import android.util.Log
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.utils.*

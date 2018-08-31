@@ -1,11 +1,18 @@
 package com.brit.swiftinstaller.utils
 
 import android.content.Context
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.content.res.AssetManager
+import android.util.Log
 import androidx.collection.ArrayMap
 import java.util.*
 
 object OverlayUtils {
+
+    fun isSwiftOverlay(packageName: String) : Boolean {
+        return packageName.endsWith(".swiftinstaller.overlay")
+    }
 
     fun getOverlayOptions(context: Context, packageName: String) : ArrayMap<String, Array<String>> {
         val optionsMap = ArrayMap<String, Array<String>>()
@@ -49,16 +56,17 @@ object OverlayUtils {
             if (props != null) {
                 var found = false
                 for (prop in props) {
+                    Log.d("TEST", "prop - $prop")
+                    Log.d("TEST", "value - ${getProperty(prop, "prop")}")
                     if (getProperty(prop, "prop") != "prop") {
+                        found = true
                         val propVal = getProperty(prop) ?: "default"
                         val vals = am.list("$path/props/$prop") ?: continue
                         if (vals.contains("common")) {
-                            found = true
                             checkResourcePath(context, "$path/props/$prop/common", packageName, resourcePaths)
                         }
                         for (`val` in vals) {
                             if (`val` == propVal || `val`.startsWith(propVal)) {
-                                found = true
                                 checkResourcePath(context, "$path/props/$prop/$propVal", packageName, resourcePaths)
                             }
                         }
@@ -141,14 +149,18 @@ object OverlayUtils {
 
     private fun parseOverlayVersions(context: Context, packageName: String, resourcePaths: ArrayList<String>, path: String) {
         val vers = context.assets.list(path) ?: return
-        val packageInfo = context.packageManager.getPackageInfo(packageName, 0)
-        if (vers.contains("common")) {
-            checkResourcePath(context, "$path/common", packageName, resourcePaths)
-        }
-        for (ver in vers) {
-            if (packageInfo.versionName.startsWith(ver)) {
-                checkResourcePath(context, "$path/$ver", packageName, resourcePaths)
+        try {
+            val packageInfo = context.packageManager.getPackageInfo(packageName, 0)
+            if (vers.contains("common")) {
+                checkResourcePath(context, "$path/common", packageName, resourcePaths)
             }
+            for (ver in vers) {
+                if (packageInfo.versionName.startsWith(ver)) {
+                    checkResourcePath(context, "$path/$ver", packageName, resourcePaths)
+                }
+            }
+        } catch (e: PackageManager.NameNotFoundException) {
+            // ignore
         }
     }
 }

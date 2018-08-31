@@ -39,4 +39,5 @@ dependencies {
     implementation "org.jetbrains.anko:anko-commons:0.10.4"
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.github.topjohnwu:libsu:2.0.1'
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.2.61"
 }

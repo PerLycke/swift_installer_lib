@@ -10,6 +10,8 @@ import android.util.ArraySet
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.R
 import org.json.JSONObject
+import java.util.*
+import kotlin.collections.HashMap
 
 const val KEY_ACCENT_COLOR = "accent_color"
 const val KEY_BACKGROUND_COLOR = "background_color"

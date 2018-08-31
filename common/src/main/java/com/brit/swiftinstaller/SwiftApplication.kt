@@ -7,6 +7,9 @@ import com.topjohnwu.superuser.Shell
 
 class SwiftApplication : ContainerApp() {
 
+    val installApps = arrayListOf<String>()
+    val errorMap = HashMap<String, String>()
+
     override fun onCreate() {
         super.onCreate()
 

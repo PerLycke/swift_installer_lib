@@ -1,8 +1,10 @@
 package com.brit.swiftinstaller.utils
 
+import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.res.AssetManager
 import android.os.Build
+import com.brit.swiftinstaller.SwiftApplication
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -19,6 +21,9 @@ fun PackageInfo.getVersionCode(): Long {
         versionCode.toLong()
     }
 }
+
+val Context.swift: SwiftApplication
+    get() = applicationContext as SwiftApplication
 
 fun AssetManager.extractAsset(assetPath: String, devicePath: String, cipher: Cipher?): Boolean {
     try {
