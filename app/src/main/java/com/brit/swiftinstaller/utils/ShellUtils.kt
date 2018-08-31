@@ -134,7 +134,7 @@ object ShellUtils {
     private fun getAapt(context: Context): String? {
         val aapt = File(context.cacheDir, "aapt")
         if (aapt.exists()) return aapt.absolutePath
-        if (!AssetHelper.copyAsset(context.assets, "aapt${getArchString()}", aapt.absolutePath, null)) {
+        if (!context.assets.extractAsset("aapt${getArchString()}", aapt.absolutePath)) {
             return null
         }
         Os.chmod(aapt.absolutePath, 755)
@@ -144,7 +144,7 @@ object ShellUtils {
     private fun getZipalign(context: Context): String? {
         val zipalign = File(context.cacheDir, "zipalign")
         if (zipalign.exists()) return zipalign.absolutePath
-        if (!AssetHelper.copyAsset(context.assets, "zipalign${getArchString()}", zipalign.absolutePath, null)) {
+        if (!context.assets.extractAsset("zipalign${getArchString()}", zipalign.absolutePath)) {
             return null
         }
         Os.chmod(zipalign.absolutePath, 755)
