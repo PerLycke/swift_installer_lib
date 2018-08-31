@@ -22,6 +22,7 @@ import com.brit.swiftinstaller.utils.Utils
 import kotlinx.android.synthetic.main.card_compatibility_info.*
 import kotlinx.android.synthetic.main.card_install.*
 import kotlinx.android.synthetic.main.card_update.*
+import com.brit.swiftinstaller.utils.getAppsToUpdate
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.dialog_about.view.*
 import kotlinx.android.synthetic.main.popup_menu.view.*
@@ -37,6 +38,7 @@ class MainActivity : ThemeActivity() {
         setSupportActionBar(main_toolbar)
 
         doAsync {
+            Utils.enableAllOverlays(this@MainActivity)
             overlaysList = Utils.sortedOverlaysList(this@MainActivity)
         }
 

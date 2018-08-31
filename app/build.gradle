@@ -2,6 +2,21 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
+ext {
+    // Encryption values, do not touch as we generate a random key every time you compile!
+    byte[] key = new byte[16]
+    new Random().nextBytes(key)
+    KEY = key
+    byte[] iv = new byte[16]
+    new Random().nextBytes(iv)
+    IV_KEY = iv
+
+    ENFORCE_GOOGLE_PLAY_INSTALL = false
+    ENFORCE_AMAZON_APP_STORE_INSTALL = false
+    BASE_64_LICENSE_KEY = null
+    APK_SIGNATURE_PRODUCTION = null
+}
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -10,6 +25,13 @@ android {
         versionCode 56
         versionName "5.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "boolean", "ENFORCE_GOOGLE_PLAY_INSTALL", String.valueOf(ENFORCE_GOOGLE_PLAY_INSTALL)
+        buildConfigField "boolean", "ENFORCE_AMAZON_APP_STORE_INSTALL", String.valueOf(ENFORCE_AMAZON_APP_STORE_INSTALL)
+        buildConfigField "String", "BASE_64_LICENSE_KEY", String.valueOf(BASE_64_LICENSE_KEY)
+        buildConfigField "String", "APK_SIGNATURE_PRODUCTION", String.valueOf(APK_SIGNATURE_PRODUCTION)
+        buildConfigField "byte[]", "DECRYPTION_KEY", String.valueOf("\"" + KEY + "\"").replace("\"", "").replace("[", "{").replace("]", "}")
+        buildConfigField "byte[]", "IV_KEY", String.valueOf("\"" + IV_KEY + "\"").replace("\"", "").replace("[", "{").replace("]", "}")
     }
     buildTypes {
         release {
@@ -22,9 +44,9 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:28.0.0-beta01'
-    implementation 'com.android.support:recyclerview-v7:28.0.0-beta01'
-    implementation 'com.android.support:design:28.0.0-beta01'
+    implementation 'com.android.support:appcompat-v7:28.0.0-rc01'
+    implementation 'com.android.support:recyclerview-v7:28.0.0-rc01'
+    implementation 'com.android.support:design:28.0.0-rc01'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

@@ -11,7 +11,7 @@ import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.ui.applist.AppItem
 import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.utils.getBackgroundColor
-import android.util.Log
+import android.text.TextUtils
 import com.brit.swiftinstaller.library.R
 import com.hololo.tutorial.library.PermissionStep
 import com.hololo.tutorial.library.Step
@@ -28,9 +28,9 @@ class TutorialActivity : TutorialActivity() {
                 AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
                         .setTitle("Unsupported")
                         .setMessage("Only supports samsung devices for now.")
-                        .setPositiveButton("EXIT", { _, _ ->
+                        .setPositiveButton("EXIT") { _, _ ->
                             finish()
-                        })
+                        }
                         .show()
                 return
             }

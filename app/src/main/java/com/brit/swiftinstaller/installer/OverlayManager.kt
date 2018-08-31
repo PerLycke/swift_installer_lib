@@ -4,8 +4,9 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.utils.Utils
-import com.brit.swiftinstaller.utils.rom.RomInfo
+import com.brit.swiftinstaller.installer.rom.RomInfo
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.ThreadPoolExecutor

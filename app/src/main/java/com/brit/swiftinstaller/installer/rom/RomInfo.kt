@@ -24,15 +24,10 @@ open class RomInfo constructor(var context: Context, var name: String,
     }
 
     open fun installOverlay(context: Context, targetPackage: String, overlayPath: String) {
-        val installed = Utils.isOverlayInstalled(context, Utils.getOverlayPackageName(targetPackage))
         if (ShellUtils.isRootAvailable) {
             runCommand("pm install -r $overlayPath", true)
             if (!Utils.isSamsungOreo(context)) {
-                if (installed) {
-                    runCommand("cmd overlay enable " + Utils.getOverlayPackageName(targetPackage), true)
-                } else {
-                    addAppToInstall(context, overlayPath)
-                }
+                runCommand("cmd overlay enable " + Utils.getOverlayPackageName(targetPackage), true)
             }
         }
     }
