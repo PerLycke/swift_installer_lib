@@ -25,7 +25,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     lateinit var resDir: File
     lateinit var overlayDir: File
     lateinit var overlayPath: String
-    var errorLog: String? = null
+    var errorLog = ""
     var uninstall: Boolean = false
     var index = 0
 
@@ -39,8 +39,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         if (resDir.exists())
             resDir.deleteRecursively()
         resDir.mkdirs()
-        this.overlayPath = Environment.getExternalStorageDirectory().absolutePath + "/.swift/" +
-                "/overlays/compiled/" + Utils.getOverlayPackageName(packageName) + ".apk"
+        this.overlayPath = Utils.getOverlayPath(packageName)
         if (!File(overlayPath).parentFile.exists())
             File(overlayPath).parentFile.mkdirs()
         this.index = index

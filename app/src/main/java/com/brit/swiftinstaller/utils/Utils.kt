@@ -30,6 +30,11 @@ object Utils {
         return "$pack.swiftinstaller.overlay"
     }
 
+    fun getOverlayPath(packageName: String): String {
+        return Environment.getExternalStorageDirectory().absolutePath + "/.swift/" +
+                "/overlays/compiled/" + Utils.getOverlayPackageName(packageName) + ".apk"
+    }
+
     fun mapToBundle(map: HashMap<String, String>): Bundle {
         val bundle = Bundle()
         for (key in map.keys) {

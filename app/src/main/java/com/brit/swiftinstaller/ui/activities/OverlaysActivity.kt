@@ -99,6 +99,20 @@ class OverlaysActivity : ThemeActivity() {
         container.adapter = mPagerAdapter
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
+        container.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            }
+
+            override fun onPageSelected(position: Int) {
+                val checked = mPagerAdapter!!.getCheckedCount(position)
+                selectAllBtn.isChecked =
+                        checked == mPagerAdapter!!.getAppsCount(position) && checked > 0
+            }
+
+        })
 
         if (intent.hasExtra("tab")) {
             mViewPager.currentItem = intent.getIntExtra("tab", 0)

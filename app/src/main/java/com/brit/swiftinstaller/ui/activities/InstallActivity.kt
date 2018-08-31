@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AppCompatDelegate
 import android.util.Log
 import android.view.View
@@ -13,6 +14,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.brit.swiftinstaller.IInstallerCallback
 import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.installer.Notifier
 import com.brit.swiftinstaller.utils.InstallerServiceHelper
 import com.brit.swiftinstaller.utils.ShellUtils
 import com.brit.swiftinstaller.utils.Utils
@@ -25,25 +27,26 @@ import java.util.ArrayList
 @Suppress("UNUSED_PARAMETER")
 class InstallActivity : ThemeActivity() {
 
-    private lateinit var mProgressBar: ProgressBar
-    private lateinit var mProgressCount: TextView
-    private lateinit var mProgressPercent: TextView
+    private lateinit var progressBar: ProgressBar
+    private lateinit var progressCount: TextView
+    private lateinit var progressPercent: TextView
+    private val installListener = InstallListener()
 
-    private var mUninstall = false
+    private var uninstall = false
 
-    private lateinit var mApps: ArrayList<String>
+    private lateinit var apps: ArrayList<String>
 
-    val errorMap: HashMap<String, String> = HashMap()
+    private val errorMap: HashMap<String, String> = HashMap()
 
     fun updateProgress(label: String?, prog: Int, maximum: Int, uninstall: Boolean) {
         val max = maximum + 1
         val progress = prog + 1
-        if (mProgressBar.progress < progress) {
-            mProgressBar.progress = progress
-            mProgressBar.max = max
-            mProgressBar.postInvalidate()
-            mProgressCount.text = getString(R.string.install_count, progress, max)
-            mProgressPercent.text = String.format("%.0f%%", ((progress * 100 / max) + 0.0f))
+        if (progressBar.progress < progress) {
+            progressBar.progress = progress
+            progressBar.max = max
+            progressBar.postInvalidate()
+            progressCount.text = getString(R.string.install_count, progress, max)
+            progressPercent.text = String.format("%.0f%%", ((progress * 100 / max) + 0.0f))
         }
         Log.d("TEST", "progress - $progress/$max")
         if (progress == max) {
@@ -55,92 +58,92 @@ class InstallActivity : ThemeActivity() {
         if (!uninstall) {
             val intent = Intent(this, InstallSummaryActivity::class.java)
             intent.putExtra("errorMap", Utils.mapToBundle(errorMap))
-            intent.putExtra("apps", mApps)
+            errorMap.keys.forEach { if (apps.contains(it)) { apps.remove(it)}}
+            intent.putExtra("apps", apps)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            RomInfo.getRomInfo(this).postInstall(uninstall, intent)
+            RomInfo.getRomInfo(this).postInstall(uninstall, apps, intent)
             finish()
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mUninstall = intent.extras.getBoolean("uninstall", false)
-        mApps = intent.getStringArrayListExtra("apps")
-        mApps.forEach { Log.d("TEST", "install $it") }
+        uninstall = intent.extras.getBoolean("uninstall", false)
+        apps = intent.getStringArrayListExtra("apps")
+        apps.forEach { Log.d("TEST", "install $it") }
 
         val inflate = View.inflate(this, R.layout.progress_dialog_install, null)
-        val builder: AlertDialog.Builder
-        if (AppCompatDelegate.getDefaultNightMode()
+        val builder: AlertDialog.Builder = if (AppCompatDelegate.getDefaultNightMode()
                 == AppCompatDelegate.MODE_NIGHT_YES) {
-            builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog_Black)
+            AlertDialog.Builder(this, R.style.AppTheme_AlertDialog_Black)
         } else {
-            builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+            AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
         }
         builder.setView(inflate)
         val dialog = builder.create()
 
-        if (mUninstall) {
+        if (uninstall) {
             inflate.installProgressTxt.setText(R.string.progress_uninstalling_title)
         }
 
-        mProgressBar = inflate.installProgressBar
-        mProgressBar.isIndeterminate = mUninstall
-        mProgressCount = inflate.installProgressCount
-        mProgressPercent = inflate.installProgressPercent
+        val filter = IntentFilter(Notifier.ACTION_FAILED)
+        filter.addAction(Notifier.ACTION_INSTALLED)
+        LocalBroadcastManager.getInstance(applicationContext)
+                .registerReceiver(installListener, filter)
 
-        if (!mUninstall) {
-            updateProgress("", 0, mApps.size - 1, mUninstall)
+        progressBar = inflate.installProgressBar
+        progressBar.isIndeterminate = uninstall
+        progressCount = inflate.installProgressCount
+        progressPercent = inflate.installProgressPercent
+
+        if (!uninstall) {
+            updateProgress("", 0, apps.size - 1, uninstall)
         } else {
-            mProgressCount.visibility = View.INVISIBLE
-            mProgressPercent.visibility = View.INVISIBLE
+            progressCount.visibility = View.INVISIBLE
+            progressPercent.visibility = View.INVISIBLE
         }
         dialog.show()
 
-        if (mUninstall && !ShellUtils.isRootAvailable) {
-            val filter = IntentFilter(Intent.ACTION_PACKAGE_FULLY_REMOVED)
-            filter.addDataScheme("package")
+        if (uninstall && !ShellUtils.isRootAvailable) {
+            val intentfilter = IntentFilter(Intent.ACTION_PACKAGE_FULLY_REMOVED)
+            intentfilter.addDataScheme("package")
             registerReceiver(object : BroadcastReceiver() {
-                var count = mApps.size
+                var count = apps.size
                 override fun onReceive(context: Context?, intent: Intent?) {
                     count--
                     if (count == 0) {
                         startActivity(Intent(this@InstallActivity,
                                 UninstallFinishedActivity::class.java))
                         finish()
+                        context!!.unregisterReceiver(this)
                     }
                 }
-            }, filter)
-            mApps.forEach {
-                addAppToUninstall(this, it)
-                Log.d("TEST", "uninstall $it")
-            }
-            RomInfo.getRomInfo(this).postInstall(true, null)
+            }, intentfilter)
+            RomInfo.getRomInfo(this).postInstall(true, apps, null)
         }
-
-        InstallerServiceHelper.connectService(this)
-
-        InstallerServiceHelper.setInstallerCallback(object : IInstallerCallback.Stub() {
-            override fun installComplete(uninstall: Boolean) {
-            }
-
-            override fun installFailed(errorLog: String, packageName: String) {
-                errorMap[packageName] = errorLog
-            }
-
-            override fun progressUpdate(label: String?, progress: Int, max: Int, uninstall: Boolean) {
-                updateProgress(label, progress, max, uninstall)
-            }
-
-            override fun installStarted() {
-            }
-
-        })
-        if (!mUninstall) {
-            InstallerServiceHelper.install(mApps)
+        if (!uninstall) {
+            InstallerServiceHelper.install(this, apps)
         }
     }
 
     override fun recreate() {
         //super.recreate()
+    }
+
+    inner class InstallListener : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            if (intent.action == Notifier.ACTION_INSTALLED) {
+                val pn = intent.getStringExtra(Notifier.EXTRA_PACKAGE_NAME)
+                val label = packageManager.getApplicationInfo(pn, 0).loadLabel(packageManager)
+                val max = intent.getIntExtra(Notifier.EXTRA_MAX, 0)
+                val progress = intent.getIntExtra(Notifier.EXTRA_PROGRESS, 0)
+                updateProgress(label as String, progress, max, uninstall)
+            } else if (intent.action == Notifier.ACTION_FAILED) {
+                Log.d("TEST", "package failed - ${intent.getStringExtra(Notifier.EXTRA_PACKAGE_NAME)}")
+                errorMap[intent.getStringExtra(Notifier.EXTRA_PACKAGE_NAME)] =
+                        intent.getStringExtra(Notifier.EXTRA_LOG)
+            }
+        }
+
     }
 }

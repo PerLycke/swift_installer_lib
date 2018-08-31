@@ -1,59 +1,43 @@
 package com.brit.swiftinstaller.utils
 
+import android.app.job.JobInfo
+import android.app.job.JobScheduler
 import android.content.ComponentName
 import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
-import android.os.IBinder
-import com.brit.swiftinstaller.BuildConfig
-import com.brit.swiftinstaller.IInstallerCallback
-import com.brit.swiftinstaller.IInstallerService
+import android.os.PersistableBundle
 import com.brit.swiftinstaller.InstallerService
 
 class InstallerServiceHelper {
 
     companion object {
 
-        private var sConnection: ServiceConnection? = null
-        private var sService: IInstallerService? = null
+        const val INSTALL_JOB = 101
+        const val UNINSTALL_JOB = 102
 
-        private fun getServiceIntent(context: Context): Intent {
-            val serviceIntent = Intent(context, InstallerService::class.java)
-            serviceIntent.putExtra(InstallerService.ARG_THEME_PACKAGE, BuildConfig.APPLICATION_ID)
-            return serviceIntent
+        const val EXTRAS_APPS = "com.brit.swiftinstaller.APPS"
+
+        private fun getServiceComponent(context: Context): ComponentName {
+            return ComponentName(context, InstallerService::class.java)
         }
 
-        @Suppress("MemberVisibilityCanBePrivate")
-        fun startInstallerService(context: Context) {
-            context.startService(getServiceIntent(context))
+        fun install(context: Context, apps: List<String>) {
+            val extras = PersistableBundle()
+            extras.putStringArray(EXTRAS_APPS, apps.toTypedArray())
+            val params = JobInfo.Builder(INSTALL_JOB, getServiceComponent(context))
+                    .setExtras(extras)
+                    .setRequiresStorageNotLow(true)
+                    .build()
+            context.getSystemService(JobScheduler::class.java).schedule(params)
         }
 
-        fun setInstallerCallback(callback: IInstallerCallback) {
-            sService!!.setCallback(callback)
-        }
-
-        fun install(apps: List<String>) {
-            InstallerService.getService()!!.startInstall(apps)
-        }
-
-        fun uninstall(apps: List<String>) {
-            InstallerService.getService()!!.startUninstall(apps)
-        }
-
-        fun connectService(context: Context) {
-            try {
-                startInstallerService(context)
-                sConnection = object : ServiceConnection {
-                    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-                        sService = IInstallerService.Stub.asInterface(service)
-                    }
-
-                    override fun onServiceDisconnected(name: ComponentName?) {
-                    }
-                }
-                context.bindService(getServiceIntent(context), sConnection, Context.BIND_AUTO_CREATE)
-            } catch (e : Exception) {
-            }
+        fun uninstall(context: Context, apps: List<String>) {
+            val extras = PersistableBundle()
+            extras.putStringArray(EXTRAS_APPS, apps.toTypedArray())
+            val params = JobInfo.Builder(UNINSTALL_JOB, getServiceComponent(context))
+                    .setExtras(extras)
+                    .setRequiresStorageNotLow(true)
+                    .build()
+            context.getSystemService(JobScheduler::class.java).schedule(params)
         }
     }
 }

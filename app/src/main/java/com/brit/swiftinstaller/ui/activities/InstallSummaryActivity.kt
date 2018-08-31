@@ -101,6 +101,11 @@ class InstallSummaryActivity : AppCompatActivity() {
         }).execute()
     }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        mApps = intent.getStringArrayListExtra("apps")
+    }
+
     @Suppress("UNUSED_PARAMETER")
     fun rebootActions(view: View) {
         val bottomSheetDialog = ThemedBottomSheetDialog(this)

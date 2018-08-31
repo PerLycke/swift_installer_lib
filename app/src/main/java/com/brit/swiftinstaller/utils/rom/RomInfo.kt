@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.os.Environment
 import android.support.v4.content.FileProvider
 import android.util.Log
 import com.brit.swiftinstaller.BuildConfig
@@ -15,41 +14,27 @@ import java.io.File
 
 
 class RomInfo internal constructor(var context: Context, var name: String,
-                                   var version: String, vararg vars: String) {
+                                   var version: String) {
 
     var defaultAccent: Int = 0
-    var overlayDirectory: String
 
     init {
         defaultAccent = context.getColor(R.color.minimal_blue)
-        overlayDirectory = if (ShellUtils.isRootAvailable)
-            context.cacheDir.absolutePath
-        else
-            Environment.getExternalStorageDirectory().absolutePath + ".swift-installer"
-    }
-
-    val variants = vars
-
-    fun preInstall() {
-        //TODO
     }
 
     fun installOverlay(context: Context, targetPackage: String, overlayPath: String) {
         val installed = Utils.isOverlayInstalled(context, Utils.getOverlayPackageName(targetPackage))
         if (ShellUtils.isRootAvailable) {
-            runCommand("pm install -r " + overlayPath, true)
+            runCommand("pm install -r $overlayPath", true)
             if (installed) {
                 runCommand("cmd overlay enable " + Utils.getOverlayPackageName(targetPackage), true)
             } else {
                 addAppToInstall(context, overlayPath)
             }
-        } else {
-            addAppToInstall(context, overlayPath)
         }
     }
 
-    fun postInstall(uninstall: Boolean, intent: Intent?) {
-        val apps = if (uninstall) { getAppsToUninstall(context) } else { getAppsToInstall(context) }
+    fun postInstall(uninstall: Boolean, apps: ArrayList<String>, intent: Intent?) {
         Log.d("TEST", "apps - $apps")
         val extraIntent = intent != null
 
@@ -68,7 +53,7 @@ class RomInfo internal constructor(var context: Context, var name: String,
                 } else {
                     appInstall.data = FileProvider.getUriForFile(context,
                             BuildConfig.APPLICATION_ID + ".myprovider",
-                            File(apps.elementAt(index)))
+                            File(Utils.getOverlayPath(apps.elementAt(index))))
                 }
                 appInstall.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 appInstall.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -80,6 +65,7 @@ class RomInfo internal constructor(var context: Context, var name: String,
         })
 
         if (!intents.isEmpty()) {
+            intents.forEach { Log.d("TEST", "data = ${it.data}") }
             context.startActivities(intents)
         }
 
@@ -115,7 +101,7 @@ class RomInfo internal constructor(var context: Context, var name: String,
         @JvmStatic
         fun getRomInfo(context: Context): RomInfo {
             if (sInfo == null) {
-                sInfo = RomInfo(context, "AOSP", Build.VERSION.RELEASE, "type3-common", "type3_Dark")
+                sInfo = RomInfo(context, "AOSP", Build.VERSION.RELEASE)
             }
             return sInfo!!
         }
