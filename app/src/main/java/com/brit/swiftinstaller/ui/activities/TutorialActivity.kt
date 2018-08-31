@@ -10,7 +10,7 @@ import android.preference.PreferenceManager
 import android.support.v4.content.ContextCompat
 import com.hololo.tutorial.library.PermissionStep
 
-class IntroActivity : TutorialActivity() {
+class TutorialActivity : TutorialActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,23 +18,23 @@ class IntroActivity : TutorialActivity() {
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("appHasRunBefore", false)) {
             startActivity(Intent(this, MainActivity::class.java))
         } else {
-            setIndicator(R.drawable.intro_indicator)
-            setIndicatorSelected(R.drawable.intro_indicator_selected)
+            setIndicator(R.drawable.tutorial_indicator)
+            setIndicatorSelected(R.drawable.tutorial_indicator_selected)
 
-            addFragment(Step.Builder().setTitle(resources.getString(R.string.intro_title))
-                    .setContent(resources.getString(R.string.intro_guide))
+            addFragment(Step.Builder().setTitle(resources.getString(R.string.tutorial_title))
+                    .setContent(resources.getString(R.string.tutorial_guide))
                     .setBackgroundColor(ContextCompat.getColor(this, R.color.background_main))
-                    .setDrawable(R.drawable.ic_intro_logo) // int top drawable
+                    .setDrawable(R.drawable.ic_tutorial_logo) // int top drawable
                     .build())
-            addFragment(Step.Builder().setTitle(resources.getString(R.string.intro_customize_title))
-                    .setContent(resources.getString(R.string.intro_customize_desc))
+            addFragment(Step.Builder().setTitle(resources.getString(R.string.tutorial_customize_title))
+                    .setContent(resources.getString(R.string.tutorial_customize_desc))
                     .setBackgroundColor(ContextCompat.getColor(this, R.color.background_main))
-                    .setDrawable(R.drawable.ic_intro_customize) // int top drawable
+                    .setDrawable(R.drawable.ic_tutorial_customize) // int top drawable
                     .build())
             addFragment(PermissionStep.Builder().setTitle(getString(R.string.permission_title))
                     .setContent(getString(R.string.permission_detail))
                     .setBackgroundColor(ContextCompat.getColor(this, R.color.background_main)) // int background color
-                    .setDrawable(R.drawable.ic_intro_permission)
+                    .setDrawable(R.drawable.ic_tutorial_permission)
                     .setPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE))
                     .build())
         }

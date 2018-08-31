@@ -25,7 +25,7 @@
         tools:replace="android:allowBackup">
         <!--suppress AndroidDomInspection -->
         <activity
-            android:name=".ui.activities.IntroActivity"
+            android:name=".ui.activities.TutorialActivity"
             android:configChanges="orientation|keyboardHidden"
             android:noHistory="true"
             android:screenOrientation="portrait"

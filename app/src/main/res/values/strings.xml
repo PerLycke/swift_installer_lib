@@ -36,11 +36,11 @@
     <string name="install_updates">Install updates</string>
     <string name="installation_summary">Installation summary</string>
     <string name="installing_overlays">Installing overlays…</string>
-    <string name="intro_customize_desc">You can change to your favourite background and accent color before installing overlays</string>
-    <string name="intro_customize_title">Customize background and accent</string>
-    <string name="intro_guide">This guide will explain what Swift Installer is and what it does</string>
-    <string name="intro_permission_hint">Continue and set permissions</string>
-    <string name="intro_title">Swift Installer</string>
+    <string name="tutorial_customize_desc">You can change to your favourite background and accent color before installing overlays</string>
+    <string name="tutorial_customize_title">Customize background and accent</string>
+    <string name="tutorial_guide">This guide will explain what Swift Installer is and what it does</string>
+    <string name="tutorial_permission_hint">Continue and set permissions</string>
+    <string name="tutorial_title">Swift Installer</string>
     <string name="main_install_desc">Install separate or all overlays here</string>
     <string name="main_install_title">Install / Uninstall overlays</string>
     <string name="main_modify_accent_desc">Modify accent color for already installed overlays</string>
