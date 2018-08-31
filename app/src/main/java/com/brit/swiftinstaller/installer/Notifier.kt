@@ -2,7 +2,7 @@ package com.brit.swiftinstaller.installer
 
 import android.content.Context
 import android.content.Intent
-import android.support.v4.content.LocalBroadcastManager
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.brit.swiftinstaller.BuildConfig
 
 
@@ -25,7 +25,7 @@ class Notifier {
             val intent = Intent(ACTION_FAILED)
             intent.putExtra(EXTRA_PACKAGE_NAME, packageName)
             intent.putExtra(EXTRA_LOG, errorLog)
-            LocalBroadcastManager.getInstance(context.applicationContext).sendBroadcast(intent)
+            androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(context.applicationContext).sendBroadcast(intent)
         }
 
         fun broadcastOverlayInstalled(context: Context, packageName: String, progress: Int, max: Int) {
@@ -33,7 +33,7 @@ class Notifier {
             intent.putExtra(EXTRA_PACKAGE_NAME, packageName)
             intent.putExtra(EXTRA_PROGRESS, progress)
             intent.putExtra(EXTRA_MAX, max)
-            LocalBroadcastManager.getInstance(context.applicationContext).sendBroadcast(intent)
+            androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(context.applicationContext).sendBroadcast(intent)
         }
 
         fun broadcastOverlayUninstalled(context: Context, packageName: String, progress: Int, max: Int) {
@@ -41,17 +41,17 @@ class Notifier {
             intent.putExtra(EXTRA_PACKAGE_NAME, packageName)
             intent.putExtra(EXTRA_PROGRESS, progress)
             intent.putExtra(EXTRA_MAX, max)
-            LocalBroadcastManager.getInstance(context.applicationContext).sendBroadcast(intent)
+            androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(context.applicationContext).sendBroadcast(intent)
         }
 
         fun broadcastInstallFinished(context: Context) {
             val intent = Intent(ACTION_INSTALL_COMPLETE)
-            LocalBroadcastManager.getInstance(context.applicationContext).sendBroadcast(intent)
+            androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(context.applicationContext).sendBroadcast(intent)
         }
 
         fun broadcastUninstallFinished(context: Context) {
             val intent = Intent(ACTION_UNINSTALL_COMPLETE)
-            LocalBroadcastManager.getInstance(context.applicationContext).sendBroadcast(intent)
+            androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(context.applicationContext).sendBroadcast(intent)
         }
     }
 }

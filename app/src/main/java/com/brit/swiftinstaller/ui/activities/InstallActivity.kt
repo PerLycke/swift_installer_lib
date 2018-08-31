@@ -7,7 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
-import android.support.v4.content.LocalBroadcastManager
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
@@ -54,7 +54,7 @@ class InstallActivity : ThemeActivity() {
     }
 
     private fun installComplete() {
-        LocalBroadcastManager.getInstance(applicationContext).unregisterReceiver(installListener)
+        androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(applicationContext).unregisterReceiver(installListener)
         val intent = Intent(this, InstallSummaryActivity::class.java)
         intent.putExtra("errorMap", Utils.mapToBundle(errorMap))
         intent.putExtra("update", update);
@@ -115,7 +115,7 @@ class InstallActivity : ThemeActivity() {
         filter.addAction(Notifier.ACTION_INSTALL_COMPLETE)
         filter.addAction(Notifier.ACTION_UNINSTALLED)
         filter.addAction(Notifier.ACTION_UNINSTALL_COMPLETE)
-        LocalBroadcastManager.getInstance(applicationContext)
+        androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(applicationContext)
                 .registerReceiver(installListener, filter)
 
         progressBar = inflate.install_progress_bar

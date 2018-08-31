@@ -11,11 +11,11 @@ import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.preference.PreferenceManager
-import android.support.design.widget.BottomSheetDialog
-import android.support.v4.content.ContextCompat
-import android.support.v4.content.LocalBroadcastManager
-import android.support.v4.view.PagerAdapter
-import android.support.v4.view.ViewPager
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import androidx.core.content.ContextCompat
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -65,7 +65,7 @@ class CustomizeActivity : ThemeActivity() {
     private lateinit var materialPalette: MaterialPalette
     private val handler = Handler()
     private var parentActivity: String? = "parent"
-    private lateinit var bottomSheetDialog: BottomSheetDialog
+    private lateinit var bottomSheetDialog: com.google.android.material.bottomsheet.BottomSheetDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,7 +110,7 @@ class CustomizeActivity : ThemeActivity() {
             setupHexInputs()
             setupThemeOptions()
 
-            val viewpager: ViewPager = findViewById(R.id.preview_pager)
+            val viewpager: androidx.viewpager.widget.ViewPager = findViewById(R.id.preview_pager)
             viewpager.pageMargin = 64
             val adapter = PreviewPagerAdapter()
             viewpager.adapter = adapter
@@ -470,7 +470,7 @@ class CustomizeActivity : ThemeActivity() {
             return
         }
 
-        bottomSheetDialog = BottomSheetDialog(this)
+        bottomSheetDialog = com.google.android.material.bottomsheet.BottomSheetDialog(this)
         val sheetView = View.inflate(this, R.layout.fab_sheet_personalize, null)
         bottomSheetDialog.setContentView(sheetView)
         bottomSheetDialog.window.decorView.findViewById<View>(R.id.design_bottom_sheet).setBackgroundColor(backgroundColor)
@@ -660,12 +660,12 @@ class CustomizeActivity : ThemeActivity() {
                             if (oldCenteredClock != com.brit.swiftinstaller.utils.useCenteredClock(context)) {
                                 setUseCenteredClock(context, oldCenteredClock)
                             }
-                            LocalBroadcastManager.getInstance(context.applicationContext)
+                            androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(context.applicationContext)
                                     .unregisterReceiver(this)
                         }
                     }
                 }
-                LocalBroadcastManager.getInstance(applicationContext).registerReceiver(receiver,
+                androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance(applicationContext).registerReceiver(receiver,
                         IntentFilter(InstallSummaryActivity.ACTION_INSTALL_CANCELLED))
 
                 finish = true
@@ -952,7 +952,7 @@ class CustomizeActivity : ThemeActivity() {
         }
     }
 
-    inner class PreviewPagerAdapter : PagerAdapter() {
+    inner class PreviewPagerAdapter : androidx.viewpager.widget.PagerAdapter() {
 
         override fun instantiateItem(collection: ViewGroup, position: Int): Any {
             return if (position == 0) {

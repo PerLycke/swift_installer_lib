@@ -6,7 +6,7 @@ import android.content.Intent
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.getBackgroundColor
 import com.hololo.tutorial.library.PermissionStep

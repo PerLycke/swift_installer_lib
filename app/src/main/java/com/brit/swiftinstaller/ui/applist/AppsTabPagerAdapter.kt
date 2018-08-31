@@ -1,11 +1,11 @@
 package com.brit.swiftinstaller.ui.applist
 
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import com.brit.swiftinstaller.ui.activities.InstallSummaryActivity
 
-class AppsTabPagerAdapter(fm: FragmentManager, val summary: Boolean, vararg tabs: Int) : FragmentPagerAdapter(fm) {
+class AppsTabPagerAdapter(fm: androidx.fragment.app.FragmentManager, val summary: Boolean, vararg tabs: Int) : androidx.fragment.app.FragmentPagerAdapter(fm) {
 
     private val mApps = HashMap<Int, ArrayList<AppItem>>()
 
@@ -69,7 +69,7 @@ class AppsTabPagerAdapter(fm: FragmentManager, val summary: Boolean, vararg tabs
         return mFragments[index].getCheckedItems()
     }
 
-    override fun getItem(position: Int): Fragment {
+    override fun getItem(position: Int): androidx.fragment.app.Fragment {
         return mFragments[position]
     }
 
