@@ -8,7 +8,6 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AppCompatDelegate
-import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -49,10 +48,6 @@ class InstallActivity : ThemeActivity() {
             progressCount.text = getString(R.string.install_count, progress, max)
             progressPercent.text = String.format("%.0f%%", ((progress * 100 / max) + 0.0f))
         }
-        Log.d("TEST", "progress - $progress/$max")
-        if (progress == max) {
-           // installComplete(uninstall)
-        }
     }
 
     private fun installComplete(uninstall: Boolean) {
@@ -61,9 +56,7 @@ class InstallActivity : ThemeActivity() {
             val intent = Intent(this, InstallSummaryActivity::class.java)
             intent.putExtra("errorMap", Utils.mapToBundle(errorMap))
             errorMap.keys.forEach {
-                Log.d("TEST", "looking for $it")
                 if (apps.contains(it)) {
-                    Log.d("TEST", "app contains $it")
                     apps.remove(it)
                 }
             }
@@ -79,7 +72,6 @@ class InstallActivity : ThemeActivity() {
         uninstall = intent.getBooleanExtra("uninstall", false)
         update = intent.getBooleanExtra("update", false)
         apps = intent.getStringArrayListExtra("apps")
-        apps.forEach { Log.d("TEST", "install $it") }
 
         val inflate = View.inflate(this, R.layout.progress_dialog_install, null)
         val builder: AlertDialog.Builder = if (AppCompatDelegate.getDefaultNightMode()
@@ -149,7 +141,6 @@ class InstallActivity : ThemeActivity() {
     override fun finish() {
         super.finish()
         if (dialog.isShowing) dialog.cancel()
-        Log.d("TEST", "finish")
     }
 
     inner class InstallListener : BroadcastReceiver() {
@@ -161,7 +152,6 @@ class InstallActivity : ThemeActivity() {
                 val progress = intent.getIntExtra(Notifier.EXTRA_PROGRESS, 0)
                 updateProgress(label as String, progress, max, uninstall)
             } else if (intent.action == Notifier.ACTION_FAILED) {
-                Log.d("TEST", "package failed - ${intent.getStringExtra(Notifier.EXTRA_PACKAGE_NAME)}")
                 errorMap[intent.getStringExtra(Notifier.EXTRA_PACKAGE_NAME)] =
                         intent.getStringExtra(Notifier.EXTRA_LOG)
                 if (update) {

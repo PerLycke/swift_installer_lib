@@ -6,20 +6,7 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import com.brit.swiftinstaller.R
-import org.bouncycastle.x509.X509V3CertificateGenerator
-import java.io.File
-import java.io.FileOutputStream
-import java.lang.reflect.Field
-import java.math.BigInteger
-import java.security.KeyPair
-import java.security.KeyPairGenerator
-import java.security.KeyStore
-import java.security.SecureRandom
-import java.security.cert.X509Certificate
-import java.util.*
-import javax.security.auth.x500.X500Principal
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -61,13 +48,11 @@ object Utils {
     }
 
     fun getThemeVersion(context: Context, targetPackage: String): Int {
-        val ver = ShellUtils.inputStreamToString(context.assets.open(
-                "overlays/$targetPackage/version"))
-        Log.d("TEST", "$targetPackage version - $ver")
-        return 1
+        return Integer.parseInt(ShellUtils.inputStreamToString(context.assets.open(
+                "overlays/$targetPackage/version")).trim().replace("\"", ""))
     }
 
-    fun checkOverlayStatus() : Boolean {
+    /*fun checkOverlayStatus() : Boolean {
         try {
             val pi = Class.forName("android.content.pm.PackageInfo")
             for (field : Field in pi.declaredFields) {
@@ -79,19 +64,14 @@ object Utils {
             e.printStackTrace()
         }
         return false
-    }
+    }*/
 
     fun isOverlayEnabled(context: Context, packageName: String): Boolean {
         return isSamsungOreo(context) ||
                 runCommand("cmd overlay").output!!.contains(packageName)
     }
 
-    fun containsOverlay(context: Context, packageName: String): Boolean {
-        val apps = context.assets.list("overlays")
-        return apps.contains(packageName)
-    }
-
-    fun isSamsungOreo(context: Context): Boolean {
+    private fun isSamsungOreo(context: Context): Boolean {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
                 context.packageManager.hasSystemFeature("com.samsung.feature.samsung_experience_mobile")
     }
@@ -108,9 +88,7 @@ object Utils {
         val packageInfo = context.packageManager.getPackageInfo(packageName, 0)
         if (context.assets.list("overlays/$packageName").contains("versions")) {
             val vers = context.assets.list("overlays/$packageName/versions")
-            Log.d("TEST", "$packageName - ${packageInfo.versionName}")
             for (ver in vers) {
-                Log.d("TEST", "Available ver - $ver")
                 if (packageInfo.versionName.startsWith(ver)) {
                     return true
                 }
@@ -151,14 +129,14 @@ object Utils {
     }
 
     fun getDialogTheme(context: Context): Int {
-        if (useBlackBackground(context)) {
-            return R.style.AppTheme_AlertDialog_Black
+        return if (useBlackBackground(context)) {
+            R.style.AppTheme_AlertDialog_Black
         } else {
-            return R.style.AppTheme_AlertDialog
+            R.style.AppTheme_AlertDialog
         }
     }
 
-    fun makeKey(key: File) {
+    /*fun makeKey(key: File) {
         val keyPass = "overlay".toCharArray()
 
         val keyGen = KeyPairGenerator.getInstance("RSA")
@@ -199,7 +177,7 @@ object Utils {
             e.printStackTrace()
             return null
         }
-    }
+    }*/
 
     /**
      * For custom purposes. Not used by ColorPickerPreferrence

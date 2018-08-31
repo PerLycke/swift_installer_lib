@@ -35,8 +35,6 @@ class RomInfo internal constructor(var context: Context, var name: String,
     }
 
     fun postInstall(uninstall: Boolean, apps: ArrayList<String>, oppositeApps: ArrayList<String>?, intent: Intent?) {
-        Log.d("TEST", "apps - $apps")
-        Log.d("TEST", Log.getStackTraceString(Exception()))
         val extraIntent = intent != null
 
         val intents = Array(if (!extraIntent) { apps.size } else { apps.size + 1 }, { i ->
@@ -63,7 +61,6 @@ class RomInfo internal constructor(var context: Context, var name: String,
         })
 
         if (!intents.isEmpty()) {
-            intents.forEach { Log.d("TEST", "data = ${it.data}") }
             context.startActivities(intents)
         }
 
@@ -99,18 +96,7 @@ class RomInfo internal constructor(var context: Context, var name: String,
         }
     }
 
-    fun shouldReboot(): Boolean {
-        return true
-    }
-
-    @Suppress("UNUSED_PARAMETER")
-    fun isOverlayCompatible(packageName: String): Boolean {
-        return true
-    }
-
     companion object {
-
-        private val TAG = "RomInfo"
 
         @JvmStatic
         private var sInfo: RomInfo? = null

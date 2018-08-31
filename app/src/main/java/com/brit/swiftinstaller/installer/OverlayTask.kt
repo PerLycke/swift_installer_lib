@@ -5,7 +5,6 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.res.AssetManager
 import android.os.Environment
-import android.util.Log
 import com.brit.swiftinstaller.BuildConfig
 import com.brit.swiftinstaller.utils.*
 import com.brit.swiftinstaller.utils.rom.RomInfo
@@ -87,7 +86,6 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         parseOverlayResourcePath(am, "overlays/$packageName", resourcePaths, black)
         parseOverlayAssetPath(am, "overlays/$packageName", assetPaths, black)
         for (path in resourcePaths) {
-            Log.d("TEST", "resource path - $path")
             AssetHelper.copyAssetFolder(am, path, resDir.absolutePath, null)
         }
         for (path in assetPaths) {

@@ -17,8 +17,6 @@ import java.security.KeyStore
 import java.security.PrivateKey
 import java.security.cert.X509Certificate
 
-//import kellinwood.security.zipsigner.ZipSigner;
-
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 object ShellUtils {
 
@@ -51,7 +49,7 @@ object ShellUtils {
 
     fun compileOverlay(context: Context, themePackage: String, res: String?, manifest: String,
                        overlayPath: String, assetPath: String?, targetInfo: ApplicationInfo?) : CommandOutput {
-        var output: CommandOutput = CommandOutput("", "", 0)
+        var output: CommandOutput
         val overlay = File(overlayPath)
         val unsigned = File(overlay.parent, "unsigned_" + overlay.name)
         val overlayFolder = File(context.cacheDir.toString() + "/" + themePackage + "/overlays")
@@ -89,9 +87,6 @@ object ShellUtils {
             val exitCode = aapt.waitFor()
             val error = inputStreamToString(aapt.errorStream)
             val out = inputStreamToString(aapt.inputStream)
-            Log.d("TEST", "aapt exitCode - $exitCode")
-            Log.d("TEST", "aapt error - $error")
-            Log.d("TEST", "aapt output - $out")
             output = CommandOutput(out, error, exitCode)
             aapt.destroy()
         } catch (e: Exception) {
@@ -193,12 +188,7 @@ fun runCommand(cmd: String, root: Boolean): CommandOutput {
 
         process.waitFor()
 
-        val output = CommandOutput(`in`, err, process.exitValue())
-
-        Log.d("TEST", "cmd - $cmd")
-        Log.d("TEST", "output - $`in`")
-        Log.d("TEST", "error - $err")
-        return output
+        return CommandOutput(`in`, err, process.exitValue())
     } catch (e: IOException) {
         //e.printStackTrace()
         return CommandOutput("", "", 1)

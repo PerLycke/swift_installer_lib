@@ -1,15 +1,10 @@
 package com.brit.swiftinstaller.ui.applist
 
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
-import android.support.v4.text.TextUtilsCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.text.TextUtils
-import android.util.Log
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
@@ -98,9 +93,7 @@ class AppListFragment : Fragment() {
     fun getCheckedItems(): ArrayList<AppItem> {
         val apps = ArrayList<AppItem>()
         for (i in mApps.indices) {
-            Log.d("TEST", "i - $i")
             if (mChecked.get(i)) {
-                Log.d("TEST", "$i : checked - ${mApps[i].packageName}")
                 apps.add(mApps[i])
             }
         }
@@ -157,7 +150,6 @@ class AppListFragment : Fragment() {
 
                 appCheckBox.setOnCheckedChangeListener({ _: CompoundButton, checked: Boolean ->
                     mChecked.put(mVisible[adapterPosition], checked)
-                    Log.d("TEST", "checked - $mChecked")
                 })
             }
 

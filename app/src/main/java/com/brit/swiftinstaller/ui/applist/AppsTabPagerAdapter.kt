@@ -3,8 +3,6 @@ package com.brit.swiftinstaller.ui.applist
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import android.util.Log
-import android.view.View
 import com.brit.swiftinstaller.ui.activities.InstallSummaryActivity
 
 class AppsTabPagerAdapter(fm: FragmentManager, val summary: Boolean, vararg tabs: Int) : FragmentPagerAdapter(fm) {
@@ -28,7 +26,6 @@ class AppsTabPagerAdapter(fm: FragmentManager, val summary: Boolean, vararg tabs
     }
 
     fun querySearch(tab: Int, query: String) {
-        Log.d("TEST", "query search + $query")
         mFragments[tab].querySearch(query)
     }
 

@@ -28,7 +28,6 @@ class Notifier {
         }
 
         fun broadcastOverlayInstalled(context: Context, packageName: String, progress: Int, max: Int) {
-            Log.d("TEST", "broadcastOverlayInstalled")
             val intent = Intent(ACTION_INSTALLED)
             intent.putExtra(EXTRA_PACKAGE_NAME, packageName)
             intent.putExtra(EXTRA_PROGRESS, progress)
