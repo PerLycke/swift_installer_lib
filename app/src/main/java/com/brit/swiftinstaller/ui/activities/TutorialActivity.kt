@@ -1,16 +1,18 @@
 package com.brit.swiftinstaller.ui.activities
 
-import android.Manifest
 import android.app.AlertDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.LayerDrawable
 import android.content.pm.PackageManager
+import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.v4.content.ContextCompat
 import android.text.TextUtils
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.BuildConfig
+import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.ui.applist.AppItem
 import com.brit.swiftinstaller.utils.Utils
 import com.brit.swiftinstaller.utils.getBackgroundColor
@@ -21,6 +23,9 @@ import com.hololo.tutorial.library.TutorialActivity
 import org.jetbrains.anko.doAsync
 
 class TutorialActivity : TutorialActivity() {
+
+    private var notificationManager: NotificationManager? = null
+    private var overlaysList = arrayListOf<AppItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,5 +69,14 @@ class TutorialActivity : TutorialActivity() {
         intent.putExtras(bundle)
         startActivity(intent)
         finish()
+    }
+
+    private fun createNotificationChannel(id: String, name: String, description: String) {
+
+        val importance = NotificationManager.IMPORTANCE_HIGH
+        val channel = NotificationChannel(id, name, importance)
+
+        channel.description = description
+        notificationManager?.createNotificationChannel(channel)
     }
 }

@@ -1,6 +1,5 @@
 package com.brit.swiftinstaller.ui.applist
 
-import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle

@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import com.brit.swiftinstaller.ui.activities.InstallSummaryActivity
 
-class AppsTabPagerAdapter(fm: FragmentManager, val summary: Boolean, vararg tabs: Int) : FragmentPagerAdapter(fm) {
+class AppsTabPagerAdapter(fm: FragmentManager, summary: Boolean, vararg tabs: Int) : FragmentPagerAdapter(fm) {
 
     private val mApps = HashMap<Int, ArrayList<AppItem>>()
     private var mFragments: ArrayList<AppListFragment> = ArrayList()

@@ -47,6 +47,11 @@
         <activity android:name="com.brit.swiftinstaller.utils.EnableOverlaysActivity"
             android:launchMode="singleInstance"
             android:theme="@android:style/Theme.NoDisplay" />
+        <activity
+            android:name="com.brit.swiftinstaller.ui.activities.RebootActivity"
+            android:screenOrientation="portrait"
+            android:excludeFromRecents="true"
+            android:theme="@style/AppTheme.AlertDialog" />
 
         <service android:name="com.brit.swiftinstaller.InstallerService"
             android:permission="android.permission.BIND_JOB_SERVICE"

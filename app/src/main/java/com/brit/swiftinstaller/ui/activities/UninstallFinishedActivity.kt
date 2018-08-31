@@ -6,7 +6,7 @@ import com.brit.swiftinstaller.library.R
 
 class UninstallFinishedActivity : ThemeActivity() {
 
-    lateinit var dialog: AlertDialog
+    private lateinit var dialog: AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

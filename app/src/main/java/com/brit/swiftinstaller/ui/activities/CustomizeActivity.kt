@@ -10,7 +10,6 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.preference.PreferenceManager

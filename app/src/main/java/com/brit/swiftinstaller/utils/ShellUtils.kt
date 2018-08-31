@@ -63,6 +63,7 @@ object ShellUtils {
                        overlayPath: String, assetPath: String?, targetInfo: ApplicationInfo?): CommandOutput {
         var output: CommandOutput
         val overlay = File(overlayPath)
+        @Suppress("LocalVariableName")
         val unsigned_unaligned = File(overlay.parent, "unsigned_unaligned" + overlay.name)
         val unsigned = File(overlay.parent, "unsigned_${overlay.name}")
         val overlayFolder = File(context.cacheDir.toString() + "/" + themePackage + "/overlays")

@@ -6,8 +6,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.os.Handler
 import android.os.Environment
+import android.os.Handler
+import android.preference.PreferenceManager
 import android.support.v4.content.LocalBroadcastManager
 import android.view.View
 import android.widget.ProgressBar
@@ -185,6 +186,7 @@ class InstallActivity : ThemeActivity() {
                     }
                 }
                 intent.action == Notifier.ACTION_INSTALL_COMPLETE -> {
+                    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("should_notify", true).apply()
                     installComplete()
                 }
                 intent.action == Notifier.ACTION_UNINSTALL_COMPLETE -> {

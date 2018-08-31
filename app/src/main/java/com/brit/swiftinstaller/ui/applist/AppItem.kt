@@ -7,7 +7,7 @@ import android.os.Parcelable
 class AppItem() : Parcelable {
     var packageName: String = ""
     var title: String = ""
-    var required: String = ""
+    private var required: String = ""
     var versionCode: Int = 0
     var versionName: String = ""
     var icon: Drawable? = null
