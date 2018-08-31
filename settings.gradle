@@ -1,2 +1,4 @@
-include ':app'
+include ':common'
+include ':aosp'
+include ':samsung'
 include ':TutorialView'
