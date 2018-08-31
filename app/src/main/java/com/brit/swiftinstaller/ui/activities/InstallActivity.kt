@@ -8,7 +8,6 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.content.LocalBroadcastManager
-import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -57,7 +56,7 @@ class InstallActivity : ThemeActivity() {
         LocalBroadcastManager.getInstance(applicationContext).unregisterReceiver(installListener)
         val intent = Intent(this, InstallSummaryActivity::class.java)
         intent.putExtra("errorMap", Utils.mapToBundle(errorMap))
-        intent.putExtra("update", update);
+        intent.putExtra("update", update)
         errorMap.keys.forEach {
             if (apps.contains(it)) {
                 apps.remove(it)
@@ -98,13 +97,11 @@ class InstallActivity : ThemeActivity() {
 
         if (uninstall) {
             inflate.install_progress_txt.setText(R.string.progress_uninstalling_title)
-            Handler().postDelayed(object:Runnable {
-                override fun run() {
-                    if (dialog != null && dialog?.isShowing!!) {
-                        fc.visibility = View.VISIBLE
-                        fc.setOnClickListener {
-                            uninstallComplete()
-                        }
+            Handler().postDelayed({
+                if (dialog != null && dialog?.isShowing!!) {
+                    fc.visibility = View.VISIBLE
+                    fc.setOnClickListener {
+                        uninstallComplete()
                     }
                 }
             }, 20000)

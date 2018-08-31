@@ -6,7 +6,6 @@ import android.content.pm.PackageInfo
 import android.content.res.AssetManager
 import android.graphics.Color
 import android.os.Environment
-import android.util.Log
 import com.brit.swiftinstaller.BuildConfig
 import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.utils.*
@@ -272,9 +271,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     }
 
     fun getAlphaDimen(i: Int): Float {
-        val input = i
-        val dimen = (100 - input.toFloat()) / 100
-        return dimen
+        return (100 - i.toFloat()) / 100
     }
 
     fun removeAlpha(color: Int): Int {

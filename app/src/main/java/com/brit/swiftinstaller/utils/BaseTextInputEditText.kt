@@ -3,14 +3,14 @@ package com.brit.swiftinstaller.utils
 import android.app.Activity
 import android.content.Context
 import android.graphics.Rect
+import android.support.v7.widget.AppCompatEditText
 import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 
-class BaseTextInputEditText(context: Context?, attrs: AttributeSet) : EditText(context, attrs){
+class BaseTextInputEditText(context: Context?, attrs: AttributeSet) : AppCompatEditText(context, attrs){
 
-    val inputMethodManager = context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    private val inputMethodManager = context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
 
     override fun onFocusChanged(focused: Boolean, direction: Int, previouslyFocusedRect: Rect?) {
         super.onFocusChanged(focused, direction, previouslyFocusedRect)

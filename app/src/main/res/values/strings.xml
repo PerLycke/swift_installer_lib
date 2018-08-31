@@ -29,7 +29,6 @@
     <string name="disable">Disable</string>
     <string name="enable_shadow_title">Enable shadow around text</string>
     <string name="examined_result_msg">After you examined the result, and optionally sent an error log if something failed, you need to manually reboot to finish the installation!\n\nYou don\'t need to reboot if all overlays failed to install.</string>
-    <string name="faq">FAQ</string>
     <string name="flat">Flat</string>
     <string name="got_it">Got it!</string>
     <string name="hashtag">#</string>
@@ -47,7 +46,6 @@
     <string name="link_substratum_template">https://github.com/substratum/template</string>
     <string name="material">Material</string>
     <string name="night">Night</string>
-    <string name="no_internet_faq">Please connect to internet to show the FAQ</string>
     <string name="notif_fix_desc_summary">When using dark notifications: Some notification texts are hardcoded black, e.g. WhatsApp notifications. This fix adds a shadow around all text, making black text visible. You can see how it looks in the preview above.</string>
     <string name="notification_fix_summary">Notification fix makes black text visible, e.g. WhatsApp notifications.</string>
     <string name="notification_tweaks">Notification background</string>
@@ -126,4 +124,7 @@
     <string name="save">Save</string>
     <string name="saved">Saved!</string>
     <string name="save_error">Error saving image</string>
+    <string name="unsupported">Unsupported, please uninstall</string>
+    <string name="qs_transparency">Quick settings transparency:</string>
+    <string name="whats_this">What\'s this?</string>
 </resources>

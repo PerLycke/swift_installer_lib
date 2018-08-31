@@ -123,10 +123,11 @@
             android:layout_marginTop="8dp"
             android:paddingBottom="8dp"
             android:paddingStart="8dp"
-            android:text="What's this?"
+            android:text="@string/whats_this"
             app:layout_constraintBottom_toBottomOf="@+id/customize_base_theme_divider"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/customize_base_theme_divider" />
+            app:layout_constraintTop_toTopOf="@+id/customize_base_theme_divider"
+            tools:ignore="RtlSymmetry" />
 
     </android.support.constraint.ConstraintLayout>
 

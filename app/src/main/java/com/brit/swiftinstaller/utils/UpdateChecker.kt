@@ -5,7 +5,7 @@ import android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
 import android.os.AsyncTask
 import java.lang.ref.WeakReference
 
-class UpdateChecker(context: Context, val callback: Callback) : AsyncTask<Void, Void, UpdateChecker.Output>() {
+class UpdateChecker(context: Context, private val callback: Callback) : AsyncTask<Void, Void, UpdateChecker.Output>() {
 
     private val mConRef: WeakReference<Context> = WeakReference(context)
 

@@ -6,14 +6,14 @@
     android:layout_height="wrap_content">
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline7"
+        android:id="@+id/guidelineSys1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.15" />
 
     <android.support.constraint.Guideline
-        android:id="@+id/guideline8"
+        android:id="@+id/guidelineSys2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -36,7 +36,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/icons_category_divider"
+        android:id="@+id/qs_category_divider"
         android:layout_width="0dp"
         android:layout_height="2dp"
         android:layout_marginEnd="32dp"
@@ -54,8 +54,8 @@
         android:layout_height="match_parent"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineSys2"
+        app:layout_constraintStart_toStartOf="@+id/guidelineSys1"
         app:layout_constraintTop_toBottomOf="@+id/qs_category_title">
 
         <RadioButton
@@ -102,7 +102,8 @@
             android:text="@string/rounded_info"
             app:layout_constraintBottom_toBottomOf="@+id/rounded_divider"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/rounded_divider" />
+            app:layout_constraintTop_toTopOf="@+id/rounded_divider"
+            tools:ignore="RtlSymmetry" />
 
         <SeekBar
             android:id="@+id/alpha_seekbar"
@@ -133,7 +134,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
-            android:text="Quick settings transparency:"
+            android:text="@string/qs_transparency"
             android:textColor="@android:color/white"
             app:layout_constraintStart_toStartOf="@+id/p_style"
             app:layout_constraintTop_toBottomOf="@+id/p_style" />

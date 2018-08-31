@@ -5,7 +5,8 @@
     android:id="@+id/app_item_root"
     android:layout_width="match_parent"
     android:layout_height="76dp"
-    android:paddingEnd="24dp">
+    android:paddingEnd="24dp"
+    tools:ignore="RtlSymmetry">
 
     <TextView
         android:id="@+id/app_item_name"
@@ -85,7 +86,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/alert_icon"
         app:layout_constraintEnd_toStartOf="@+id/alert_icon"
         app:layout_constraintTop_toTopOf="@+id/alert_icon"
-        app:srcCompat="@drawable/ic_download" />
+        app:srcCompat="@drawable/ic_download"
+        android:contentDescription="@string/image" />
 
     <ImageView
         android:id="@+id/imageView"

@@ -227,7 +227,8 @@
             app:layout_constraintBottom_toTopOf="@+id/searchbar_bg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/settings_preview" />
+            app:layout_constraintTop_toTopOf="@+id/settings_preview"
+            tools:ignore="HardcodedText,SmallSp" />
 
         <TextView
             android:id="@+id/clock_left"
@@ -241,7 +242,8 @@
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/searchbar_bg"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/settings_preview" />
+            app:layout_constraintTop_toTopOf="@+id/settings_preview"
+            tools:ignore="HardcodedText,SmallSp" />
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="wrap_content"
@@ -262,7 +264,8 @@
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="HardcodedText,SmallSp" />
 
             <ImageView
                 android:id="@+id/wifi"
@@ -272,7 +275,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/battery"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_wifi" />
+                app:srcCompat="@drawable/ic_wifi"
+                android:contentDescription="@string/image" />
 
             <ImageView
                 android:id="@+id/battery"
@@ -282,7 +286,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/clock_right"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_battery" />
+                app:srcCompat="@drawable/ic_battery"
+                android:contentDescription="@string/image" />
         </android.support.constraint.ConstraintLayout>
 
 

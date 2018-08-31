@@ -1,6 +1,9 @@
 package com.brit.swiftinstaller.utils
 
+import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
+import android.support.v4.content.ContextCompat
 import android.util.Log
 
 @Suppress("unused")
@@ -159,5 +162,19 @@ object ColorUtils {
         }
 
         return Color.argb(alpha, red, green, blue)
+    }
+
+    fun radioButtonColor(context: Context, disabled: Int, accent: Int) : ColorStateList {
+
+        return ColorStateList(
+                arrayOf(
+                        intArrayOf(-android.R.attr.state_checked), //disabled
+                        intArrayOf(android.R.attr.state_checked) //enabled
+                ),
+                intArrayOf(
+                        ContextCompat.getColor(context, disabled)
+                        , accent
+                )
+        )
     }
 }

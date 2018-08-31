@@ -207,7 +207,7 @@ class AppListFragment : Fragment() {
                             appCheckBox.visibility = View.VISIBLE
                             appCheckBox.isEnabled = true
                             required.visibility = View.VISIBLE
-                            required.text = "Unsupported, please uninstall"
+                            required.text = getString(R.string.unsupported)
                         } else {
                             appCheckBox.visibility = View.GONE
                             appCheckBox.isEnabled = false

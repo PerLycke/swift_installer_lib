@@ -2,12 +2,9 @@ package com.brit.swiftinstaller.ui.activities
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.graphics.drawable.LayerDrawable
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v4.app.ActivityCompat
@@ -17,10 +14,7 @@ import android.support.v7.widget.Toolbar
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.PopupWindow
-import android.widget.Toast
 import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.MaterialPalette
 import com.brit.swiftinstaller.utils.UpdateChecker

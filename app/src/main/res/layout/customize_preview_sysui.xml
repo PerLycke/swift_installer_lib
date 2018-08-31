@@ -52,7 +52,8 @@
             android:src="@drawable/wallpaper_big"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/preview_sysui_bg" />
+            app:layout_constraintTop_toTopOf="@+id/preview_sysui_bg"
+            android:contentDescription="@string/image" />
 
         <ImageView
             android:id="@+id/notif_bg_layout"

@@ -441,11 +441,11 @@ class OverlaysActivity : ThemeActivity() {
             }
 
             if (success) {
-                Toast.makeText(getApplicationContext(), R.string.saved,
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(applicationContext, R.string.saved,
+                        Toast.LENGTH_LONG).show()
             } else {
-                Toast.makeText(getApplicationContext(),
-                        R.string.save_error, Toast.LENGTH_LONG).show();
+                Toast.makeText(applicationContext,
+                        R.string.save_error, Toast.LENGTH_LONG).show()
             }
 
             dialogInterface.dismiss()

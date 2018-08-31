@@ -85,12 +85,4 @@
         <item name="android:fontFamily">sans-serif</item>
     </style>
 
-    <style name="dialogNoTitle" parent="Theme.AppCompat">
-        <item name="android:windowBackground">@color/background_main</item>
-        <item name="android:paddingRight">0dp</item>
-        <item name="android:paddingLeft">0dp</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:colorAccent">@color/colorAccent</item>
-    </style>
 </resources>
