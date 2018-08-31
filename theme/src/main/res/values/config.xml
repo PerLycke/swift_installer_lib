@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_name">Swift Installer AOSP</string>
-    <string name="link_faq">FAQ: https://goo.gl/F4V5j1</string>
-    <string name="link_apps">Supported apps: https://goo.gl/gS84kK</string>
-    <string name="info_card_compatibility_msg">Note that we cannot guarantee a stable experience if you use Swift Installer in combination with other themes or mods.</string>
-</resources>

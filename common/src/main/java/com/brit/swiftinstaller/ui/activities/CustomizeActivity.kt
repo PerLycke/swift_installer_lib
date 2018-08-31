@@ -740,7 +740,10 @@ class CustomizeActivity : ThemeActivity() {
                             startActivity(intent)
                         }
                         "second" -> {
-                            if (applicationContext.packageName == "com.brit.swiftinstaller") {
+                            if (!Utils.isSamsungOreo(this)) {
+                                getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "default").apply()
+                                startActivity(intent)
+                            } else {
                                 val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
                                         .setTitle(R.string.reboot_delay_title)
                                         .setMessage(R.string.reboot_delay_msg)
@@ -756,9 +759,6 @@ class CustomizeActivity : ThemeActivity() {
                                 themeDialog()
                                 val dialog = builder.create()
                                 dialog.show()
-                            } else {
-                                getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "default").apply()
-                                startActivity(intent)
                             }
                         }
                         else -> {
