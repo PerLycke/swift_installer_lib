@@ -104,7 +104,7 @@ fun setUseSenderNameFix(context: Context, use: Boolean) {
 }
 
 fun useAospIcons(context: Context): Boolean {
-    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_USE_AOSP_ICONS, false)
+    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_USE_AOSP_ICONS, !Utils.isSamsungOreo())
 }
 
 fun setUseAospIcons(context: Context, use: Boolean) {
