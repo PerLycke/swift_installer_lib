@@ -56,7 +56,7 @@ class TutorialActivity : TutorialActivity() {
     private var notificationManager: NotificationManager? = null
     private val mHandler = Handler()
     private var suResponse = false
-    private lateinit var dialog: Dialog
+    private var dialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,9 +92,9 @@ class TutorialActivity : TutorialActivity() {
             if (!Utils.isSamsungOreo()) {
                 dialog = Dialog(this, R.style.AppTheme)
                 val layout = LayoutInflater.from(this).inflate(R.layout.no_root, null)
-                dialog.setContentView(layout)
-                dialog.setCancelable(false)
-                dialog.show()
+                dialog?.setContentView(layout)
+                dialog?.setCancelable(false)
+                dialog?.show()
 
                 mHandler.postDelayed({
                     if (!suResponse) {
@@ -110,7 +110,7 @@ class TutorialActivity : TutorialActivity() {
                             noRoot(layout)
                         } else {
                             suResponse = true
-                            dialog.dismiss()
+                            dialog?.dismiss()
                         }
                     }
                 }
@@ -136,8 +136,8 @@ class TutorialActivity : TutorialActivity() {
 
     override fun onStop() {
         super.onStop()
-        if (dialog.isShowing) {
-            dialog.dismiss()
+        if (dialog != null && dialog!!.isShowing) {
+            dialog?.dismiss()
         }
     }
 
