@@ -286,7 +286,7 @@ class InstallSummaryActivity : ThemeActivity() {
                     info = pm.getApplicationInfo(pn, PackageManager.GET_META_DATA)
                     pInfo = pm.getPackageInfo(pn, 0)
                     oInfo = pm.getOverlayInfo(pn)
-                } catch (e: PackageManager.NameNotFoundException) {
+                } catch (ex: Exception) {
                 }
                 if (info != null) {
                     val item = AppItem()
