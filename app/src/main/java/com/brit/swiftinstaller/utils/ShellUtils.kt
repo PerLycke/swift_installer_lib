@@ -49,6 +49,42 @@ object ShellUtils {
         get() {
             return Shell.rootAccess()
         }
+    val isRootAccessAvailable: Boolean
+        get() {
+            var os: DataOutputStream? = null
+            var process: Process? = null
+            try {
+                process = Runtime.getRuntime().exec("sh")
+                os = DataOutputStream(process!!.outputStream)
+                Log.d("TEST", "here 0")
+                os.writeBytes("su\n")
+                Log.d("TEST", "Here")
+                os.flush()
+                os.writeBytes("exit\n")
+                os.writeBytes("exit\n")
+                Log.d("TEST", "here 1")
+                os.flush()
+                Log.d("TEST", "here 3")
+                Log.d("TEST", "here 2")
+                process.waitFor()
+                Log.d("TEST", "here 3")
+                val exit = process.exitValue()
+                Log.d("TEST", "exit - $exit")
+                return exit == 0
+            } catch (e: IOException) {
+                //e.printStackTrace()
+                return false
+            } catch (e: InterruptedException) {
+                //e.printStackTrace()
+                return false
+            } finally {
+                try {
+                    os?.close()
+                    process?.destroy()
+                } catch (ignored: IOException) {
+                }
+            }
+        }
 
     fun listFiles(path: String): List<String> {
         val f = SuFile(path)

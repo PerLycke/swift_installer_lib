@@ -36,6 +36,10 @@ import java.io.File
 
 class SamsungRomInfo(context: Context) : RomInfo(context) {
 
+    override fun requiresRoot(): Boolean {
+        return false
+    }
+
     override fun getDisabledOverlays(): ArrayList<String> {
         val disable = ArrayList<String>()
         disable.add("com.android.emergency")
