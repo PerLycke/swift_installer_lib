@@ -30,6 +30,7 @@ import android.content.IntentFilter
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.preference.PreferenceManager
@@ -893,7 +894,11 @@ class CustomizeActivity : ThemeActivity() {
             if (icon != null) {
                 val type: String = when {
                     useAospIcons -> {
-                        icon.setColorFilter(accentColor)
+                        if (Build.VERSION_CODES.P == Build.VERSION.SDK_INT) {
+                            icon.clearColorFilter()
+                        } else {
+                            icon.setColorFilter(accentColor)
+                        }
                         "aosp"
                     }
                     usePIcons -> {
