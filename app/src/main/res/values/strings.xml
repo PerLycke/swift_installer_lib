@@ -170,4 +170,5 @@
     <string name="no_root_msg">Root access is required for the Installer to work. We inform about this in the Play Store description. You can request a refund in Play Store or email us for a manual refund. Email is swiftuserhelp@gmail.com</string>
     <string name="exit">Exit</string>
     <string name="transparency">Transparency</string>
+    <string name="requesting_root_access">Requesting root access…</string>
 </resources>

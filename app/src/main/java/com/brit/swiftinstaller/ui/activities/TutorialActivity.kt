@@ -30,12 +30,14 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
+import android.os.Handler
 import android.preference.PreferenceManager
 import android.text.TextUtils
 import android.view.LayoutInflater
-import com.brit.swiftinstaller.installer.rom.RomInfo
+import android.view.View
 import com.brit.swiftinstaller.BuildConfig
 import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.utils.OverlayUtils
 import com.brit.swiftinstaller.utils.ShellUtils
 import com.brit.swiftinstaller.utils.Utils
@@ -45,18 +47,21 @@ import com.hololo.tutorial.library.PermissionStep
 import com.hololo.tutorial.library.Step
 import com.brit.swiftinstaller.utils.getProperty
 import com.hololo.tutorial.library.TutorialActivity
-import com.topjohnwu.superuser.Shell
 import kotlinx.android.synthetic.main.no_root.view.*
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 class TutorialActivity : TutorialActivity() {
 
     private var notificationManager: NotificationManager? = null
+    private val mHandler = Handler()
+    private var suResponse = false
+    private lateinit var dialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (ShellUtils.isRootAvailable) {
+        if (!Utils.isSamsungOreo()) {
             notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
             createNotificationChannel(
@@ -84,17 +89,31 @@ class TutorialActivity : TutorialActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         } else {
-
-            if (!Utils.isSamsungOreo() && !ShellUtils.isRootAvailable) {
-                val dialog = Dialog(this, R.style.AppTheme)
+            if (!Utils.isSamsungOreo()) {
+                dialog = Dialog(this, R.style.AppTheme)
                 val layout = LayoutInflater.from(this).inflate(R.layout.no_root, null)
                 dialog.setContentView(layout)
-                dialog.show()
                 dialog.setCancelable(false)
-                layout.no_root_exit.setOnClickListener {
-                    finish()
+                dialog.show()
+
+                mHandler.postDelayed({
+                    if (!suResponse) {
+                        noRoot(layout)
+                    }
+                }, 12000)
+
+                doAsync {
+                    val rooted = ShellUtils.isRootAvailable
+                    uiThread {
+                        if (!rooted) {
+                            suResponse = true
+                            noRoot(layout)
+                        } else {
+                            suResponse = true
+                            dialog.dismiss()
+                        }
+                    }
                 }
-                return
             }
 
             doAsync {
@@ -103,8 +122,22 @@ class TutorialActivity : TutorialActivity() {
 
             setIndicator(R.drawable.tutorial_indicator)
             setIndicatorSelected(R.drawable.tutorial_indicator_selected)
-
             RomInfo.getRomInfo(this).addTutorialSteps(this)
+        }
+    }
+
+    private fun noRoot(view: View) {
+        view.no_root_msg.text = getString(R.string.no_root_msg)
+        view.no_root_exit.visibility = View.VISIBLE
+        view.no_root_exit.setOnClickListener {
+            finish()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (dialog.isShowing) {
+            dialog.dismiss()
         }
     }
 
