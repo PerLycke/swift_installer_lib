@@ -5,7 +5,7 @@
     tools:ignore="UnusedResources">
     <item>
         <shape android:shape="oval">
-            <solid android:color="#60a9d4" />
+            <solid android:color="#2196f3" />
             <size android:width="24dp" android:height="24dp" />
         </shape>
     </item>

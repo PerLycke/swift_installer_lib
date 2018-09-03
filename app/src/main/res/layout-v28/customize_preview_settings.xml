@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/customize_preview_root"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/preview_settings_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/settings_guideline1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="201dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/settings_guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="253dp" />
+
+        <ImageView
+            android:id="@+id/settings_preview"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@string/image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/preview_bg" />
+
+        <ImageView
+            android:id="@+id/searchbar_bg"
+            android:layout_width="0dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginEnd="13dp"
+            android:contentDescription="@string/image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/settings_preview"
+            app:srcCompat="@drawable/search_frame_bg" />
+
+        <ImageView
+            android:id="@+id/searchbar_search_icon"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@string/image"
+            android:tint="#2196f3"
+            app:layout_constraintBottom_toBottomOf="@+id/searchbar_bg"
+            app:layout_constraintStart_toStartOf="@+id/searchbar_bg"
+            app:layout_constraintTop_toTopOf="@+id/searchbar_bg"
+            app:srcCompat="@drawable/ic_search_preview" />
+
+        <TextView
+            android:id="@+id/searchbar_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="@string/search_in_settings"
+            android:textColor="#b3ffffff"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/searchbar_bg"
+            app:layout_constraintEnd_toEndOf="@+id/searchbar_bg"
+            app:layout_constraintStart_toStartOf="@+id/searchbar_bg"
+            app:layout_constraintTop_toTopOf="@+id/searchbar_bg" />
+
+        <ImageView
+            android:id="@+id/settings_connections_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="14dp"
+            android:contentDescription="@string/image"
+            android:maxHeight="8dp"
+            android:maxWidth="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/connections_desc"
+            app:layout_constraintEnd_toStartOf="@+id/connections_title"
+            app:layout_constraintTop_toTopOf="@+id/connections_title"
+            app:srcCompat="@drawable/ic_settings_connections_icon_aosp" />
+
+        <ImageView
+            android:id="@+id/settings_sound_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="14dp"
+            android:contentDescription="@string/image"
+            android:maxHeight="8dp"
+            android:maxWidth="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/sounds_desc"
+            app:layout_constraintEnd_toStartOf="@+id/sounds_title"
+            app:layout_constraintTop_toTopOf="@+id/sounds_title"
+            app:srcCompat="@drawable/ic_settings_sound_icon_aosp" />
+
+        <ImageView
+            android:id="@+id/settings_notifications_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="14dp"
+            android:contentDescription="@string/image"
+            android:maxHeight="8dp"
+            android:maxWidth="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/notifications_desc"
+            app:layout_constraintEnd_toStartOf="@+id/notifications_title"
+            app:layout_constraintTop_toTopOf="@+id/notifications_title"
+            app:srcCompat="@drawable/ic_settings_notifications_icon_aosp" />
+
+        <TextView
+            android:id="@+id/connections_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="54dp"
+            android:layout_marginTop="64dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/connections"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/connections_desc"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/connections_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/connections_desc"
+            android:textColor="@android:color/white"
+            android:textSize="9sp"
+            app:layout_constraintBottom_toTopOf="@+id/sounds_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/connections_title"
+            app:layout_constraintTop_toBottomOf="@+id/connections_title"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/sounds_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="54dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/sound_and_vibration"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/sounds_desc"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/settings_preview"
+            app:layout_constraintTop_toBottomOf="@+id/connections_desc" />
+
+        <TextView
+            android:id="@+id/sounds_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/sounds_and_vibration_desc"
+            android:textColor="@android:color/white"
+            android:textSize="9sp"
+            app:layout_constraintBottom_toTopOf="@+id/notifications_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/sounds_title"
+            app:layout_constraintTop_toBottomOf="@+id/sounds_title"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/notifications_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="54dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/notifications"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/notifications_desc"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/settings_preview"
+            app:layout_constraintTop_toBottomOf="@+id/sounds_desc" />
+
+        <TextView
+            android:id="@+id/notifications_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/notifications_desc"
+            android:textColor="@android:color/white"
+            android:textSize="9sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/notifications_title"
+            app:layout_constraintTop_toBottomOf="@+id/notifications_title"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/clock_centered"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:text="18:04"
+            android:textColor="#b3ffffff"
+            android:textSize="10sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/searchbar_bg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/settings_preview"
+            tools:ignore="HardcodedText,SmallSp" />
+
+        <TextView
+            android:id="@+id/clock_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="18:04"
+            android:textColor="#b3ffffff"
+            android:textSize="10sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/searchbar_bg"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/settings_preview"
+            tools:ignore="HardcodedText,SmallSp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/searchbar_bg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/clock_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:text="18:04"
+                android:textColor="#b3ffffff"
+                android:textSize="10sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="HardcodedText,SmallSp" />
+
+            <ImageView
+                android:id="@+id/wifi"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginEnd="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/battery"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_wifi"
+                android:contentDescription="@string/image" />
+
+            <ImageView
+                android:id="@+id/battery"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginEnd="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/clock_right"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_battery"
+                android:contentDescription="@string/image" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

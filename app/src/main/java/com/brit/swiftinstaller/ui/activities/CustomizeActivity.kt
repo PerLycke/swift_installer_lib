@@ -47,8 +47,8 @@ import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
-import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.R
+import com.brit.swiftinstaller.installer.rom.RomInfo
 import com.brit.swiftinstaller.ui.CircleDrawable
 import com.brit.swiftinstaller.utils.*
 import com.brit.swiftinstaller.utils.ColorUtils.checkAccentColor
@@ -79,6 +79,7 @@ class CustomizeActivity : ThemeActivity() {
 
     private var settingsIcons: Array<ImageView?> = arrayOfNulls(3)
     private var systemUiIcons: Array<ImageView?> = arrayOfNulls(6)
+    private var systemUiIconBg = arrayListOf<LayerDrawable>()
 
     private var accentColor = 0
     private var backgroundColor = 0
@@ -103,6 +104,7 @@ class CustomizeActivity : ThemeActivity() {
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private var supportsShadow = false
     private var supportsTransparency = false
+    private var isPie = false
 
     private var recompile = false
 
@@ -111,6 +113,7 @@ class CustomizeActivity : ThemeActivity() {
 
         parentActivity = intent.getStringExtra("parentActivity")
         supportsTransparency = RomInfo.getRomInfo(this).getCustomizeFeatures() and SUPPORTS_TRANSPARENCY != 0
+        isPie = Build.VERSION_CODES.P == Build.VERSION.SDK_INT
 
         setContentView(R.layout.activity_customize)
         handler.post {
@@ -807,13 +810,13 @@ class CustomizeActivity : ThemeActivity() {
                         }
                         else -> {
                             val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                            .setTitle(R.string.installing_and_uninstalling_title)
-                            .setMessage(R.string.installing_and_uninstalling_msg)
-                            .setPositiveButton(R.string.proceed) { dialogInterface, _ ->
-                                PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("thisLaunched", true).apply()
-                                dialogInterface.dismiss()
-                                startActivity(intent)
-                            }
+                                    .setTitle(R.string.installing_and_uninstalling_title)
+                                    .setMessage(R.string.installing_and_uninstalling_msg)
+                                    .setPositiveButton(R.string.proceed) { dialogInterface, _ ->
+                                        PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("thisLaunched", true).apply()
+                                        dialogInterface.dismiss()
+                                        startActivity(intent)
+                                    }
 
                             themeDialog()
                             val dialog = builder.create()
@@ -894,7 +897,7 @@ class CustomizeActivity : ThemeActivity() {
             if (icon != null) {
                 val type: String = when {
                     useAospIcons -> {
-                        if (Build.VERSION_CODES.P == Build.VERSION.SDK_INT) {
+                        if (isPie) {
                             icon.clearColorFilter()
                         } else {
                             icon.setColorFilter(accentColor)
@@ -930,8 +933,14 @@ class CustomizeActivity : ThemeActivity() {
                     else -> "stock"
                 }}"
                 val id = resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName", null, null)
-                if (id > 0) {
+                if (!isPie && id > 0) {
                     icon.setImageDrawable(getDrawable(id))
+                } else if (id > 0) {
+                    val layerDrawable = getDrawable(id) as LayerDrawable
+                    systemUiIconBg.add(layerDrawable)
+                    icon.setImageDrawable(layerDrawable)
+                    layerDrawable.findDrawableByLayerId(R.id.icon_bg).setTint(accentColor)
+                    layerDrawable.findDrawableByLayerId(R.id.icon_tint).setTint(backgroundColor)
                 }
             }
         }
@@ -942,13 +951,22 @@ class CustomizeActivity : ThemeActivity() {
         if (force || this.accentColor != accentColor) {
             this.accentColor = accentColor
 
-            if (!useStockMultiIcons && !usePIcons) {
-                for (icon: ImageView? in settingsIcons) {
-                    icon?.setColorFilter(accentColor)
+            if (!isPie) {
+                if (!useStockMultiIcons && !usePIcons) {
+                    for (icon: ImageView? in settingsIcons) {
+                        icon?.setColorFilter(accentColor)
+                    }
                 }
             }
-            for (icon: ImageView? in systemUiIcons) {
-                icon?.setColorFilter(accentColor)
+            if (!isPie) {
+                for (icon: ImageView? in systemUiIcons) {
+                    icon?.setColorFilter(accentColor)
+                }
+            } else {
+                for (iconBg in systemUiIconBg) {
+                    iconBg.findDrawableByLayerId(R.id.icon_bg).setTint(accentColor)
+                }
+                searchbar_search_icon.setColorFilter(accentColor)
             }
             for (id in IdLists.bgIndicators) {
                 val i = findViewById<ImageView>(id)
@@ -981,6 +999,12 @@ class CustomizeActivity : ThemeActivity() {
             if (updateHex && hex_input_bg.text.toString() != Integer.toHexString(backgroundColor).substring(2))
                 hex_input_bg.setText(Integer.toHexString(backgroundColor).substring(2), TextView.BufferType.EDITABLE)
 
+            if (isPie) {
+                for (iconBg in systemUiIconBg) {
+                    iconBg.findDrawableByLayerId(R.id.icon_tint).setTint(backgroundColor)
+                }
+            }
+
             preview_wallpaper.setColorFilter(ColorUtils.addAlphaColor(backgroundColor, alpha), PorterDuff.Mode.SRC_OVER)
             settingsBackground.findDrawableByLayerId(R.id.preview_background).setTint(backgroundColor)
             systemUIBackground.findDrawableByLayerId(R.id.preview_background).setTint(backgroundColor)
@@ -1001,7 +1025,7 @@ class CustomizeActivity : ThemeActivity() {
             preview_sysui_sender.setShadowLayer(0.0f, 0.0f, 0.0f, Color.TRANSPARENT)
         }
 
-        if (usePStyle) {
+        if (usePStyle || isPie) {
             notif_bg_layout.setImageResource(R.drawable.notif_bg_rounded)
         } else {
             notif_bg_layout.setImageResource(R.drawable.notif_bg)

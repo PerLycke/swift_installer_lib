@@ -3,16 +3,15 @@
 <layer-list xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     tools:ignore="UnusedResources">
-    <item>
+    <item android:id="@+id/icon_bg">
         <shape android:shape="oval">
-            <solid android:color="#ff7e0f" />
             <size android:width="24dp" android:height="24dp" />
         </shape>
     </item>
-    <item android:gravity="center" >
-        <vector android:tint="@android:color/white" android:height="16.0dip" android:width="16.0dip" android:viewportWidth="24.0" android:viewportHeight="24.0"
+    <item android:id="@+id/icon_tint" android:gravity="center" >
+        <vector android:tint="@color/sysui_icons_tint" android:height="15.0dip" android:width="15.0dip" android:viewportWidth="18.0" android:viewportHeight="18.0"
             xmlns:android="http://schemas.android.com/apk/res/android">
-            <path android:fillColor="@android:color/white" android:pathData="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z" />
+            <path android:fillColor="@color/sysui_icons_tint" android:pathData="M9.01,15.99l8.8,-10.96C17.47,4.77 14.08,2.0 9.0,2.0S0.53,4.7 0.19,5.03l8.8,10.96l0.02,0.0z" />
         </vector>
     </item>
 </layer-list>

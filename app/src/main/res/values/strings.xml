@@ -171,4 +171,5 @@
     <string name="exit">Exit</string>
     <string name="transparency">Transparency</string>
     <string name="requesting_root_access">Requesting root access…</string>
+    <string name="search_in_settings">Search in Settings</string>
 </resources>
