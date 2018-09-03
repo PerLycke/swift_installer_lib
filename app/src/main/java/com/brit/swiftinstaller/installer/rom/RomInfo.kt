@@ -42,7 +42,7 @@ import java.io.File
 abstract class RomInfo constructor(var context: Context) {
 
     open fun getDefaultAccent() : Int {
-        return context.getColor(R.color.minimal_blue)
+        return context.getColor(R.color.minimal_green)
     }
 
     open fun getDisabledOverlays(): ArrayList<String> {
