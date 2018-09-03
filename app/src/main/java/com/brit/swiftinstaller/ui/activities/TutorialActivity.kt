@@ -55,20 +55,6 @@ class TutorialActivity : TutorialActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (RomInfo.getRomInfo(this).requiresRoot() && !ShellUtils.isRootAccessAvailable) {
-            val dialog = Dialog(this, R.style.AppTheme)
-            val layout = View.inflate(this, R.layout.no_root, null)
-            dialog.setContentView(layout)
-            dialog.setCancelable(false)
-            layout.no_root_msg.text = getString(R.string.no_root_msg)
-            layout.no_root_exit.visibility = View.VISIBLE
-            layout.no_root_exit.setOnClickListener {
-                finish()
-            }
-            dialog.show()
-            return
-        }
-
         if (!Utils.isSamsungOreo()) {
             notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -101,6 +87,20 @@ class TutorialActivity : TutorialActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         } else {
+            if (RomInfo.getRomInfo(this).requiresRoot() && !ShellUtils.isRootAccessAvailable) {
+                val dialog = Dialog(this, R.style.AppTheme)
+                val layout = View.inflate(this, R.layout.no_root, null)
+                dialog.setContentView(layout)
+                dialog.setCancelable(false)
+                layout.no_root_msg.text = getString(R.string.no_root_msg)
+                layout.no_root_exit.visibility = View.VISIBLE
+                layout.no_root_exit.setOnClickListener {
+                    finish()
+                }
+                dialog.show()
+                return
+            }
+
             setIndicator(R.drawable.tutorial_indicator)
             setIndicatorSelected(R.drawable.tutorial_indicator_selected)
             RomInfo.getRomInfo(this).addTutorialSteps(this)
