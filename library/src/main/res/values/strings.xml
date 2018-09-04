@@ -41,7 +41,6 @@
     <string name="confirm">Confirm</string>
     <string name="connections">Connections</string>
     <string name="connections_desc">Wi-Fi, Bluetooth, Data usage, Flight mode</string>
-    <string name="credits_msg">Credits to Projekt Development Team &amp; SlimRoms Ltd for the encryption implementation</string>
     <string name="custom_background">Custom background</string>
     <string name="dark">Dark</string>
     <string name="dark_notifications">Dark notifications</string>
@@ -63,8 +62,6 @@
     <string name="installing_and_uninstalling_title">Android System</string>
     <string name="invalid_accent">Invalid Accent</string>
     <string name="invalid_background">Invalid Background</string>
-    <string name="link_slimroms">https://slimroms.org</string>
-    <string name="link_substratum_template">https://github.com/substratum/template</string>
     <string name="material">Material</string>
     <string name="night">Night</string>
     <string name="notif_fix_desc_summary">When using dark notifications: Some notification texts are hardcoded black, e.g. WhatsApp notifications. This fix adds a shadow around all text, making black text visible. You can see how it looks in the preview above.</string>
@@ -172,4 +169,5 @@
     <string name="transparency">Transparency</string>
     <string name="requesting_root_access">Requesting root access…</string>
     <string name="search_in_settings">Search in Settings</string>
+    <string name="help">Help</string>
 </resources>

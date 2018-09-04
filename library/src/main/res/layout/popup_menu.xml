@@ -32,38 +32,20 @@
     android:paddingTop="16dp">
 
     <TextView
-        android:id="@+id/popup_menu_about"
+        android:id="@+id/popup_menu_help"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="8dp"
         android:paddingEnd="110dp"
         android:paddingStart="10dp"
         android:paddingTop="8dp"
-        android:text="@string/overflow_about"
+        android:text="@string/help"
         android:textAppearance="@android:style/TextAppearance.Material.Medium"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:background="?android:selectableItemBackgroundBorderless"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/popup_menu_help"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="?android:selectableItemBackgroundBorderless"
-        android:paddingBottom="8dp"
-        android:paddingEnd="110dp"
-        android:paddingStart="10dp"
-        android:paddingTop="8dp"
-        android:text="Help"
-        android:textAppearance="@android:style/TextAppearance.Material.Medium"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/popup_menu_about"
-        app:layout_constraintStart_toStartOf="@+id/popup_menu_about"
-        app:layout_constraintTop_toBottomOf="@+id/popup_menu_about" />
 </androidx.constraintlayout.widget.ConstraintLayout>

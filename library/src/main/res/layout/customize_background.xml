@@ -378,7 +378,7 @@
         app:layout_constraintEnd_toStartOf="@+id/hex_input_bg"
         app:layout_constraintTop_toTopOf="@+id/hex_input_bg" />
 
-    <com.brit.swiftinstaller.utils.BaseTextInputEditText
+    <com.brit.swiftinstaller.library.utils.BaseTextInputEditText
         android:id="@+id/hex_input_bg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

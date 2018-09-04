@@ -95,7 +95,7 @@
         app:layout_constraintEnd_toStartOf="@+id/accent_hex_input"
         app:layout_constraintTop_toTopOf="@+id/accent_hex_input" />
 
-    <com.brit.swiftinstaller.utils.BaseTextInputEditText
+    <com.brit.swiftinstaller.library.utils.BaseTextInputEditText
         android:id="@+id/accent_hex_input"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

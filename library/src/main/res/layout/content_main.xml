@@ -27,7 +27,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    tools:context="com.brit.swiftinstaller.ui.activities.MainActivity"
+    tools:context=".ui.activities.MainActivity"
     tools:layout_editor_absoluteY="25dp"
     tools:showIn="@layout/activity_main">
 
