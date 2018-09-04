@@ -25,17 +25,26 @@ import com.topjohnwu.superuser.BuildConfig
 import com.topjohnwu.superuser.BusyBox
 import com.topjohnwu.superuser.ContainerApp
 import com.topjohnwu.superuser.Shell
+import javax.crypto.Cipher
 
-class SwiftApplication : ContainerApp() {
+open class SwiftApplication : ContainerApp() {
 
     val installApps = arrayListOf<String>()
     val errorMap = HashMap<String, String>()
 
+    var cipher: Cipher? = null
+
     override fun onCreate() {
         super.onCreate()
+
+        cipher = createCipher()
 
         Shell.Config.verboseLogging(BuildConfig.DEBUG)
         Shell.Config.setFlags(Shell.FLAG_REDIRECT_STDERR)
         BusyBox.setup(this)
+    }
+
+    open fun createCipher() : Cipher? {
+        return null
     }
 }

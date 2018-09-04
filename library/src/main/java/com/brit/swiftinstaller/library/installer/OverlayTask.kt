@@ -109,10 +109,10 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         OverlayUtils.parseOverlayResourcePath(context, "overlays/$packageName", packageName, resourcePaths)
         OverlayUtils.parseOverlayAssetPath(am, "overlays/$packageName", assetPaths)
         for (path in resourcePaths) {
-            am.extractAsset(path, resDir.absolutePath, null)
+            am.extractAsset(path, resDir.absolutePath, context.swift.cipher)
         }
         for (path in assetPaths) {
-            am.extractAsset(path, assetDir.absolutePath, null)
+            am.extractAsset(path, assetDir.absolutePath, context.swift.cipher)
         }
         if (packageName == "android") {
             applyAccent()
