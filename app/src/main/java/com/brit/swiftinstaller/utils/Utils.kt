@@ -1,6 +1,8 @@
 package com.brit.swiftinstaller.utils
 
 import android.content.Context
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -8,10 +10,44 @@ import android.graphics.Paint
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import com.brit.swiftinstaller.ui.applist.AppItem
 
 
 @Suppress("unused")
 object Utils {
+
+    class ListEntry {
+        var title: String = ""
+        var packageName: String = ""
+    }
+
+    fun sortedOverlaysList(context: Context): ArrayList<AppItem> {
+        val pm = context.packageManager
+        val overlaysList = arrayListOf<AppItem>()
+        val getOverlays = context.assets.list("overlays")
+        for (pn: String in getOverlays) {
+            var info: ApplicationInfo?
+            var pInfo: PackageInfo?
+            try {
+                info = pm.getApplicationInfo(pn, PackageManager.GET_META_DATA)
+                pInfo = pm.getPackageInfo(pn, 0)
+            } catch (e: PackageManager.NameNotFoundException) {
+                continue
+            }
+            if (info != null) {
+                val item = AppItem()
+                item.packageName = pn
+                item.title = info.loadLabel(pm) as String
+                item.versionCode = pInfo!!.versionCode
+                item.versionName = pInfo.versionName
+                overlaysList.add(item)
+            }
+        }
+        overlaysList.sortWith(Comparator { o1, o2 ->
+            o1.title.compareTo(o2.title)
+        })
+        return overlaysList
+    }
 
     fun getOverlayPackageName(pack: String): String {
         return "$pack.swiftinstaller.overlay"

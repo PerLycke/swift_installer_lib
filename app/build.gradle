@@ -34,4 +34,6 @@ dependencies {
     implementation 'org.bouncycastle:bcprov-jdk16:1.45'
     implementation 'commons-io:commons-io:2.5'
     implementation project(':TutorialView')
+    implementation "org.jetbrains.anko:anko-commons:0.10.4"
+    implementation 'com.google.code.gson:gson:2.8.0'
 }
