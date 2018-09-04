@@ -40,7 +40,7 @@ import com.hololo.tutorial.library.TutorialActivity
 import kotlinx.android.synthetic.main.no_root.view.*
 import org.jetbrains.anko.doAsync
 
-class TutorialActivity : TutorialActivity() {
+open class TutorialActivity : TutorialActivity() {
 
     private var notificationManager: NotificationManager? = null
 
