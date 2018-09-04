@@ -20,6 +20,8 @@ import com.brit.swiftinstaller.R
 import com.brit.swiftinstaller.utils.*
 import kotlinx.android.synthetic.main.activity_app_list.*
 import kotlinx.android.synthetic.main.failed_info_card.view.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class AppListFragment : Fragment() {
 
@@ -109,6 +111,9 @@ class AppListFragment : Fragment() {
         mApps.clear()
         mVisible.clear()
         mApps.addAll(apps!!)
+        mApps.sortWith(Comparator { o1: AppItem, o2: AppItem ->
+            o1.title.compareTo(o2.title)
+        })
         mVisible.addAll(mApps.indices)
         mHandler.post {
             if (app_list_view != null && !app_list_view.isComputingLayout) {

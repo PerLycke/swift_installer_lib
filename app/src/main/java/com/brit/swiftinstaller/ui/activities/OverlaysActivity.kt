@@ -3,8 +3,10 @@ package com.brit.swiftinstaller.ui.activities
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
+import android.content.pm.PackageManager.*
 import android.graphics.Bitmap
 import android.os.AsyncTask
 import android.os.Bundle
@@ -80,15 +82,10 @@ class OverlaysActivity : ThemeActivity() {
 
     private var mPagerAdapter: AppsTabPagerAdapter? = null
     private lateinit var mViewPager: ViewPager
-    var overlaysList = arrayListOf<AppItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_overlays)
-
-        val bundle = getIntent().getExtras()
-        overlaysList = bundle.getParcelableArrayList("overlays_list")
-
 
         mPagerAdapter = AppsTabPagerAdapter(supportFragmentManager,
                 false, INSTALL_TAB, ACTIVE_TAB, UPDATE_TAB)
@@ -96,15 +93,16 @@ class OverlaysActivity : ThemeActivity() {
             override fun onAlertIconClick(appItem: AppItem) {
                 val packageInfo = packageManager.getPackageInfo(appItem.packageName, 0)
                 val dialog = AlertDialog.Builder(this@OverlaysActivity, R.style.AppTheme_AlertDialog)
-                        .setTitle(appItem.title)
-                        .setIcon(appItem.icon)
-                        .setMessage("Version support info:" +
-                                "\nCurrent Version: ${packageInfo.versionName}" +
-                                "\nAvailable Versions: ${Utils.getAvailableOverlayVersions(
-                                        this@OverlaysActivity, appItem.packageName)}")
-                        .setPositiveButton(android.R.string.ok) { dialogInterface, _ ->
-                            dialogInterface.dismiss()
-                        }
+
+                .setTitle(appItem.title)
+                .setIcon(appItem.icon)
+                .setMessage("Version support info:" +
+                        "\nCurrent Version: ${packageInfo.versionName}" +
+                        "\nAvailable Versions: ${Utils.getAvailableOverlayVersions(
+                                this@OverlaysActivity, appItem.packageName)}")
+                .setPositiveButton(android.R.string.ok) { dialogInterface, _ ->
+                    dialogInterface.dismiss()
+                }
                 themeDialog()
                 dialog.show()
             }
@@ -186,7 +184,7 @@ class OverlaysActivity : ThemeActivity() {
             override fun updateApps(tab: Int, item: AppItem) {
                 mPagerAdapter!!.addApp(tab, item)
             }
-        }, overlaysList).execute()
+        }).execute()
     }
 
     fun customizeBtnClick(@Suppress("UNUSED_PARAMETER") view: View) {
@@ -212,11 +210,10 @@ class OverlaysActivity : ThemeActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    class AppLoader(context: Context, private val mCallback: Callback, list: ArrayList<AppItem>)
+    class AppLoader(context: Context, private val mCallback: Callback)
         : AsyncTask<Void, AppLoader.Progress, Void>() {
 
         private val mConRef: WeakReference<Context> = WeakReference(context)
-        private val overlaysList = list
 
         class Progress(val tab: Int, val item: AppItem)
 
@@ -225,28 +222,38 @@ class OverlaysActivity : ThemeActivity() {
             val pm = mConRef.get()!!.packageManager
             val context = mConRef.get()
             val updates = getAppsToUpdate(context!!)
-            for (item in overlaysList) {
+            for (pn: String in mConRef.get()!!.assets.list("overlays")) {
+                var info: ApplicationInfo?
+                var pInfo: PackageInfo?
                 var status: Int?
-                val pn = item.packageName
-                item.icon = pm.getApplicationIcon(item.packageName)
                 try {
+                    info = pm.getApplicationInfo(pn, PackageManager.GET_META_DATA)
+                    pInfo = pm.getPackageInfo(pn, 0)
                     status = pm.getApplicationEnabledSetting(pn)
                 } catch (e: PackageManager.NameNotFoundException) {
                     continue
                 }
-                if (isOverlayInstalled(context, getOverlayPackageName(pn))) {
-                    if (isOverlayEnabled(context, getOverlayPackageName(pn))) {
-                        if (updates.contains(pn)
-                                && status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
-                            publishProgress(Progress(UPDATE_TAB, item))
-                        } else {
-                            publishProgress(Progress(ACTIVE_TAB, item))
+                if (info != null) {
+                    val item = AppItem()
+                    item.packageName = pn
+                    item.icon = info.loadIcon(pm)
+                    item.title = info.loadLabel(pm) as String
+                    item.versionCode = pInfo!!.versionCode
+                    item.versionName = pInfo.versionName
+                    if (isOverlayInstalled(context, getOverlayPackageName(pn))) {
+                        if (isOverlayEnabled(context, getOverlayPackageName(pn))) {
+                            if (updates.contains(pn)
+                                    && status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
+                                publishProgress(Progress(UPDATE_TAB, item))
+                            } else {
+                                publishProgress(Progress(ACTIVE_TAB, item))
+                            }
+                        } else if (status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
+                            publishProgress(Progress(INSTALL_TAB, item))
                         }
                     } else if (status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
                         publishProgress(Progress(INSTALL_TAB, item))
                     }
-                } else if (status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
-                    publishProgress(Progress(INSTALL_TAB, item))
                 }
             }
             return null
@@ -279,16 +286,16 @@ class OverlaysActivity : ThemeActivity() {
                 }
                 "second" -> {
                     val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                            .setTitle(R.string.reboot_delay_title)
-                            .setMessage(R.string.reboot_delay_msg)
-                            .setPositiveButton(R.string.proceed, { dialogInterface, _ ->
-                                getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "default").apply()
-                                dialogInterface.dismiss()
-                                installAction()
-                            })
-                            .setNegativeButton(R.string.cancel, { dialogInterface, _ ->
-                                dialogInterface.dismiss()
-                            })
+                    .setTitle(R.string.reboot_delay_title)
+                    .setMessage(R.string.reboot_delay_msg)
+                    .setPositiveButton(R.string.proceed, { dialogInterface, _ ->
+                        getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "default").apply()
+                        dialogInterface.dismiss()
+                        installAction()
+                    })
+                    .setNegativeButton(R.string.cancel, { dialogInterface, _ ->
+                        dialogInterface.dismiss()
+                    })
 
                     themeDialog()
                     val dialog = builder.create()
@@ -390,7 +397,7 @@ class OverlaysActivity : ThemeActivity() {
                     override fun updateApps(tab: Int, item: AppItem) {
                         mPagerAdapter!!.addApp(tab, item)
                     }
-                }, overlaysList).execute()
+                }).execute()
             }
 
         }).execute()
@@ -409,42 +416,42 @@ class OverlaysActivity : ThemeActivity() {
     @Suppress("UNUSED_PARAMETER")
     fun gboardInfo(view: View) {
         val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                .setTitle(R.string.gboard_dialog_title)
-                .setMessage(R.string.gboard_bg_info)
-                .setPositiveButton(R.string.save, { dialogInterface, _ ->
-                    val bitmap = createImage(512,512, getBackgroundColor(this))
-                    val downloads = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                    val image = File(downloads, "swift_bg.png")
-                    var success = false
-                    val outStream: FileOutputStream
-                    try
-                    {
-                        outStream = FileOutputStream(image)
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream)
-                        outStream.flush()
-                        outStream.close()
-                        success = true
-                    }
-                    catch (e: FileNotFoundException) {
-                        e.printStackTrace()
-                    }
-                    catch (e: IOException) {
-                        e.printStackTrace()
-                    }
+        .setTitle(R.string.gboard_dialog_title)
+        .setMessage(R.string.gboard_bg_info)
+        .setPositiveButton(R.string.save, { dialogInterface, _ ->
+            val bitmap = createImage(512,512, getBackgroundColor(this))
+            val downloads = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            val image = File(downloads, "swift_bg.png")
+            var success = false
+            val outStream: FileOutputStream
+            try
+            {
+                outStream = FileOutputStream(image)
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream)
+                outStream.flush()
+                outStream.close()
+                success = true
+            }
+            catch (e: FileNotFoundException) {
+                e.printStackTrace()
+            }
+            catch (e: IOException) {
+                e.printStackTrace()
+            }
 
-                    if (success) {
-                        Toast.makeText(applicationContext, R.string.saved,
-                                Toast.LENGTH_LONG).show()
-                    } else {
-                        Toast.makeText(applicationContext,
-                                R.string.save_error, Toast.LENGTH_LONG).show()
-                    }
+            if (success) {
+                Toast.makeText(applicationContext, R.string.saved,
+                        Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(applicationContext,
+                        R.string.save_error, Toast.LENGTH_LONG).show()
+            }
 
-                    dialogInterface.dismiss()
-                })
-                .setNegativeButton(R.string.cancel, { dialogInterface, _ ->
-                    dialogInterface.dismiss()
-                })
+            dialogInterface.dismiss()
+        })
+        .setNegativeButton(R.string.cancel, { dialogInterface, _ ->
+            dialogInterface.dismiss()
+        })
         themeDialog()
         val dialog = builder.create()
         dialog.show()

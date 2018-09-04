@@ -3,7 +3,6 @@ package com.brit.swiftinstaller.ui.activities
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
@@ -17,32 +16,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.PopupWindow
 import com.brit.swiftinstaller.R
-import com.brit.swiftinstaller.ui.applist.AppItem
 import com.brit.swiftinstaller.utils.MaterialPalette
 import com.brit.swiftinstaller.utils.UpdateChecker
-import com.brit.swiftinstaller.utils.Utils
 import kotlinx.android.synthetic.main.card_compatibility_info.*
 import kotlinx.android.synthetic.main.card_install.*
 import kotlinx.android.synthetic.main.card_update.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.dialog_about.view.*
 import kotlinx.android.synthetic.main.popup_menu.view.*
-import org.jetbrains.anko.doAsync
-import java.util.*
 
 class MainActivity : ThemeActivity() {
-
-    var overlaysList = arrayListOf<AppItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val myToolbar = findViewById<Toolbar>(R.id.main_toolbar)
         setSupportActionBar(myToolbar)
-
-        doAsync {
-            overlaysList = Utils.sortedOverlaysList(this@MainActivity)
-        }
 
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("not_closed", true)) {
             card_compatibility.visibility = View.VISIBLE
@@ -80,11 +69,7 @@ class MainActivity : ThemeActivity() {
         }
 
         card_install.setOnClickListener {
-            val intent = Intent(this, OverlaysActivity::class.java)
-            val bundle = Bundle()
-            bundle.putParcelableArrayList("overlays_list", overlaysList)
-            intent.putExtras(bundle)
-            startActivity(intent)
+            startActivity(Intent(this, OverlaysActivity::class.java))
         }
 
         card_update.setOnClickListener {
@@ -97,11 +82,6 @@ class MainActivity : ThemeActivity() {
             val intent = Intent(this, CustomizeActivity::class.java)
             startActivity(intent)
         }
-    }
-
-    fun SharedPreferences.Editor.putIntegerArrayList(key: String, list: ArrayList<String>?): SharedPreferences.Editor {
-        putString(key, list?.joinToString(",") ?: "")
-        return this
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,

@@ -189,7 +189,7 @@ class InstallSummaryActivity : ThemeActivity() {
                 if (info != null) {
                     val item = AppItem()
                     item.packageName = pn
-                    item.icon = pm.getApplicationIcon(item.packageName)
+                    item.icon = info.loadIcon(pm)
                     item.title = info.loadLabel(pm) as String
                     item.versionCode = pInfo!!.versionCode
                     item.versionName = pInfo.versionName
