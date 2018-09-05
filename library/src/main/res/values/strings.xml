@@ -170,4 +170,6 @@
     <string name="requesting_root_access">Requesting root access…</string>
     <string name="search_in_settings">Search in Settings</string>
     <string name="help">Help</string>
+    <string name="installer_version">Installer library version:</string>
+    <string name="installer_source_link">https://github.com/PerLycke/swift_installer_lib</string>
 </resources>

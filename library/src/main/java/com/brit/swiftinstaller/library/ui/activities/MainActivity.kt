@@ -36,6 +36,7 @@ import android.widget.PopupWindow
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.applist.AppItem
 import com.brit.swiftinstaller.library.utils.*
@@ -44,6 +45,7 @@ import kotlinx.android.synthetic.main.card_compatibility_info.*
 import kotlinx.android.synthetic.main.card_install.*
 import kotlinx.android.synthetic.main.card_update.*
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.dialog_about.view.*
 import kotlinx.android.synthetic.main.dialog_help.view.*
 import kotlinx.android.synthetic.main.popup_menu.view.*
 import org.jetbrains.anko.doAsync
@@ -170,6 +172,24 @@ class MainActivity : ThemeActivity() {
 
         val b = popupView.background as LayerDrawable
         b.findDrawableByLayerId(R.id.background_popup).setTint(MaterialPalette.get(this).cardBackgroud)
+
+        popupView.popup_menu_about.setOnClickListener { _ ->
+            popup.dismiss()
+
+            val dialogView = View.inflate(this, R.layout.dialog_about, null)
+            val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+            builder.setView(dialogView)
+            themeDialog()
+
+            val dialog = builder.create()
+
+            dialogView.about_ok_btn.setOnClickListener {
+                dialog.dismiss()
+            }
+
+            dialogView.installer_version.text = BuildConfig.VERSION_NAME
+            dialog.show()
+        }
 
         popupView.popup_menu_help.setOnClickListener { _ ->
             popup.dismiss()
