@@ -10,6 +10,8 @@ android {
         versionCode 1
         versionName "1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        resValue("string", "lib_version", "${versionName}")
     }
     signingConfigs {
         release

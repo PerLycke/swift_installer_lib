@@ -29,25 +29,20 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.AsyncTask
-import android.os.Build
-import android.os.Bundle
-import android.os.Environment
-import android.os.Handler
+import android.os.*
 import android.preference.PreferenceManager
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.tabs.TabLayout
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.appcompat.app.AlertDialog
 import android.view.View
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
-import com.brit.swiftinstaller.library.BuildConfig
+import androidx.appcompat.app.AlertDialog
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.brit.swiftinstaller.library.R
+import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.ui.applist.AppItem
 import com.brit.swiftinstaller.library.ui.applist.AppListFragment
 import com.brit.swiftinstaller.library.ui.applist.AppsTabPagerAdapter
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.isOverlayEnabled
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_install_summary.*
 import kotlinx.android.synthetic.main.tab_layout_install_summary.*
 import java.io.File
@@ -163,7 +158,9 @@ class InstallSummaryActivity : ThemeActivity() {
             fab_install_finished.show()
         }
         if (!hotSwap || !isOverlayEnabled("android")) {
-            resultDialog()
+            mHandler.post {
+                resultDialog()
+            }
         } else {
             restartSysUi()
             PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("hotswap", false).apply()
@@ -177,8 +174,9 @@ class InstallSummaryActivity : ThemeActivity() {
 
     private fun resultDialog() {
         val builder = AlertDialog.Builder(this)
+        val failed = mApps.size == mErrorMap.size
 
-        builder.setTitle(if (mApps.size == 0) {
+        builder.setTitle(if (failed) {
             R.string.installation_failed
         } else if (!ShellUtils.isRootAvailable) {
             R.string.reboot_to_finish
@@ -186,15 +184,13 @@ class InstallSummaryActivity : ThemeActivity() {
             R.string.reboot_now_title
         })
 
-        builder.setMessage(if (mApps.isEmpty()) {
-            R.string.examined_result_msg_error
-        } else if (mErrorMap.isNotEmpty() && mApps.isNotEmpty()) {
-            R.string.examined_result_msg
-        } else {
-            R.string.examined_result_msg_noerror
+        builder.setMessage(when {
+            failed -> R.string.examined_result_msg_error
+            mErrorMap.isNotEmpty() -> R.string.examined_result_msg
+            else -> R.string.examined_result_msg_noerror
         })
 
-        if (ShellUtils.isRootAvailable && mApps.isNotEmpty()) {
+        if (ShellUtils.isRootAvailable && !failed) {
             builder.setNegativeButton(R.string.reboot_later) { dialogInterface, _ ->
                 dialogInterface.dismiss()
             }
@@ -212,7 +208,7 @@ class InstallSummaryActivity : ThemeActivity() {
         dialog = builder.create()
         dialog?.show()
 
-        if (mApps.size > 0) {
+        if (!failed) {
             container.currentItem = 0
         } else {
             container.currentItem = 1
@@ -233,7 +229,7 @@ class InstallSummaryActivity : ThemeActivity() {
 
         val text = StringBuilder()
         text.append("\n")
-        text.append("Installer Version: ${BuildConfig.VERSION_NAME}")
+        text.append("Installer Version: ${getString(R.string.lib_version)}")
         text.append("\n")
         text.append("Device: ${Build.DEVICE}")
         text.append("\n")
