@@ -27,29 +27,14 @@ import android.preference.PreferenceManager
 import android.text.TextUtils
 import android.util.ArraySet
 import androidx.collection.ArrayMap
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
-import com.brit.swiftinstaller.library.R
 import org.json.JSONObject
 
-const val KEY_ACCENT_COLOR = "accent_color"
-const val KEY_BACKGROUND_COLOR = "background_color"
 const val KEY_BACKGROUND_PALETTE = "background_palette"
-const val KEY_SENDER_NAME_FIX = "sender_name_fix"
-const val KEY_USE_AOSP_ICONS = "use_aosp_icons"
-const val KEY_USE_STOCK_ACCENT_ICONS = "use_stock_accent_icons"
-const val KEY_USE_STOCK_MULTI_ICONS = "use_stock_multi_icons"
-const val KEY_USE_P_ICONS = "use_p_icons"
-const val KEY_USE_RIGHT_CLOCK = "use_right_clock"
-const val KEY_USE_LEFT_CLOCK = "use_left_clock"
-const val KEY_USE_CENTERED_CLOCK = "use_centered_clock"
-const val KEY_USE_P_STYLE = "use_p_style"
 const val KEY_HIDE_INFO_CARD = "hide_failed_info"
 const val KEY_USER_ACCENTS = "user_accents"
 const val KEY_OVERLAY_UPDATES = "overlays_to_update"
 const val KEY_OVERLAYS_TO_INSTALL = "overlays_to_install"
 const val KEY_OVERLAYS_TO_UNINSTALL = "overlays_to_uninstall"
-const val KEY_DARK_NOTIF_BG = "dark_notif_bg"
-const val KEY_ALPHA = "alpha"
 const val KEY_USE_SOFT_REBOOT = "use_soft_reboot"
 const val KEY_UPDATE_NOTIFICATION_ENABLED = "update_notification_enabled"
 const val KEY_NEW_APP_NOTIFICATION_ENABLED = "new_app_notification_enabled"
@@ -58,116 +43,12 @@ const val KEY_HIDDEN_APPS = "hidden_apps"
 
 val NO_PERMISSION_PACKAGES = arrayListOf("com.sec.android.app.music", "com.sec.android.app.voicenote")
 
-fun getAccentColor(context: Context): Int {
-    return PreferenceManager.getDefaultSharedPreferences(context).getInt(KEY_ACCENT_COLOR, RomInfo.getRomInfo(context).getDefaultAccent())
-}
-
-fun setAccentColor(context: Context, color: Int) {
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putInt(KEY_ACCENT_COLOR, color).apply()
-}
-
-fun getBackgroundColor(context: Context): Int {
-    return PreferenceManager.getDefaultSharedPreferences(context).getInt(KEY_BACKGROUND_COLOR, context.getColor(R.color.background_main))
-}
-
-fun setBackgroundColor(context: Context, color: Int) {
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putInt(KEY_BACKGROUND_COLOR, color).apply()
-}
-
-fun getAlphaValue(context: Context): Int {
-    return PreferenceManager.getDefaultSharedPreferences(context).getInt(KEY_ALPHA, 0)
-}
-
-fun setAlphaValue(context: Context, alpha: Int) {
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putInt(KEY_ALPHA, alpha).apply()
-}
-
 fun useBackgroundPalette(context: Context): Boolean {
     return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_BACKGROUND_PALETTE, false)
 }
 
 fun setUseBackgroundPalette(context: Context, use: Boolean) {
     PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(KEY_BACKGROUND_PALETTE, use).apply()
-}
-
-fun useDarkNotifBg(context: Context): Boolean {
-    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_DARK_NOTIF_BG, true)
-}
-
-fun setUseDarkNotifBg(context: Context, use: Boolean) {
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(KEY_DARK_NOTIF_BG, use).apply()
-}
-
-fun useSenderNameFix(context: Context): Boolean {
-    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_SENDER_NAME_FIX, false)
-}
-
-fun setUseSenderNameFix(context: Context, use: Boolean) {
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(KEY_SENDER_NAME_FIX, use).apply()
-}
-
-fun useAospIcons(context: Context): Boolean {
-    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_USE_AOSP_ICONS, !Utils.isSamsungOreo())
-}
-
-fun setUseAospIcons(context: Context, use: Boolean) {
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(KEY_USE_AOSP_ICONS, use).apply()
-}
-
-fun useStockAccentIcons(context: Context): Boolean {
-    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_USE_STOCK_ACCENT_ICONS, false)
-}
-
-fun setUseStockAccentIcons(context: Context, use: Boolean) {
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(KEY_USE_STOCK_ACCENT_ICONS, use).apply()
-}
-
-fun useStockMultiIcons(context: Context): Boolean {
-    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_USE_STOCK_MULTI_ICONS, false)
-}
-
-fun setUseStockMultiIcons(context: Context, use: Boolean) {
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(KEY_USE_STOCK_MULTI_ICONS, use).apply()
-}
-
-fun usePIcons(context: Context): Boolean {
-    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_USE_P_ICONS, false)
-}
-
-fun setUsePIcons(context: Context, use: Boolean) {
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(KEY_USE_P_ICONS, use).apply()
-}
-
-fun useRightClock(context: Context): Boolean {
-    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_USE_RIGHT_CLOCK, false)
-}
-
-fun setUseRightClock(context: Context, use: Boolean) {
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(KEY_USE_RIGHT_CLOCK, use).apply()
-}
-
-fun useLeftClock(context: Context): Boolean {
-    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_USE_LEFT_CLOCK, false)
-}
-
-fun setUseLeftClock(context: Context, use: Boolean) {
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(KEY_USE_LEFT_CLOCK, use).apply()
-}
-
-fun useCenteredClock(context: Context): Boolean {
-    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_USE_CENTERED_CLOCK, false)
-}
-
-fun setUseCenteredClock(context: Context, use: Boolean) {
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(KEY_USE_CENTERED_CLOCK, use).apply()
-}
-
-fun usePstyle(context: Context): Boolean {
-    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_USE_P_STYLE, false)
-}
-
-fun setUsePStyle(context: Context, use: Boolean) {
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(KEY_USE_P_STYLE, use).apply()
 }
 
 fun setHideFailedInfoCard(context: Context, hide: Boolean) {
@@ -300,9 +181,9 @@ fun setOverlayOption(context: Context, packageName: String, option: String, valu
 
 @Suppress("unused")
 fun addAccentColor(context: Context, color: Int) {
-    val presets = context.resources.getIntArray(R.array.accent_colors)
-    for (col: Int in presets) {
-        if (col == color)
+    val presets = context.swift.romInfo.getCustomizeHandler().getAccentColors()
+    for (col in presets) {
+        if (col.accentColor == color)
             return
     }
     val colors = getUserAccents(context)

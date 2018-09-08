@@ -10,8 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.library.utils.getAccentColor
-import com.brit.swiftinstaller.library.utils.getBackgroundColor
+import com.brit.swiftinstaller.library.utils.swift
 import com.michaelflisar.changelog.ChangelogBuilder
 import com.michaelflisar.changelog.internal.ChangelogParserAsyncTask
 
@@ -38,7 +37,7 @@ class ChangelogDialog : DialogFragment() {
                 }
 
         val view = View.inflate(activity, R.layout.changelog_dialog, null)
-        view.setBackgroundColor(getBackgroundColor(activity!!))
+        view.setBackgroundColor(activity!!.swift.selection.backgroundColor)
         val pb = view.findViewById<ProgressBar>(R.id.pbLoading)
         val rv = view.findViewById<RecyclerView>(R.id.rvChangelog)
         val adapter = builder!!.setupEmptyRecyclerView(rv)
@@ -48,10 +47,10 @@ class ChangelogDialog : DialogFragment() {
 
         dialog.setView(view)
         val d = dialog.create()
-        d.window!!.setBackgroundDrawable(ColorDrawable(getBackgroundColor(activity!!)))
+        d.window!!.setBackgroundDrawable(ColorDrawable(activity!!.swift.selection.backgroundColor))
         d.setOnShowListener {
             d.setIcon(R.mipmap.ic_launcher)
-            d.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getAccentColor(activity!!))
+            d.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(activity!!.swift.selection.accentColor)
         }
         return d
     }

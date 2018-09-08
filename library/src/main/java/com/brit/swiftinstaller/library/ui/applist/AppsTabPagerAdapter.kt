@@ -26,9 +26,9 @@ import android.os.Handler
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.ui.activities.InstallSummaryActivity
 import com.brit.swiftinstaller.library.utils.OverlayUtils.checkVersionCompatible
+import com.brit.swiftinstaller.library.utils.swift
 
 class AppsTabPagerAdapter(fm: FragmentManager, summary: Boolean, vararg tabs: Int) : FragmentPagerAdapter(fm) {
 
@@ -85,7 +85,7 @@ class AppsTabPagerAdapter(fm: FragmentManager, summary: Boolean, vararg tabs: In
         val checkableList = arrayListOf<AppItem>()
         for (item in mApps[tab]!!) {
             if (checkVersionCompatible(context, item.packageName) ||
-                    RomInfo.getRomInfo(context).isOverlayInstalled(item.packageName)) {
+                    context.swift.romInfo.isOverlayInstalled(item.packageName)) {
                 checkableList.add(item)
             }
         }

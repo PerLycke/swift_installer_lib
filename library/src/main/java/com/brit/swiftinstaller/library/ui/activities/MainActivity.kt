@@ -38,7 +38,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.ui.applist.AppItem
 import com.brit.swiftinstaller.library.ui.changelog.ChangelogHandler
 import com.brit.swiftinstaller.library.utils.*
@@ -63,7 +62,7 @@ class MainActivity : ThemeActivity() {
 
         ChangelogHandler.showChangelog(this, true)
 
-        update_checker_spinner.indeterminateDrawable.setColorFilter(getAccentColor(this), PorterDuff.Mode.SRC_ATOP)
+        update_checker_spinner.indeterminateDrawable.setColorFilter(swift.selection.accentColor, PorterDuff.Mode.SRC_ATOP)
 
         doAsync {
             enableAllOverlays()
@@ -215,7 +214,7 @@ class MainActivity : ThemeActivity() {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
 
-        if (RomInfo.getRomInfo(this).useHotSwap()) {
+        if (swift.romInfo.useHotSwap()) {
             popupView.popup_menu_soft_reboot.setOnClickListener {
                 popup.dismiss()
                 if (getUseSoftReboot(this)) {

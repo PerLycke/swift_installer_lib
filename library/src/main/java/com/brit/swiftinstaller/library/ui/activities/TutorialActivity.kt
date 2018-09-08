@@ -33,10 +33,10 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.View
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.utils.OverlayUtils
 import com.brit.swiftinstaller.library.utils.ShellUtils
 import com.brit.swiftinstaller.library.utils.Utils
+import com.brit.swiftinstaller.library.utils.swift
 import com.hololo.tutorial.library.TutorialActivity
 import kotlinx.android.synthetic.main.no_root.view.*
 import org.jetbrains.anko.doAsync
@@ -80,7 +80,7 @@ open class TutorialActivity : TutorialActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         } else {
-            if (RomInfo.getRomInfo(this).requiresRoot() && !ShellUtils.isRootAccessAvailable) {
+            if (swift.romInfo.requiresRoot() && !ShellUtils.isRootAccessAvailable) {
                 val dialog = Dialog(this, R.style.AppTheme)
                 val layout = View.inflate(this, R.layout.no_root, null)
                 dialog.setContentView(layout)
@@ -96,7 +96,7 @@ open class TutorialActivity : TutorialActivity() {
 
             setIndicator(R.drawable.tutorial_indicator)
             setIndicatorSelected(R.drawable.tutorial_indicator_selected)
-            RomInfo.getRomInfo(this).addTutorialSteps(this)
+            swift.romInfo.addTutorialSteps(this)
         }
     }
 

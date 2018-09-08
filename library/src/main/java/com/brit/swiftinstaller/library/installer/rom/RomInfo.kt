@@ -22,7 +22,6 @@
 package com.brit.swiftinstaller.library.installer.rom
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
@@ -31,25 +30,25 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.content.ContextCompat
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.library.ui.activities.CustomizeActivity
+import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
 import com.hololo.tutorial.library.PermissionStep
 import com.hololo.tutorial.library.Step
 import com.hololo.tutorial.library.TutorialActivity
-import java.io.File
 
 
 @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
 abstract class RomInfo constructor(var context: Context) {
+
+    private var customizeHandler: CustomizeHandler? = null
 
     open fun getDefaultAccent() : Int {
         return context.getColor(R.color.minimal_green)
     }
 
     open fun getDisabledOverlays(): ArrayList<String> {
-        val disable = ArrayList<String>()
-        return disable
+        return ArrayList()
     }
 
     open fun getRequiredApps(): Array<String> {
@@ -101,9 +100,17 @@ abstract class RomInfo constructor(var context: Context) {
         return true
     }
 
-    open fun getCustomizeFeatures() : Int {
-        return CustomizeActivity.SUPPORTS_CLOCK + CustomizeActivity.SUPPORTS_ICONS + CustomizeActivity.SUPPORTS_TRANSPARENCY +
-                CustomizeActivity.SUPPORTS_SHADOW + CustomizeActivity.SUPPORTS_NOTIF_STYLE
+    fun getCustomizeHandler(): CustomizeHandler {
+        if (customizeHandler == null) {
+            customizeHandler = createCustomizeHandler()
+        }
+        return customizeHandler!!
+    }
+
+    open fun createCustomizeHandler(): CustomizeHandler {
+        return object : CustomizeHandler(context) {
+
+        }
     }
 
     open fun useHotSwap(): Boolean { return false }
@@ -124,7 +131,6 @@ abstract class RomInfo constructor(var context: Context) {
     open fun onBootCompleted(context: Context) {
     }
 
-    @Suppress("unused")
     companion object {
 
         const val TUTORIAL_PAGE_MAIN = 0
@@ -134,14 +140,10 @@ abstract class RomInfo constructor(var context: Context) {
         const val TUTORIAL_PAGE_PERMISSIONS = 4
         const val TUTORIAL_PAGE_PERSONALIZE = 5
 
-        @SuppressLint("StaticFieldLeak")
-        private var sInfo: RomInfo? = null
-
         @Synchronized
         @JvmStatic
-        fun getRomInfo(context: Context): RomInfo {
-            if (sInfo == null) {
-                sInfo = when {
+        fun createRomInfo(context: Context): RomInfo {
+                return when {
                     getProperty("ro.oxygen.version", "def") != "def"
                             && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P -> OOSPRomInfo(context)
                     getProperty("ro.oxygen.version", "def") != "def"
@@ -150,12 +152,7 @@ abstract class RomInfo constructor(var context: Context) {
                     Build.VERSION_CODES.P == Build.VERSION.SDK_INT -> PRomInfo(context)
                     else -> OreoRomInfo(context)
                 }
-            }
-            return sInfo!!
         }
-
-        private val isTouchwiz: Boolean
-            get() = File("/system/framework/touchwiz.jar").exists()
 
         @Suppress("DEPRECATION", "unused")
         private fun isOMS(context: Context): Boolean {
@@ -167,10 +164,6 @@ abstract class RomInfo constructor(var context: Context) {
                 }
             }
             return false
-        }
-
-        fun isSupported(@Suppress("UNUSED_PARAMETER") context: Context): Boolean {
-            return true
         }
     }
 }

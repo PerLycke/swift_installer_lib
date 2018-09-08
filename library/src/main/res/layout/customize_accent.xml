@@ -73,7 +73,7 @@
         app:layout_constraintTop_toTopOf="@+id/toolbar_subtitle_accent_title" />
 
     <GridView
-        android:id="@+id/palette"
+        android:id="@+id/accent_palette"
         android:layout_width="0dp"
         android:layout_height="94dp"
         android:layout_marginTop="20dp"
@@ -109,8 +109,8 @@
         android:inputType="textNoSuggestions|textVisiblePassword"
         android:maxLength="6"
         android:singleLine="true"
-        app:layout_constraintEnd_toEndOf="@+id/palette"
-        app:layout_constraintTop_toBottomOf="@+id/palette" />
+        app:layout_constraintEnd_toEndOf="@+id/accent_palette"
+        app:layout_constraintTop_toBottomOf="@+id/accent_palette" />
 
     <Button
         android:id="@+id/apply_hex"

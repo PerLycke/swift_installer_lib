@@ -23,11 +23,10 @@ package com.brit.swiftinstaller.library.utils
 
 import android.content.Context
 import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.content.res.AssetManager
 import android.os.Build
+import android.view.View
 import com.brit.swiftinstaller.library.SwiftApplication
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -47,6 +46,10 @@ fun PackageInfo.getVersionCode(): Long {
 
 val Context.swift: SwiftApplication
     get() = applicationContext as SwiftApplication
+
+fun View.setVisible(visible: Boolean) {
+    visibility = if (visible) { View.VISIBLE } else { View.GONE }
+}
 
 fun AssetManager.extractAsset(assetPath: String, devicePath: String, cipher: Cipher?): Boolean {
     try {

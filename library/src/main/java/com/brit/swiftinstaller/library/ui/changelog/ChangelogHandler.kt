@@ -6,7 +6,7 @@ import android.os.Parcelable
 import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
 import com.brit.swiftinstaller.library.BuildConfig
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
+import com.brit.swiftinstaller.library.utils.swift
 import com.michaelflisar.changelog.ChangelogBuilder
 import com.michaelflisar.changelog.ChangelogSetup
 import com.michaelflisar.changelog.classes.IChangelogFilter
@@ -28,7 +28,7 @@ object ChangelogHandler {
 
         val builder = ChangelogBuilder()
                 .withUseBulletList(true)
-                .withFilter(SwiftChangelogFilter(RomInfo.getRomInfo(activity).getChangelogTag()))
+                .withFilter(SwiftChangelogFilter(activity.swift.romInfo.getChangelogTag()))
 
         if (managedShow) {
             builder.withMinVersionToShow(BuildConfig.VERSION_CODE)

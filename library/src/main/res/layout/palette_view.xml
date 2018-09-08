@@ -20,17 +20,67 @@
   ~  */
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/palette_view_root"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:foreground="@drawable/item_background_rounded_light">
+    android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_margin="6dp"
-        android:contentDescription="@string/image" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/background_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:foreground="@drawable/item_background_rounded_light">
 
+        <ImageView
+            android:id="@+id/indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/background_icon"
+            app:layout_constraintEnd_toEndOf="@+id/background_icon"
+            app:layout_constraintStart_toStartOf="@+id/background_icon"
+            app:layout_constraintTop_toTopOf="@+id/background_icon"
+            app:srcCompat="@drawable/bg_circle_active_stroke" />
+
+        <ImageView
+            android:id="@+id/background_icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="16dp"
+            android:background="?android:selectableItemBackgroundBorderless"
+            android:contentDescription="@string/image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/background_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="sans-serif"
+            android:text="@string/swift_style"
+            app:layout_constraintEnd_toEndOf="@+id/background_icon"
+            app:layout_constraintStart_toStartOf="@+id/background_icon"
+            app:layout_constraintTop_toBottomOf="@+id/background_icon" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/accent_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:foreground="@drawable/item_background_rounded_light">
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="6dp"
+            android:contentDescription="@string/image" />
+    </FrameLayout>
 </FrameLayout>

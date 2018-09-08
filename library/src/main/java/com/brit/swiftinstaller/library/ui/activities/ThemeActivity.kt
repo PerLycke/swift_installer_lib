@@ -44,20 +44,20 @@ open class ThemeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener { _, key ->
-            if (key == KEY_ACCENT_COLOR || key == KEY_BACKGROUND_COLOR || key == KEY_BACKGROUND_PALETTE) {
-                updateColors(getBackgroundColor(this), useBackgroundPalette(this))
+            if (key == "customize_options" || key == KEY_BACKGROUND_PALETTE) {
+                updateColors(swift.selection.backgroundColor, useBackgroundPalette(this))
             }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        updateColors(getBackgroundColor(this), useBackgroundPalette(this))
+        updateColors(swift.selection.backgroundColor, useBackgroundPalette(this))
     }
 
     fun themeDialog() {
         val dialogBg = getDrawable(R.drawable.dialog_bg) as LayerDrawable
-        dialogBg.findDrawableByLayerId(R.id.dialog_bg).setTint(getBackgroundColor(this))
+        dialogBg.findDrawableByLayerId(R.id.dialog_bg).setTint(swift.selection.backgroundColor)
     }
 
     fun updateColors(backgroundColor: Int, usePalette: Boolean) {
@@ -71,7 +71,7 @@ open class ThemeActivity : AppCompatActivity() {
             }
         }
         if (findViewById<FloatingActionButton>(R.id.fab) != null) {
-            findViewById<FloatingActionButton>(R.id.fab).background.setTint(getAccentColor(this))
+            findViewById<FloatingActionButton>(R.id.fab).background.setTint(swift.selection.accentColor)
         }
         for (id in IdLists.cardIds) {
             val v = findViewById<View>(id)

@@ -35,7 +35,6 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.ui.applist.AppItem
 import com.brit.swiftinstaller.library.ui.applist.AppListFragment
 import com.brit.swiftinstaller.library.ui.applist.AppsTabPagerAdapter
@@ -102,7 +101,7 @@ class InstallSummaryActivity : ThemeActivity() {
         val bottomSheetDialog = BottomSheetDialog(this)
         val sheetView = View.inflate(this, R.layout.sheet_reboot, null)
         bottomSheetDialog.setContentView(sheetView)
-        sheetView.setBackgroundColor(getBackgroundColor(this))
+        sheetView.setBackgroundColor(swift.selection.backgroundColor)
         bottomSheetDialog.show()
 
         val sendLog = sheetView.findViewById<View>(R.id.send_email_layout)
@@ -129,7 +128,7 @@ class InstallSummaryActivity : ThemeActivity() {
         rebootDialog.setContentView(R.layout.reboot)
         rebootDialog.show()
         mHandler.post {
-            if (!RomInfo.getRomInfo(this).magiskEnabled() && getUseSoftReboot(this)) {
+            if (!swift.romInfo.magiskEnabled() && getUseSoftReboot(this)) {
                 quickRebootCommand()
             } else {
                 rebootCommand()
@@ -295,7 +294,7 @@ class InstallSummaryActivity : ThemeActivity() {
                     item.versionName = pInfo.versionName
                     if (errorMap.keys.contains(pn)) {
                         onProgressUpdate(Progress(FAILED_TAB, item))
-                    } else if (RomInfo.getRomInfo(context).isOverlayInstalled(pn)) {
+                    } else if (context.swift.romInfo.isOverlayInstalled(pn)) {
                         if (update && !OverlayUtils.wasUpdateSuccessful(context, item.packageName)) {
                             errorMap[pn] = "Update Failed"
                             onProgressUpdate(Progress(FAILED_TAB, item))

@@ -36,7 +36,7 @@ class MaterialPalette {
 
     companion object {
         fun get(context: Context): MaterialPalette {
-            return createPalette(getBackgroundColor(context), useBackgroundPalette(context))
+            return createPalette(context.swift.selection.backgroundColor, useBackgroundPalette(context))
         }
 
         fun createPalette(color: Int, palette: Boolean): MaterialPalette {

@@ -23,7 +23,8 @@ package com.brit.swiftinstaller.library.installer.rom
 
 import android.content.Context
 import android.content.Intent
-import com.brit.swiftinstaller.library.ui.activities.CustomizeActivity
+import com.brit.swiftinstaller.library.ui.customize.CategoryMap
+import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
 import com.brit.swiftinstaller.library.utils.ShellUtils
 import com.brit.swiftinstaller.library.utils.runCommand
@@ -94,13 +95,21 @@ open class OreoRomInfo(context: Context) : RomInfo(context) {
         }
     }
 
-    override fun getCustomizeFeatures() : Int {
-        return CustomizeActivity.SUPPORTS_SHADOW
-    }
-
     override fun disableOverlay(targetPackage: String) {
         runCommand("cmd overlay disable ${getOverlayPackageName(targetPackage)}", true)
     }
 
     override fun useHotSwap(): Boolean { return true }
+
+    override fun createCustomizeHandler(): CustomizeHandler {
+        return object : CustomizeHandler(context) {
+            override fun getCustomizeOptions(): CategoryMap {
+                val options = super.getCustomizeOptions()
+                options.remove("icons")
+                options.remove("clock")
+                options.remove("style")
+                return options
+            }
+        }
+    }
 }

@@ -53,17 +53,4 @@
     <color name="violet">#a67ac7</color>
 
     <color name="ic_magisk_background">#00AF9C</color>
-
-    <integer-array name="accent_colors">
-        <item>@color/minimal_green</item>
-        <item>@color/minimal_blue</item>
-        <item>@color/minimal_orange</item>
-        <item>@color/minimal_red</item>
-        <item>@color/minimal_tangerine</item>
-        <item>@color/blue</item>
-        <item>@color/red</item>
-        <item>@color/green</item>
-        <item>@color/amber</item>
-        <item>@color/violet</item>
-    </integer-array>
 </resources>

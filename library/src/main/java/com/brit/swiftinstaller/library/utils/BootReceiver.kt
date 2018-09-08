@@ -25,7 +25,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import org.jetbrains.anko.doAsync
 
 class BootReceiver : BroadcastReceiver() {
@@ -46,7 +45,7 @@ class BootReceiver : BroadcastReceiver() {
             context.swift.registerReceiver(PackageListener(), filter)
 
             doAsync {
-                RomInfo.getRomInfo(context).onBootCompleted(context)
+                context.swift.romInfo.onBootCompleted(context)
             }
         }
     }

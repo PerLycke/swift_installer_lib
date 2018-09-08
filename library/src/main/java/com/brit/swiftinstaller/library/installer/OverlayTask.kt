@@ -26,8 +26,8 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.graphics.Color
 import android.os.Environment
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.BuildConfig
+import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.checkVersionCompatible
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
@@ -42,6 +42,8 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
 
     lateinit var context: Context
 
+    lateinit var selection: CustomizeSelection
+
     lateinit var packageName: String
     lateinit var packageInfo: PackageInfo
     lateinit var appInfo: ApplicationInfo
@@ -55,6 +57,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
 
     fun initializeOverlayTask(context: Context, packageName: String, index: Int, uninstall: Boolean) {
         this.context = context
+        this.selection = context.swift.romInfo.getCustomizeHandler().getSelection()
         this.packageName = packageName
         this.packageInfo = context.packageManager.getPackageInfo(packageName, 0)
         this.appInfo = context.packageManager.getApplicationInfo(packageName, 0)
@@ -82,7 +85,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
 
     override fun run() {
         if (uninstall) {
-            RomInfo.getRomInfo(context).uninstallOverlay(context, packageName)
+            context.swift.romInfo.uninstallOverlay(context, packageName)
             mOm.handleState(this, OverlayManager.OVERLAY_UNINSTALLED)
         } else {
             if (!checkVersionCompatible(context, packageName)) {
@@ -131,7 +134,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
                 overlayDir.absolutePath + "/AndroidManifest.xml",
                 overlayPath, assets, appInfo)
         if (output.exitCode == 0) {
-            RomInfo.getRomInfo(context).installOverlay(context, packageName, overlayPath)
+            context.swift.romInfo.installOverlay(context, packageName, overlayPath)
         } else {
             errorLog = output.output ?: ""
             mOm.handleState(this, OverlayManager.OVERLAY_FAILED)
@@ -139,7 +142,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     }
 
     private fun applyAccent() {
-        val accent = getAccentColor(context)
+        val accent = selection.accentColor
         val file = StringBuilder()
         file.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
         file.append("<resources>\n")
@@ -165,7 +168,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     }
 
     private fun applyBackground() {
-        val palette = MaterialPalette.createPalette(getBackgroundColor(context), useBackgroundPalette(context))
+        val palette = MaterialPalette.createPalette(selection.backgroundColor, useBackgroundPalette(context))
         val file = StringBuilder()
         file.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
         file.append("<resources>\n")
@@ -175,14 +178,14 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         file.append("<color name=\"legacy_primary\">#${toHexString(palette.darkBackgroundColor)}</color>\n")
         file.append("<color name=\"legacy_green\">#${toHexString(palette.cardBackgroud)}</color>\n")
         file.append("<color name=\"legacy_orange\">#${toHexString(palette.otherBackground)}</color>\n")
-        file.append("<color name=\"legacy_control_activated\">#${ColorUtils.getAlpha(palette.backgroundColor, getAlphaValue(context))}</color>\n")
-        file.append("<item type=\"dimen\" name=\"disabled_alpha_leanback_formwizard\">${getAlphaDimen(getAlphaValue(context))}</item>\n")
-        if (useSenderNameFix(context)) {
-            file.append("<integer name=\"leanback_setup_alpha_activity_in_bkg_delay\">2</integer>\n")
-        } else {
+        file.append("<color name=\"legacy_control_activated\">#${ColorUtils.getAlpha(palette.backgroundColor, selection["alpha"].toInt())}</color>\n")
+        file.append("<item type=\"dimen\" name=\"disabled_alpha_leanback_formwizard\">${getAlphaDimen(selection["alpha"].toInt())}</item>\n")
+        //if (useSenderNameFix(context)) {
+          //  file.append("<integer name=\"leanback_setup_alpha_activity_in_bkg_delay\">2</integer>\n")
+        //} else {
             file.append("<integer name=\"leanback_setup_alpha_activity_in_bkg_delay\">0</integer>\n")
-        }
-        if (useDarkNotifBg(context)) {
+        //}
+        /*if (useDarkNotifBg(context)) {
             file.append("<color name=\"legacy_selected_highlight\">@*android:color/background_material_dark</color>\n")
             file.append("<color name=\"legacy_light_button_pressed\">@*android:color/background_material_dark</color>\n")
             file.append("<color name=\"legacy_pressed_highlight\">@*android:color/white</color>\n")
@@ -192,7 +195,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
             file.append("<color name=\"legacy_light_primary_dark\">@*android:color/white</color>\n")
             file.append("<color name=\"legacy_control_normal\">@*android:color/button_material_dark</color>\n")
             file.append("<color name=\"legacy_long_pressed_highlight\">@*android:color/accent_material_dark</color>\n")
-        } else {
+        } else {*/
             file.append("<color name=\"legacy_selected_highlight\">@*android:color/white</color>\n")
             file.append("<color name=\"legacy_light_button_pressed\">#eeeeee</color>\n")
             file.append("<color name=\"legacy_pressed_highlight\">#212121</color>\n")
@@ -202,7 +205,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
             file.append("<color name=\"legacy_light_primary_dark\">#eeeeee</color>\n")
             file.append("<color name=\"legacy_control_normal\">#ffe0e0e0</color>\n")
             file.append("<color name=\"legacy_long_pressed_highlight\">#ff252525</color>\n")
-        }
+        //}
         file.append("</resources>")
 
         val values = File(resDir, "/values")

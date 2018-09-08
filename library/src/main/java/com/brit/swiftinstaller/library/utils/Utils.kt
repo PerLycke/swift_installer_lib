@@ -29,7 +29,6 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.Build
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.ui.applist.AppItem
 
 object Utils {
@@ -39,7 +38,7 @@ object Utils {
     fun sortedOverlaysList(context: Context): ArrayList<AppItem> {
         if (sortedOverlays.isNotEmpty()) return sortedOverlays
         sortedOverlays.clear()
-        val disabledOverlays = RomInfo.getRomInfo(context).getDisabledOverlays()
+        val disabledOverlays = context.swift.romInfo.getDisabledOverlays()
         val hiddenOverlays = getHiddenApps(context)
         val pm = context.packageManager
         val overlays = context.assets.list("overlays") ?: emptyArray()

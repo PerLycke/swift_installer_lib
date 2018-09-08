@@ -28,7 +28,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.activities.OverlaysActivity
@@ -43,16 +42,16 @@ class PackageListener : BroadcastReceiver() {
         val packageName = intent.data?.schemeSpecificPart ?: ""
         when (intent.action) {
             Intent.ACTION_PACKAGE_FULLY_REMOVED -> {
-                if (RomInfo.getRomInfo(context).isOverlayInstalled(getOverlayPackageName(packageName))) {
-                    RomInfo.getRomInfo(context).uninstallOverlay(context, packageName)
+                if (context.swift.romInfo.isOverlayInstalled(getOverlayPackageName(packageName))) {
+                    context.swift.romInfo.uninstallOverlay(context, packageName)
                 }
             }
 
             Intent.ACTION_PACKAGE_ADDED -> {
                 val replacing = intent.getBooleanExtra(Intent.EXTRA_REPLACING, false)
                 if (replacing) {
-                    if (RomInfo.getRomInfo(context).isOverlayInstalled(packageName)) {
-                        RomInfo.getRomInfo(context).disableOverlay(packageName)
+                    if (context.swift.romInfo.isOverlayInstalled(packageName)) {
+                        context.swift.romInfo.disableOverlay(packageName)
                         doAsync {
                             UpdateChecker(context, null).execute()
                         }

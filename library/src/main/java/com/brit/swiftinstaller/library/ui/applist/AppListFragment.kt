@@ -35,13 +35,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.checkVersionCompatible
 import com.brit.swiftinstaller.library.utils.OverlayUtils.overlayHasVersion
 import kotlinx.android.synthetic.main.activity_app_list.*
-import kotlinx.android.synthetic.main.app_item.view.*
 import kotlinx.android.synthetic.main.app_option_item.view.*
 import kotlinx.android.synthetic.main.failed_info_card.view.*
 
@@ -128,7 +126,7 @@ class AppListFragment : Fragment() {
         for (index in mApps.indices) {
             if (context != null) {
                 if (checkVersionCompatible(context!!, mApps[index].packageName) ||
-                        RomInfo.getRomInfo(context!!).isOverlayInstalled(mApps[index].packageName)) {
+                        context!!.swift.romInfo.isOverlayInstalled(mApps[index].packageName)) {
                     mChecked.put(index, checked)
                 }
             } else {
@@ -206,7 +204,7 @@ class AppListFragment : Fragment() {
 
             fun bindAppItem(item: AppItem) {
                 val incompatible = !checkVersionCompatible(context!!, item.packageName)
-                val installed = RomInfo.getRomInfo(context!!).isOverlayInstalled(item.packageName)
+                val installed = context!!.swift.romInfo.isOverlayInstalled(item.packageName)
                 val hasVersions = overlayHasVersion(context!!, item.packageName)
                 val hasUpdate = getAppsToUpdate(context!!).contains(item.packageName)
                 val isRequired = requiredApps.contains(item.packageName)
@@ -239,7 +237,7 @@ class AppListFragment : Fragment() {
                         }
                     }
                     optionsIcon.visibility = View.VISIBLE
-                    optionsIcon.setColorFilter(getAccentColor(context!!))
+                    optionsIcon.setColorFilter(activity!!.swift.romInfo.getCustomizeHandler().getSelection().accentColor)
 
                     optionsIcon.setOnClickListener {
                         val dialog = AlertDialog.Builder(context!!)
@@ -304,11 +302,11 @@ class AppListFragment : Fragment() {
                     }
                     if (appName.text.contains("Gboard")) {
                         downloadIcon.visibility = View.VISIBLE
-                        downloadIcon.setColorFilter(getAccentColor(context!!))
+                        downloadIcon.setColorFilter(context!!.swift.selection.accentColor)
                     }
                     if (appName.text.contains("Samsung Music") || appName.text.contains("Voice Recorder")) {
                         blockedPackagesAlert.visibility = View.VISIBLE
-                        blockedPackagesAlert.setColorFilter(getAccentColor(context!!))
+                        blockedPackagesAlert.setColorFilter(context!!.swift.selection.accentColor)
                     }
                 }
 

@@ -35,11 +35,9 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.brit.swiftinstaller.library.installer.Notifier
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.utils.InstallerServiceHelper
 import com.brit.swiftinstaller.library.utils.ShellUtils
-import com.brit.swiftinstaller.library.utils.getAccentColor
 import com.brit.swiftinstaller.library.utils.swift
 import kotlinx.android.synthetic.main.progress_dialog_install.view.*
 import java.util.ArrayList
@@ -92,7 +90,7 @@ class InstallActivity : ThemeActivity() {
         swift.installApps.addAll(apps)
         swift.errorMap.clear()
         swift.errorMap.putAll(errorMap)
-        RomInfo.getRomInfo(this).postInstall(false, apps, updateAppsToUninstall, intent)
+        swift.romInfo.postInstall(false, apps, updateAppsToUninstall, intent)
         finish()
     }
 
@@ -145,8 +143,10 @@ class InstallActivity : ThemeActivity() {
                 .registerReceiver(installListener, filter)
 
         progressBar = inflate.install_progress_bar
-        progressBar.indeterminateTintList = ColorStateList.valueOf(getAccentColor(this))
-        progressBar.progressTintList = ColorStateList.valueOf(getAccentColor(this))
+        progressBar.indeterminateTintList = ColorStateList.valueOf(
+                swift.romInfo.getCustomizeHandler().getSelection().accentColor)
+        progressBar.progressTintList = ColorStateList.valueOf(
+                swift.romInfo.getCustomizeHandler().getSelection().accentColor)
         progressCount = inflate.install_progress_count
         progressPercent = inflate.install_progress_percent
 
@@ -172,7 +172,7 @@ class InstallActivity : ThemeActivity() {
                         }
                     }
                 }, intentfilter)
-                RomInfo.getRomInfo(this).postInstall(true, apps, null, null)
+                swift.romInfo.postInstall(true, apps, null, null)
             } else {
                 InstallerServiceHelper.uninstall(this, apps)
             }

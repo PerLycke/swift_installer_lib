@@ -3,16 +3,13 @@ package com.brit.swiftinstaller.library.ui.preference
 import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.graphics.drawable.StateListDrawable
 import android.util.AttributeSet
-import android.util.Log
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Switch
 import androidx.preference.PreferenceViewHolder
 import androidx.preference.SwitchPreference
 import com.brit.swiftinstaller.library.utils.ColorUtils
-import com.brit.swiftinstaller.library.utils.getAccentColor
+import com.brit.swiftinstaller.library.utils.swift
 
 class SwiftSwitchPreference(context: Context, attrs: AttributeSet) : SwitchPreference(context, attrs) {
 
@@ -28,7 +25,7 @@ class SwiftSwitchPreference(context: Context, attrs: AttributeSet) : SwitchPrefe
 
     private fun changeColor(checked: Boolean, enabled: Boolean) {
         if (enabled) {
-            val color = if (checked) { getAccentColor(context) } else { Color.LTGRAY }
+            val color = if (checked) { context.swift.selection.accentColor } else { Color.LTGRAY }
             if (switch != null) {
                 switch!!.thumbDrawable.setColorFilter(color, PorterDuff.Mode.MULTIPLY)
                 switch!!.trackDrawable.setColorFilter(ColorUtils.addAlphaColor(color, 70), PorterDuff.Mode.MULTIPLY)

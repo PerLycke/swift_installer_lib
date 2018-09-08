@@ -25,9 +25,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.AssetManager
 import android.os.Environment
-import android.util.Log
 import androidx.collection.ArrayMap
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import java.util.*
 
 object OverlayUtils {
@@ -38,29 +36,29 @@ object OverlayUtils {
     }
 
     fun wasUpdateSuccessful(context: Context, packageName: String): Boolean {
-        if (!RomInfo.getRomInfo(context).isOverlayInstalled(packageName)) return false
+        if (!context.swift.romInfo.isOverlayInstalled(packageName)) return false
         if (!Utils.isAppInstalled(context, packageName)) return false
         val appVersion = context.packageManager.getPackageInfo(packageName, 0).getVersionCode()
-        val overlayAppVersion = RomInfo.getRomInfo(context).getOverlayInfo(
+        val overlayAppVersion = context.swift.romInfo.getOverlayInfo(
                 context.packageManager, packageName).applicationInfo.metaData
                 .getInt("app_version_code").toLong()
         val overlayVersion = getOverlayVersion(context, packageName)
-        val curOverlayVersion = RomInfo.getRomInfo(context).getOverlayInfo(context.packageManager, packageName).getVersionCode()
+        val curOverlayVersion = context.swift.romInfo.getOverlayInfo(context.packageManager, packageName).getVersionCode()
         return (appVersion == overlayAppVersion) && (overlayVersion == curOverlayVersion)
     }
 
     fun checkAppVersion(context: Context, packageName: String): Boolean {
-        if (!RomInfo.getRomInfo(context).isOverlayInstalled(packageName)) return false
+        if (!context.swift.romInfo.isOverlayInstalled(packageName)) return false
         val appVersionCode = context.packageManager.getPackageInfo(packageName, 0).getVersionCode()
-        val curVersionCode = RomInfo.getRomInfo(context).getOverlayInfo(context.packageManager, packageName)
+        val curVersionCode = context.swift.romInfo.getOverlayInfo(context.packageManager, packageName)
                 .applicationInfo.metaData.getInt("app_version_code")
         return appVersionCode > curVersionCode
     }
 
     fun checkOverlayVersion(context: Context, packageName: String): Boolean {
-        if (!RomInfo.getRomInfo(context).isOverlayInstalled(packageName)) return false
+        if (!context.swift.romInfo.isOverlayInstalled(packageName)) return false
         val overlayVersion = getOverlayVersion(context, packageName)
-        val currentVersion = RomInfo.getRomInfo(context).getOverlayInfo(context.packageManager, packageName).getVersionCode()
+        val currentVersion = context.swift.romInfo.getOverlayInfo(context.packageManager, packageName).getVersionCode()
         return overlayVersion > currentVersion
     }
 
@@ -209,23 +207,18 @@ object OverlayUtils {
                 }
             }
         }
-        if (variants.contains("icons") && useAospIcons(context)) {
-            checkResourcePath(context, "$path/icons/aosp", packageName, resourcePaths)
-        }
-        if (variants.contains("icons") && useStockMultiIcons(context)) {
-            checkResourcePath(context, "$path/icons/stock", packageName, resourcePaths)
-        }
-        if (variants.contains("icons") && usePIcons(context)) {
-            checkResourcePath(context, "$path/icons/p", packageName, resourcePaths)
-        }
-        if (variants.contains("clock") && useLeftClock(context)) {
-            checkResourcePath(context, "$path/clock/left", packageName, resourcePaths)
-        }
-        if (variants.contains("clock") && useCenteredClock(context)) {
-            checkResourcePath(context, "$path/clock/centered", packageName, resourcePaths)
-        }
-        if (variants.contains("style") && usePstyle(context)) {
-            checkResourcePath(context, "$path/style/p", packageName, resourcePaths)
+        if (variants.contains("customize")) {
+            val cHandler = context.swift.romInfo.getCustomizeHandler()
+            val list = context.assets.list("$path/customize") ?: emptyArray()
+            for (cust in list) {
+                if (cHandler.getCustomizeOptions().containsKey(cust)) {
+                    val selection = cHandler.getSelection()[cust]
+                    val cList = context.assets.list("$path/customize/$cust") ?: emptyArray()
+                    if (cList.contains(selection)) {
+                        checkResourcePath(context, "$path/customize/$cust/$selection", packageName, resourcePaths)
+                    }
+                }
+            }
         }
     }
 

@@ -21,6 +21,8 @@
 
 package com.brit.swiftinstaller.library
 
+import com.brit.swiftinstaller.library.installer.rom.RomInfo
+import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
 import com.topjohnwu.superuser.BuildConfig
 import com.topjohnwu.superuser.BusyBox
 import com.topjohnwu.superuser.ContainerApp
@@ -29,6 +31,11 @@ import javax.crypto.Cipher
 
 open class SwiftApplication : ContainerApp() {
 
+    lateinit var romInfo: RomInfo
+
+    val selection: CustomizeSelection
+        get() = romInfo.getCustomizeHandler().getSelection()
+
     val installApps = arrayListOf<String>()
     val errorMap = HashMap<String, String>()
 
@@ -36,6 +43,8 @@ open class SwiftApplication : ContainerApp() {
 
     override fun onCreate() {
         super.onCreate()
+
+        romInfo = RomInfo.createRomInfo(this)
 
         cipher = createCipher()
 

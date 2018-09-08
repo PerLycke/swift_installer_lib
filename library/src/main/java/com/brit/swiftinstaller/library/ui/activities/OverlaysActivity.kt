@@ -38,7 +38,6 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.viewpager.widget.ViewPager
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.ui.applist.AppItem
 import com.brit.swiftinstaller.library.ui.applist.AppListFragment
 import com.brit.swiftinstaller.library.ui.applist.AppsTabPagerAdapter
@@ -124,7 +123,7 @@ class OverlaysActivity : ThemeActivity() {
             }
         })
         mPagerAdapter!!.setRequiredApps(INSTALL_TAB,
-                RomInfo.getRomInfo(this).getRequiredApps())
+                swift.romInfo.getRequiredApps())
 
         search_view.setOnSearchClickListener {
             toolbar_overlays_main_content.visibility = View.GONE
@@ -146,8 +145,8 @@ class OverlaysActivity : ThemeActivity() {
             false
         }
         val textViewId = search_view.findViewById(androidx.appcompat.R.id.search_src_text) as EditText
-        setCursorPointerColor(textViewId, getAccentColor(this))
-        setCursorDrawableColor(textViewId, getAccentColor(this))
+        setCursorPointerColor(textViewId, swift.selection.accentColor)
+        setCursorDrawableColor(textViewId, swift.selection.accentColor)
 
         mViewPager = container
         mViewPager.offscreenPageLimit = 2
@@ -240,9 +239,9 @@ class OverlaysActivity : ThemeActivity() {
 
     override fun onResume() {
         super.onResume()
-        toolbar_subtitle_current_accent.setTextColor(getAccentColor(this))
+        toolbar_subtitle_current_accent.setTextColor(swift.selection.accentColor)
         toolbar_subtitle_current_accent.text = getString(R.string.hex_string,
-                String.format("%06x", getAccentColor(this)).substring(2))
+                String.format("%06x", swift.selection.accentColor).substring(2))
         if (select_all_btn.isChecked) {
             select_all_btn.isChecked = false
         }
@@ -253,7 +252,7 @@ class OverlaysActivity : ThemeActivity() {
         select_all_btn.visibility = View.INVISIBLE
         select_all_btn.isClickable = false
         loading_progress.visibility = View.VISIBLE
-        loading_progress.indeterminateDrawable.setColorFilter(getAccentColor(this), PorterDuff.Mode.SRC_ATOP)
+        loading_progress.indeterminateDrawable.setColorFilter(swift.selection.accentColor, PorterDuff.Mode.SRC_ATOP)
         mPagerAdapter!!.clearApps()
         doAsync {
             if (overlaysList.size == 0) {
@@ -274,7 +273,7 @@ class OverlaysActivity : ThemeActivity() {
                 } catch (e: PackageManager.NameNotFoundException) {
                     continue
                 }
-                if (RomInfo.getRomInfo(context).isOverlayInstalled(pn)) {
+                if (swift.romInfo.isOverlayInstalled(pn)) {
                     if (updates.contains(pn)
                             && status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
                         updatesTabList.add(item)
@@ -342,7 +341,7 @@ class OverlaysActivity : ThemeActivity() {
         val bottomSheetDialog = BottomSheetDialog(this)
         val sheetView = View.inflate(this, R.layout.sheet_overlays_fab, null)
         bottomSheetDialog.setContentView(sheetView)
-        sheetView.setBackgroundColor(getBackgroundColor(this))
+        sheetView.setBackgroundColor(swift.selection.backgroundColor)
         bottomSheetDialog.show()
 
         val install = sheetView.findViewById<View>(R.id.install)
@@ -443,7 +442,7 @@ class OverlaysActivity : ThemeActivity() {
         val bottomSheetDialog = BottomSheetDialog(this)
         val sheetView = View.inflate(this, R.layout.sheet_confirm_uninstall, null)
         bottomSheetDialog.setContentView(sheetView)
-        sheetView.setBackgroundColor(getBackgroundColor(this))
+        sheetView.setBackgroundColor(swift.selection.backgroundColor)
         bottomSheetDialog.show()
 
         sheetView.confirm_layout.setOnClickListener {
@@ -496,7 +495,7 @@ class OverlaysActivity : ThemeActivity() {
                 .setTitle(R.string.gboard_dialog_title)
                 .setMessage(R.string.gboard_bg_info)
                 .setPositiveButton(R.string.save) { dialogInterface, _ ->
-                    val bitmap = createImage(512,512, getBackgroundColor(this))
+                    val bitmap = createImage(512,512, swift.selection.backgroundColor)
                     val downloads = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
                     val image = File(downloads, "swift_bg.png")
                     var success = false

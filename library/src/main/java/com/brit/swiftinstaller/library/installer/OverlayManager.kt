@@ -26,7 +26,6 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import com.brit.swiftinstaller.library.utils.Utils
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.ThreadPoolExecutor
@@ -48,7 +47,7 @@ class OverlayManager(private val context: Context) {
         fun installFinished()
     }
 
-    private val compileQueue: LinkedBlockingQueue<Runnable>
+    private val compileQueue = LinkedBlockingQueue<Runnable>()
     private val overlayQueue: Queue<OverlayTask>
 
     private var callback: Callback? = null
@@ -59,12 +58,8 @@ class OverlayManager(private val context: Context) {
 
     private val mHandler: Handler
 
-    private val mNotifier = Notifier()
-    private val mRomInfo = RomInfo.getRomInfo(context)
-
     init {
 
-        compileQueue = LinkedBlockingQueue()
         overlayQueue = LinkedBlockingQueue<OverlayTask>()
 
         mThreadPool = ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_SIZE,
@@ -112,7 +107,6 @@ class OverlayManager(private val context: Context) {
 
     fun installOverlays(apps: Array<String>) {
         mMax = apps.size
-        //mNotifier.broadcastInstallStarted(mMax)
         for (pn in apps) {
             installOverlay(pn, apps.indexOf(pn))
         }

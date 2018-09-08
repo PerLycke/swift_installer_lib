@@ -27,7 +27,8 @@ import android.net.Uri
 import android.os.Build
 import androidx.core.content.FileProvider
 import com.brit.swiftinstaller.library.BuildConfig
-import com.brit.swiftinstaller.library.ui.activities.CustomizeActivity
+import com.brit.swiftinstaller.library.ui.customize.CategoryMap
+import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPath
@@ -186,12 +187,15 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
         }
     }
 
-    override fun getCustomizeFeatures(): Int {
-        return if (Build.VERSION.SDK_INT == 26) {
-            super.getCustomizeFeatures()
-        } else {
-            CustomizeActivity.SUPPORTS_CLOCK + CustomizeActivity.SUPPORTS_ICONS + CustomizeActivity.SUPPORTS_TRANSPARENCY +
-                    CustomizeActivity.SUPPORTS_SHADOW
+    override fun createCustomizeHandler(): CustomizeHandler {
+        return object : CustomizeHandler(context) {
+            override fun getCustomizeOptions(): CategoryMap {
+                val options = super.getCustomizeOptions()
+                if (Build.VERSION.SDK_INT != Build.VERSION_CODES.O) {
+                    options.remove("style")
+                }
+                return options
+            }
         }
     }
 }

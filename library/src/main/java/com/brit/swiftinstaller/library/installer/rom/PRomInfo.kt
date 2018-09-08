@@ -32,6 +32,11 @@ import android.text.style.ClickableSpan
 import android.view.View
 import androidx.browser.customtabs.CustomTabsIntent
 import com.brit.swiftinstaller.library.R
+import android.graphics.drawable.LayerDrawable
+import com.brit.swiftinstaller.library.ui.customize.CategoryMap
+import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
+import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
+import com.brit.swiftinstaller.library.ui.customize.PreviewHandler
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
 import com.hololo.tutorial.library.Step
@@ -155,10 +160,6 @@ open class PRomInfo(context: Context) : RomInfo(context) {
         return pm.getPackageArchiveInfo("$appPath/$overlayPackage/$overlayPackage.apk", PackageManager.GET_META_DATA)
     }
 
-    override fun getCustomizeFeatures() : Int {
-        return 0
-    }
-
     override fun magiskEnabled(): Boolean {
         return useMagisk && !moduleDisabled
     }
@@ -183,8 +184,10 @@ open class PRomInfo(context: Context) : RomInfo(context) {
                         systemFile.renameTo(magiskFile)
                         deleteFileRoot(systemFile.parent)
                     } else {
-                        val soi = context.packageManager.getPackageArchiveInfo(systemFile.absolutePath, 0)
-                        val moi = context.packageManager.getPackageArchiveInfo(magiskFile.absolutePath, 0)
+                        val soi = context.packageManager.getPackageArchiveInfo(
+                                systemFile.absolutePath, 0)
+                        val moi = context.packageManager.getPackageArchiveInfo(
+                                magiskFile.absolutePath, 0)
                         if (soi.getVersionCode() > moi.getVersionCode()) {
                             systemFile.renameTo(magiskFile)
                             deleteFileRoot(systemFile.parent)
@@ -193,6 +196,51 @@ open class PRomInfo(context: Context) : RomInfo(context) {
                 }
             }
             remountRO("/system")
+        }
+    }
+
+
+    override fun createCustomizeHandler(): CustomizeHandler {
+        return object : CustomizeHandler(context) {
+            override fun createPreviewHandler() : PreviewHandler {
+                return object : PreviewHandler(context) {
+                    override fun updateView(palette: MaterialPalette, selection: CustomizeSelection) {
+                        super.updateView(palette, selection)
+                        for (icon in settingsIcons) {
+                            icon.clearColorFilter()
+                            val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_p"
+                            val id = context.resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName", null, null)
+                            if (id > 0) {
+                                icon.setImageDrawable(context.getDrawable(id))
+                            }
+                        }
+                        for (icon in systemUiIcons) {
+                            val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_aosp"
+                            val id = context.resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName",null, null)
+                            if (id > 0) {
+                                val layerDrawable = context.getDrawable(id) as LayerDrawable
+                                icon.setImageDrawable(layerDrawable)
+                                layerDrawable.findDrawableByLayerId(R.id.icon_bg).setTint(selection.accentColor)
+                                layerDrawable.findDrawableByLayerId(
+                                        R.id.icon_tint).setTint(palette.backgroundColor)
+                            }
+                        }
+                    }
+                }
+            }
+            override fun getDefaultSelection(): CustomizeSelection {
+                val selection = super.getDefaultSelection()
+                selection["style"] = "p"
+                return selection
+            }
+            override fun getCustomizeOptions() : CategoryMap {
+                val map = super.getCustomizeOptions()
+                map.remove("icons")
+                map.remove("clock")
+                map.remove("style")
+                map["notif_background"]!!.options["dark"]!!.subOptions.clear()
+                return map
+            }
         }
     }
 }

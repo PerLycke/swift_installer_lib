@@ -27,10 +27,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.preference.PreferenceManager
@@ -48,8 +46,9 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.ui.CircleDrawable
+import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
+import com.brit.swiftinstaller.library.ui.customize.Option
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.ColorUtils.checkAccentColor
 import com.brit.swiftinstaller.library.utils.ColorUtils.checkBackgroundColor
@@ -58,53 +57,25 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_customize.*
 import kotlinx.android.synthetic.main.customize_accent.*
 import kotlinx.android.synthetic.main.customize_background.*
-import kotlinx.android.synthetic.main.customize_clock.*
-import kotlinx.android.synthetic.main.customize_icons.*
-import kotlinx.android.synthetic.main.customize_notification_style.*
-import kotlinx.android.synthetic.main.customize_notifications.*
-import kotlinx.android.synthetic.main.customize_preview_settings.*
-import kotlinx.android.synthetic.main.customize_preview_sysui.*
-import kotlinx.android.synthetic.main.customize_transparency.*
+import kotlinx.android.synthetic.main.customize_option_item.view.*
+import kotlinx.android.synthetic.main.customize_option_layout.view.*
 import kotlinx.android.synthetic.main.fab_sheet_personalize.view.*
+import kotlinx.android.synthetic.main.palette_view.view.*
 
 class CustomizeActivity : ThemeActivity() {
 
-    companion object {
-        const val SUPPORTS_ICONS = 0x01
-        const val SUPPORTS_CLOCK = 0x02
-        const val SUPPORTS_TRANSPARENCY = 0x04
-        const val SUPPORTS_SHADOW = 0x08
-        const val SUPPORTS_NOTIF_STYLE = 0x10
-    }
+    private val customizeHandler = swift.romInfo.getCustomizeHandler()
+    private val previewHandler = customizeHandler.getPreviewHandler()
 
-    private var settingsIcons: Array<ImageView?> = arrayOfNulls(3)
-    private var systemUiIcons: Array<ImageView?> = arrayOfNulls(6)
-    private var systemUiIconBg = arrayListOf<LayerDrawable>()
-
-    private var accentColor = 0
-    private var backgroundColor = 0
+    private val selection = customizeHandler.getSelection()
 
     private var finish = false
     private var usePalette = false
-    private var useAospIcons = false
-    private var useStockAccentIcons = false
-    private var useStockMultiIcons = false
-    private var usePIcons = false
-    private var notifShadow = false
-    private var darkNotif = false
-    private var useRightClock = false
-    private var useLeftClock = false
-    private var useCenteredClock = false
-    private var usePStyle = false
-    private var alpha = 0
 
     private lateinit var materialPalette: MaterialPalette
     private val handler = Handler()
     private var parentActivity: String? = "parent"
     private lateinit var bottomSheetDialog: BottomSheetDialog
-    private var supportsShadow = false
-    private var supportsTransparency = false
-    private var isPie = false
 
     private var recompile = false
 
@@ -112,40 +83,13 @@ class CustomizeActivity : ThemeActivity() {
         super.onCreate(savedInstanceState)
 
         parentActivity = intent.getStringExtra("parentActivity")
-        supportsTransparency = RomInfo.getRomInfo(this).getCustomizeFeatures() and SUPPORTS_TRANSPARENCY != 0
-        isPie = Build.VERSION_CODES.P == Build.VERSION.SDK_INT
 
         setContentView(R.layout.activity_customize)
         handler.post {
             setupAccentSheet()
             usePalette = useBackgroundPalette(this)
-            useAospIcons = com.brit.swiftinstaller.library.utils.useAospIcons(this)
-            useStockAccentIcons = com.brit.swiftinstaller.library.utils.useStockAccentIcons(this)
-            useStockMultiIcons = com.brit.swiftinstaller.library.utils.useStockMultiIcons(this)
-            usePIcons = com.brit.swiftinstaller.library.utils.usePIcons(this)
-            notifShadow = useSenderNameFix(this)
-            darkNotif = useDarkNotifBg(this)
-            useRightClock = com.brit.swiftinstaller.library.utils.useRightClock(this)
-            useLeftClock = com.brit.swiftinstaller.library.utils.useLeftClock(this)
-            useCenteredClock = com.brit.swiftinstaller.library.utils.useCenteredClock(this)
-            usePStyle = com.brit.swiftinstaller.library.utils.usePstyle(this)
-            alpha = com.brit.swiftinstaller.library.utils.getAlphaValue(this)
-            updateColor(getAccentColor(this), getBackgroundColor(this), true, false)
+            updateColor(true)
             updateIcons()
-
-            val bgListener: (String) -> View.OnClickListener = { color ->
-                View.OnClickListener {
-                    updateColor(accentColor, convertToColorInt(color), true, false)
-                }
-            }
-
-            custom_dark_bg.setOnClickListener(bgListener("202026"))
-            custom_black_bg.setOnClickListener(bgListener("000000"))
-            custom_style_bg.setOnClickListener(bgListener("202833"))
-            custom_nature_bg.setOnClickListener(bgListener("1C3B3A"))
-            custom_ocean_bg.setOnClickListener(bgListener("173145"))
-            custom_night_bg.setOnClickListener(bgListener("363844"))
-
             setupHexInputs()
             setupThemeOptions()
 
@@ -162,7 +106,7 @@ class CustomizeActivity : ThemeActivity() {
                 View.OnClickListener {
                     val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
                     val dialogBg = getDrawable(R.drawable.dialog_bg) as LayerDrawable
-                    dialogBg.findDrawableByLayerId(R.id.dialog_bg).setTint(backgroundColor)
+                    dialogBg.findDrawableByLayerId(R.id.dialog_bg).setTint(selection.backgroundColor)
                     builder.setTitle(title)
                     builder.setMessage(message)
                     builder.setPositiveButton(R.string.ok) { dialogInterface, _ ->
@@ -170,31 +114,11 @@ class CustomizeActivity : ThemeActivity() {
                     }
                     val dialog = builder.create()
                     dialog.show()
-                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(accentColor)
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(selection.backgroundColor)
                 }
             }
 
             baseThemeInfo.setOnClickListener(infoListener(getString(R.string.base_theme_dialog_title), getString(R.string.base_theme_dialog_info)))
-            roundedInfo.setOnClickListener(infoListener(getString(R.string.rounded_dialog_title), getString(R.string.rounded_dialog_info)))
-
-            if (supportsTransparency) {
-                alpha_value.text = getString(R.string.alpha_value, alpha)
-                alpha_seekbar.progress = alpha
-                alpha_seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                        alpha_value.text = getString(R.string.alpha_value, progress)
-                        val overlay = ColorUtils.addAlphaColor(backgroundColor, alpha_seekbar.progress)
-                        preview_wallpaper.setColorFilter(overlay, PorterDuff.Mode.SRC_OVER)
-                    }
-                    override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                        alpha = alpha_seekbar.progress
-                    }
-                    override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                    }
-                })
-            }
-
-            preview_wallpaper.clipToOutline = true
         }
     }
 
@@ -260,7 +184,8 @@ class CustomizeActivity : ThemeActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s?.length == 3 || s?.length == 6) {
                     if (checkAccentColor(convertToColorInt(s.toString()))) {
-                        updateColor(convertToColorInt(s.toString()), backgroundColor, false, false)
+                        selection.accentColor = convertToColorInt(s.toString())
+                        updateColor(false)
                     } else {
                         Toast.makeText(this@CustomizeActivity, R.string.invalid_accent,
                                 Toast.LENGTH_SHORT).show()
@@ -279,7 +204,8 @@ class CustomizeActivity : ThemeActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s?.length == 3 || s?.length == 6) {
                     if (checkBackgroundColor(convertToColorInt(s.toString()))) {
-                        updateColor(accentColor, convertToColorInt(s.toString()), false, false)
+                        selection.backgroundColor = convertToColorInt(s.toString())
+                        updateColor(false)
                     } else {
                         Toast.makeText(this@CustomizeActivity,
                                 R.string.invalid_background, Toast.LENGTH_SHORT).show()
@@ -289,48 +215,94 @@ class CustomizeActivity : ThemeActivity() {
         })
     }
 
+    inner class RadioGroup {
+        private val buttons = ArrayList<RadioButton>()
+
+        fun addRadioButton(button: RadioButton) {
+            buttons.add(button)
+        }
+
+        fun setCurrentButton(button: RadioButton) {
+            for (but in buttons) {
+                but.isChecked = but == button
+            }
+        }
+    }
+
+    private fun setupOption(optionsContainer: ViewGroup, option: Option, categoryKey: String, group: RadioGroup) {
+        val optionView = LayoutInflater.from(this).inflate(R.layout.customize_option_item, optionsContainer, false) as ViewGroup
+        if (option.isSliderOption) {
+            optionView.slider_layout.setVisible(true)
+            optionView.slider_title.text = option.name
+            optionView.percent.text = getString(R.string.alpha_value, selection[option.value].toInt())
+            optionView.slider.progress = selection[option.value].toInt()
+            optionView.slider.setOnSeekBarChangeListener(object :SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                    optionView.percent.text = getString(R.string.alpha_value, p1)
+                }
+                override fun onStopTrackingTouch(p0: SeekBar?) {
+                    selection[option.value] = p0!!.progress.toString()
+                    previewHandler.updateView(materialPalette, selection)
+                }
+                override fun onStartTrackingTouch(p0: SeekBar?) {
+                }
+            })
+            optionView.option_button.setVisible(false)
+        } else {
+            optionView.option_button.isChecked = option.value == selection[categoryKey]
+            optionView.option_button.setOnCheckedChangeListener { compoundButton, b ->
+                if (b) {
+                    group.setCurrentButton(compoundButton as RadioButton)
+                    selection[categoryKey] = option.value
+                    previewHandler.updateView(materialPalette, selection)
+                }
+                if (option.subOptions.isNotEmpty()) {
+                    optionView.sub_options.setVisible(b)
+                }
+            }
+            group.addRadioButton(optionView.option_button)
+            optionView.option_button.text = option.name
+            optionView.option_info.setOnClickListener {
+                val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
+                val dialogBg = getDrawable(R.drawable.dialog_bg) as LayerDrawable
+                dialogBg.findDrawableByLayerId(R.id.dialog_bg).setTint(selection.backgroundColor)
+                builder.setTitle(option.infoDialogTitle)
+                builder.setMessage(option.infoDialogText)
+                builder.setPositiveButton(R.string.ok) { dialogInterface, _ ->
+                    dialogInterface.dismiss()
+                }
+                val dialog = builder.create()
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(selection.accentColor)
+                dialog.show()
+            }
+            optionView.option_info.setVisible(option.infoDialogText.isNotEmpty())
+            optionView.rounded_divider.setVisible(option.infoDialogText.isNotEmpty())
+            if (option.subOptions.isNotEmpty()) {
+                if (option.infoText.isNotEmpty()) {
+                    optionView.option_info_text.text = option.infoText
+                }
+                val subGroup = RadioGroup()
+                for (subOption in option.subOptions.reversed()) {
+                    setupOption(optionView.sub_options_container, subOption, option.subOptionKey,
+                            subGroup)
+                }
+            }
+        }
+        optionsContainer.addView(optionView)
+    }
+
     private fun setupThemeOptions() {
         material_theme.isChecked = usePalette
         flat_theme.isChecked = !usePalette
-        white_notifications.isChecked = !darkNotif
-        dark_notifications.isChecked = darkNotif
-        shadow_disabled.isChecked = !notifShadow
-        shadow_enabled.isChecked = notifShadow
-        default_style.isChecked = !usePStyle
-        p_style.isChecked = usePStyle
-        when {
-            useAospIcons -> {
-                aosp_icons.isChecked = true
+
+        for (category in customizeHandler.getCustomizeOptions().reversed()) {
+            val categoryView = LayoutInflater.from(this).inflate(R.layout.customize_option_layout, customize_options, false)
+            categoryView.customize_category_title.text = category.name
+            val optionGroup = RadioGroup()
+            for (option in category.options) {
+                setupOption(categoryView.options, option, category.key, optionGroup)
             }
-            useStockMultiIcons -> {
-                stock_icons_multi.isChecked = true
-            }
-            usePIcons -> {
-                p_icons.isChecked = true
-            }
-            else -> {
-                stock_icons.isChecked = true
-            }
-        }
-        when {
-            useLeftClock -> {
-                left_clock.isChecked = true
-                if (clock_left.visibility == View.GONE) {
-                    clock_left.visibility = View.VISIBLE
-                }
-            }
-            useCenteredClock -> {
-                centered_clock.isChecked = true
-                if (clock_centered.visibility == View.GONE) {
-                    clock_centered.visibility = View.VISIBLE
-                }
-            }
-            else -> {
-                right_clock.isChecked = true
-                if (clock_right.visibility == View.GONE) {
-                    clock_right.visibility = View.VISIBLE
-                }
-            }
+            customize_options.addView(categoryView)
         }
 
         val baseThemeListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
@@ -342,191 +314,11 @@ class CustomizeActivity : ThemeActivity() {
                 flat_theme.isChecked = b
             }
             usePalette = material_theme.isChecked
-            updateColor(accentColor, backgroundColor, false, true)
-        }
-
-        val notifBgListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
-            if (compoundButton.id == R.id.dark_notifications) {
-                dark_notifications.isChecked = b
-                white_notifications.isChecked = !b
-                if (supportsShadow) {
-                    shadowFixLayout.visibility = View.VISIBLE
-                    customizations_scrollview.postDelayed({ customizations_scrollview.fullScroll(ScrollView.FOCUS_DOWN) }, 200)
-                }
-            } else {
-                dark_notifications.isChecked = !b
-                white_notifications.isChecked = b
-                if (supportsShadow) {
-                    shadowFixLayout.visibility = View.GONE
-                }
-            }
-            darkNotif = dark_notifications.isChecked
-            updateColor(accentColor, backgroundColor, false, true)
-        }
-
-        val shadowListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
-            if (buttonView.id == R.id.shadow_disabled) {
-                shadow_disabled.isChecked = isChecked
-                shadow_enabled.isChecked = !isChecked
-            } else {
-                shadow_disabled.isChecked = !isChecked
-                shadow_enabled.isChecked = isChecked
-            }
-            notifShadow = shadow_enabled.isChecked
-            updateColor(accentColor, backgroundColor, false, true)
-        }
-
-
-        val iconListener = CompoundButton.OnCheckedChangeListener { buttonView, _ ->
-            when {
-                buttonView.id == R.id.aosp_icons -> {
-                    if (aosp_icons.isChecked) {
-                        aosp_icons.isChecked = true
-                        stock_icons.isChecked = false
-                        stock_icons_multi.isChecked = false
-                        p_icons.isChecked = false
-                        useAospIcons = true
-                        updateIcons()
-                    } else {
-                        useAospIcons = false
-                    }
-                }
-                buttonView.id == R.id.stock_icons -> {
-                    if (stock_icons.isChecked) {
-                        aosp_icons.isChecked = false
-                        stock_icons.isChecked = true
-                        stock_icons_multi.isChecked = false
-                        p_icons.isChecked = false
-                        useStockAccentIcons = true
-                        updateIcons()
-                    } else {
-                        useStockAccentIcons = false
-                    }
-                }
-                buttonView.id == R.id.stock_icons_multi -> {
-                    if (stock_icons_multi.isChecked) {
-                        aosp_icons.isChecked = false
-                        stock_icons.isChecked = false
-                        stock_icons_multi.isChecked = true
-                        p_icons.isChecked = false
-                        useStockMultiIcons = true
-                        updateIcons()
-                    } else {
-                        useStockMultiIcons = false
-                    }
-                }
-                buttonView.id == R.id.p_icons -> {
-                    if (p_icons.isChecked) {
-                        aosp_icons.isChecked = false
-                        stock_icons.isChecked = false
-                        stock_icons_multi.isChecked = false
-                        p_icons.isChecked = true
-                        usePIcons = true
-                        updateIcons()
-                    } else {
-                        usePIcons = false
-                    }
-                }
-            }
-        }
-
-        val clockListener = CompoundButton.OnCheckedChangeListener { buttonView, _ ->
-            when {
-                buttonView.id == R.id.right_clock -> {
-                    if (right_clock.isChecked) {
-                        right_clock.isChecked = true
-                        left_clock.isChecked = false
-                        centered_clock.isChecked = false
-                        clock_right.visibility = View.VISIBLE
-                        clock_left.visibility = View.GONE
-                        clock_centered.visibility = View.GONE
-                        useRightClock = true
-                    } else {
-                        useRightClock = false
-                    }
-                }
-                buttonView.id == R.id.left_clock -> {
-                    if (left_clock.isChecked) {
-                        right_clock.isChecked = false
-                        left_clock.isChecked = true
-                        centered_clock.isChecked = false
-                        clock_right.visibility = View.GONE
-                        clock_left.visibility = View.VISIBLE
-                        clock_centered.visibility = View.GONE
-                        useLeftClock = true
-                    } else {
-                        useLeftClock = false
-                    }
-                }
-                buttonView.id == R.id.centered_clock -> {
-                    if (centered_clock.isChecked) {
-                        right_clock.isChecked = false
-                        left_clock.isChecked = false
-                        centered_clock.isChecked = true
-                        clock_right.visibility = View.GONE
-                        clock_left.visibility = View.GONE
-                        clock_centered.visibility = View.VISIBLE
-                        useCenteredClock = true
-                    } else {
-                        useCenteredClock = false
-                    }
-                }
-            }
-        }
-
-        val styleListener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
-            if (buttonView.id == R.id.default_style) {
-                default_style.isChecked = isChecked
-                p_style.isChecked = !isChecked
-            } else {
-                default_style.isChecked = !isChecked
-                p_style.isChecked = isChecked
-            }
-            usePStyle = p_style.isChecked
-            updateColor(accentColor, backgroundColor, false, true)
-        }
-
-        val features = RomInfo.getRomInfo(this).getCustomizeFeatures()
-        if ((features and SUPPORTS_ICONS) != 0) {
-            aosp_icons.setOnCheckedChangeListener(iconListener)
-            stock_icons.setOnCheckedChangeListener(iconListener)
-            stock_icons_multi.setOnCheckedChangeListener(iconListener)
-            p_icons.setOnCheckedChangeListener(iconListener)
-        } else {
-            icons_card.visibility = View.GONE
-        }
-
-        if ((features and SUPPORTS_CLOCK) != 0) {
-            right_clock.setOnCheckedChangeListener(clockListener)
-            left_clock.setOnCheckedChangeListener(clockListener)
-            centered_clock.setOnCheckedChangeListener(clockListener)
-        } else {
-            clock_card.visibility = View.GONE
-        }
-
-        if ((features and SUPPORTS_TRANSPARENCY) == 0) {
-            transparency_card.visibility = View.GONE
-        }
-
-        if ((features and SUPPORTS_SHADOW) != 0) {
-            shadow_disabled.setOnCheckedChangeListener(shadowListener)
-            shadow_enabled.setOnCheckedChangeListener(shadowListener)
-            supportsShadow = true
-        } else {
-            shadowFixLayout.visibility = View.GONE
-        }
-
-        if ((features and SUPPORTS_NOTIF_STYLE) != 0) {
-            p_style.setOnCheckedChangeListener(styleListener)
-            default_style.setOnCheckedChangeListener(styleListener)
-        } else {
-            notification_style_card.visibility = View.GONE
+            updateColor(false)
         }
 
         material_theme.setOnCheckedChangeListener(baseThemeListener)
         flat_theme.setOnCheckedChangeListener(baseThemeListener)
-        dark_notifications.setOnCheckedChangeListener(notifBgListener)
-        white_notifications.setOnCheckedChangeListener(notifBgListener)
     }
 
     override fun onBackPressed() {
@@ -539,12 +331,12 @@ class CustomizeActivity : ThemeActivity() {
 
     override fun onResume() {
         super.onResume()
-        updateColors(backgroundColor, usePalette)
+        updateColors(selection.backgroundColor, usePalette)
         if (finish) finish()
     }
 
     private fun checkAndAddApp(apps: ArrayList<String>, app: String) {
-        if (!apps.contains(app) && RomInfo.getRomInfo(this).isOverlayInstalled("android")) {
+        if (!apps.contains(app) && swift.romInfo.isOverlayInstalled("android")) {
             apps.add(app)
             recompile = true
         }
@@ -566,7 +358,7 @@ class CustomizeActivity : ThemeActivity() {
         bottomSheetDialog = BottomSheetDialog(this)
         val sheetView = View.inflate(this, R.layout.fab_sheet_personalize, null)
         bottomSheetDialog.setContentView(sheetView)
-        sheetView.setBackgroundColor(backgroundColor)
+        sheetView.setBackgroundColor(selection.backgroundColor)
 
         if (parentActivity == "tutorial") {
             sheetView.personalization_confirm_txt.text = getString(R.string.continue_theming)
@@ -578,54 +370,30 @@ class CustomizeActivity : ThemeActivity() {
             bottomSheetDialog.dismiss()
             val apps = ArrayList<String>()
 
-            val oldAccent = getAccentColor(this)
-            val oldBackground = getBackgroundColor(this)
-            val oldAlpha = getAlphaValue(this)
             val oldPalette = useBackgroundPalette(this)
-            val oldIcons = useAospIcons(this)
-            val oldStockAccentIcons = useStockAccentIcons(this)
-            val oldStockMultiIcons = useStockMultiIcons(this)
-            val oldAndroidPIcons = usePIcons(this)
-            val oldShadow = useSenderNameFix(this)
-            val oldNotifbg = useDarkNotifBg(this)
-            val oldRightClock = useRightClock(this)
-            val oldLeftClock = useLeftClock(this)
-            val oldCenteredClock = useCenteredClock(this)
-            val oldPStyle = usePstyle(this)
+            val oldSelection = customizeHandler.getSelection()
 
             fun hotSwapPrefOn() = PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("hotswap", true).apply()
             fun hotSwapPrefOff() = PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("hotswap", false).apply()
 
-            val iconOverlays = listOf(
-                    "com.samsung.android.lool",
-                    "com.samsung.android.themestore",
-                    "com.android.settings",
-                    "com.android.systemui",
-                    "com.samsung.android.app.aodservice",
-                    "android"
-            )
-
-            if (oldAccent != accentColor) {
-                setAccentColor(this, accentColor)
-                if (RomInfo.getRomInfo(this).useHotSwap() && getUseSoftReboot(this)) {
-                    hotSwapPrefOn()
-                } else {
-                    hotSwapPrefOff()
+            for (key in oldSelection.keys) {
+                if (oldSelection[key] != selection[key]) {
+                    val cat = customizeHandler.getCustomizeOptions()[key]
+                    if (cat != null) {
+                        for (app in cat.requiredApps) {
+                            if (app == "android") {
+                                if (swift.romInfo.useHotSwap()) {
+                                    hotSwapPrefOn()
+                                } else {
+                                    hotSwapPrefOff()
+                                }
+                            }
+                            checkAndAddApp(apps, app)
+                        }
+                    }
                 }
-                checkAndAddApp(apps, "android")
             }
-
-            if (oldBackground != backgroundColor) {
-                setBackgroundColor(this, backgroundColor)
-                hotSwapPrefOff()
-                checkAndAddApp(apps, "android")
-            }
-
-            if (oldAlpha != alpha) {
-                setAlphaValue(this, alpha)
-                hotSwapPrefOff()
-                checkAndAddApp(apps, "android")
-            }
+            customizeHandler.setSelection(selection)
 
             if (usePalette != oldPalette) {
                 setUseBackgroundPalette(this, usePalette)
@@ -633,137 +401,17 @@ class CustomizeActivity : ThemeActivity() {
                 checkAndAddApp(apps, "android")
             }
 
-            if (darkNotif != oldNotifbg) {
-                if (!darkNotif) {
-                    notifShadow = false
-                }
-                setUseDarkNotifBg(this, darkNotif)
-                hotSwapPrefOff()
-                checkAndAddApp(apps, "android")
-            }
-
-            if (notifShadow != oldShadow) {
-                setUseSenderNameFix(this, notifShadow)
-                hotSwapPrefOff()
-                checkAndAddApp(apps, "android")
-            }
-
-            if (useAospIcons != oldIcons && useAospIcons) {
-                setUseAospIcons(this, true)
-                setUseStockAccentIcons(this, false)
-                setUseStockMultiIcons(this, false)
-                setUsePIcons(this, false)
-                hotSwapPrefOff()
-                for (i in iconOverlays) {
-                    checkAndAddApp(apps, i)
-                }
-            }
-
-            if (useStockAccentIcons != oldStockAccentIcons && useStockAccentIcons) {
-                setUseAospIcons(this, false)
-                setUseStockAccentIcons(this, true)
-                setUseStockMultiIcons(this, false)
-                setUsePIcons(this, false)
-                hotSwapPrefOff()
-                for (i in iconOverlays) {
-                    checkAndAddApp(apps, i)
-                }
-            }
-
-            if (useStockMultiIcons != oldStockMultiIcons && useStockMultiIcons) {
-                setUseAospIcons(this, false)
-                setUseStockAccentIcons(this, false)
-                setUseStockMultiIcons(this, true)
-                setUsePIcons(this, false)
-                hotSwapPrefOff()
-                for (i in iconOverlays) {
-                    checkAndAddApp(apps, i)
-                }
-            }
-
-            if (usePIcons != oldAndroidPIcons && usePIcons) {
-                setUseStockMultiIcons(this, false)
-                setUseAospIcons(this, false)
-                setUseStockAccentIcons(this, false)
-                setUsePIcons(this, true)
-                hotSwapPrefOff()
-                for (i in iconOverlays) {
-                    checkAndAddApp(apps, i)
-                }
-            }
-
-            if (useRightClock != oldRightClock && useRightClock) {
-                setUseLeftClock(this, false)
-                setUseCenteredClock(this, false)
-                setUseRightClock(this, true)
-                hotSwapPrefOff()
-                checkAndAddApp(apps,"com.android.systemui")
-            }
-
-            if (useLeftClock != oldLeftClock && useLeftClock) {
-                setUseCenteredClock(this, false)
-                setUseRightClock(this, false)
-                setUseLeftClock(this, true)
-                hotSwapPrefOff()
-                checkAndAddApp(apps,"com.android.systemui")
-            }
-
-            if (useCenteredClock != oldCenteredClock && useCenteredClock) {
-                setUseLeftClock(this, false)
-                setUseRightClock(this, false)
-                setUseCenteredClock(this, true)
-                hotSwapPrefOff()
-                checkAndAddApp(apps,"com.android.systemui")
-            }
-
-            if (usePStyle != oldPStyle) {
-                setUsePStyle(this, usePStyle)
-                hotSwapPrefOff()
-                checkAndAddApp(apps,"com.android.systemui")
-                checkAndAddApp(apps,"android")
-            }
-
             if (recompile && apps.isNotEmpty()) {
 
                 val receiver = object : BroadcastReceiver() {
                     override fun onReceive(context: Context, intent: Intent) {
                         if (intent.action == InstallSummaryActivity.ACTION_INSTALL_CANCELLED) {
-                            if (oldAccent != getAccentColor(context)) {
-                                setAccentColor(context, oldAccent)
+                            for (key in selection.keys) {
+                                if (oldSelection[key] != selection[key]) {
+                                    selection[key] = oldSelection[key]
+                                }
                             }
-                            if (oldBackground != getBackgroundColor(context)) {
-                                setBackgroundColor(context, oldBackground)
-                            }
-                            if (oldAlpha != getAlphaValue(context)) {
-                                setAlphaValue(context, oldAlpha)
-                            }
-                            if (oldPalette != useBackgroundPalette(context)) {
-                                setUseBackgroundPalette(context, oldPalette)
-                            }
-                            if (oldIcons != com.brit.swiftinstaller.library.utils.useAospIcons(context)) {
-                                setUseAospIcons(context, oldIcons)
-                            }
-                            if (oldStockAccentIcons != com.brit.swiftinstaller.library.utils.useStockAccentIcons(context)) {
-                                setUseStockAccentIcons(context, oldStockAccentIcons)
-                            }
-                            if (oldStockMultiIcons != com.brit.swiftinstaller.library.utils.useStockMultiIcons(context)) {
-                                setUseStockMultiIcons(context, oldStockMultiIcons)
-                            }
-                            if (oldAndroidPIcons != com.brit.swiftinstaller.library.utils.usePIcons(context)) {
-                                setUsePIcons(context, oldAndroidPIcons)
-                            }
-                            if (oldRightClock != com.brit.swiftinstaller.library.utils.useRightClock(context)) {
-                                setUseRightClock(context, oldRightClock)
-                            }
-                            if (oldLeftClock != com.brit.swiftinstaller.library.utils.useLeftClock(context)) {
-                                setUseLeftClock(context, oldLeftClock)
-                            }
-                            if (oldCenteredClock != com.brit.swiftinstaller.library.utils.useCenteredClock(context)) {
-                                setUseCenteredClock(context, oldCenteredClock)
-                            }
-                            if (oldPStyle != com.brit.swiftinstaller.library.utils.usePstyle(context)) {
-                                setUsePStyle(context, oldPStyle)
-                            }
+                            customizeHandler.setSelection(selection)
                             LocalBroadcastManager.getInstance(context.applicationContext)
                                     .unregisterReceiver(this)
                         }
@@ -847,226 +495,88 @@ class CustomizeActivity : ThemeActivity() {
     }
 
     private fun setupAccentSheet() {
-        palette.adapter = PaletteAdapter(resources.getIntArray(R.array.accent_colors))
-        settingsIcons[0] = settings_connections_icon
-        settingsIcons[1] = settings_sound_icon
-        settingsIcons[2] = settings_notifications_icon
-        systemUiIcons[0] = systemui_wifi_icon
-        systemUiIcons[1] = systemui_airplane_icon
-        systemUiIcons[2] = systemui_bluetooth_icon
-        systemUiIcons[3] = systemui_flashlight_icon
-        systemUiIcons[4] = systemui_sound_icon
-        systemUiIcons[5] = systemui_rotation_icon
-    }
-
-    private fun setBgIndicator() {
-        custom_dark_bg_indicator.visibility = if (backgroundColor == convertToColorInt("202026")) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-        custom_black_bg_indicator.visibility = if (backgroundColor == convertToColorInt("000000")) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-        custom_style_bg_indicator.visibility = if (backgroundColor == convertToColorInt("202833")) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-        custom_nature_bg_indicator.visibility = if (backgroundColor == convertToColorInt("1C3B3A")) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-        custom_ocean_bg_indicator.visibility = if (backgroundColor == convertToColorInt("173145")) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-        custom_night_bg_indicator.visibility = if (backgroundColor == convertToColorInt("363844")) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
+        accent_palette.adapter = PaletteAdapter(customizeHandler.getAccentColors(), true)
+        background_palette.adapter = PaletteAdapter(customizeHandler.getBackgroundColors(), false)
     }
 
     private fun updateIcons() {
-        for (icon in settingsIcons) {
-            if (icon != null) {
-                val type: String = when {
-                    useAospIcons -> {
-                        if (isPie) {
-                            icon.clearColorFilter()
-                        } else {
-                            icon.setColorFilter(accentColor)
+        previewHandler.updateView(materialPalette, selection)
+    }
+
+    fun updateColor(updateHex: Boolean) {
+        updateColors(selection.backgroundColor, usePalette)
+        for (id in IdLists.radioButtons) {
+            val b = findViewById<RadioButton>(id)
+            b.buttonTintList = ColorUtils.radioButtonColor(this, R.color.radio_button_disabled, selection.accentColor)
+        }
+
+        val buttonTint = ColorUtils.radioButtonColor(this, R.color.radio_button_disabled, selection.accentColor)
+        for (position in customize_options.childCount.downTo(0)) {
+            val view = customize_options.getChildAt(position)
+            if (view != null) {
+                if (view.options.childCount > 0) {
+                    for (pos in view.options.childCount.downTo(0)) {
+                        val v = view.options.getChildAt(pos)
+                        if (v != null) {
+                            v.option_button.buttonTintList = buttonTint
+                            v.option_info.setTextColor(selection.accentColor)
+                            if (v.sub_options_container.childCount > 0) {
+                                for (posi in v.sub_options_container.childCount.downTo(0)) {
+                                    val vi = v.sub_options_container.getChildAt(posi)
+                                    if (vi != null) {
+                                        vi.option_button.buttonTintList = buttonTint
+                                        vi.option_info.setTextColor(selection.accentColor)
+                                    }
+                                }
+                            }
+                            v.slider.thumb.setColorFilter(selection.accentColor, PorterDuff.Mode.SRC_ATOP)
+                            v.slider.progressDrawable.setColorFilter(selection.accentColor,
+                                    PorterDuff.Mode.SRC_ATOP)
                         }
-                        "aosp"
                     }
-                    usePIcons -> {
-                        icon.clearColorFilter()
-                        "p"
-                    }
-                    useStockMultiIcons -> {
-                        icon.clearColorFilter()
-                        "stock"
-                    }
-                    else -> {
-                        icon.setColorFilter(accentColor)
-                        "stock"
-                    }
-                }
-
-                val idName = "ic_${resources.getResourceEntryName(icon.id)}_$type"
-                val id = resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName", null, null)
-                if (id > 0) {
-                    icon.setImageDrawable(getDrawable(id))
                 }
             }
         }
-        for (icon in systemUiIcons) {
-            if (icon != null) {
-                val idName = "ic_${resources.getResourceEntryName(icon.id)}_${when {
-                    useAospIcons -> "aosp"
-                    usePIcons -> "p"
-                    else -> "stock"
-                }}"
-                val id = resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName", null, null)
-                if (!isPie && id > 0) {
-                    icon.setImageDrawable(getDrawable(id))
-                } else if (id > 0) {
-                    val layerDrawable = getDrawable(id) as LayerDrawable
-                    systemUiIconBg.add(layerDrawable)
-                    icon.setImageDrawable(layerDrawable)
-                    layerDrawable.findDrawableByLayerId(R.id.icon_bg).setTint(accentColor)
-                    layerDrawable.findDrawableByLayerId(R.id.icon_tint).setTint(backgroundColor)
-                }
+
+        if (updateHex && accent_hex_input.text.toString() != Integer.toHexString(selection.accentColor).substring(2))
+            accent_hex_input.setText(Integer.toHexString(selection.accentColor).substring(2), TextView.BufferType.EDITABLE)
+
+        accent_hex_input.background.setTint(selection.accentColor)
+        hex_input_bg.background.setTint(selection.accentColor)
+        personalize_fab.background.setTint(selection.accentColor)
+        baseThemeInfo.setTextColor(selection.accentColor)
+
+        materialPalette = MaterialPalette.createPalette(selection.backgroundColor, usePalette)
+
+        if (updateHex && hex_input_bg.text.toString() != Integer.toHexString(materialPalette.backgroundColor).substring(2))
+            hex_input_bg.setText(Integer.toHexString(materialPalette.backgroundColor).substring(2), TextView.BufferType.EDITABLE)
+
+        previewHandler.updateBackgroundColor(materialPalette)
+        previewHandler.updateView(materialPalette, selection)
+    }
+
+    class BackgroundIndicatorHandler {
+        private val indicators = arrayListOf<ImageView>()
+        fun addIndicator(indicator: ImageView) {
+            indicators.add(indicator)
+        }
+        fun setActiveIndicator(indicator: ImageView) {
+            for (ind in indicators) {
+                ind.setVisible(ind.tag == indicator.tag)
             }
         }
     }
 
-    fun updateColor(accentColor: Int, backgroundColor: Int, updateHex: Boolean, force: Boolean) {
-        updateColors(backgroundColor, usePalette)
-        if (force || this.accentColor != accentColor) {
-            this.accentColor = accentColor
+    inner class PaletteAdapter constructor(private val colors: ArrayList<CustomizeHandler.PaletteItem>, private val isAccent: Boolean) : BaseAdapter() {
 
-            if (!isPie) {
-                if (!useStockMultiIcons && !usePIcons) {
-                    for (icon: ImageView? in settingsIcons) {
-                        icon?.setColorFilter(accentColor)
-                    }
-                }
-            }
-            if (!isPie) {
-                for (icon: ImageView? in systemUiIcons) {
-                    icon?.setColorFilter(accentColor)
-                }
-            } else {
-                for (iconBg in systemUiIconBg) {
-                    iconBg.findDrawableByLayerId(R.id.icon_bg).setTint(accentColor)
-                }
-                searchbar_search_icon.setColorFilter(accentColor)
-            }
-            for (id in IdLists.bgIndicators) {
-                val i = findViewById<ImageView>(id)
-                i.drawable.setTint(accentColor)
-            }
-            for (id in IdLists.radioButtons) {
-                val b = findViewById<RadioButton>(id)
-                b.buttonTintList = ColorUtils.radioButtonColor(this, R.color.radio_button_disabled, accentColor)
-            }
-            if (updateHex && accent_hex_input.text.toString() != Integer.toHexString(accentColor).substring(2))
-                accent_hex_input.setText(Integer.toHexString(accentColor).substring(2), TextView.BufferType.EDITABLE)
-
-            accent_hex_input.background.setTint(accentColor)
-            hex_input_bg.background.setTint(accentColor)
-            personalize_fab.background.setTint(accentColor)
-            baseThemeInfo.setTextColor(accentColor)
-            roundedInfo.setTextColor(accentColor)
-            if (supportsTransparency) {
-                alpha_seekbar.thumb.setColorFilter(accentColor, PorterDuff.Mode.SRC_ATOP)
-                alpha_seekbar.progressDrawable.setColorFilter(accentColor, PorterDuff.Mode.SRC_ATOP)
-            }
-        }
-
-        if (force || this.backgroundColor != backgroundColor) {
-            materialPalette = MaterialPalette.createPalette(backgroundColor, usePalette)
-            val settingsBackground = settings_preview?.drawable as LayerDrawable
-            val systemUIBackground = preview_sysui_bg.drawable as LayerDrawable
-            this.backgroundColor = backgroundColor
-
-            if (updateHex && hex_input_bg.text.toString() != Integer.toHexString(backgroundColor).substring(2))
-                hex_input_bg.setText(Integer.toHexString(backgroundColor).substring(2), TextView.BufferType.EDITABLE)
-
-            if (isPie) {
-                for (iconBg in systemUiIconBg) {
-                    iconBg.findDrawableByLayerId(R.id.icon_tint).setTint(backgroundColor)
-                }
-            }
-
-            preview_wallpaper.setColorFilter(ColorUtils.addAlphaColor(backgroundColor, alpha), PorterDuff.Mode.SRC_OVER)
-            settingsBackground.findDrawableByLayerId(R.id.preview_background).setTint(backgroundColor)
-            systemUIBackground.findDrawableByLayerId(R.id.preview_background).setTint(backgroundColor)
-            searchbar_bg.setColorFilter(materialPalette.cardBackgroud)
-
-            setBgIndicator()
-        }
-
-        if (notifShadow) {
-            preview_sysui_msg.text = getString(R.string.dark_notifications_preview_shadow)
-            preview_sysui_app_title.setShadowLayer(2.0f, -1.0f, -1.0f, Color.WHITE)
-            preview_sysui_sender.setTextColor(Color.BLACK)
-            preview_sysui_sender.setShadowLayer(2.0f, -1.0f, -1.0f, Color.WHITE)
-        } else {
-            preview_sysui_msg.text = getString(R.string.dark_notifications_preview_normal)
-            preview_sysui_app_title.setShadowLayer(0.0f, 0.0f, 0.0f, Color.TRANSPARENT)
-            preview_sysui_sender.setTextColor(Color.WHITE)
-            preview_sysui_sender.setShadowLayer(0.0f, 0.0f, 0.0f, Color.TRANSPARENT)
-        }
-
-        if (usePStyle || isPie) {
-            notif_bg_layout.setImageResource(R.drawable.notif_bg_rounded)
-        } else {
-            notif_bg_layout.setImageResource(R.drawable.notif_bg)
-        }
-
-        if (darkNotif) {
-            if (notifShadow) {
-                preview_sysui_sender.setTextColor(Color.BLACK)
-            } else {
-                preview_sysui_sender.setTextColor(Color.WHITE)
-            }
-            if (usePStyle) {
-                notif_bg_layout.drawable.setTint(ColorUtils.handleColor(backgroundColor, 8))
-            } else {
-                notif_bg_layout.drawable.setTint(backgroundColor)
-            }
-            preview_sysui_sender.text = getString(R.string.dark_notifications)
-            preview_sysui_msg.setTextColor(Color.parseColor("#b3ffffff"))
-            if (supportsShadow) {
-                shadowFixLayout.visibility = View.VISIBLE
-            }
-        } else {
-            preview_sysui_sender.text = getString(R.string.white_notifications)
-            preview_sysui_msg.text = getString(R.string.white_notifications_preview)
-            notif_bg_layout.drawable.setTint(Color.parseColor("#f5f5f5"))
-            preview_sysui_sender.setTextColor(Color.BLACK)
-            preview_sysui_msg.setTextColor(Color.parseColor("#8a000000"))
-            if (supportsShadow) {
-                shadowFixLayout.visibility = View.GONE
-            }
-        }
-    }
-
-    inner class PaletteAdapter constructor(private val mColors: IntArray) : BaseAdapter() {
+        private val indicatorHandler = BackgroundIndicatorHandler()
 
         override fun getCount(): Int {
-            return mColors.size
+            return colors.size
         }
 
         override fun getItem(position: Int): Any {
-            return mColors[position]
+            return colors[position]
         }
 
         override fun getItemId(position: Int): Long {
@@ -1079,11 +589,25 @@ class CustomizeActivity : ThemeActivity() {
                 mainView = LayoutInflater.from(parent.context)
                         .inflate(R.layout.palette_view, parent, false)
             }
-            val iv = mainView!!.findViewById<ImageView>(R.id.icon)
-            iv.background = CircleDrawable(mColors[position])
-            mainView.tag = mColors[position]
-            mainView.setOnClickListener {
-                updateColor(mColors[position], backgroundColor, true, false)
+            if (isAccent) {
+                mainView!!.accent_layout.setVisible(isAccent)
+                mainView.accent_layout.icon.background = CircleDrawable(colors[position].accentColor)
+                mainView.tag = colors[position]
+                mainView.setOnClickListener {
+                    selection.accentColor = colors[position].accentColor
+                    updateColor(true)
+                }
+            } else {
+                mainView!!.background_layout.setVisible(!isAccent)
+                indicatorHandler.addIndicator(mainView.background_layout.indicator)
+                mainView.background_layout.background_icon.tag = colors[position].backgroundColor
+                mainView.background_layout.background_icon.setImageDrawable(CircleDrawable(colors[position].backgroundColor))
+                mainView.background_layout.background_title.text = colors[position].backgroundName
+                mainView.background_layout.background_icon.setOnClickListener {
+                    indicatorHandler.setActiveIndicator(mainView.background_layout.indicator)
+                    selection.backgroundColor = colors[position].backgroundColor
+                    updateColor(true)
+                }
             }
             return mainView
         }
@@ -1092,11 +616,9 @@ class CustomizeActivity : ThemeActivity() {
     inner class PreviewPagerAdapter : PagerAdapter() {
 
         override fun instantiateItem(collection: ViewGroup, position: Int): Any {
-            return if (position == 0) {
-                findViewById(R.id.settings_preview_page)
-            } else {
-                findViewById(R.id.systemui_preview_page)
-            }
+            val view = previewHandler.getPage(collection, position)
+            collection.addView(view)
+            return view
         }
 
         override fun destroyItem(collection: ViewGroup, position: Int, view: Any) {
@@ -1104,7 +626,7 @@ class CustomizeActivity : ThemeActivity() {
         }
 
         override fun getCount(): Int {
-            return 2
+            return previewHandler.getPageCount()
         }
 
         override fun isViewFromObject(view: View, `object`: Any): Boolean {
