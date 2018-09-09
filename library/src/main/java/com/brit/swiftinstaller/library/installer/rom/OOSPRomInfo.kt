@@ -1,8 +1,21 @@
 package com.brit.swiftinstaller.library.installer.rom
 
 import android.content.Context
+import android.content.Intent
+import com.brit.swiftinstaller.library.utils.getAccentColor
+import com.brit.swiftinstaller.library.utils.runCommand
 
 class OOSPRomInfo(context: Context) : PRomInfo(context) {
+
+    override fun postInstall(uninstall: Boolean, apps: ArrayList<String>,
+                             oppositeApps: ArrayList<String>?, intent: Intent?) {
+        super.postInstall(uninstall, apps, oppositeApps, intent)
+        if (apps.contains("android")) {
+            runCommand("settings put system oem_white_mode_accent_color ${getAccentColor(context)}", true)
+            runCommand("settings put system oem_black_mode_accent_color ${getAccentColor(context)}", true)
+
+        }
+    }
 
     override fun getRequiredApps(): Array<String> {
         return Array(20) {
