@@ -32,8 +32,7 @@ class OOSOreoRomInfo(context: Context) : OreoRomInfo(context) {
                              oppositeApps: ArrayList<String>?, intent: Intent?) {
         super.postInstall(uninstall, apps, oppositeApps, intent)
         if (apps.contains("android")) {
-            runCommand("settings put system oem_white_mode_accent_color ${getAccentColor(context)}", true)
-            runCommand("settings put system oem_black_mode_accent_color ${getAccentColor(context)}", true)
+            runCommand("settings put system oem_black_mode_accent_color \'#${Integer.toHexString(getAccentColor(context))}\'", true)
 
         }
     }
