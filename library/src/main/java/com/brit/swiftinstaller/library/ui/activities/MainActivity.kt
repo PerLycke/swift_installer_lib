@@ -38,6 +38,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
+import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.ui.applist.AppItem
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.enableAllOverlays
@@ -205,6 +206,15 @@ class MainActivity : ThemeActivity() {
                 dialog.dismiss()
             }
             dialog.show()
+        }
+
+        if (RomInfo.getRomInfo(this).useHotSwap()) {
+            popupView.popup_menu_settings.setOnClickListener {
+                popup.dismiss()
+                startActivity(Intent(this, SettingsActivity::class.java))
+            }
+        } else {
+            popupView.popup_menu_settings.visibility = View.GONE
         }
 
         popup.showAtLocation(view, Gravity.TOP or Gravity.RIGHT, 0, 0)

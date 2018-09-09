@@ -172,4 +172,7 @@
     <string name="help">Help</string>
     <string name="installer_version">Installer library version:</string>
     <string name="installer_source_link">https://github.com/PerLycke/swift_installer_lib</string>
+    <string name="settings_title">Settings</string>
+    <string name="soft_reboot_title">Use Soft Reboot</string>
+    <string name="soft_reboot_summary">Turn this off if you use sim pin.</string>
 </resources>
