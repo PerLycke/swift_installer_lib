@@ -143,8 +143,8 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         val file = StringBuilder()
         file.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
         file.append("<resources>\n")
-        file.append("<color name=\"material_blue_grey_900\">#" + String.format("%06x", accent).substring(2) + "</color>\n")
-        //file.append("<color name=\"highlighted_text_dark\">")
+        file.append("<color name=\"material_blue_grey_900\">#${String.format("%06x", accent).substring(2)}</color>\n")
+        file.append("<color name=\"highlighted_text_dark\">#${String.format("%06x", ColorUtils.addAlphaColor(accent, 30)).substring(2)}</color>\n")
         file.append("</resources>")
 
         val values = File(resDir, "/values")
