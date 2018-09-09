@@ -26,6 +26,8 @@ import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.content.ContextCompat
 import com.brit.swiftinstaller.library.R
@@ -110,6 +112,10 @@ abstract class RomInfo constructor(var context: Context) {
     abstract fun installOverlay(context: Context, targetPackage: String, overlayPath: String)
     abstract fun postInstall(uninstall: Boolean, apps: ArrayList<String>, oppositeApps: ArrayList<String>?, intent: Intent?)
     abstract fun uninstallOverlay(context: Context, packageName: String)
+
+    open fun getOverlayInfo(pm: PackageManager, packageName: String): PackageInfo {
+        return pm.getPackageInfo(getOverlayPackageName(packageName), 0)
+    }
 
     @Suppress("unused")
     companion object {

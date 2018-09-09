@@ -44,7 +44,7 @@ object OverlayUtils {
     fun checkOverlayVersion(context: Context, packageName: String): Boolean {
         if (!RomInfo.getRomInfo(context).isOverlayInstalled(packageName)) return false
         val overlayVersion = getOverlayVersion(context, packageName)
-        val currentVersion = context.packageManager.getOverlayInfo(packageName).getVersionCode()
+        val currentVersion = RomInfo.getRomInfo(context).getOverlayInfo(context.packageManager, packageName).getVersionCode()
         return overlayVersion > currentVersion
     }
 

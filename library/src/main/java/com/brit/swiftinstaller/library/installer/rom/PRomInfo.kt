@@ -23,6 +23,8 @@ package com.brit.swiftinstaller.library.installer.rom
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
 import com.topjohnwu.superuser.io.SuFile
@@ -30,15 +32,33 @@ import com.topjohnwu.superuser.io.SuFile
 open class PRomInfo(context: Context) : RomInfo(context) {
 
     private val systemApp = "/system/app"
+    private val magiskPath = "/sbin/.core/img/swift_installer"
+
+    private val moduleDisabled = SuFile(magiskPath, "disable").exists()
+    private var useMagisk = false
+    private val appPath: String
+        get() {
+            return if (!moduleDisabled && SuFile(magiskPath).exists()) {
+                val f = SuFile(magiskPath, systemApp)
+                if (!f.exists()) {
+                    f.mkdirs()
+                }
+                useMagisk = true
+                f.absolutePath
+            } else {
+                useMagisk = false
+                systemApp
+            }
+        }
 
     override fun installOverlay(context: Context, targetPackage: String, overlayPath: String) {
         val overlayPackage = getOverlayPackageName(targetPackage)
         if (ShellUtils.isRootAvailable) {
-            remountRW("/system")
-            ShellUtils.mkdir("$systemApp/$overlayPackage")
-            ShellUtils.copyFile(overlayPath, "$systemApp/$overlayPackage/$overlayPackage.apk")
-            ShellUtils.setPermissions(644, "$systemApp/$overlayPackage/$overlayPackage.apk")
-            remountRO("/system")
+            if (!useMagisk) remountRW("/system")
+            ShellUtils.mkdir("$appPath/$overlayPackage")
+            ShellUtils.copyFile(overlayPath, "$appPath/$overlayPackage/$overlayPackage.apk")
+            ShellUtils.setPermissions(644, "$appPath/$overlayPackage/$overlayPackage.apk")
+            if (!useMagisk) remountRO("/system")
         }
     }
 
@@ -86,15 +106,20 @@ open class PRomInfo(context: Context) : RomInfo(context) {
     override fun uninstallOverlay(context: Context, packageName: String) {
         val overlayPackage = getOverlayPackageName(packageName)
         if (ShellUtils.isRootAvailable) {
-            remountRW("/system")
-            deleteFileRoot("$systemApp/$overlayPackage/")
-            remountRO("/system")
+            if (!useMagisk) remountRW("/system")
+            deleteFileRoot("$appPath/$overlayPackage/")
+            if (!useMagisk) remountRO("/system")
         }
     }
 
     override fun isOverlayInstalled(targetPackage: String): Boolean {
         val overlayPackage = getOverlayPackageName(targetPackage)
-        return SuFile("$systemApp/$overlayPackage/$overlayPackage.apk").exists()
+        return SuFile("$appPath/$overlayPackage/$overlayPackage.apk").exists()
+    }
+
+    override fun getOverlayInfo(pm: PackageManager, packageName: String): PackageInfo {
+        val overlayPackage = getOverlayPackageName(packageName)
+        return pm.getPackageArchiveInfo("$appPath/$overlayPackage/$overlayPackage.apk", 0)
     }
 
     override fun getCustomizeFeatures() : Int {
