@@ -122,9 +122,12 @@ abstract class RomInfo constructor(var context: Context) {
         fun getRomInfo(context: Context): RomInfo {
             if (sInfo == null) {
                 sInfo = when {
-                    Build.VERSION_CODES.P == Build.VERSION.SDK_INT -> PRomInfo(context)
+                    getProperty("ro.oxygen.version", "def") != "def"
+                            && Build.VERSION_CODES.P >= Build.VERSION.SDK_INT -> OOSPRomInfo(context)
+                    getProperty("ro.oxygen.version", "def") != "def"
+                            && Build.VERSION_CODES.O >= Build.VERSION.SDK_INT -> OOSOreoRomInfo(context)
                     getProperty("ro.config.knox", "def") != "def" -> SamsungRomInfo(context)
-                    getProperty("ro.oxygen.version", "def") != "def" -> OOSRomInfo(context)
+                    Build.VERSION_CODES.P == Build.VERSION.SDK_INT -> PRomInfo(context)
                     else -> OreoRomInfo(context)
                 }
             }

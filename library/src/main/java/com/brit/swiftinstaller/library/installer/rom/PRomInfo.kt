@@ -27,7 +27,7 @@ import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
 import com.topjohnwu.superuser.io.SuFile
 
-class PRomInfo(context: Context) : RomInfo(context) {
+open class PRomInfo(context: Context) : RomInfo(context) {
 
     private val systemApp = "/system/app"
 

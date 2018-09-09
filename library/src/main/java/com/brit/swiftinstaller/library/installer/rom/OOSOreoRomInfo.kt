@@ -23,7 +23,7 @@ package com.brit.swiftinstaller.library.installer.rom
 
 import android.content.Context
 
-class OOSRomInfo(context: Context) : OreoRomInfo(context) {
+class OOSOreoRomInfo(context: Context) : OreoRomInfo(context) {
 
     override fun getRequiredApps(): Array<String> {
         return Array(20) {
