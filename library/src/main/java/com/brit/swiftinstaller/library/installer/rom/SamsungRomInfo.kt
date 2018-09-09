@@ -47,7 +47,7 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
     }
 
     override fun getRequiredApps(): Array<String> {
-        return Array(28) {
+        return Array(29) {
             when (it) {
                 0 -> "android"
                 1 -> "com.android.systemui"
@@ -77,6 +77,7 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
                 25 -> "com.google.android.gms"
                 26 -> "com.sec.android.daemonapp"
                 27 -> "de.axelspringer.yana.zeropage"
+                28 -> "com.google.android.apps.nexuslauncher"
                 else -> ""
             }
         }
