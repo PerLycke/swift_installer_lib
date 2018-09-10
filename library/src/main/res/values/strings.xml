@@ -183,4 +183,5 @@
     <string name="update_notif_setting_summary">Show a notification when an update is available to install.</string>
     <string name="new_app_notif_setting_title">Show Notification for New Apps</string>
     <string name="new_app_notif_setting_summary">When a new app is installed, show a notification if an overlay is available.</string>
+    <string name="soft_reboot">Soft Reboot</string>
 </resources>

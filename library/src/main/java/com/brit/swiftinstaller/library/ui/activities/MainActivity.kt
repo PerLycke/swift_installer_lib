@@ -212,6 +212,15 @@ class MainActivity : ThemeActivity() {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
 
+        if (RomInfo.getRomInfo(this).useHotSwap()) {
+            popupView.popup_menu_soft_reboot.setOnClickListener {
+                popup.dismiss()
+                rebootCommand()
+            }
+        } else {
+            popupView.popup_menu_soft_reboot.visibility = View.GONE
+        }
+
         popup.showAtLocation(view, Gravity.TOP or Gravity.RIGHT, 0, 0)
     }
 }
