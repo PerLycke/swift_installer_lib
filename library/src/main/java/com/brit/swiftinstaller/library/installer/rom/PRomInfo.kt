@@ -126,5 +126,27 @@ open class PRomInfo(context: Context) : RomInfo(context) {
         return 0
     }
 
-    override fun useHotSwap(): Boolean { return true }
+    override fun useHotSwap(): Boolean { return !useMagisk }
+
+    override fun onBootCompleted(context: Context) {
+        if (useMagisk && !moduleDisabled) {
+            val overlays = context.assets.list("overlays") ?: emptyArray()
+            for (packageName in overlays) {
+                val opn = getOverlayPackageName(packageName)
+                val systemPath = "$systemApp/$opn/$opn.apk"
+                val magiskPath = "$magiskPath/$systemPath"
+                if (SuFile(systemPath).exists()) {
+                    if (!SuFile(magiskPath).exists()) {
+                        SuFile(systemPath).renameTo(SuFile(magiskPath))
+                    } else {
+                        val soi = context.packageManager.getPackageArchiveInfo(systemPath, 0)
+                        val moi = context.packageManager.getPackageArchiveInfo(magiskPath, 0)
+                        if (soi.getVersionCode() > moi.getVersionCode()) {
+                            SuFile(systemPath).renameTo(SuFile(magiskPath))
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

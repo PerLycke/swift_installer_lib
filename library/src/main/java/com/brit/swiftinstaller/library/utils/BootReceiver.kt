@@ -25,6 +25,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import com.brit.swiftinstaller.library.installer.rom.RomInfo
+import org.jetbrains.anko.doAsync
 
 class BootReceiver : BroadcastReceiver() {
 
@@ -42,6 +44,10 @@ class BootReceiver : BroadcastReceiver() {
             filter.addAction(Intent.ACTION_PACKAGE_FULLY_REMOVED)
             filter.addDataScheme("package")
             context.applicationContext.registerReceiver(PackageListener(), filter)
+
+            doAsync {
+                RomInfo.getRomInfo(context).onBootCompleted(context)
+            }
         }
     }
 }

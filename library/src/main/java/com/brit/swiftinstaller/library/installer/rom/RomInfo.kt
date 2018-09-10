@@ -117,6 +117,9 @@ abstract class RomInfo constructor(var context: Context) {
         return pm.getPackageInfo(getOverlayPackageName(packageName), 0)
     }
 
+    open fun onBootCompleted(context: Context) {
+    }
+
     @Suppress("unused")
     companion object {
 
