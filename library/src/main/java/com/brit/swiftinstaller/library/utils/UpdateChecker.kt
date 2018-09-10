@@ -21,13 +21,19 @@
 
 package com.brit.swiftinstaller.library.utils
 
+import android.app.Notification
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
 import android.os.AsyncTask
+import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.installer.rom.RomInfo
+import com.brit.swiftinstaller.library.ui.activities.OverlaysActivity
 import java.lang.ref.WeakReference
 
-class UpdateChecker(context: Context, private val callback: Callback) : AsyncTask<Void, Void, UpdateChecker.Output>() {
+class UpdateChecker(context: Context, private val callback: Callback?) : AsyncTask<Void, Void, UpdateChecker.Output>() {
 
     private val mConRef: WeakReference<Context> = WeakReference(context)
 
@@ -56,7 +62,37 @@ class UpdateChecker(context: Context, private val callback: Callback) : AsyncTas
 
     override fun onPostExecute(result: Output?) {
         super.onPostExecute(result)
-        callback.finished(result!!.installedCount, result.updates)
+        callback?.finished(result!!.installedCount, result.updates)
+        if (result!!.updates.isNotEmpty() && callback == null) {
+            postNotification()
+        }
+    }
+
+    private fun postNotification() {
+        val context = mConRef.get() ?: return
+        if (!updateNotificationEnabled(context)) return
+        val notificationID = 102
+        val rebootIntent = Intent(context, OverlaysActivity::class.java)
+        rebootIntent.putExtra("tab", OverlaysActivity.UPDATE_TAB)
+        val pendingIntent = PendingIntent.getActivity(
+                context.applicationContext,
+                0,
+                rebootIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val channelID = "com.brit.swiftinstaller"
+
+        val notification = Notification.Builder(context,
+                channelID)
+                .setContentTitle(context.getString(R.string.notif_update_title))
+                .setStyle(Notification.BigTextStyle()
+                        .bigText(context.getString(R.string.notif_update_summary)))
+                .setSmallIcon(R.drawable.notif)
+                .setChannelId(channelID)
+                .setContentIntent(pendingIntent)
+                .build()
+        val notifManager = context.getSystemService(NotificationManager::class.java)
+        notifManager.notify(notificationID, notification)
     }
 
     abstract class Callback {
