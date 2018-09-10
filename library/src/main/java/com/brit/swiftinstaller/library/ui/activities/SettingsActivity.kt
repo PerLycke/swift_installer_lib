@@ -7,6 +7,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
 import com.brit.swiftinstaller.library.R
+import com.brit.swiftinstaller.library.installer.rom.RomInfo
+import com.brit.swiftinstaller.library.utils.KEY_USE_SOFT_REBOOT
 import com.brit.swiftinstaller.library.utils.MaterialPalette
 import com.brit.swiftinstaller.library.utils.getBackgroundColor
 
@@ -31,6 +33,9 @@ class SettingsActivity : AppCompatActivity() {
     class SettingsFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.preferences)
+
+            preferenceScreen.findPreference(KEY_USE_SOFT_REBOOT).isEnabled =
+                    RomInfo.getRomInfo(context!!).useHotSwap()
         }
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

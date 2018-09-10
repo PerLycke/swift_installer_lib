@@ -207,14 +207,9 @@ class MainActivity : ThemeActivity() {
             }
             dialog.show()
         }
-
-        if (RomInfo.getRomInfo(this).useHotSwap()) {
-            popupView.popup_menu_settings.setOnClickListener {
-                popup.dismiss()
-                startActivity(Intent(this, SettingsActivity::class.java))
-            }
-        } else {
-            popupView.popup_menu_settings.visibility = View.GONE
+        popupView.popup_menu_settings.setOnClickListener {
+            popup.dismiss()
+            startActivity(Intent(this, SettingsActivity::class.java))
         }
 
         popup.showAtLocation(view, Gravity.TOP or Gravity.RIGHT, 0, 0)
