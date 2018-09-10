@@ -109,7 +109,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/app_item_checkbox"
         app:layout_constraintEnd_toStartOf="@+id/app_item_checkbox"
         app:layout_constraintTop_toTopOf="@+id/app_item_checkbox"
-        app:srcCompat="@drawable/ic_alert" />
+        app:srcCompat="@drawable/ic_options" />
 
     <ImageView
         android:id="@+id/download_icon"

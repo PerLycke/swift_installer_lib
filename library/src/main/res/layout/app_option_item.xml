@@ -29,8 +29,11 @@
 
     <TextView
         style="@style/TextAppearance.AppCompat.Large"
+        android:paddingStart="12dp"
+        android:paddingEnd="2dp"
+        android:textSize="18sp"
         android:id="@+id/options_title"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         tools:text="TextView" />
@@ -44,6 +47,6 @@
         android:id="@+id/checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="1dp"
-        android:paddingEnd="4dp" />
+        android:paddingEnd="12dp"
+        android:paddingStart="2dp" />
 </LinearLayout>
