@@ -187,6 +187,7 @@ class AppListFragment : Fragment() {
             private var appCheckBox: CheckBox = view.findViewById(R.id.app_item_checkbox)
             private var alertIcon: ImageView = view.findViewById(R.id.alert_icon)
             private var downloadIcon: ImageView = view.findViewById(R.id.download_icon)
+            private var optionsIcon: ImageView = view.findViewById(R.id.options_icon)
             private var required: TextView = view.findViewById(R.id.required)
             private var blockedPackagesAlert: ImageView = view.findViewById(R.id.blocked_packages_alert)
 
@@ -237,8 +238,10 @@ class AppListFragment : Fragment() {
                             optionsSelection.add(i, selected[appOptions.keyAt(i)] ?: "")
                         }
                     }
-                    view.options_icon.visibility = View.VISIBLE
-                    view.options_icon.setOnClickListener {
+                    optionsIcon.visibility = View.VISIBLE
+                    optionsIcon.setColorFilter(getAccentColor(context!!))
+
+                    optionsIcon.setOnClickListener {
                         val dialog = AlertDialog.Builder(context!!)
                         dialog.setTitle(item.title)
                         dialog.setIcon(item.icon)
@@ -259,7 +262,7 @@ class AppListFragment : Fragment() {
                         dialog.show()
                     }
                 } else {
-                    view.options_icon.visibility = View.GONE
+                    optionsIcon.visibility = View.GONE
                 }
 
                 if (mSummary) {
