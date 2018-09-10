@@ -29,6 +29,18 @@ import com.brit.swiftinstaller.library.utils.ColorUtils.convertToColorInt
 abstract class CustomizeHandler(val context: Context) {
 
     private var previewHandler: PreviewHandler? = null
+    private val accents = arrayListOf<PaletteItem>()
+    private val backgrounds = arrayListOf<PaletteItem>()
+    private val categories = CategoryMap()
+    init {
+        initialize()
+    }
+
+    private fun initialize() {
+        populateCustomizeOptions(categories)
+        populateAccentColors(accents)
+        populateBackgroundColors(backgrounds)
+    }
 
     class PaletteItem {
         constructor(backgroundColor: Int, backgroundName: String) {
@@ -44,8 +56,7 @@ abstract class CustomizeHandler(val context: Context) {
         var accentColor = -1
     }
 
-    open fun getAccentColors(): ArrayList<PaletteItem> {
-        val accents = arrayListOf<PaletteItem>()
+    open fun populateAccentColors(accents: ArrayList<PaletteItem>) {
         accents.add(PaletteItem(context.getColor(R.color.minimal_green)))
         accents.add(PaletteItem(context.getColor(R.color.minimal_blue)))
         accents.add(PaletteItem(context.getColor(R.color.minimal_orange)))
@@ -56,17 +67,22 @@ abstract class CustomizeHandler(val context: Context) {
         accents.add(PaletteItem(context.getColor(R.color.green)))
         accents.add(PaletteItem(context.getColor(R.color.amber)))
         accents.add(PaletteItem(context.getColor(R.color.violet)))
+    }
+
+    fun getAccentColors(): ArrayList<PaletteItem> {
         return accents
     }
 
-    open fun getBackgroundColors(): ArrayList<PaletteItem> {
-        val backgrounds = arrayListOf<PaletteItem>()
+    open fun populateBackgroundColors(backgrounds: ArrayList<PaletteItem>) {
         backgrounds.add(PaletteItem(convertToColorInt("202026"), context.getString(R.string.swift_dark)))
         backgrounds.add(PaletteItem(convertToColorInt("000000"), context.getString(R.string.swift_black)))
         backgrounds.add(PaletteItem(convertToColorInt("202833"), context.getString(R.string.swift_style)))
         backgrounds.add(PaletteItem(convertToColorInt("1C3B3A"), context.getString(R.string.bg_nature)))
         backgrounds.add(PaletteItem(convertToColorInt("173145"), context.getString(R.string.bg_ocean)))
         backgrounds.add(PaletteItem(convertToColorInt("363844"), context.getString(R.string.night)))
+    }
+
+    fun getBackgroundColors(): ArrayList<PaletteItem> {
         return backgrounds
     }
 
@@ -109,9 +125,8 @@ abstract class CustomizeHandler(val context: Context) {
         return selection
     }
 
-    open fun getCustomizeOptions() : CategoryMap {
+    open fun populateCustomizeOptions(categories: CategoryMap) {
         val requiredApps = ArrayList<String>()
-        val categories = CategoryMap()
         val iconOptions = OptionsMap()
         iconOptions.add(Option(context.getString(R.string.aosp_icons), "aosp", "aosp", true))
         iconOptions.add(Option(context.getString(R.string.stock_icons), "stock", "stock", true))
@@ -159,7 +174,9 @@ abstract class CustomizeHandler(val context: Context) {
         requiredApps.add("android")
         categories.add(CustomizeCategory(context.getString(R.string.notification_tweaks), "notif_background", "white", notifBackgroundOptions, requiredApps))
         requiredApps.clear()
+    }
 
+    fun getCustomizeOptions() : CategoryMap {
         return categories
     }
 }

@@ -233,13 +233,13 @@ open class PRomInfo(context: Context) : RomInfo(context) {
                 selection["style"] = "p"
                 return selection
             }
-            override fun getCustomizeOptions() : CategoryMap {
-                val map = super.getCustomizeOptions()
-                map.remove("icons")
-                map.remove("clock")
-                map.remove("style")
-                map["notif_background"]!!.options["dark"]!!.subOptions.clear()
-                return map
+
+            override fun populateCustomizeOptions(categories: CategoryMap) {
+                super.populateCustomizeOptions(categories)
+                categories.remove("icons")
+                categories.remove("clock")
+                categories.remove("style")
+                categories["notif_background"]!!.options["dark"]!!.subOptions.clear()
             }
         }
     }

@@ -189,12 +189,11 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
 
     override fun createCustomizeHandler(): CustomizeHandler {
         return object : CustomizeHandler(context) {
-            override fun getCustomizeOptions(): CategoryMap {
-                val options = super.getCustomizeOptions()
+            override fun populateCustomizeOptions(categories: CategoryMap) {
+                super.populateCustomizeOptions(categories)
                 if (Build.VERSION.SDK_INT != Build.VERSION_CODES.O) {
-                    options.remove("style")
+                    categories.remove("style")
                 }
-                return options
             }
         }
     }

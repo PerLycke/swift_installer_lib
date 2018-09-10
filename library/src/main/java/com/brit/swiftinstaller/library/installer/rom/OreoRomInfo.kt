@@ -103,12 +103,11 @@ open class OreoRomInfo(context: Context) : RomInfo(context) {
 
     override fun createCustomizeHandler(): CustomizeHandler {
         return object : CustomizeHandler(context) {
-            override fun getCustomizeOptions(): CategoryMap {
-                val options = super.getCustomizeOptions()
-                options.remove("icons")
-                options.remove("clock")
-                options.remove("style")
-                return options
+            override fun populateCustomizeOptions(categories: CategoryMap) {
+                super.populateCustomizeOptions(categories)
+                categories.remove("icons")
+                categories.remove("clock")
+                categories.remove("style")
             }
         }
     }
