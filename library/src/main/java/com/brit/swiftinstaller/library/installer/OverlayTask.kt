@@ -180,32 +180,6 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         file.append("<color name=\"legacy_orange\">#${toHexString(palette.otherBackground)}</color>\n")
         file.append("<color name=\"legacy_control_activated\">#${ColorUtils.getAlpha(palette.backgroundColor, selection["alpha"].toInt())}</color>\n")
         file.append("<item type=\"dimen\" name=\"disabled_alpha_leanback_formwizard\">${getAlphaDimen(selection["alpha"].toInt())}</item>\n")
-        //if (useSenderNameFix(context)) {
-          //  file.append("<integer name=\"leanback_setup_alpha_activity_in_bkg_delay\">2</integer>\n")
-        //} else {
-            file.append("<integer name=\"leanback_setup_alpha_activity_in_bkg_delay\">0</integer>\n")
-        //}
-        /*if (useDarkNotifBg(context)) {
-            file.append("<color name=\"legacy_selected_highlight\">@*android:color/background_material_dark</color>\n")
-            file.append("<color name=\"legacy_light_button_pressed\">@*android:color/background_material_dark</color>\n")
-            file.append("<color name=\"legacy_pressed_highlight\">@*android:color/white</color>\n")
-            file.append("<color name=\"legacy_light_button_normal\">#cfcfcf</color>\n")
-            file.append("<color name=\"legacy_light_control_normal\">@*android:color/transparent</color>\n")
-            file.append("<color name=\"legacy_light_primary\">@*android:color/background_material_dark</color>\n")
-            file.append("<color name=\"legacy_light_primary_dark\">@*android:color/white</color>\n")
-            file.append("<color name=\"legacy_control_normal\">@*android:color/button_material_dark</color>\n")
-            file.append("<color name=\"legacy_long_pressed_highlight\">@*android:color/accent_material_dark</color>\n")
-        } else {*/
-            file.append("<color name=\"legacy_selected_highlight\">@*android:color/white</color>\n")
-            file.append("<color name=\"legacy_light_button_pressed\">#eeeeee</color>\n")
-            file.append("<color name=\"legacy_pressed_highlight\">#212121</color>\n")
-            file.append("<color name=\"legacy_light_button_normal\">#666666</color>\n")
-            file.append("<color name=\"legacy_light_control_normal\">@*android:color/white</color>\n")
-            file.append("<color name=\"legacy_light_primary\">@null</color>\n")
-            file.append("<color name=\"legacy_light_primary_dark\">#eeeeee</color>\n")
-            file.append("<color name=\"legacy_control_normal\">#ffe0e0e0</color>\n")
-            file.append("<color name=\"legacy_long_pressed_highlight\">#ff252525</color>\n")
-        //}
         file.append("</resources>")
 
         val values = File(resDir, "/values")
