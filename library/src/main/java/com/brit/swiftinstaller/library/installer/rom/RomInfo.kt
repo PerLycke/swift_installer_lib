@@ -47,7 +47,6 @@ abstract class RomInfo constructor(var context: Context) {
 
     open fun getDisabledOverlays(): ArrayList<String> {
         val disable = ArrayList<String>()
-        disable.add("com.android.emergency")
         return disable
     }
 
