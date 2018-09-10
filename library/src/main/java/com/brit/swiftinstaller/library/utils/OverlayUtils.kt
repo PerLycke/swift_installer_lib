@@ -25,7 +25,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.AssetManager
 import android.os.Environment
-import android.util.Log
 import androidx.collection.ArrayMap
 import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import java.util.*
@@ -37,8 +36,41 @@ object OverlayUtils {
     }
 
     fun getOverlayVersion(context: Context, targetPackage: String): Long {
+        val path = getOverlayVersionPath(context, targetPackage)
         return Integer.parseInt(ShellUtils.inputStreamToString(context.assets.open(
-                "overlays/$targetPackage/version")).trim().replace("\"", "")).toLong()
+                path)).trim().replace("\"", "")).toLong()
+    }
+
+    fun getOverlayVersionPath(context: Context, basePath: String): String {
+        val list = context.assets.list(basePath) ?: emptyArray()
+        if (list.contains("version")) {
+            return "$basePath/version"
+        } else if (list.contains("props")) {
+            val path = "$basePath/props"
+            val props = context.assets.list(path) ?: emptyArray()
+            var found = false
+            for (prop in props) {
+                if (getProperty(prop, "prop") != "prop") {
+                    found = true
+                    val propVal = getProperty(prop) ?: "default"
+                    val vals = context.assets.list("$path/$prop") ?: continue
+                    if (vals.contains("common")) {
+                        return getOverlayVersionPath(context, "$path/$prop/common")
+                    }
+                    for (`val` in vals) {
+                        if (`val` == propVal || `val`.startsWith(propVal)) {
+                            return getOverlayVersionPath(context, "$path/$prop/$`val`")
+                        }
+                    }
+                }
+            }
+            if (!found) {
+                if (props.contains("default")) {
+                    return getOverlayVersionPath(context, "$path/default")
+                }
+            }
+        }
+        return ""
     }
 
     fun checkOverlayVersion(context: Context, packageName: String): Boolean {
@@ -171,8 +203,6 @@ object OverlayUtils {
             if (props != null) {
                 var found = false
                 for (prop in props) {
-                    Log.d("TEST", "prop - $prop")
-                    Log.d("TEST", "value - ${getProperty(prop, "prop")}")
                     if (getProperty(prop, "prop") != "prop") {
                         found = true
                         val propVal = getProperty(prop) ?: "default"
