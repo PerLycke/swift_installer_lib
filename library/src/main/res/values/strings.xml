@@ -184,4 +184,7 @@
     <string name="new_app_notif_setting_title">Show Notification for New Apps</string>
     <string name="new_app_notif_setting_summary">When a new app is installed, show a notification if an overlay is available.</string>
     <string name="soft_reboot">Soft Reboot</string>
+    <string name="magisk_module_description">To make sure you can use our overlays on Pie along other Magisk modules, we developed our own module to systemlessly install overlays - this way, you are no longer required to disable modules to use Swift Installer on Pie!
+You can find it: </string>
+    <string name="magisk_module_link_text">HERE</string>
 </resources>

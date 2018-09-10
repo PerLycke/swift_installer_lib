@@ -25,8 +25,15 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ClickableSpan
+import android.view.View
+import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
+import com.hololo.tutorial.library.Step
+import com.hololo.tutorial.library.TutorialActivity
 import com.topjohnwu.superuser.io.SuFile
 
 open class PRomInfo(context: Context) : RomInfo(context) {
@@ -60,6 +67,24 @@ open class PRomInfo(context: Context) : RomInfo(context) {
             ShellUtils.setPermissions(644, "$appPath/$overlayPackage/$overlayPackage.apk")
             if (!useMagisk) remountRO("/system")
         }
+    }
+
+    override fun addTutorialSteps(tutorial: TutorialActivity) {
+        super.addTutorialSteps(tutorial)
+        val content = tutorial.getString(R.string.magisk_module_description)
+        val link = tutorial.getString(R.string.magisk_module_link_text)
+
+        val click = object : ClickableSpan() {
+            override fun onClick(p0: View) {
+                // TODO: link clicked for module
+            }
+        }
+        val ss = SpannableString("$content $link")
+        ss.setSpan(click, content.length + 1, content.length + 1 + link.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        tutorial.addFragment(Step.Builder().setTitle("Magisk Module")
+                .setContent(ss)
+                .setDrawable(R.drawable.ic_magisk_logo)
+                .setBackgroundColor(tutorial.getColor(R.color.background_main)).build(), TUTORIAL_PAGE_FIRST_INSTALL)
     }
 
     override fun getRequiredApps(): Array<String> {
