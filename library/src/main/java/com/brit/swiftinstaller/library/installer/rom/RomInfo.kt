@@ -117,6 +117,10 @@ abstract class RomInfo constructor(var context: Context) {
         return pm.getPackageInfo(getOverlayPackageName(packageName), 0)
     }
 
+    open fun magiskEnabled() : Boolean {
+        return false
+    }
+
     open fun onBootCompleted(context: Context) {
     }
 

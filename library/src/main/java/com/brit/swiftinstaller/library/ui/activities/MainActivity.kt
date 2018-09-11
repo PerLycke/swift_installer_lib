@@ -215,7 +215,11 @@ class MainActivity : ThemeActivity() {
         if (RomInfo.getRomInfo(this).useHotSwap()) {
             popupView.popup_menu_soft_reboot.setOnClickListener {
                 popup.dismiss()
-                rebootCommand()
+                if (getUseSoftReboot(this)) {
+                    quickRebootCommand()
+                } else {
+                    rebootCommand()
+                }
             }
         } else {
             popupView.popup_menu_soft_reboot.visibility = View.GONE

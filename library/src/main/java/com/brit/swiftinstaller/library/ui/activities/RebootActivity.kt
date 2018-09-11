@@ -27,7 +27,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.preference.PreferenceManager
 import com.brit.swiftinstaller.library.R
+import com.brit.swiftinstaller.library.utils.getUseSoftReboot
 import com.brit.swiftinstaller.library.utils.quickRebootCommand
+import com.brit.swiftinstaller.library.utils.rebootCommand
 
 class RebootActivity : ThemeActivity() {
 
@@ -47,7 +49,11 @@ class RebootActivity : ThemeActivity() {
                     dialog.setContentView(R.layout.reboot)
                     dialog.show()
                     mHandler.post {
-                        quickRebootCommand()
+                        if (getUseSoftReboot(this)) {
+                            quickRebootCommand()
+                        } else {
+                            rebootCommand()
+                        }
                     }
                 }
                 .setNegativeButton(R.string.cancel) { dialogInterface, _ ->

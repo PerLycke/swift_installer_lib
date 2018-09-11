@@ -151,7 +151,11 @@ open class PRomInfo(context: Context) : RomInfo(context) {
         return 0
     }
 
-    override fun useHotSwap(): Boolean { return !useMagisk }
+    override fun magiskEnabled(): Boolean {
+        return useMagisk && !moduleDisabled
+    }
+
+    override fun useHotSwap(): Boolean { return true }
 
     override fun onBootCompleted(context: Context) {
         if (useMagisk && !moduleDisabled) {
