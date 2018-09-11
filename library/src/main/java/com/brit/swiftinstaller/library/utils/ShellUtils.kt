@@ -312,6 +312,10 @@ private fun resultToOutput(result: Shell.Result) : CommandOutput {
 }
 
 fun rebootCommand() {
+    runCommand("reboot", true)
+}
+
+fun quickRebootCommand() {
     runCommand("am broadcast android.intent.action.ACTION_SHUTDOWN", true)
 
     Handler().postDelayed({

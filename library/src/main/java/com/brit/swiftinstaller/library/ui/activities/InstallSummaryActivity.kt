@@ -129,7 +129,11 @@ class InstallSummaryActivity : ThemeActivity() {
         rebootDialog.setContentView(R.layout.reboot)
         rebootDialog.show()
         mHandler.post {
-            rebootCommand()
+            if (RomInfo.getRomInfo(this).useHotSwap()) {
+                quickRebootCommand()
+            } else {
+                rebootCommand()
+            }
         }
     }
 
