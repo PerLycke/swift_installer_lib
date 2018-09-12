@@ -28,6 +28,7 @@ import android.content.pm.PackageManager
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ClickableSpan
+import android.util.Log
 import android.view.View
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.utils.*
@@ -44,19 +45,20 @@ open class PRomInfo(context: Context) : RomInfo(context) {
     private val moduleDisabled = SuFile(magiskPath, "disable").exists()
     private var useMagisk = false
     private val appPath: String
-        get() {
-            return if (!moduleDisabled && SuFile(magiskPath).exists()) {
-                val f = SuFile(magiskPath, systemApp)
-                if (!f.exists()) {
-                    f.mkdirs()
-                }
-                useMagisk = true
-                f.absolutePath
-            } else {
-                useMagisk = false
-                systemApp
+
+    init {
+        appPath = if (!moduleDisabled && SuFile(magiskPath).exists()) {
+            val f = SuFile(magiskPath, systemApp)
+            if (!f.exists()) {
+                f.mkdirs()
             }
+            useMagisk = true
+            f.absolutePath
+        } else {
+            useMagisk = false
+            systemApp
         }
+    }
 
     override fun installOverlay(context: Context, targetPackage: String, overlayPath: String) {
         val overlayPackage = getOverlayPackageName(targetPackage)
@@ -160,22 +162,27 @@ open class PRomInfo(context: Context) : RomInfo(context) {
     override fun onBootCompleted(context: Context) {
         if (useMagisk && !moduleDisabled) {
             val overlays = context.assets.list("overlays") ?: emptyArray()
+            remountRW("/system")
             for (packageName in overlays) {
                 val opn = getOverlayPackageName(packageName)
-                val systemPath = "$systemApp/$opn/$opn.apk"
-                val magiskPath = "$magiskPath/$systemPath"
-                if (SuFile(systemPath).exists()) {
-                    if (!SuFile(magiskPath).exists()) {
-                        SuFile(systemPath).renameTo(SuFile(magiskPath))
+                val systemFile = SuFile("$systemApp/$opn/$opn.apk")
+                val magiskFile = SuFile("$magiskPath/${systemFile.absolutePath}")
+                if (systemFile.exists()) {
+                    if (!magiskFile.exists()) {
+                        magiskFile.parentFile.mkdirs()
+                        systemFile.renameTo(magiskFile)
+                        deleteFileRoot(systemFile.parent)
                     } else {
-                        val soi = context.packageManager.getPackageArchiveInfo(systemPath, 0)
-                        val moi = context.packageManager.getPackageArchiveInfo(magiskPath, 0)
+                        val soi = context.packageManager.getPackageArchiveInfo(systemFile.absolutePath, 0)
+                        val moi = context.packageManager.getPackageArchiveInfo(magiskFile.absolutePath, 0)
                         if (soi.getVersionCode() > moi.getVersionCode()) {
-                            SuFile(systemPath).renameTo(SuFile(magiskPath))
+                            systemFile.renameTo(magiskFile)
+                            deleteFileRoot(systemFile.parent)
                         }
                     }
                 }
             }
+            remountRO("/system")
         }
     }
 }

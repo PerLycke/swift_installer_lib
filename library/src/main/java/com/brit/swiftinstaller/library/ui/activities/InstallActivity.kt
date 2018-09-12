@@ -87,9 +87,6 @@ class InstallActivity : ThemeActivity() {
                 apps.remove(it)
             }
         }
-        apps.forEach {
-            Log.d("TEST", "app - $it")
-        }
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         swift.installApps.clear()
         swift.installApps.addAll(apps)

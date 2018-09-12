@@ -56,20 +56,13 @@ object ShellUtils {
             try {
                 process = Runtime.getRuntime().exec("sh")
                 os = DataOutputStream(process!!.outputStream)
-                Log.d("TEST", "here 0")
                 os.writeBytes("su\n")
-                Log.d("TEST", "Here")
                 os.flush()
                 os.writeBytes("exit\n")
                 os.writeBytes("exit\n")
-                Log.d("TEST", "here 1")
                 os.flush()
-                Log.d("TEST", "here 3")
-                Log.d("TEST", "here 2")
                 process.waitFor()
-                Log.d("TEST", "here 3")
                 val exit = process.exitValue()
-                Log.d("TEST", "exit - $exit")
                 return exit == 0
             } catch (e: IOException) {
                 //e.printStackTrace()
@@ -147,7 +140,6 @@ object ShellUtils {
         }
         cmd.append(" -F ").append(unsigned_unaligned.absolutePath)
         var result = Shell.sh(cmd.toString()).exec()
-        Log.d("TEST", "output - ${result.err}")
 
         // Zipalign
         if (unsigned_unaligned.exists()) {

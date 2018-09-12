@@ -171,8 +171,6 @@ object OverlayUtils {
             if (props != null) {
                 var found = false
                 for (prop in props) {
-                    Log.d("TEST", "prop - $prop")
-                    Log.d("TEST", "value - ${getProperty(prop, "prop")}")
                     if (getProperty(prop, "prop") != "prop") {
                         found = true
                         val propVal = getProperty(prop) ?: "default"
