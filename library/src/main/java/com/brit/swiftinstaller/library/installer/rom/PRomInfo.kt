@@ -159,6 +159,10 @@ open class PRomInfo(context: Context) : RomInfo(context) {
 
     override fun useHotSwap(): Boolean { return true }
 
+    override fun getChangelogTag(): String {
+        return "p"
+    }
+
     override fun onBootCompleted(context: Context) {
         if (useMagisk && !moduleDisabled) {
             val overlays = context.assets.list("overlays") ?: emptyArray()

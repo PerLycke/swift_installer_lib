@@ -39,6 +39,10 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
         return false
     }
 
+    override fun getChangelogTag(): String {
+        return "samsung"
+    }
+
     override fun getDisabledOverlays(): ArrayList<String> {
         val disable = ArrayList<String>()
         disable.add("com.android.emergency")

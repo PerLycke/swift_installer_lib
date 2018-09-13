@@ -187,4 +187,5 @@
     <string name="magisk_module_description">To make sure you can use our overlays on Pie along other Magisk modules, we developed our own module to systemlessly install overlays - this way, you are no longer required to disable modules to use Swift Installer on Pie!
 You can find it: </string>
     <string name="magisk_module_link_text">HERE</string>
+    <string name="changelog">Changelog</string>
 </resources>

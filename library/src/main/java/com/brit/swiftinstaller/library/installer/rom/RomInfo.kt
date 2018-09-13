@@ -112,6 +112,7 @@ abstract class RomInfo constructor(var context: Context) {
     abstract fun installOverlay(context: Context, targetPackage: String, overlayPath: String)
     abstract fun postInstall(uninstall: Boolean, apps: ArrayList<String>, oppositeApps: ArrayList<String>?, intent: Intent?)
     abstract fun uninstallOverlay(context: Context, packageName: String)
+    abstract fun getChangelogTag(): String
 
     open fun getOverlayInfo(pm: PackageManager, packageName: String): PackageInfo {
         return pm.getPackageInfo(getOverlayPackageName(packageName), 0)
