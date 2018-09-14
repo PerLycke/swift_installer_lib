@@ -26,6 +26,8 @@ import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.content.ContextCompat
 import com.brit.swiftinstaller.library.R
@@ -59,33 +61,33 @@ abstract class RomInfo constructor(var context: Context) {
                 .setContent(tutorial.getString(R.string.tutorial_guide))
                 .setBackgroundColor(ContextCompat.getColor(tutorial, R.color.background_main))
                 .setDrawable(R.drawable.ic_tutorial_logo) // int top drawable
-                .build())
+                .build(), TUTORIAL_PAGE_MAIN)
         tutorial.addFragment(Step.Builder().setTitle(tutorial.getString(R.string.tutorial_apps_title))
                 .setContent(tutorial.getString(R.string.tutorial_apps))
                 .setBackgroundColor(ContextCompat.getColor(tutorial, R.color.background_main))
                 .setDrawable(R.drawable.ic_apps) // int top drawable
-                .build())
+                .build(), TUTORIAL_PAGE_APPS)
         tutorial.addFragment(Step.Builder().setTitle(tutorial.getString(R.string.basic_usage))
                 .setContent(tutorial.getString(R.string.tutorial_basic_usage_content))
                 .setBackgroundColor(ContextCompat.getColor(tutorial, R.color.background_main))
                 .setDrawable(R.drawable.ic_tutorial_hand) // int top drawable
-                .build())
+                .build(), TUTORIAL_PAGE_USAGE)
         tutorial.addFragment(Step.Builder().setTitle(tutorial.getString(R.string.tutorial_more_usage_title))
                 .setContent(tutorial.getString(R.string.tutorial_more_usage_info))
                 .setBackgroundColor(ContextCompat.getColor(tutorial, R.color.background_main))
                 .setDrawable(R.drawable.ic_tutorial_clicks) // int top drawable
-                .build())
+                .build(), TUTORIAL_PAGE_FIRST_INSTALL)
         tutorial.addFragment(PermissionStep.Builder().setTitle(tutorial.getString(R.string.tutorial_permission_title))
                 .setContent(tutorial.getString(R.string.tutorial_permission_content))
                 .setBackgroundColor(ContextCompat.getColor(tutorial, R.color.background_main)) // int background color
                 .setDrawable(R.drawable.ic_tutorial_permission)
                 .setPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE))
-                .build())
+                .build(), TUTORIAL_PAGE_PERMISSIONS)
         tutorial.addFragment(Step.Builder().setTitle(tutorial.getString(R.string.tutorial_customize_title))
                 .setContent(tutorial.getString(R.string.tutorial_customize_content))
                 .setBackgroundColor(ContextCompat.getColor(tutorial, R.color.background_main))
                 .setDrawable(R.drawable.ic_tutorial_customize) // int top drawable
-                .build())
+                .build(), TUTORIAL_PAGE_PERSONALIZE)
     }
 
     open fun isOverlayInstalled(targetPackage: String): Boolean {
@@ -109,9 +111,28 @@ abstract class RomInfo constructor(var context: Context) {
     abstract fun installOverlay(context: Context, targetPackage: String, overlayPath: String)
     abstract fun postInstall(uninstall: Boolean, apps: ArrayList<String>, oppositeApps: ArrayList<String>?, intent: Intent?)
     abstract fun uninstallOverlay(context: Context, packageName: String)
+    abstract fun getChangelogTag(): String
+
+    open fun getOverlayInfo(pm: PackageManager, packageName: String): PackageInfo {
+        return pm.getPackageInfo(getOverlayPackageName(packageName), 0)
+    }
+
+    open fun magiskEnabled() : Boolean {
+        return false
+    }
+
+    open fun onBootCompleted(context: Context) {
+    }
 
     @Suppress("unused")
     companion object {
+
+        const val TUTORIAL_PAGE_MAIN = 0
+        const val TUTORIAL_PAGE_APPS = 1
+        const val TUTORIAL_PAGE_USAGE = 2
+        const val TUTORIAL_PAGE_FIRST_INSTALL = 3
+        const val TUTORIAL_PAGE_PERMISSIONS = 4
+        const val TUTORIAL_PAGE_PERSONALIZE = 5
 
         @SuppressLint("StaticFieldLeak")
         private var sInfo: RomInfo? = null

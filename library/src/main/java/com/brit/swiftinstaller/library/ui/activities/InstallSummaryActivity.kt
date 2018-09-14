@@ -129,7 +129,11 @@ class InstallSummaryActivity : ThemeActivity() {
         rebootDialog.setContentView(R.layout.reboot)
         rebootDialog.show()
         mHandler.post {
-            rebootCommand()
+            if (!RomInfo.getRomInfo(this).magiskEnabled() && getUseSoftReboot(this)) {
+                quickRebootCommand()
+            } else {
+                rebootCommand()
+            }
         }
     }
 
@@ -281,7 +285,7 @@ class InstallSummaryActivity : ThemeActivity() {
                 try {
                     info = pm.getApplicationInfo(pn, PackageManager.GET_META_DATA)
                     pInfo = pm.getPackageInfo(pn, 0)
-                    oInfo = pm.getOverlayInfo(pn)
+                    oInfo = RomInfo.getRomInfo(context).getOverlayInfo(pm, pn)
                 } catch (ex: Exception) {
                 }
                 if (info != null) {

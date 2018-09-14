@@ -172,4 +172,20 @@
     <string name="help">Help</string>
     <string name="installer_version">Installer library version:</string>
     <string name="installer_source_link">https://github.com/PerLycke/swift_installer_lib</string>
+    <string name="settings_title">Settings</string>
+    <string name="soft_reboot_title">Use Soft Reboot</string>
+    <string name="soft_reboot_summary">Turn this off if you use sim pin.</string>
+    <string name="notif_new_app_title">New App Installed.</string>
+    <string name="notif_new_app_summary">%s can be theme using Swift Installer.</string>
+    <string name="notif_update_title">Theme Update Available.</string>
+    <string name="notif_update_summary">New updates available to install.</string>
+    <string name="update_notif_setting_title">Show Update Notification</string>
+    <string name="update_notif_setting_summary">Show a notification when an update is available to install.</string>
+    <string name="new_app_notif_setting_title">Show Notification for New Apps</string>
+    <string name="new_app_notif_setting_summary">When a new app is installed, show a notification if an overlay is available.</string>
+    <string name="soft_reboot">Soft Reboot</string>
+    <string name="magisk_module_description">To make sure you can use our overlays on Pie along other Magisk modules, we developed our own module to systemlessly install overlays - this way, you are no longer required to disable modules to use Swift Installer on Pie!
+You can find it: </string>
+    <string name="magisk_module_link_text">HERE</string>
+    <string name="changelog">Changelog</string>
 </resources>

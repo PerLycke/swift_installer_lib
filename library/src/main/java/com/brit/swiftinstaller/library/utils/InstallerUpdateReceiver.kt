@@ -32,6 +32,7 @@ class InstallerUpdateReceiver : BroadcastReceiver() {
         if (intent?.action != Intent.ACTION_MY_PACKAGE_REPLACED) return
         doAsync {
             OverlayUtils.checkAndHideOverlays(context)
+            UpdateChecker(context, null)
         }
         val filter = IntentFilter(Intent.ACTION_PACKAGE_ADDED)
         filter.addAction(Intent.ACTION_PACKAGE_CHANGED)

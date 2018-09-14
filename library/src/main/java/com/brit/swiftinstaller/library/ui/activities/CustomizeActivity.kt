@@ -607,7 +607,7 @@ class CustomizeActivity : ThemeActivity() {
 
             if (oldAccent != accentColor) {
                 setAccentColor(this, accentColor)
-                if (RomInfo.getRomInfo(this).useHotSwap()) {
+                if (RomInfo.getRomInfo(this).useHotSwap() && getUseSoftReboot(this)) {
                     hotSwapPrefOn()
                 } else {
                     hotSwapPrefOff()

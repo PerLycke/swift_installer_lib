@@ -35,6 +35,20 @@
         <item name="colorBackgroundFloating">#1b1b21</item>
         <item name="actionOverflowMenuStyle">@style/PopupMenuOverflow</item>
     </style>
+    <style name="AppTheme.Settings" parent="Theme.AppCompat">
+        <item name="android:windowBackground">@color/background_main</item>
+        <item name="android:colorBackground">@color/background_main</item>
+        <item name="android:colorBackgroundFloating">#1b1b21</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:checkboxStyle">@android:style/Widget.DeviceDefault.Light.CompoundButton.CheckBox</item>
+        <item name="android:colorControlHighlight">@color/ripple</item>
+        <item name="alertDialogTheme">@style/AppTheme.AlertDialog</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorBackgroundFloating">#1b1b21</item>
+        <item name="actionOverflowMenuStyle">@style/PopupMenuOverflow</item>
+    </style>
     <style name="AppTheme.Translucent" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@color/reboot_bg</item>
         <item name="android:windowIsTranslucent">true</item>

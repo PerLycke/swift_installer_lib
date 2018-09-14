@@ -38,7 +38,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
+import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.ui.applist.AppItem
+import com.brit.swiftinstaller.library.ui.changelog.ChangelogHandler
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.enableAllOverlays
 import kotlinx.android.synthetic.main.card_compatibility_info.*
@@ -58,6 +60,8 @@ class MainActivity : ThemeActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(main_toolbar)
+
+        ChangelogHandler.showChangelog(this, true)
 
         update_checker_spinner.indeterminateDrawable.setColorFilter(getAccentColor(this), PorterDuff.Mode.SRC_ATOP)
 
@@ -205,6 +209,27 @@ class MainActivity : ThemeActivity() {
                 dialog.dismiss()
             }
             dialog.show()
+        }
+        popupView.popup_menu_settings.setOnClickListener {
+            popup.dismiss()
+            startActivity(Intent(this, SettingsActivity::class.java))
+        }
+
+        if (RomInfo.getRomInfo(this).useHotSwap()) {
+            popupView.popup_menu_soft_reboot.setOnClickListener {
+                popup.dismiss()
+                if (getUseSoftReboot(this)) {
+                    quickRebootCommand()
+                } else {
+                    rebootCommand()
+                }
+            }
+        } else {
+            popupView.popup_menu_soft_reboot.visibility = View.GONE
+        }
+
+        popupView.popup_menu_changelog.setOnClickListener {
+            ChangelogHandler.showChangelog(this, false)
         }
 
         popup.showAtLocation(view, Gravity.TOP or Gravity.RIGHT, 0, 0)

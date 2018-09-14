@@ -1,0 +1,9 @@
+<changelog>
+    <release versionCode="71" versionName="v6.3">
+        <p>Pie only change</p>
+    </release>
+    <release versionCode="70" versionName="v6.2">
+        <oos-p>Some change</oos-p>
+        <installer>Another change</installer>
+    </release>
+</changelog>

@@ -50,6 +50,9 @@ const val KEY_OVERLAYS_TO_INSTALL = "overlays_to_install"
 const val KEY_OVERLAYS_TO_UNINSTALL = "overlays_to_uninstall"
 const val KEY_DARK_NOTIF_BG = "dark_notif_bg"
 const val KEY_ALPHA = "alpha"
+const val KEY_USE_SOFT_REBOOT = "use_soft_reboot"
+const val KEY_UPDATE_NOTIFICATION_ENABLED = "update_notification_enabled"
+const val KEY_NEW_APP_NOTIFICATION_ENABLED = "new_app_notification_enabled"
 
 const val KEY_HIDDEN_APPS = "hidden_apps"
 
@@ -245,6 +248,20 @@ fun addAppToUninstall(context: Context, packageName: String) {
 
 fun clearAppsToUninstall(context: Context) {
     PreferenceManager.getDefaultSharedPreferences(context).edit().putStringSet(KEY_OVERLAYS_TO_UNINSTALL, ArraySet<String>()).apply()
+}
+
+fun getUseSoftReboot(context: Context): Boolean {
+    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(KEY_USE_SOFT_REBOOT, true)
+}
+
+fun updateNotificationEnabled(context: Context): Boolean {
+    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(
+            KEY_UPDATE_NOTIFICATION_ENABLED, false)
+}
+
+fun newAppNotificationEnabled(context: Context): Boolean {
+    return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(
+            KEY_NEW_APP_NOTIFICATION_ENABLED, false)
 }
 
 fun setUserAccents(context: Context, colors: IntArray) {

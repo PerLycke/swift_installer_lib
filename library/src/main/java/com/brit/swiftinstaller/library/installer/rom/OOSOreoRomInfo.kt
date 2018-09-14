@@ -37,6 +37,10 @@ class OOSOreoRomInfo(context: Context) : OreoRomInfo(context) {
         }
     }
 
+    override fun getChangelogTag(): String {
+        return "oos-oreo"
+    }
+
     override fun getRequiredApps(): Array<String> {
         return Array(23) {
             when (it) {

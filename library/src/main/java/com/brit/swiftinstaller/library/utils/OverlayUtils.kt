@@ -44,7 +44,7 @@ object OverlayUtils {
     fun checkOverlayVersion(context: Context, packageName: String): Boolean {
         if (!RomInfo.getRomInfo(context).isOverlayInstalled(packageName)) return false
         val overlayVersion = getOverlayVersion(context, packageName)
-        val currentVersion = context.packageManager.getOverlayInfo(packageName).getVersionCode()
+        val currentVersion = RomInfo.getRomInfo(context).getOverlayInfo(context.packageManager, packageName).getVersionCode()
         return overlayVersion > currentVersion
     }
 
@@ -171,8 +171,6 @@ object OverlayUtils {
             if (props != null) {
                 var found = false
                 for (prop in props) {
-                    Log.d("TEST", "prop - $prop")
-                    Log.d("TEST", "value - ${getProperty(prop, "prop")}")
                     if (getProperty(prop, "prop") != "prop") {
                         found = true
                         val propVal = getProperty(prop) ?: "default"
