@@ -25,11 +25,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ClickableSpan
 import android.util.Log
 import android.view.View
+import androidx.browser.customtabs.CustomTabsIntent
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
@@ -78,7 +80,10 @@ open class PRomInfo(context: Context) : RomInfo(context) {
 
         val click = object : ClickableSpan() {
             override fun onClick(p0: View) {
-                // TODO: link clicked for module
+                val url = context.getString(R.string.magisk_module_link)
+                val builder = CustomTabsIntent.Builder()
+                val intent = builder.build()
+                intent.launchUrl(context, Uri.parse(url))
             }
         }
         val ss = SpannableString("$content $link")
