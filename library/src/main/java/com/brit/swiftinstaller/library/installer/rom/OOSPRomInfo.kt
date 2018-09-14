@@ -17,7 +17,7 @@ class OOSPRomInfo(context: Context) : PRomInfo(context) {
     }
 
     override fun getRequiredApps(): Array<String> {
-        return Array(22) {
+        return Array(23) {
             when (it) {
                 0 -> "android"
                 1 -> "com.android.systemui"
@@ -41,6 +41,7 @@ class OOSPRomInfo(context: Context) : PRomInfo(context) {
                 19 -> "com.google.android.gms"
                 20 -> "com.google.android.apps.nexuslauncher"
                 21 -> "com.oneplus.deskclock"
+                22 -> "com.lastpass.lpandroid"
                 else -> ""
             }
         }

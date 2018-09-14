@@ -38,7 +38,7 @@ class OOSOreoRomInfo(context: Context) : OreoRomInfo(context) {
     }
 
     override fun getRequiredApps(): Array<String> {
-        return Array(22) {
+        return Array(23) {
             when (it) {
                 0 -> "android"
                 1 -> "com.android.systemui"
@@ -62,6 +62,7 @@ class OOSOreoRomInfo(context: Context) : OreoRomInfo(context) {
                 19 -> "com.google.android.gms"
                 20 -> "com.google.android.apps.nexuslauncher"
                 21 -> "com.oneplus.deskclock"
+                22 -> "com.lastpass.lpandroid"
                 else -> ""
             }
         }
