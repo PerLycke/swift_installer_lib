@@ -32,7 +32,7 @@ class ChangelogDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = arguments?.getParcelable<ChangelogBuilder>("builder")
         val dialog = AlertDialog.Builder(activity)
-                .setTitle(R.string.app_name)
+                .setTitle(R.string.swift_app_name)
                 .setPositiveButton(android.R.string.ok) { dialog, _ ->
                     dialog.dismiss()
                 }
