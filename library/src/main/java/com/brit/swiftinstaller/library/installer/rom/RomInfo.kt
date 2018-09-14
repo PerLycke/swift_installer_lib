@@ -55,7 +55,7 @@ abstract class RomInfo constructor(var context: Context) {
     }
 
     open fun addTutorialSteps(tutorial : TutorialActivity) {
-        tutorial.addFragment(Step.Builder().setTitle(tutorial.getString(R.string.app_name))
+        tutorial.addFragment(Step.Builder().setTitle(tutorial.getString(R.string.swift_app_name))
                 .setContent(tutorial.getString(R.string.tutorial_guide))
                 .setBackgroundColor(ContextCompat.getColor(tutorial, R.color.background_main))
                 .setDrawable(R.drawable.ic_tutorial_logo) // int top drawable

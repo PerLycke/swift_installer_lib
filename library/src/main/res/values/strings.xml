@@ -21,7 +21,7 @@
   -->
 
 <resources>
-    <string name="app_name">Swift Installer</string>
+    <string name="swift_app_name">Swift Installer</string>
     <string name="aosp_icons">AOSP</string>
     <string name="apply">Apply</string>
     <string name="base_theme">Base theme</string>
