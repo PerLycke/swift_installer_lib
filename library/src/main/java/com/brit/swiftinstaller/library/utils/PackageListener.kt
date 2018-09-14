@@ -50,6 +50,14 @@ class PackageListener : BroadcastReceiver() {
 
             Intent.ACTION_PACKAGE_ADDED -> {
                 val replacing = intent.getBooleanExtra(Intent.EXTRA_REPLACING, false)
+                if (replacing) {
+                    if (RomInfo.getRomInfo(context).isOverlayInstalled(getOverlayPackageName(packageName))) {
+                        RomInfo.getRomInfo(context).disableOverlay(packageName)
+                        doAsync {
+                            UpdateChecker(context, null)
+                        }
+                    }
+                }
                 if (!replacing && OverlayUtils.hasOverlay(context, packageName) && newAppNotificationEnabled(context)) {
                     val notificationID = 102
                     val rebootIntent = Intent(context, OverlaysActivity::class.java)
@@ -73,15 +81,6 @@ class PackageListener : BroadcastReceiver() {
                             .build()
                     val notifManager = context.getSystemService(NotificationManager::class.java)
                     notifManager.notify(notificationID, notification)
-                }
-            }
-
-            Intent.ACTION_PACKAGE_REPLACED -> {
-                if (RomInfo.getRomInfo(context).isOverlayInstalled(getOverlayPackageName(packageName))) {
-                    RomInfo.getRomInfo(context).disableOverlay(packageName)
-                    doAsync {
-                        UpdateChecker(context, null)
-                    }
                 }
             }
         }
