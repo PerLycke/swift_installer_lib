@@ -34,8 +34,10 @@ class SettingsActivity : AppCompatActivity() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.preferences)
 
-            preferenceScreen.findPreference(KEY_USE_SOFT_REBOOT).isEnabled =
-                    RomInfo.getRomInfo(context!!).useHotSwap()
+            if (!RomInfo.getRomInfo(context!!).useHotSwap()) {
+                preferenceScreen.removePreference(
+                        preferenceScreen.findPreference(KEY_USE_SOFT_REBOOT))
+            }
         }
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
