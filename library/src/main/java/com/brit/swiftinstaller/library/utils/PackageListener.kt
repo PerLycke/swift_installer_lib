@@ -49,7 +49,8 @@ class PackageListener : BroadcastReceiver() {
             }
 
             Intent.ACTION_PACKAGE_ADDED -> {
-                if (OverlayUtils.hasOverlay(context, packageName) && newAppNotificationEnabled(context)) {
+                val replacing = intent.getBooleanExtra(Intent.EXTRA_REPLACING, false)
+                if (!replacing && OverlayUtils.hasOverlay(context, packageName) && newAppNotificationEnabled(context)) {
                     val notificationID = 102
                     val rebootIntent = Intent(context, OverlaysActivity::class.java)
                     val pendingIntent = PendingIntent.getActivity(
