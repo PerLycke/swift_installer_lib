@@ -43,7 +43,7 @@ class BootReceiver : BroadcastReceiver() {
             filter.addAction(Intent.ACTION_PACKAGE_REMOVED)
             filter.addAction(Intent.ACTION_PACKAGE_FULLY_REMOVED)
             filter.addDataScheme("package")
-            context.applicationContext.registerReceiver(PackageListener(), filter)
+            context.swift.registerReceiver(PackageListener(), filter)
 
             doAsync {
                 RomInfo.getRomInfo(context).onBootCompleted(context)

@@ -51,10 +51,10 @@ class PackageListener : BroadcastReceiver() {
             Intent.ACTION_PACKAGE_ADDED -> {
                 val replacing = intent.getBooleanExtra(Intent.EXTRA_REPLACING, false)
                 if (replacing) {
-                    if (RomInfo.getRomInfo(context).isOverlayInstalled(getOverlayPackageName(packageName))) {
+                    if (RomInfo.getRomInfo(context).isOverlayInstalled(packageName)) {
                         RomInfo.getRomInfo(context).disableOverlay(packageName)
                         doAsync {
-                            UpdateChecker(context, null)
+                            UpdateChecker(context, null).execute()
                         }
                     }
                 }
@@ -72,12 +72,12 @@ class PackageListener : BroadcastReceiver() {
                     val notification = Notification.Builder(context,
                             channelID)
                             .setContentTitle(context.getString(R.string.notif_new_app_title))
-                            .setStyle(Notification.BigTextStyle()
-                                    .bigText(context.getString(R.string.notif_new_app_summary,
-                                            context.packageManager.getApplicationInfo(packageName, 0).loadLabel(context.packageManager))))
+                            .setContentText(context.getString(R.string.notif_new_app_summary,
+                                    context.packageManager.getApplicationInfo(packageName, 0).loadLabel(context.packageManager)))
                             .setSmallIcon(R.drawable.notif)
                             .setChannelId(channelID)
                             .setContentIntent(pendingIntent)
+                            .setAutoCancel(true)
                             .build()
                     val notifManager = context.getSystemService(NotificationManager::class.java)
                     notifManager.notify(notificationID, notification)

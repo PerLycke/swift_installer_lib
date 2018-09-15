@@ -85,11 +85,11 @@ class UpdateChecker(context: Context, private val callback: Callback?) : AsyncTa
         val notification = Notification.Builder(context,
                 channelID)
                 .setContentTitle(context.getString(R.string.notif_update_title))
-                .setStyle(Notification.BigTextStyle()
-                        .bigText(context.getString(R.string.notif_update_summary)))
+                .setContentText(context.getString(R.string.notif_update_summary))
                 .setSmallIcon(R.drawable.notif)
                 .setChannelId(channelID)
                 .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
                 .build()
         val notifManager = context.getSystemService(NotificationManager::class.java)
         notifManager.notify(notificationID, notification)
