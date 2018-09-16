@@ -25,6 +25,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -45,7 +46,6 @@ abstract class PreviewHandler(val context: Context) {
     val settingsIcons = ArrayList<ImageView>()
     val systemUiIcons = ArrayList<ImageView>()
     init {
-
         settingsIcons.add(settingsPreview.settings_connections_icon)
         settingsIcons.add(settingsPreview.settings_sound_icon)
         settingsIcons.add(settingsPreview.settings_notifications_icon)
@@ -71,6 +71,7 @@ abstract class PreviewHandler(val context: Context) {
 
     open fun updateView(palette: MaterialPalette, selection: CustomizeSelection) {
         updateAccentColor(selection.accentColor)
+        updateBackgroundColor(palette)
         for (icon in settingsIcons) {
                 val type: String = when {
                     selection["icons"] == "aosp" -> {
@@ -170,11 +171,17 @@ abstract class PreviewHandler(val context: Context) {
 
     open fun updateBackgroundColor(palette: MaterialPalette) {
 
-        val settingsBackground = settingsPreview.settings_preview.drawable as LayerDrawable
-        val sysUiBackground = systemUiPreview.preview_sysui_bg.drawable as LayerDrawable
-
-        settingsBackground.findDrawableByLayerId(R.id.preview_background).setTint(palette.backgroundColor)
-        sysUiBackground.findDrawableByLayerId(R.id.preview_background).setTint(palette.backgroundColor)
+        if (settingsPreview.settings_preview.drawable != null) {
+            val settingsBackground = settingsPreview.settings_preview.drawable as LayerDrawable
+            settingsBackground.findDrawableByLayerId(R.id.preview_background).setTint(palette.backgroundColor)
+        }
+        if (systemUiPreview.preview_sysui_bg.drawable != null) {
+            val sysUiBackground = systemUiPreview.preview_sysui_bg.drawable as LayerDrawable
+            sysUiBackground.findDrawableByLayerId(R.id.preview_background).setTint(palette.backgroundColor)
+        }
+        Log.d("TEST", "backgroundColor - ${palette.backgroundColor}")
+        Log.d("TEST", "cardBackground - ${palette.cardBackgroud}")
         settingsPreview.searchbar_bg.setColorFilter(palette.cardBackgroud)
+        settingsPreview.searchbar_bg.invalidate()
     }
 }

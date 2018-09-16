@@ -70,7 +70,7 @@ class UpdateChecker(context: Context, private val callback: Callback?) : AsyncTa
     private fun postNotification() {
         val context = mConRef.get() ?: return
         if (!updateNotificationEnabled(context)) return
-        val notificationID = 102
+        val notificationID = 103
         val rebootIntent = Intent(context, OverlaysActivity::class.java)
         rebootIntent.putExtra("tab", OverlaysActivity.UPDATE_TAB)
         val pendingIntent = PendingIntent.getActivity(
@@ -79,7 +79,7 @@ class UpdateChecker(context: Context, private val callback: Callback?) : AsyncTa
                 rebootIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT)
 
-        val channelID = "com.brit.swiftinstaller"
+        val channelID = "app_listener"
 
         val notification = Notification.Builder(context,
                 channelID)

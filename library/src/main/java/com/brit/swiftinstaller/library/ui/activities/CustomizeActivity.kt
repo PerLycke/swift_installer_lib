@@ -48,6 +48,7 @@ import androidx.viewpager.widget.ViewPager
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.CircleDrawable
 import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
+import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
 import com.brit.swiftinstaller.library.ui.customize.Option
 import com.brit.swiftinstaller.library.ui.customize.PreviewHandler
 import com.brit.swiftinstaller.library.utils.*
@@ -68,7 +69,7 @@ class CustomizeActivity : ThemeActivity() {
     private lateinit var customizeHandler: CustomizeHandler
     private lateinit var previewHandler: PreviewHandler
 
-    private val selection = customizeHandler.getSelection()
+    private lateinit var selection: CustomizeSelection
 
     private var finish = false
     private var usePalette = false
@@ -84,7 +85,8 @@ class CustomizeActivity : ThemeActivity() {
         super.onCreate(savedInstanceState)
 
         customizeHandler = swift.romInfo.getCustomizeHandler()
-        previewHandler = customizeHandler.getPreviewHandler()
+        previewHandler = customizeHandler.previewHandler
+        selection = customizeHandler.getSelection()
 
         parentActivity = intent.getStringExtra("parentActivity")
 
@@ -92,8 +94,6 @@ class CustomizeActivity : ThemeActivity() {
         handler.post {
             setupAccentSheet()
             usePalette = useBackgroundPalette(this)
-            updateColor(true)
-            updateIcons()
             setupHexInputs()
             setupThemeOptions()
 
@@ -123,7 +123,14 @@ class CustomizeActivity : ThemeActivity() {
             }
 
             baseThemeInfo.setOnClickListener(infoListener(getString(R.string.base_theme_dialog_title), getString(R.string.base_theme_dialog_info)))
+            baseThemeInfo.setOnClickListener(infoListener(getString(R.string.base_theme_dialog_title), getString(R.string.base_theme_dialog_info)))
         }
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        updateColor(true)
+        updateIcons()
     }
 
     @SuppressLint("RestrictedApi")
@@ -246,7 +253,7 @@ class CustomizeActivity : ThemeActivity() {
                 }
                 override fun onStopTrackingTouch(p0: SeekBar?) {
                     selection[option.value] = p0!!.progress.toString()
-                    previewHandler.updateView(materialPalette, selection)
+                    updateColor(false)
                 }
                 override fun onStartTrackingTouch(p0: SeekBar?) {
                 }
@@ -258,7 +265,7 @@ class CustomizeActivity : ThemeActivity() {
                 if (b) {
                     group.setCurrentButton(compoundButton as RadioButton)
                     selection[categoryKey] = option.value
-                    previewHandler.updateView(materialPalette, selection)
+                    updateColor(false)
                 }
                 if (option.subOptions.isNotEmpty()) {
                     optionView.sub_options.setVisible(b)

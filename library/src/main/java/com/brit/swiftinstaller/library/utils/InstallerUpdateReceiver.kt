@@ -34,11 +34,5 @@ class InstallerUpdateReceiver : BroadcastReceiver() {
             OverlayUtils.checkAndHideOverlays(context)
             UpdateChecker(context, null).execute()
         }
-        val filter = IntentFilter(Intent.ACTION_PACKAGE_ADDED)
-        filter.addAction(Intent.ACTION_PACKAGE_CHANGED)
-        filter.addAction(Intent.ACTION_PACKAGE_REMOVED)
-        filter.addAction(Intent.ACTION_PACKAGE_FULLY_REMOVED)
-        filter.addDataScheme("package")
-        context.applicationContext.registerReceiver(PackageListener(), filter)
     }
 }

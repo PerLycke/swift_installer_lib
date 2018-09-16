@@ -24,6 +24,9 @@ package com.brit.swiftinstaller.library
 import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
 import com.brit.swiftinstaller.library.utils.AppExtrasHandler
+import android.content.Intent
+import android.content.IntentFilter
+import com.brit.swiftinstaller.library.utils.PackageListener
 import com.topjohnwu.superuser.BuildConfig
 import com.topjohnwu.superuser.BusyBox
 import com.topjohnwu.superuser.ContainerApp
@@ -52,6 +55,8 @@ open class SwiftApplication : ContainerApp() {
 
         cipher = createCipher()
 
+        startReceivers()
+
         Shell.Config.verboseLogging(BuildConfig.DEBUG)
         Shell.Config.setFlags(Shell.FLAG_REDIRECT_STDERR)
         BusyBox.setup(this)
@@ -63,5 +68,14 @@ open class SwiftApplication : ContainerApp() {
 
     open fun createExtrasHandler(): AppExtrasHandler {
         return AppExtrasHandler(this)
+    }
+
+    private fun startReceivers() {
+        val filter = IntentFilter(Intent.ACTION_PACKAGE_ADDED)
+        filter.addAction(Intent.ACTION_PACKAGE_CHANGED)
+        filter.addAction(Intent.ACTION_PACKAGE_REMOVED)
+        filter.addAction(Intent.ACTION_PACKAGE_FULLY_REMOVED)
+        filter.addDataScheme("package")
+        registerReceiver(PackageListener(), filter)
     }
 }

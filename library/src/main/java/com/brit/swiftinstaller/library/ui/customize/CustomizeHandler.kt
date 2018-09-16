@@ -29,7 +29,7 @@ import com.brit.swiftinstaller.library.utils.swift
 
 abstract class CustomizeHandler(val context: Context) {
 
-    private var previewHandler: PreviewHandler? = null
+    lateinit var previewHandler: PreviewHandler
     private val accents = arrayListOf<PaletteItem>()
     private val backgrounds = arrayListOf<PaletteItem>()
     private val categories = CategoryMap()
@@ -41,6 +41,7 @@ abstract class CustomizeHandler(val context: Context) {
         populateCustomizeOptions(categories)
         populateAccentColors(accents)
         populateBackgroundColors(backgrounds)
+        previewHandler = createPreviewHandler()
     }
 
     class PaletteItem {
@@ -87,16 +88,8 @@ abstract class CustomizeHandler(val context: Context) {
         return backgrounds
     }
 
-    fun getPreviewHandler(): PreviewHandler {
-        if (previewHandler == null) {
-            previewHandler = createPreviewHandler()
-        }
-        return previewHandler!!
-    }
-
     open fun createPreviewHandler() : PreviewHandler {
         return object : PreviewHandler(context) {
-
         }
     }
 
