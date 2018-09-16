@@ -114,7 +114,7 @@ abstract class RomInfo constructor(var context: Context) {
     abstract fun getChangelogTag(): String
 
     open fun getOverlayInfo(pm: PackageManager, packageName: String): PackageInfo {
-        return pm.getPackageInfo(getOverlayPackageName(packageName), 0)
+        return pm.getPackageInfo(getOverlayPackageName(packageName), PackageManager.GET_META_DATA)
     }
 
     open fun magiskEnabled() : Boolean {

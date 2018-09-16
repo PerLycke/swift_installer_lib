@@ -152,7 +152,7 @@ open class PRomInfo(context: Context) : RomInfo(context) {
 
     override fun getOverlayInfo(pm: PackageManager, packageName: String): PackageInfo {
         val overlayPackage = getOverlayPackageName(packageName)
-        return pm.getPackageArchiveInfo("$appPath/$overlayPackage/$overlayPackage.apk", 0)
+        return pm.getPackageArchiveInfo("$appPath/$overlayPackage/$overlayPackage.apk", PackageManager.GET_META_DATA)
     }
 
     override fun getCustomizeFeatures() : Int {

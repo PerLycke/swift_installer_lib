@@ -32,13 +32,29 @@ import java.util.*
 
 object OverlayUtils {
 
-    fun isSwiftOverlay(packageName: String) : Boolean {
-        return packageName.endsWith(".swiftinstaller.overlay")
-    }
-
     fun getOverlayVersion(context: Context, targetPackage: String): Long {
         return Integer.parseInt(ShellUtils.inputStreamToString(context.assets.open(
                 "overlays/$targetPackage/version")).trim().replace("\"", "")).toLong()
+    }
+
+    fun wasUpdateSuccessful(context: Context, packageName: String): Boolean {
+        if (!RomInfo.getRomInfo(context).isOverlayInstalled(packageName)) return false
+        if (!Utils.isAppInstalled(context, packageName)) return false
+        val appVersion = context.packageManager.getPackageInfo(packageName, 0).getVersionCode()
+        val overlayAppVersion = RomInfo.getRomInfo(context).getOverlayInfo(
+                context.packageManager, packageName).applicationInfo.metaData
+                .getInt("app_version_code").toLong()
+        val overlayVersion = getOverlayVersion(context, packageName)
+        val curOverlayVersion = RomInfo.getRomInfo(context).getOverlayInfo(context.packageManager, packageName).getVersionCode()
+        return (appVersion == overlayAppVersion) && (overlayVersion == curOverlayVersion)
+    }
+
+    fun checkAppVersion(context: Context, packageName: String): Boolean {
+        if (!RomInfo.getRomInfo(context).isOverlayInstalled(packageName)) return false
+        val appVersionCode = context.packageManager.getPackageInfo(packageName, 0).getVersionCode()
+        val curVersionCode = RomInfo.getRomInfo(context).getOverlayInfo(context.packageManager, packageName)
+                .applicationInfo.metaData.getInt("app_version_code")
+        return appVersionCode > curVersionCode
     }
 
     fun checkOverlayVersion(context: Context, packageName: String): Boolean {
@@ -99,17 +115,6 @@ object OverlayUtils {
             }
         }
         return versions.substring(0, versions.length - 2)
-    }
-
-    fun getInstalledOverlays(context: Context): ArrayList<String> {
-        val apps = ArrayList<String>()
-        val overlays = context.assets.list("overlays") ?: emptyArray()
-        for (app in overlays) {
-            if (RomInfo.getRomInfo(context).isOverlayInstalled(app)) {
-                apps.add(app)
-            }
-        }
-        return apps
     }
 
     fun getOverlayOptions(context: Context, packageName: String) : ArrayMap<String, Array<String>> {

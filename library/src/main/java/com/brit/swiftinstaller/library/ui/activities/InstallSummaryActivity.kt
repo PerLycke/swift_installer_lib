@@ -281,11 +281,9 @@ class InstallSummaryActivity : ThemeActivity() {
                 if (context == null) continue
                 var info: ApplicationInfo? = null
                 var pInfo: PackageInfo? = null
-                var oInfo: PackageInfo? = null
                 try {
                     info = pm.getApplicationInfo(pn, PackageManager.GET_META_DATA)
                     pInfo = pm.getPackageInfo(pn, 0)
-                    oInfo = RomInfo.getRomInfo(context).getOverlayInfo(pm, pn)
                 } catch (ex: Exception) {
                 }
                 if (info != null) {
@@ -298,7 +296,7 @@ class InstallSummaryActivity : ThemeActivity() {
                     if (errorMap.keys.contains(pn)) {
                         onProgressUpdate(Progress(FAILED_TAB, item))
                     } else if (RomInfo.getRomInfo(context).isOverlayInstalled(pn)) {
-                        if (update && oInfo!!.getVersionCode() != OverlayUtils.getOverlayVersion(context, item.packageName)) {
+                        if (update && !OverlayUtils.wasUpdateSuccessful(context, item.packageName)) {
                             errorMap[pn] = "Update Failed"
                             onProgressUpdate(Progress(FAILED_TAB, item))
                         } else {
