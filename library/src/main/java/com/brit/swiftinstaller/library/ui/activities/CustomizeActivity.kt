@@ -49,6 +49,7 @@ import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.CircleDrawable
 import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
 import com.brit.swiftinstaller.library.ui.customize.Option
+import com.brit.swiftinstaller.library.ui.customize.PreviewHandler
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.ColorUtils.checkAccentColor
 import com.brit.swiftinstaller.library.utils.ColorUtils.checkBackgroundColor
@@ -64,8 +65,8 @@ import kotlinx.android.synthetic.main.palette_view.view.*
 
 class CustomizeActivity : ThemeActivity() {
 
-    private val customizeHandler = swift.romInfo.getCustomizeHandler()
-    private val previewHandler = customizeHandler.getPreviewHandler()
+    private lateinit var customizeHandler: CustomizeHandler
+    private lateinit var previewHandler: PreviewHandler
 
     private val selection = customizeHandler.getSelection()
 
@@ -81,6 +82,9 @@ class CustomizeActivity : ThemeActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        customizeHandler = swift.romInfo.getCustomizeHandler()
+        previewHandler = customizeHandler.getPreviewHandler()
 
         parentActivity = intent.getStringExtra("parentActivity")
 

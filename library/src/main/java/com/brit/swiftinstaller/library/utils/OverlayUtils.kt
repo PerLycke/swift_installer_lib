@@ -31,8 +31,12 @@ import java.util.*
 object OverlayUtils {
 
     fun getOverlayVersion(context: Context, targetPackage: String): Long {
-        return Integer.parseInt(ShellUtils.inputStreamToString(context.assets.open(
-                "overlays/$targetPackage/version")).trim().replace("\"", "")).toLong()
+        return try {
+            Integer.parseInt(ShellUtils.inputStreamToString(context.assets.open(
+                    "overlays/$targetPackage/version")).trim().replace("\"", "")).toLong()
+        } catch (e: Exception) {
+            return 0
+        }
     }
 
     fun wasUpdateSuccessful(context: Context, packageName: String): Boolean {

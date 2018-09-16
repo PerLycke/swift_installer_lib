@@ -25,6 +25,7 @@ import android.content.Context
 import android.preference.PreferenceManager
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.utils.ColorUtils.convertToColorInt
+import com.brit.swiftinstaller.library.utils.swift
 
 abstract class CustomizeHandler(val context: Context) {
 
@@ -122,6 +123,8 @@ abstract class CustomizeHandler(val context: Context) {
                 }
             }
         }
+        selection.accentColor = context.swift.romInfo.getDefaultAccent()
+        selection.backgroundColor = convertToColorInt("202026")
         return selection
     }
 

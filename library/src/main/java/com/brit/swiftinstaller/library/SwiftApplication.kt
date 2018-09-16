@@ -23,6 +23,7 @@ package com.brit.swiftinstaller.library
 
 import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
+import com.brit.swiftinstaller.library.utils.AppExtrasHandler
 import com.topjohnwu.superuser.BuildConfig
 import com.topjohnwu.superuser.BusyBox
 import com.topjohnwu.superuser.ContainerApp
@@ -32,6 +33,7 @@ import javax.crypto.Cipher
 open class SwiftApplication : ContainerApp() {
 
     lateinit var romInfo: RomInfo
+    lateinit var extrasHandler: AppExtrasHandler
 
     val selection: CustomizeSelection
         get() = romInfo.getCustomizeHandler().getSelection()
@@ -45,6 +47,8 @@ open class SwiftApplication : ContainerApp() {
         super.onCreate()
 
         romInfo = RomInfo.createRomInfo(this)
+        extrasHandler = createExtrasHandler()
+        extrasHandler.initialize()
 
         cipher = createCipher()
 
@@ -55,5 +59,9 @@ open class SwiftApplication : ContainerApp() {
 
     open fun createCipher() : Cipher? {
         return null
+    }
+
+    open fun createExtrasHandler(): AppExtrasHandler {
+        return AppExtrasHandler(this)
     }
 }

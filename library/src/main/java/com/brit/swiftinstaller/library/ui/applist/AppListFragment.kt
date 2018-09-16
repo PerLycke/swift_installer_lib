@@ -35,6 +35,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.checkVersionCompatible
@@ -49,6 +50,8 @@ class AppListFragment : Fragment() {
     var mVisible: ArrayList<Int> = ArrayList()
 
     var requiredApps: Array<String> = emptyArray()
+
+    lateinit var appExtrasHandler: AppExtrasHandler
 
     private val mChecked = SparseBooleanArray()
 
@@ -71,6 +74,7 @@ class AppListFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        appExtrasHandler = context!!.swift.extrasHandler
         val view = inflater.inflate(R.layout.activity_app_list, container, false)
         if (arguments != null) {
             mSummary = arguments!!.getBoolean("summary", false)
@@ -300,9 +304,12 @@ class AppListFragment : Fragment() {
                     if (hasVersions) {
                         alertIcon.visibility = View.VISIBLE
                     }
-                    if (appName.text.contains("Gboard")) {
+                    if (appExtrasHandler.appExtras.containsKey(item.packageName)) {
                         downloadIcon.visibility = View.VISIBLE
                         downloadIcon.setColorFilter(context!!.swift.selection.accentColor)
+                        downloadIcon.setOnClickListener {
+                            appExtrasHandler.appExtras[item.packageName]?.onInstall(activity!! as AppCompatActivity)
+                        }
                     }
                     if (appName.text.contains("Samsung Music") || appName.text.contains("Voice Recorder")) {
                         blockedPackagesAlert.visibility = View.VISIBLE

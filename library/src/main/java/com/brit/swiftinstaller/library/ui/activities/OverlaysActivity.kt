@@ -26,10 +26,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
-import android.graphics.Bitmap
 import android.graphics.PorterDuff
 import android.os.Bundle
-import android.os.Environment
 import android.os.Handler
 import android.view.MenuItem
 import android.view.View
@@ -43,7 +41,6 @@ import com.brit.swiftinstaller.library.ui.applist.AppListFragment
 import com.brit.swiftinstaller.library.ui.applist.AppsTabPagerAdapter
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getAvailableOverlayVersions
-import com.brit.swiftinstaller.library.utils.Utils.createImage
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_overlays.*
@@ -54,10 +51,6 @@ import kotlinx.android.synthetic.main.toolbar_overlays.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
 
 class OverlaysActivity : ThemeActivity() {
 
@@ -487,47 +480,6 @@ class OverlaysActivity : ThemeActivity() {
 
     fun overlaysBackClick(@Suppress("UNUSED_PARAMETER") view: View) {
         onBackPressed()
-    }
-
-    @Suppress("UNUSED_PARAMETER")
-    fun gboardInfo(view: View) {
-        val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                .setTitle(R.string.gboard_dialog_title)
-                .setMessage(R.string.gboard_bg_info)
-                .setPositiveButton(R.string.save) { dialogInterface, _ ->
-                    val bitmap = createImage(512,512, swift.selection.backgroundColor)
-                    val downloads = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                    val image = File(downloads, "swift_bg.png")
-                    var success = false
-                    val outStream: FileOutputStream
-                    try {
-                        outStream = FileOutputStream(image)
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream)
-                        outStream.flush()
-                        outStream.close()
-                        success = true
-                    } catch (e: FileNotFoundException) {
-                        e.printStackTrace()
-                    } catch (e: IOException) {
-                        e.printStackTrace()
-                    }
-
-                    if (success) {
-                        Toast.makeText(applicationContext, R.string.saved,
-                                Toast.LENGTH_LONG).show()
-                    } else {
-                        Toast.makeText(applicationContext,
-                                R.string.save_error, Toast.LENGTH_LONG).show()
-                    }
-
-                    dialogInterface.dismiss()
-                }
-                .setNegativeButton(R.string.cancel) { dialogInterface, _ ->
-                    dialogInterface.dismiss()
-                }
-        themeDialog()
-        val dialog = builder.create()
-        dialog.show()
     }
 
     @Suppress("UNUSED_PARAMETER")
