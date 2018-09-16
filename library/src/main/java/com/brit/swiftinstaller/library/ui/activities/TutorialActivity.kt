@@ -25,7 +25,6 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -36,7 +35,6 @@ import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.utils.OverlayUtils
 import com.brit.swiftinstaller.library.utils.ShellUtils
-import com.brit.swiftinstaller.library.utils.Utils
 import com.hololo.tutorial.library.TutorialActivity
 import kotlinx.android.synthetic.main.no_root.view.*
 import org.jetbrains.anko.doAsync
@@ -48,14 +46,17 @@ open class TutorialActivity : TutorialActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (!Utils.isSamsungOreo()) {
-            notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-            createNotificationChannel(
-                    "com.brit.swiftinstaller",
-                    "Swift overlays enabling",
-                    "The notification notifies you when overlays are being enabled on boot")
-        }
+        createNotificationChannel(
+                "boot_enabled",
+                "Swift overlays enabling",
+                "The notification notifies you when overlays are being enabled on boot")
+
+        createNotificationChannel(
+                "app_listener",
+                "Listen for new and update overlays",
+                "Notifies when a new overlay is available to be installer, or an update is available")
 
         if (!resources.getBoolean(R.bool.allow_unsupported_systems)) {
             val samsung = packageManager.getApplicationInfo(packageName,

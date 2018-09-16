@@ -60,7 +60,7 @@ class EnableOverlaysActivity : Activity() {
                 PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-        val channelID = "com.brit.swiftinstaller"
+        val channelID = "boot_enabled"
 
         val notification = Notification.Builder(this,
                 channelID)

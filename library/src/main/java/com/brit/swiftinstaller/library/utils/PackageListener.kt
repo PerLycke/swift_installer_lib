@@ -67,9 +67,9 @@ class PackageListener : BroadcastReceiver() {
                             rebootIntent,
                             PendingIntent.FLAG_UPDATE_CURRENT)
 
-                    val channelID = "com.brit.swiftinstaller"
+                    val channelID = "app_listener"
 
-                    val notification = Notification.Builder(context,
+                    val notification = Notification.Builder(context.applicationContext,
                             channelID)
                             .setContentTitle(context.getString(R.string.notif_new_app_title))
                             .setContentText(context.getString(R.string.notif_new_app_summary,
@@ -79,7 +79,7 @@ class PackageListener : BroadcastReceiver() {
                             .setContentIntent(pendingIntent)
                             .setAutoCancel(true)
                             .build()
-                    val notifManager = context.getSystemService(NotificationManager::class.java)
+                    val notifManager = context.applicationContext.getSystemService(NotificationManager::class.java)
                     notifManager.notify(notificationID, notification)
                 }
             }
