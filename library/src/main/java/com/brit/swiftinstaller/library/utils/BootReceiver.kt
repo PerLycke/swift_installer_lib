@@ -38,13 +38,6 @@ class BootReceiver : BroadcastReceiver() {
             enable.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context!!.applicationContext.startActivity(enable)
 
-            val filter = IntentFilter(Intent.ACTION_PACKAGE_ADDED)
-            filter.addAction(Intent.ACTION_PACKAGE_CHANGED)
-            filter.addAction(Intent.ACTION_PACKAGE_REMOVED)
-            filter.addAction(Intent.ACTION_PACKAGE_FULLY_REMOVED)
-            filter.addDataScheme("package")
-            context.swift.registerReceiver(PackageListener(), filter)
-
             doAsync {
                 RomInfo.getRomInfo(context).onBootCompleted(context)
             }
