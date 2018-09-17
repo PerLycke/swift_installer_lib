@@ -85,7 +85,7 @@ class CustomizeActivity : ThemeActivity() {
         super.onCreate(savedInstanceState)
 
         customizeHandler = swift.romInfo.getCustomizeHandler()
-        previewHandler = customizeHandler.previewHandler
+        previewHandler = customizeHandler.createPreviewHandler(this)
         selection = customizeHandler.getSelection()
 
         parentActivity = intent.getStringExtra("parentActivity")
@@ -124,13 +124,9 @@ class CustomizeActivity : ThemeActivity() {
 
             baseThemeInfo.setOnClickListener(infoListener(getString(R.string.base_theme_dialog_title), getString(R.string.base_theme_dialog_info)))
             baseThemeInfo.setOnClickListener(infoListener(getString(R.string.base_theme_dialog_title), getString(R.string.base_theme_dialog_info)))
-        }
-    }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        updateColor(true)
-        updateIcons()
+            updateColor(true)
+        }
     }
 
     @SuppressLint("RestrictedApi")
@@ -508,10 +504,6 @@ class CustomizeActivity : ThemeActivity() {
     private fun setupAccentSheet() {
         accent_palette.adapter = PaletteAdapter(customizeHandler.getAccentColors(), true)
         background_palette.adapter = PaletteAdapter(customizeHandler.getBackgroundColors(), false)
-    }
-
-    private fun updateIcons() {
-        previewHandler.updateView(materialPalette, selection)
     }
 
     fun updateColor(updateHex: Boolean) {

@@ -70,7 +70,6 @@
             android:layout_marginTop="3dp"
             android:background="@drawable/round_outline"
             android:scaleType="centerCrop"
-            android:src="@drawable/wallpaper_big"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/preview_sysui_bg"

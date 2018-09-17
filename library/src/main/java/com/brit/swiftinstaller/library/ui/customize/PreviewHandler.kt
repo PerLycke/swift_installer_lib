@@ -25,7 +25,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
-import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -38,29 +38,32 @@ import kotlinx.android.synthetic.main.customize_preview_sysui.view.*
 
 abstract class PreviewHandler(val context: Context) {
 
-    private val settingsPreview: ViewGroup =
-            View.inflate(context, R.layout.customize_preview_settings, null) as ViewGroup
-    private val systemUiPreview: ViewGroup =
-            View.inflate(context, R.layout.customize_preview_sysui, null) as ViewGroup
+    private lateinit var settingsPreview: ViewGroup
+    private lateinit var systemUiPreview: ViewGroup
 
     val settingsIcons = ArrayList<ImageView>()
     val systemUiIcons = ArrayList<ImageView>()
-    init {
-        settingsIcons.add(settingsPreview.settings_connections_icon)
-        settingsIcons.add(settingsPreview.settings_sound_icon)
-        settingsIcons.add(settingsPreview.settings_notifications_icon)
-        systemUiIcons.add(systemUiPreview.systemui_wifi_icon)
-        systemUiIcons.add(systemUiPreview.systemui_airplane_icon)
-        systemUiIcons.add(systemUiPreview.systemui_bluetooth_icon)
-        systemUiIcons.add(systemUiPreview.systemui_flashlight_icon)
-        systemUiIcons.add(systemUiPreview.systemui_sound_icon)
-        systemUiIcons.add(systemUiPreview.systemui_rotation_icon)
-    }
 
     open fun getPage(container: ViewGroup, position: Int) : View {
         return if (position == 0) {
+            settingsPreview = LayoutInflater.from(context).inflate(R.layout.customize_preview_settings, container, false) as ViewGroup
+
+            settingsIcons.add(settingsPreview.settings_connections_icon)
+            settingsIcons.add(settingsPreview.settings_sound_icon)
+            settingsIcons.add(settingsPreview.settings_notifications_icon)
+
             settingsPreview
         } else {
+            systemUiPreview = LayoutInflater.from(context).inflate(R.layout.customize_preview_sysui, container, false) as ViewGroup
+            systemUiPreview.preview_wallpaper.clipToOutline = true
+
+            systemUiIcons.add(systemUiPreview.systemui_wifi_icon)
+            systemUiIcons.add(systemUiPreview.systemui_airplane_icon)
+            systemUiIcons.add(systemUiPreview.systemui_bluetooth_icon)
+            systemUiIcons.add(systemUiPreview.systemui_flashlight_icon)
+            systemUiIcons.add(systemUiPreview.systemui_sound_icon)
+            systemUiIcons.add(systemUiPreview.systemui_rotation_icon)
+
             systemUiPreview
         }
     }
@@ -100,17 +103,18 @@ abstract class PreviewHandler(val context: Context) {
         }
 
         for (icon in systemUiIcons) {
-                val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_${selection["icons"]}}"
-                val id = context.resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName", null, null)
-                if (id > 0) {
-                    icon.setImageDrawable(context.getDrawable(id))
-                }
+            val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_${selection["icons"]}"
+            val id = context.resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName", null, null)
+            if (id > 0) {
+                icon.setImageDrawable(context.getDrawable(id))
+            }
+            icon.setColorFilter(selection.accentColor)
         }
 
-        val qsAlpha = (selection["qsAlpha"])
+        val qsAlpha = selection.getInt("qsAlpha")
         systemUiPreview.preview_wallpaper.setColorFilter(
                 ColorUtils.addAlphaColor(palette.backgroundColor,
-                        Integer.parseInt(qsAlpha)), PorterDuff.Mode.SRC_OVER)
+                        qsAlpha), PorterDuff.Mode.SRC_OVER)
 
 
         if (selection.containsKey("clock")) {
@@ -173,15 +177,14 @@ abstract class PreviewHandler(val context: Context) {
 
         if (settingsPreview.settings_preview.drawable != null) {
             val settingsBackground = settingsPreview.settings_preview.drawable as LayerDrawable
-            settingsBackground.findDrawableByLayerId(R.id.preview_background).setTint(palette.backgroundColor)
+            settingsBackground.findDrawableByLayerId(R.id.preview_background)
+                    .setTint(palette.backgroundColor)
         }
         if (systemUiPreview.preview_sysui_bg.drawable != null) {
-            val sysUiBackground = systemUiPreview.preview_sysui_bg.drawable as LayerDrawable
-            sysUiBackground.findDrawableByLayerId(R.id.preview_background).setTint(palette.backgroundColor)
+            val systemUiBackground = systemUiPreview.preview_sysui_bg.drawable as LayerDrawable
+            systemUiBackground.findDrawableByLayerId(R.id.preview_background)
+                    .setTint(palette.backgroundColor)
         }
-        Log.d("TEST", "backgroundColor - ${palette.backgroundColor}")
-        Log.d("TEST", "cardBackground - ${palette.cardBackgroud}")
         settingsPreview.searchbar_bg.setColorFilter(palette.cardBackgroud)
-        settingsPreview.searchbar_bg.invalidate()
     }
 }

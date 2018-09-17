@@ -202,7 +202,7 @@ open class PRomInfo(context: Context) : RomInfo(context) {
 
     override fun createCustomizeHandler(): CustomizeHandler {
         return object : CustomizeHandler(context) {
-            override fun createPreviewHandler() : PreviewHandler {
+            override fun createPreviewHandler(context: Context) : PreviewHandler {
                 return object : PreviewHandler(context) {
                     override fun updateView(palette: MaterialPalette, selection: CustomizeSelection) {
                         super.updateView(palette, selection)

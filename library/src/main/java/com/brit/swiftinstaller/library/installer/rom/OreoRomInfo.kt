@@ -25,6 +25,7 @@ import android.content.Context
 import android.content.Intent
 import com.brit.swiftinstaller.library.ui.customize.CategoryMap
 import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
+import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
 import com.brit.swiftinstaller.library.utils.ShellUtils
 import com.brit.swiftinstaller.library.utils.runCommand
@@ -108,6 +109,12 @@ open class OreoRomInfo(context: Context) : RomInfo(context) {
                 categories.remove("icons")
                 categories.remove("clock")
                 categories.remove("style")
+            }
+
+            override fun getDefaultSelection(): CustomizeSelection {
+                val selection = super.getDefaultSelection()
+                selection["icons"] = "aosp"
+                return selection
             }
         }
     }

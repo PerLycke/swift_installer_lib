@@ -29,7 +29,6 @@ import com.brit.swiftinstaller.library.utils.swift
 
 abstract class CustomizeHandler(val context: Context) {
 
-    lateinit var previewHandler: PreviewHandler
     private val accents = arrayListOf<PaletteItem>()
     private val backgrounds = arrayListOf<PaletteItem>()
     private val categories = CategoryMap()
@@ -41,7 +40,6 @@ abstract class CustomizeHandler(val context: Context) {
         populateCustomizeOptions(categories)
         populateAccentColors(accents)
         populateBackgroundColors(backgrounds)
-        previewHandler = createPreviewHandler()
     }
 
     class PaletteItem {
@@ -88,7 +86,7 @@ abstract class CustomizeHandler(val context: Context) {
         return backgrounds
     }
 
-    open fun createPreviewHandler() : PreviewHandler {
+    open fun createPreviewHandler(context: Context) : PreviewHandler {
         return object : PreviewHandler(context) {
         }
     }
@@ -105,17 +103,12 @@ abstract class CustomizeHandler(val context: Context) {
 
     open fun getDefaultSelection(): CustomizeSelection {
         val selection = CustomizeSelection()
-        for (option in getCustomizeOptions()) {
-            selection[option.key] = option.default
-            for (opt in option.options) {
-                if (opt.subOptions.isNotEmpty()) {
-                    selection[opt.subOptionKey] = opt.subOptionDefault
-                }
-                if (opt.isSliderOption) {
-                    selection[opt.value] = (opt as SliderOption).current.toString()
-                }
-            }
-        }
+        selection["icons"] = "stock"
+        selection["clock"] = "right"
+        selection["style"] = "default"
+        selection["qsAlpha"] = "0"
+        selection["shadow_fix"] = "default"
+        selection["notif_background"] = "white"
         selection.accentColor = context.swift.romInfo.getDefaultAccent()
         selection.backgroundColor = convertToColorInt("202026")
         return selection
@@ -149,7 +142,7 @@ abstract class CustomizeHandler(val context: Context) {
         notifOptions.add(Option(context.getString(R.string.default_style), "default"))
         notifOptions.add(Option(context.getString(R.string.android_p_rounded_style), "p"))
         val trans = SliderOption(context.getString(R.string.qs_transparency), "qsAlpha")
-        trans.current = 0
+        trans.current = 100
         notifOptions.add(trans)
         notifOptions["p"]!!.infoDialogTitle = context.getString(R.string.rounded_dialog_title)
         notifOptions["p"]!!.infoDialogText = context.getString(R.string.rounded_dialog_info)

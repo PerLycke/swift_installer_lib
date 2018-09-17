@@ -21,8 +21,10 @@
 
 package com.brit.swiftinstaller.library.ui.customize
 
+import android.util.Log
 import androidx.collection.ArrayMap
 import org.json.JSONObject
+import java.lang.NumberFormatException
 
 class CustomizeSelection : ArrayMap<String, String>() {
 
@@ -44,7 +46,21 @@ class CustomizeSelection : ArrayMap<String, String>() {
 
     override fun get(key: String?): String {
         val s =  super.get(key)
+        Log.d("TEST", "selection - $key : $s")
         return if (s.isNullOrEmpty()) { "" } else { s!! }
+    }
+
+    fun getInt(key: String): Int {
+        val s = super.get(key)
+        if (s.isNullOrEmpty()) {
+            return 0
+        } else {
+            try {
+                return s!!.toInt()
+            } catch (e: NumberFormatException) {
+                return 0
+            }
+        }
     }
 
     companion object {
