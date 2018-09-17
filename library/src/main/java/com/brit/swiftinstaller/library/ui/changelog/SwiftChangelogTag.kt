@@ -9,7 +9,7 @@ class SwiftChangelogTag(val tag: String, private val prefix: String): IChangelog
     }
 
     override fun formatChangelogRow(context: Context, changeText: String): String {
-        return if (tag == "installer") {
+        return if (prefix.isEmpty()) {
             changeText
         } else {
             "<font color=\"#fafafa\"><b>$prefix: </b></font>$changeText"
