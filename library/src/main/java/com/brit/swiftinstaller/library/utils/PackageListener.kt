@@ -21,17 +21,23 @@
 
 package com.brit.swiftinstaller.library.utils
 
+import android.app.Notification
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.BuildConfig
+import com.brit.swiftinstaller.library.R
+import com.brit.swiftinstaller.library.ui.activities.OverlaysActivity
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
+import org.jetbrains.anko.doAsync
 
 class PackageListener : BroadcastReceiver() {
 
-    private val TAG = PackageListener::class.simpleName
+    private val tag = PackageListener::class.simpleName
 
     override fun onReceive(context: Context, intent: Intent) {
         val packageName = intent.data?.schemeSpecificPart ?: ""
@@ -43,21 +49,45 @@ class PackageListener : BroadcastReceiver() {
             }
 
             Intent.ACTION_PACKAGE_ADDED -> {
-                if (OverlayUtils.hasOverlay(context, packageName)) {
-                    // show notification that newly installed app can be themed
+                val replacing = intent.getBooleanExtra(Intent.EXTRA_REPLACING, false)
+                if (replacing) {
+                    if (RomInfo.getRomInfo(context).isOverlayInstalled(packageName)) {
+                        RomInfo.getRomInfo(context).disableOverlay(packageName)
+                        doAsync {
+                            UpdateChecker(context, null).execute()
+                        }
+                    }
                 }
-            }
+                if (!replacing && OverlayUtils.hasOverlay(context, packageName) && newAppNotificationEnabled(context)) {
+                    val notificationID = 102
+                    val rebootIntent = Intent(context, OverlaysActivity::class.java)
+                    val pendingIntent = PendingIntent.getActivity(
+                            context.applicationContext,
+                            0,
+                            rebootIntent,
+                            PendingIntent.FLAG_UPDATE_CURRENT)
 
-            Intent.ACTION_PACKAGE_REPLACED -> {
-                if (RomInfo.getRomInfo(context).isOverlayInstalled(getOverlayPackageName(packageName))) {
-                    RomInfo.getRomInfo(context).disableOverlay(packageName)
+                    val channelID = "app_listener"
+
+                    val notification = Notification.Builder(context.applicationContext,
+                            channelID)
+                            .setContentTitle(context.getString(R.string.notif_new_app_title))
+                            .setContentText(context.getString(R.string.notif_new_app_summary,
+                                    context.packageManager.getApplicationInfo(packageName, 0).loadLabel(context.packageManager)))
+                            .setSmallIcon(R.drawable.notif)
+                            .setChannelId(channelID)
+                            .setContentIntent(pendingIntent)
+                            .setAutoCancel(true)
+                            .build()
+                    val notifManager = context.applicationContext.getSystemService(NotificationManager::class.java)
+                    notifManager.notify(notificationID, notification)
                 }
             }
         }
         if (BuildConfig.DEBUG) {
-            Log.d(TAG, "action - ${intent.action}")
-            Log.d(TAG, "extra replacing - ${intent.getBooleanExtra(Intent.EXTRA_REPLACING, false)}")
-            Log.d(TAG, "package - ${intent.data?.schemeSpecificPart}")
+            Log.d(tag, "action - ${intent.action}")
+            Log.d(tag, "extra replacing - ${intent.getBooleanExtra(Intent.EXTRA_REPLACING, false)}")
+            Log.d(tag, "package - ${intent.data?.schemeSpecificPart}")
         }
     }
 

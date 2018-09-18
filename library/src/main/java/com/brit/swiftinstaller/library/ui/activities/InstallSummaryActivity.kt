@@ -129,7 +129,11 @@ class InstallSummaryActivity : ThemeActivity() {
         rebootDialog.setContentView(R.layout.reboot)
         rebootDialog.show()
         mHandler.post {
-            rebootCommand()
+            if (!RomInfo.getRomInfo(this).magiskEnabled() && getUseSoftReboot(this)) {
+                quickRebootCommand()
+            } else {
+                rebootCommand()
+            }
         }
     }
 
@@ -277,11 +281,9 @@ class InstallSummaryActivity : ThemeActivity() {
                 if (context == null) continue
                 var info: ApplicationInfo? = null
                 var pInfo: PackageInfo? = null
-                var oInfo: PackageInfo? = null
                 try {
                     info = pm.getApplicationInfo(pn, PackageManager.GET_META_DATA)
                     pInfo = pm.getPackageInfo(pn, 0)
-                    oInfo = pm.getOverlayInfo(pn)
                 } catch (ex: Exception) {
                 }
                 if (info != null) {
@@ -294,7 +296,7 @@ class InstallSummaryActivity : ThemeActivity() {
                     if (errorMap.keys.contains(pn)) {
                         onProgressUpdate(Progress(FAILED_TAB, item))
                     } else if (RomInfo.getRomInfo(context).isOverlayInstalled(pn)) {
-                        if (update && oInfo!!.getVersionCode() != OverlayUtils.getOverlayVersion(context, item.packageName)) {
+                        if (update && !OverlayUtils.wasUpdateSuccessful(context, item.packageName)) {
                             errorMap[pn] = "Update Failed"
                             onProgressUpdate(Progress(FAILED_TAB, item))
                         } else {

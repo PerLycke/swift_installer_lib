@@ -16,6 +16,10 @@ class OOSPRomInfo(context: Context) : PRomInfo(context) {
         }
     }
 
+    override fun getChangelogTag(): String {
+        return "oos-p"
+    }
+
     override fun getRequiredApps(): Array<String> {
         return Array(25) {
             when (it) {

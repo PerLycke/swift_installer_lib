@@ -31,7 +31,6 @@ import android.graphics.Paint
 import android.os.Build
 import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.ui.applist.AppItem
-import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
 
 object Utils {
 
@@ -97,15 +96,6 @@ object Utils {
     fun isSamsungOreo(): Boolean {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
                 getProperty("ro.config.knox", "def") != "def"
-    }
-
-    fun checkAppVersion(context: Context, packageName: String): Boolean {
-        if (!isAppInstalled(context, getOverlayPackageName(packageName))) return false
-        val appVersionCode = context.packageManager.getPackageInfo(packageName, 0).getVersionCode()
-        val curVersionCode = context.packageManager.getApplicationInfo(
-                getOverlayPackageName(packageName),
-                PackageManager.GET_META_DATA).metaData.getInt("app_version_code")
-        return appVersionCode > curVersionCode
     }
 
     fun createImage(width:Int, height:Int, color:Int):Bitmap {

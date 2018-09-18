@@ -26,7 +26,10 @@ import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AlertDialog
 import com.brit.swiftinstaller.library.R
+import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.utils.ShellUtils
+import com.brit.swiftinstaller.library.utils.getUseSoftReboot
+import com.brit.swiftinstaller.library.utils.quickRebootCommand
 import com.brit.swiftinstaller.library.utils.rebootCommand
 
 class UninstallFinishedActivity : ThemeActivity() {
@@ -52,7 +55,11 @@ class UninstallFinishedActivity : ThemeActivity() {
                 dialog.setContentView(R.layout.reboot)
                 dialog.show()
                 mHandler.post {
-                    rebootCommand()
+                    if (!RomInfo.getRomInfo(this).magiskEnabled() && getUseSoftReboot(this)) {
+                        quickRebootCommand()
+                    } else {
+                        rebootCommand()
+                    }
                 }
             }
             builder.setNegativeButton("Reboot Later") { _, _ ->
