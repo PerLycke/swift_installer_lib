@@ -27,6 +27,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
+import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.Gravity
@@ -199,6 +200,10 @@ class MainActivity : ThemeActivity() {
             popup.dismiss()
 
             val dialogView = View.inflate(this, R.layout.dialog_help, null)
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+                dialogView.magisk_link.visibility= View.GONE
+                dialogView.rescue_pie.visibility= View.GONE
+            }
             val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
             builder.setView(dialogView)
             themeDialog()

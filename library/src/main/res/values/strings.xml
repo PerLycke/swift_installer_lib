@@ -188,4 +188,6 @@
 You can find it: </string>
     <string name="magisk_module_link_text">HERE</string>
     <string name="changelog">Changelog</string>
+    <string name="link_magisk">Magisk Module For Pie: https://goo.gl/6NHTHd</string>
+    <string name="link_rescue_pie">TWRP Flashable Rescue Zip: https://goo.gl/NgQxe3</string>
 </resources>
