@@ -33,8 +33,16 @@ import javax.crypto.Cipher
 
 open class SwiftApplication : ContainerApp() {
 
-    val installApps = arrayListOf<String>()
-    val errorMap = HashMap<String, String>()
+    val installApps: ArrayList<String>
+        get() = SwiftApplication.staticInstallApps
+
+    val errorMap: HashMap<String, String>
+        get() = SwiftApplication.staticErrorMap
+
+    companion object {
+        @JvmStatic val staticInstallApps = arrayListOf<String>()
+        @JvmStatic val staticErrorMap = HashMap<String, String>()
+    }
 
     var cipher: Cipher? = null
 
