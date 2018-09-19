@@ -320,10 +320,6 @@ class OverlaysActivity : ThemeActivity() {
         startActivity(intent)
     }
 
-    interface Callback {
-        fun updateApps(tab: Int, item: AppItem)
-    }
-
     private fun getCheckedItems(index: Int): ArrayList<AppItem> {
         return mPagerAdapter!!.getCheckedItems(index)
     }
