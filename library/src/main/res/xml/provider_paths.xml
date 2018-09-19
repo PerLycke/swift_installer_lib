@@ -22,4 +22,5 @@
 
 <paths>
     <external-path name="external_files" path=".swift/overlays/compiled"/>
+    <external-path name="extras" path=".swift/extras" />
 </paths>

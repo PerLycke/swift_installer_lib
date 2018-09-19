@@ -121,6 +121,9 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
             applyAccent()
             applyBackground()
         }
+        if (File(resDir, "version").exists()) {
+            deleteFileShell("$resDir/version")
+        }
         generateManifest(overlayDir.absolutePath, packageName, packageInfo.versionName,
                 packageInfo.getVersionCode(), OverlayUtils.getOverlayVersion(context, packageName))
     }
@@ -178,8 +181,8 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         file.append("<color name=\"legacy_primary\">#${toHexString(palette.darkBackgroundColor)}</color>\n")
         file.append("<color name=\"legacy_green\">#${toHexString(palette.cardBackgroud)}</color>\n")
         file.append("<color name=\"legacy_orange\">#${toHexString(palette.otherBackground)}</color>\n")
-        file.append("<color name=\"legacy_control_activated\">#${ColorUtils.getAlpha(palette.backgroundColor, selection["alpha"].toInt())}</color>\n")
-        file.append("<item type=\"dimen\" name=\"disabled_alpha_leanback_formwizard\">${getAlphaDimen(selection["alpha"].toInt())}</item>\n")
+        file.append("<color name=\"legacy_control_activated\">#${ColorUtils.getAlpha(palette.backgroundColor, selection.getInt("alpha"))}</color>\n")
+        file.append("<item type=\"dimen\" name=\"disabled_alpha_leanback_formwizard\">${getAlphaDimen(selection.getInt("alpha"))}</item>\n")
         file.append("</resources>")
 
         val values = File(resDir, "/values")

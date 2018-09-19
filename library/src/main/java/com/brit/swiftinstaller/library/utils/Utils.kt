@@ -29,6 +29,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.Build
+import android.util.Log
 import com.brit.swiftinstaller.library.ui.applist.AppItem
 
 object Utils {
@@ -42,8 +43,9 @@ object Utils {
         val hiddenOverlays = getHiddenApps(context)
         val pm = context.packageManager
         val overlays = context.assets.list("overlays") ?: emptyArray()
-        for (pn: String in overlays) {
-            if (disabledOverlays.contains(pn)) continue
+        val extras = context.swift.extrasHandler.appExtras.keys
+        for (pn: String in overlays.plus(extras)) {
+            if (!extras.contains(pn) && disabledOverlays.contains(pn)) continue
             if (hiddenOverlays.contains(pn)) continue
             var info: ApplicationInfo?
             var pInfo: PackageInfo?

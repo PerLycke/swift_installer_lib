@@ -51,7 +51,8 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
     }
 
     override fun getRequiredApps(): Array<String> {
-        return Array(30) {
+        return arrayOf()
+        /*return Array(30) {
             when (it) {
                 0 -> "android"
                 1 -> "com.android.systemui"
@@ -85,7 +86,7 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
                 29 -> "com.lastpass.lpandroid"
                 else -> ""
             }
-        }
+        }*/
     }
 
     override fun postInstall(uninstall: Boolean, apps: ArrayList<String>, oppositeApps: ArrayList<String>?, intent: Intent?) {

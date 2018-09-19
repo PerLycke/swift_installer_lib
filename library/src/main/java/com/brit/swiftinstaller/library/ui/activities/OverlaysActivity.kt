@@ -35,6 +35,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.viewpager.widget.ViewPager
+import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.applist.AppItem
 import com.brit.swiftinstaller.library.ui.applist.AppListFragment
@@ -401,7 +402,7 @@ class OverlaysActivity : ThemeActivity() {
                     if (!updatesAvailable)
                         updatesAvailable = updates.contains(it.packageName)
                 }
-                update.visibility = if (updatesAvailable) {
+                update.visibility = if (updatesAvailable || BuildConfig.DEBUG) {
                     View.VISIBLE
                 } else {
                     View.GONE

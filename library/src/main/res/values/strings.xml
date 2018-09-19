@@ -152,6 +152,7 @@
     <string name="empty_list_updates">No updates available</string>
     <string name="help_msg">Here are some useful links if you need help:</string>
     <string name="link_telegram">Telegram chat support: https://goo.gl/tpPji0</string>
+    <string name="link_magisk">Magisk Module For Pie: https://goo.gl/isS9Gy</string>
     <string name="reboot_notif_title">System almost themed!…</string>
     <string name="reboot_notif_msg">New overlays were enabled at boot. The last step is to make a quick reboot in order for all apps to reload with the new colors. Tap this notification to proceed.</string>
     <string name="reboot_dialog_title">Reboot</string>

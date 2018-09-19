@@ -66,7 +66,7 @@ object ChangelogHandler {
         override fun checkFilter(item: IRecyclerViewItem): Boolean {
             if (item.recyclerViewType == ChangelogRecyclerViewAdapter.Type.Row) {
                 val tag = (item as Row).tag.xmlTagName
-                if (tag != this.tag && tag != "installer") {
+                if (tag != this.tag && tag != "installer" && tag != "common") {
                     return false
                 }
             }

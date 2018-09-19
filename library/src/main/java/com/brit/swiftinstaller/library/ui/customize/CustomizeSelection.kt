@@ -46,7 +46,6 @@ class CustomizeSelection : ArrayMap<String, String>() {
 
     override fun get(key: String?): String {
         val s =  super.get(key)
-        Log.d("TEST", "selection - $key : $s")
         return if (s.isNullOrEmpty()) { "" } else { s!! }
     }
 

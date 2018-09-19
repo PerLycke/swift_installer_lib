@@ -93,7 +93,7 @@ abstract class CustomizeHandler(val context: Context) {
 
     fun getSelection(): CustomizeSelection {
         return CustomizeSelection.fromString(PreferenceManager
-                .getDefaultSharedPreferences(context).getString("customize_options", getDefaultSelection().toString())!!)
+                .getDefaultSharedPreferences(context).getString("customize_selection", getDefaultSelection().toString())!!)
     }
 
     fun setSelection(selection: CustomizeSelection) {

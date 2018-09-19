@@ -38,8 +38,8 @@ import kotlinx.android.synthetic.main.customize_preview_sysui.view.*
 
 abstract class PreviewHandler(val context: Context) {
 
-    private lateinit var settingsPreview: ViewGroup
-    private lateinit var systemUiPreview: ViewGroup
+    private var settingsPreview: ViewGroup? = null
+    private var systemUiPreview: ViewGroup? = null
 
     val settingsIcons = ArrayList<ImageView>()
     val systemUiIcons = ArrayList<ImageView>()
@@ -48,23 +48,23 @@ abstract class PreviewHandler(val context: Context) {
         return if (position == 0) {
             settingsPreview = LayoutInflater.from(context).inflate(R.layout.customize_preview_settings, container, false) as ViewGroup
 
-            settingsIcons.add(settingsPreview.settings_connections_icon)
-            settingsIcons.add(settingsPreview.settings_sound_icon)
-            settingsIcons.add(settingsPreview.settings_notifications_icon)
+            settingsIcons.add(settingsPreview!!.settings_connections_icon)
+            settingsIcons.add(settingsPreview!!.settings_sound_icon)
+            settingsIcons.add(settingsPreview!!.settings_notifications_icon)
 
-            settingsPreview
+            settingsPreview!!
         } else {
             systemUiPreview = LayoutInflater.from(context).inflate(R.layout.customize_preview_sysui, container, false) as ViewGroup
-            systemUiPreview.preview_wallpaper.clipToOutline = true
+            systemUiPreview!!.preview_wallpaper.clipToOutline = true
 
-            systemUiIcons.add(systemUiPreview.systemui_wifi_icon)
-            systemUiIcons.add(systemUiPreview.systemui_airplane_icon)
-            systemUiIcons.add(systemUiPreview.systemui_bluetooth_icon)
-            systemUiIcons.add(systemUiPreview.systemui_flashlight_icon)
-            systemUiIcons.add(systemUiPreview.systemui_sound_icon)
-            systemUiIcons.add(systemUiPreview.systemui_rotation_icon)
+            systemUiIcons.add(systemUiPreview!!.systemui_wifi_icon)
+            systemUiIcons.add(systemUiPreview!!.systemui_airplane_icon)
+            systemUiIcons.add(systemUiPreview!!.systemui_bluetooth_icon)
+            systemUiIcons.add(systemUiPreview!!.systemui_flashlight_icon)
+            systemUiIcons.add(systemUiPreview!!.systemui_sound_icon)
+            systemUiIcons.add(systemUiPreview!!.systemui_rotation_icon)
 
-            systemUiPreview
+            systemUiPreview!!
         }
     }
 
@@ -73,6 +73,8 @@ abstract class PreviewHandler(val context: Context) {
     }
 
     open fun updateView(palette: MaterialPalette, selection: CustomizeSelection) {
+        if (systemUiPreview == null || settingsPreview == null) return
+
         updateAccentColor(selection.accentColor)
         updateBackgroundColor(palette)
         for (icon in settingsIcons) {
@@ -112,16 +114,16 @@ abstract class PreviewHandler(val context: Context) {
         }
 
         val qsAlpha = selection.getInt("qsAlpha")
-        systemUiPreview.preview_wallpaper.setColorFilter(
+        systemUiPreview!!.preview_wallpaper.setColorFilter(
                 ColorUtils.addAlphaColor(palette.backgroundColor,
                         qsAlpha), PorterDuff.Mode.SRC_OVER)
 
 
         if (selection.containsKey("clock")) {
             val clockSelection = selection["clock"]
-            settingsPreview.clock_right.setVisible(clockSelection == "right")
-            settingsPreview.clock_left.setVisible(clockSelection == "left")
-            settingsPreview.clock_centered.setVisible(clockSelection == "centered")
+            settingsPreview!!.clock_right.setVisible(clockSelection == "right")
+            settingsPreview!!.clock_left.setVisible(clockSelection == "left")
+            settingsPreview!!.clock_centered.setVisible(clockSelection == "centered")
         }
 
         val darkNotif = (selection["notif_background"]) == "dark"
@@ -129,44 +131,44 @@ abstract class PreviewHandler(val context: Context) {
         val usePStyle = (selection["style"]) == "p"
 
         if (notifShadow) {
-            systemUiPreview.preview_sysui_msg.text = context.getString(R.string.dark_notifications_preview_shadow)
-            systemUiPreview.preview_sysui_app_title.setShadowLayer(2.0f, -1.0f, -1.0f, Color.WHITE)
-            systemUiPreview.preview_sysui_sender.setTextColor(Color.BLACK)
-            systemUiPreview.preview_sysui_sender.setShadowLayer(2.0f, -1.0f, -1.0f, Color.WHITE)
+            systemUiPreview!!.preview_sysui_msg.text = context.getString(R.string.dark_notifications_preview_shadow)
+            systemUiPreview!!.preview_sysui_app_title.setShadowLayer(2.0f, -1.0f, -1.0f, Color.WHITE)
+            systemUiPreview!!.preview_sysui_sender.setTextColor(Color.BLACK)
+            systemUiPreview!!.preview_sysui_sender.setShadowLayer(2.0f, -1.0f, -1.0f, Color.WHITE)
         } else {
-            systemUiPreview.preview_sysui_msg.text = context.getString(R.string.dark_notifications_preview_normal)
-            systemUiPreview.preview_sysui_app_title.setShadowLayer(0.0f, 0.0f, 0.0f, Color.TRANSPARENT)
-            systemUiPreview.preview_sysui_sender.setTextColor(Color.WHITE)
-            systemUiPreview.preview_sysui_sender.setShadowLayer(0.0f, 0.0f, 0.0f, Color.TRANSPARENT)
+            systemUiPreview!!.preview_sysui_msg.text = context.getString(R.string.dark_notifications_preview_normal)
+            systemUiPreview!!.preview_sysui_app_title.setShadowLayer(0.0f, 0.0f, 0.0f, Color.TRANSPARENT)
+            systemUiPreview!!.preview_sysui_sender.setTextColor(Color.WHITE)
+            systemUiPreview!!.preview_sysui_sender.setShadowLayer(0.0f, 0.0f, 0.0f, Color.TRANSPARENT)
         }
 
         if (usePStyle) {
-            systemUiPreview.notif_bg_layout.setImageResource(R.drawable.notif_bg_rounded)
+            systemUiPreview!!.notif_bg_layout.setImageResource(R.drawable.notif_bg_rounded)
         } else {
-            systemUiPreview.notif_bg_layout.setImageResource(R.drawable.notif_bg)
+            systemUiPreview!!.notif_bg_layout.setImageResource(R.drawable.notif_bg)
         }
 
         if (darkNotif) {
             if (notifShadow) {
-                systemUiPreview.preview_sysui_sender.setTextColor(Color.BLACK)
+                systemUiPreview!!.preview_sysui_sender.setTextColor(Color.BLACK)
             } else {
-                systemUiPreview.preview_sysui_sender.setTextColor(Color.WHITE)
+                systemUiPreview!!.preview_sysui_sender.setTextColor(Color.WHITE)
             }
             if (usePStyle) {
-                systemUiPreview.notif_bg_layout.drawable.setTint(ColorUtils.handleColor(palette.backgroundColor, 8))
+                systemUiPreview!!.notif_bg_layout.drawable.setTint(ColorUtils.handleColor(palette.backgroundColor, 8))
             } else {
-                systemUiPreview.notif_bg_layout.drawable.setTint(palette.backgroundColor)
+                systemUiPreview!!.notif_bg_layout.drawable.setTint(palette.backgroundColor)
             }
-            systemUiPreview.preview_sysui_sender.text = context.getString(R.string.dark_notifications)
-            systemUiPreview.preview_sysui_msg.setTextColor(Color.parseColor("#b3ffffff"))
+            systemUiPreview!!.preview_sysui_sender.text = context.getString(R.string.dark_notifications)
+            systemUiPreview!!.preview_sysui_msg.setTextColor(Color.parseColor("#b3ffffff"))
         } else {
-            systemUiPreview.preview_sysui_sender.text =
+            systemUiPreview!!.preview_sysui_sender.text =
                     context.getString(R.string.white_notifications)
-            systemUiPreview.preview_sysui_msg.text =
+            systemUiPreview!!.preview_sysui_msg.text =
                     context.getString(R.string.white_notifications_preview)
-            systemUiPreview.notif_bg_layout.drawable.setTint(Color.parseColor("#f5f5f5"))
-            systemUiPreview.preview_sysui_sender.setTextColor(Color.BLACK)
-            systemUiPreview.preview_sysui_msg.setTextColor(Color.parseColor("#8a000000"))
+            systemUiPreview!!.notif_bg_layout.drawable.setTint(Color.parseColor("#f5f5f5"))
+            systemUiPreview!!.preview_sysui_sender.setTextColor(Color.BLACK)
+            systemUiPreview!!.preview_sysui_msg.setTextColor(Color.parseColor("#8a000000"))
         }
     }
 
@@ -174,17 +176,18 @@ abstract class PreviewHandler(val context: Context) {
     }
 
     open fun updateBackgroundColor(palette: MaterialPalette) {
+        if (settingsPreview == null || systemUiPreview == null) return
 
-        if (settingsPreview.settings_preview.drawable != null) {
-            val settingsBackground = settingsPreview.settings_preview.drawable as LayerDrawable
+        if (settingsPreview!!.settings_preview.drawable != null) {
+            val settingsBackground = settingsPreview!!.settings_preview.drawable as LayerDrawable
             settingsBackground.findDrawableByLayerId(R.id.preview_background)
                     .setTint(palette.backgroundColor)
         }
-        if (systemUiPreview.preview_sysui_bg.drawable != null) {
-            val systemUiBackground = systemUiPreview.preview_sysui_bg.drawable as LayerDrawable
+        if (systemUiPreview!!.preview_sysui_bg.drawable != null) {
+            val systemUiBackground = systemUiPreview!!.preview_sysui_bg.drawable as LayerDrawable
             systemUiBackground.findDrawableByLayerId(R.id.preview_background)
                     .setTint(palette.backgroundColor)
         }
-        settingsPreview.searchbar_bg.setColorFilter(palette.cardBackgroud)
+        settingsPreview!!.searchbar_bg.setColorFilter(palette.cardBackgroud)
     }
 }
