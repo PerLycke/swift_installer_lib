@@ -200,7 +200,8 @@ class MainActivity : ThemeActivity() {
 
             val dialogView = View.inflate(this, R.layout.dialog_help, null)
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
-                dialogView.magisk_link.visibility = View.GONE
+                dialogView.magisk_link.visibility= View.GONE
+                dialogView.rescue_pie.visibility= View.GONE
             }
             val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
             builder.setView(dialogView)

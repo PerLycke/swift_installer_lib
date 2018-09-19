@@ -99,7 +99,7 @@ open class PRomInfo(context: Context) : RomInfo(context) {
     }
 
     override fun getRequiredApps(): Array<String> {
-        return Array(22) {
+        return Array(24) {
             when (it) {
                 0 -> "android"
                 1 -> "com.android.systemui"
@@ -123,6 +123,8 @@ open class PRomInfo(context: Context) : RomInfo(context) {
                 19 -> "com.google.android.gms"
                 20 -> "com.google.android.apps.nexuslauncher"
                 21 -> "com.lastpass.lpandroid"
+                22 -> "com.weather.Weather"
+                23 -> "com.google.android.settings.intelligence"
                 else -> ""
             }
         }

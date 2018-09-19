@@ -146,7 +146,7 @@
     <string name="qs_transparency">Quick settings transparency:</string>
     <string name="whats_this">What\'s this?</string>
     <string name="blocked_packages_title">Info</string>
-    <string name="blocked_packages_message">Due to Samsung restrictions, this overlay won\'t be enabled on its own. After you install the overlays and reboot, you will just need to run the enable script from your desktop or laptop to make it work correctly. You can find the script in Changelog document whose link can be found in Play Store description of Swift Installer.</string>
+    <string name="blocked_packages_message">Due to Samsung restrictions, this overlay won\'t be enabled on its own. After you install the overlays and reboot, you will just need to run the enable script from your desktop or laptop to make it work correctly. You can find the script in the <i>Important informations</i> document, linked in the Play Store description of Swift Installer.</string>
     <string name="empty_list_inactive">All overlays active</string>
     <string name="empty_list_active">No active overlays</string>
     <string name="empty_list_updates">No updates available</string>
@@ -154,10 +154,10 @@
     <string name="link_telegram">Telegram chat support: https://goo.gl/tpPji0</string>
     <string name="link_magisk">Magisk Module For Pie: https://goo.gl/isS9Gy</string>
     <string name="reboot_notif_title">System almost themed!…</string>
-    <string name="reboot_notif_msg">New overlays were enabled at boot. The last step is to make a quick reboot in order for all apps to reload with the new colors. Tap this notification to proceed.</string>
+    <string name="reboot_notif_msg">New overlays were enabled at boot. The last step is to make a quick reboot in order for all apps to reload with the new colors. Tap this notification to proceed</string>
     <string name="reboot_dialog_title">Reboot</string>
     <string name="reboot_dialog_msg">Reboot now to reload resources.</string>
-    <string name="info_card_reboot_msg">New overlays was enabled at boot. The last step is to make a quick reboot in order for all apps to reload with the new colors. <b>Tap here to proceed.</b></string>
+    <string name="info_card_reboot_msg">New overlays were enabled at boot. The last step is to make a quick reboot in order for all apps to reload with the new colors. <b>Tap here to proceed.</b></string>
     <string name="wait">Please wait…</string>
     <string name="reboot_now">Reboot now</string>
     <string name="installation_failed">Installation failed</string>
@@ -165,7 +165,7 @@
     <string name="info_card_compatibility_msg">Note that we cannot guarantee a stable experience if you use Swift Installer in combination with other themes or mods.</string>
     <string name="link_faq">FAQ: https://goo.gl/F4V5j1</string>
     <string name="link_apps">Supported apps: https://goo.gl/gS84kK</string>
-    <string name="no_root_msg">Root access is required for the Installer to work. We inform about this in the Play Store description. You can request a refund in Play Store or email us for a manual refund. Email is swiftuserhelp@gmail.com</string>
+    <string name="no_root_msg">Root access is required for the Installer to work. We inform about this in the Play Store description. You can request a refund from the Play Store, or email us with your GPA code for a manual refund. Email is swiftuserhelp@gmail.com</string>
     <string name="exit">Exit</string>
     <string name="transparency">Transparency</string>
     <string name="requesting_root_access">Requesting root access…</string>
@@ -174,19 +174,21 @@
     <string name="installer_version">Installer library version:</string>
     <string name="installer_source_link">https://github.com/PerLycke/swift_installer_lib</string>
     <string name="settings_title">Settings</string>
-    <string name="soft_reboot_title">Use Soft Reboot</string>
-    <string name="soft_reboot_summary">Turn this off if you use sim pin.</string>
-    <string name="notif_new_app_title">New App Installed.</string>
-    <string name="notif_new_app_summary">%s can be themed using Swift Installer.</string>
-    <string name="notif_update_title">Theme Update Available.</string>
-    <string name="notif_update_summary">New updates available to install.</string>
-    <string name="update_notif_setting_title">Show Update Notification</string>
-    <string name="update_notif_setting_summary">Show a notification when an update is available to install.</string>
-    <string name="new_app_notif_setting_title">Show Notification for New Apps</string>
-    <string name="new_app_notif_setting_summary">When a new app is installed, show a notification if an overlay is available.</string>
-    <string name="soft_reboot">Soft Reboot</string>
+    <string name="soft_reboot_title">Use soft reboot</string>
+    <string name="soft_reboot_summary">Turn this off if you use SIM pin</string>
+    <string name="notif_new_app_title">New app installed</string>
+    <string name="notif_new_app_summary">%s can be themed using Swift Installer</string>
+    <string name="notif_update_title">Theme update available</string>
+    <string name="notif_update_summary">New updates available to install</string>
+    <string name="update_notif_setting_title">Update notifications</string>
+    <string name="update_notif_setting_summary">Show a notification when an update is available to install</string>
+    <string name="new_app_notif_setting_title">Notifications for new apps</string>
+    <string name="new_app_notif_setting_summary">When a new app is installed, show a notification if an overlay is available</string>
+    <string name="soft_reboot">Soft reboot</string>
     <string name="magisk_module_description">To make sure you can use our overlays on Pie along other Magisk modules, we developed our own module to systemlessly install overlays - this way, you are no longer required to disable modules to use Swift Installer on Pie!
 You can find it: </string>
     <string name="magisk_module_link_text">HERE</string>
     <string name="changelog">Changelog</string>
+    <string name="link_magisk">Magisk Module For Pie: https://goo.gl/6NHTHd</string>
+    <string name="link_rescue_pie">TWRP Flashable Rescue Zip: https://goo.gl/NgQxe3</string>
 </resources>
