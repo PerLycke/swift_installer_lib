@@ -34,6 +34,7 @@ import android.os.Handler
 import android.preference.PreferenceManager
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -70,6 +71,8 @@ class CustomizeActivity : ThemeActivity() {
     private lateinit var previewHandler: PreviewHandler
 
     private lateinit var selection: CustomizeSelection
+
+    private val backgroundIndicatorHandler = BackgroundIndicatorHandler()
 
     private var finish = false
     private var usePalette = false
@@ -527,6 +530,9 @@ class CustomizeActivity : ThemeActivity() {
             b.buttonTintList = ColorUtils.radioButtonColor(this, R.color.radio_button_disabled, selection.accentColor)
         }
 
+        backgroundIndicatorHandler.setIndicatorColor(selection.accentColor)
+        backgroundIndicatorHandler.setActiveIndicator(selection.backgroundColor)
+
         val buttonTint = ColorUtils.radioButtonColor(this, R.color.radio_button_disabled, selection.accentColor)
         for (position in customize_options.childCount.downTo(0)) {
             val view = customize_options.getChildAt(position)
@@ -577,16 +583,19 @@ class CustomizeActivity : ThemeActivity() {
         fun addIndicator(indicator: ImageView) {
             indicators.add(indicator)
         }
-        fun setActiveIndicator(indicator: ImageView) {
+        fun setIndicatorColor(color: Int) {
             for (ind in indicators) {
-                ind.setVisible(ind.tag == indicator.tag)
+                ind.drawable.setTint(color)
+            }
+        }
+        fun setActiveIndicator(color: Int) {
+            for (ind in indicators) {
+                ind.setVisible(ind.tag == color)
             }
         }
     }
 
     inner class PaletteAdapter constructor(private val colors: ArrayList<CustomizeHandler.PaletteItem>, private val isAccent: Boolean) : BaseAdapter() {
-
-        private val indicatorHandler = BackgroundIndicatorHandler()
 
         override fun getCount(): Int {
             return colors.size
@@ -616,12 +625,15 @@ class CustomizeActivity : ThemeActivity() {
                 }
             } else {
                 mainView!!.background_layout.setVisible(!isAccent)
-                indicatorHandler.addIndicator(mainView.background_layout.indicator)
+                mainView.background_layout.indicator.tag = colors[position].backgroundColor
+                mainView.background_layout.indicator.drawable.setTint(selection.accentColor)
+                mainView.background_layout.indicator.setVisible(selection.backgroundColor == colors[position].backgroundColor)
+                backgroundIndicatorHandler.addIndicator(mainView.background_layout.indicator)
                 mainView.background_layout.background_icon.tag = colors[position].backgroundColor
                 mainView.background_layout.background_icon.setImageDrawable(CircleDrawable(colors[position].backgroundColor))
                 mainView.background_layout.background_title.text = colors[position].backgroundName
                 mainView.background_layout.background_icon.setOnClickListener {
-                    indicatorHandler.setActiveIndicator(mainView.background_layout.indicator)
+                    backgroundIndicatorHandler.setActiveIndicator(colors[position].backgroundColor)
                     selection.backgroundColor = colors[position].backgroundColor
                     updateColor(true)
                 }
