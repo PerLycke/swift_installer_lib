@@ -421,6 +421,7 @@ class OverlaysActivity : ThemeActivity() {
         checked.mapTo(apps) { it.packageName }
         intent.putStringArrayListExtra("apps", apps)
         startActivity(intent)
+        finish()
     }
 
     private fun uninstallAction() {

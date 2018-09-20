@@ -26,6 +26,7 @@
         <activity
             android:name="com.brit.swiftinstaller.library.ui.activities.MainActivity"
             android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.brit.swiftinstaller.library.ui.activities.OverlaysActivity"
