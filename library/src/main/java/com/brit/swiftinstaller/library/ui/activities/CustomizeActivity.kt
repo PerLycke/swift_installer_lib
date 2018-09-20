@@ -637,6 +637,7 @@ class CustomizeActivity : ThemeActivity() {
                     selection.backgroundColor = colors[position].backgroundColor
                     updateColor(true)
                 }
+                mainView.isEnabled = false
             }
             return mainView
         }
