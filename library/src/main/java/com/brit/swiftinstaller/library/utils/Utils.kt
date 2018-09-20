@@ -44,7 +44,7 @@ object Utils {
         val pm = context.packageManager
         val overlays = context.assets.list("overlays") ?: emptyArray()
         val extras = context.swift.extrasHandler.appExtras.keys
-        for (pn: String in overlays.plus(extras)) {
+        for (pn: String in overlays.subtract(extras).plus(extras)) {
             if (!extras.contains(pn) && disabledOverlays.contains(pn)) continue
             if (hiddenOverlays.contains(pn)) continue
             var info: ApplicationInfo?
