@@ -119,7 +119,7 @@ class CustomizeActivity : ThemeActivity() {
                     }
                     val dialog = builder.create()
                     dialog.show()
-                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(selection.backgroundColor)
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(selection.accentColor)
                 }
             }
 
@@ -280,8 +280,8 @@ class CustomizeActivity : ThemeActivity() {
                     dialogInterface.dismiss()
                 }
                 val dialog = builder.create()
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(selection.accentColor)
                 dialog.show()
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(selection.accentColor)
             }
             optionView.option_info.setVisible(option.infoDialogText.isNotEmpty())
             optionView.rounded_divider.setVisible(option.infoDialogText.isNotEmpty())
