@@ -42,6 +42,7 @@ import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
 import com.hololo.tutorial.library.Step
 import com.hololo.tutorial.library.TutorialActivity
 import com.topjohnwu.superuser.io.SuFile
+import kotlinx.android.synthetic.main.customize_preview_sysui.view.*
 
 open class PRomInfo(context: Context) : RomInfo(context) {
 
@@ -206,8 +207,7 @@ open class PRomInfo(context: Context) : RomInfo(context) {
         return object : CustomizeHandler(context) {
             override fun createPreviewHandler(context: Context) : PreviewHandler {
                 return object : PreviewHandler(context) {
-                    override fun updateView(palette: MaterialPalette, selection: CustomizeSelection) {
-                        super.updateView(palette, selection)
+                    override fun updateIcons(selection: CustomizeSelection) {
                         for (icon in settingsIcons) {
                             icon.clearColorFilter()
                             val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_p"
@@ -224,23 +224,24 @@ open class PRomInfo(context: Context) : RomInfo(context) {
                                 icon.setImageDrawable(layerDrawable)
                                 layerDrawable.findDrawableByLayerId(R.id.icon_bg).setTint(selection.accentColor)
                                 layerDrawable.findDrawableByLayerId(
-                                        R.id.icon_tint).setTint(palette.backgroundColor)
+                                        R.id.icon_tint).setTint(selection.backgroundColor)
                             }
+                        }
+                    }
+
+                    override fun updateView(palette: MaterialPalette,
+                                            selection: CustomizeSelection) {
+                        super.updateView(palette, selection)
+                        val darkNotif = (selection["notif_background"]) == "dark"
+                        systemUiPreview!!.notif_bg_layout.setImageResource(R.drawable.notif_bg_rounded)
+                        if (darkNotif) {
+                            systemUiPreview!!.notif_bg_layout.drawable.setTint(
+                                    ColorUtils.handleColor(palette.backgroundColor, 8))
                         }
                     }
                 }
             }
-            override fun getDefaultSelection(): CustomizeSelection {
-                val selection = super.getDefaultSelection()
-                selection["style"] = "p"
-                return selection
-            }
-
             override fun populateCustomizeOptions(categories: CategoryMap) {
-                super.populateCustomizeOptions(categories)
-                categories.remove("icons")
-                categories.remove("clock")
-                categories.remove("style")
                 categories["notif_background"]!!.options["dark"]!!.subOptions.clear()
             }
         }

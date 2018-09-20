@@ -103,11 +103,7 @@ abstract class CustomizeHandler(val context: Context) {
 
     open fun getDefaultSelection(): CustomizeSelection {
         val selection = CustomizeSelection()
-        selection["icons"] = "stock"
-        selection["clock"] = "right"
-        selection["style"] = "default"
-        selection["qsAlpha"] = "0"
-        selection["shadow_fix"] = "default"
+        selection["sender_name_fix"] = "default"
         selection["notif_background"] = "white"
         selection.accentColor = context.swift.romInfo.getDefaultAccent()
         selection.backgroundColor = convertToColorInt("202026")
@@ -116,40 +112,6 @@ abstract class CustomizeHandler(val context: Context) {
 
     open fun populateCustomizeOptions(categories: CategoryMap) {
         val requiredApps = ArrayList<String>()
-        val iconOptions = OptionsMap()
-        iconOptions.add(Option(context.getString(R.string.aosp_icons), "aosp", "aosp", true))
-        iconOptions.add(Option(context.getString(R.string.stock_icons), "stock", "stock", true))
-        iconOptions.add(Option(context.getString(R.string.stock_icons_multi), "stock_multi", "stock", false))
-        iconOptions.add(Option(context.getString(R.string.android_p), "p", "p", false))
-        requiredApps.add("com.android.systemui")
-        requiredApps.add("com.samsung.android.lool")
-        requiredApps.add("com.samsung.android.themestore")
-        requiredApps.add("com.android.settings")
-        requiredApps.add("com.samsung.android.app.aodservice")
-        requiredApps.add("android")
-        categories.add(CustomizeCategory(context.getString(R.string.category_icons), "icons", "stock", iconOptions, requiredApps))
-        requiredApps.clear()
-
-        val clockOptions = OptionsMap()
-        clockOptions.add(Option(context.getString(R.string.right), "right"))
-        clockOptions.add(Option(context.getString(R.string.left), "left"))
-        clockOptions.add(Option(context.getString(R.string.centered), "centered"))
-        requiredApps.add("com.android.systemui")
-        categories.add(CustomizeCategory(context.getString(R.string.clock), "clock", "right", clockOptions, requiredApps))
-        requiredApps.clear()
-
-        val notifOptions = OptionsMap()
-        notifOptions.add(Option(context.getString(R.string.default_style), "default"))
-        notifOptions.add(Option(context.getString(R.string.android_p_rounded_style), "p"))
-        val trans = SliderOption(context.getString(R.string.qs_transparency), "qsAlpha")
-        trans.current = 100
-        notifOptions.add(trans)
-        notifOptions["p"]!!.infoDialogTitle = context.getString(R.string.rounded_dialog_title)
-        notifOptions["p"]!!.infoDialogText = context.getString(R.string.rounded_dialog_info)
-        requiredApps.add("com.android.systemui")
-        requiredApps.add("android")
-        categories.add(CustomizeCategory(context.getString(R.string.notification_style), "style", "default", notifOptions, requiredApps))
-        requiredApps.clear()
 
         val notifBackgroundOptions = OptionsMap()
         notifBackgroundOptions.add(Option(context.getString(R.string.white), "white"))
@@ -159,7 +121,7 @@ abstract class CustomizeHandler(val context: Context) {
         senderNameOptions.add(Option(context.getString(R.string.disable), "default"))
         senderNameOptions.add(Option(context.getString(R.string.enable_shadow_title), "shadow"))
         notifBackgroundOptions["dark"]!!.subOptions.putAll(senderNameOptions)
-        notifBackgroundOptions["dark"]!!.subOptionKey = "shadow_fix"
+        notifBackgroundOptions["dark"]!!.subOptionKey = "sender_name_fix"
         requiredApps.add("android")
         categories.add(CustomizeCategory(context.getString(R.string.notification_tweaks), "notif_background", "white", notifBackgroundOptions, requiredApps))
         requiredApps.clear()

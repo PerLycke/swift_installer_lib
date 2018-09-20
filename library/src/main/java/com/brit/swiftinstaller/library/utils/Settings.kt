@@ -27,14 +27,29 @@ import android.preference.PreferenceManager
 import android.text.TextUtils
 import android.util.ArraySet
 import androidx.collection.ArrayMap
+import com.brit.swiftinstaller.library.installer.rom.RomInfo
+import com.brit.swiftinstaller.library.R
 import org.json.JSONObject
 
+const val KEY_ACCENT_COLOR = "accent_color"
+const val KEY_BACKGROUND_COLOR = "background_color"
 const val KEY_BACKGROUND_PALETTE = "background_palette"
+const val KEY_SENDER_NAME_FIX = "sender_name_fix"
+const val KEY_USE_AOSP_ICONS = "use_aosp_icons"
+const val KEY_USE_STOCK_ACCENT_ICONS = "use_stock_accent_icons"
+const val KEY_USE_STOCK_MULTI_ICONS = "use_stock_multi_icons"
+const val KEY_USE_P_ICONS = "use_p_icons"
+const val KEY_USE_RIGHT_CLOCK = "use_right_clock"
+const val KEY_USE_LEFT_CLOCK = "use_left_clock"
+const val KEY_USE_CENTERED_CLOCK = "use_centered_clock"
+const val KEY_USE_P_STYLE = "use_p_style"
 const val KEY_HIDE_INFO_CARD = "hide_failed_info"
 const val KEY_USER_ACCENTS = "user_accents"
 const val KEY_OVERLAY_UPDATES = "overlays_to_update"
 const val KEY_OVERLAYS_TO_INSTALL = "overlays_to_install"
 const val KEY_OVERLAYS_TO_UNINSTALL = "overlays_to_uninstall"
+const val KEY_DARK_NOTIF_BG = "dark_notif_bg"
+const val KEY_ALPHA = "alpha"
 const val KEY_USE_SOFT_REBOOT = "use_soft_reboot"
 const val KEY_UPDATE_NOTIFICATION_ENABLED = "update_notification_enabled"
 const val KEY_NEW_APP_NOTIFICATION_ENABLED = "new_app_notification_enabled"

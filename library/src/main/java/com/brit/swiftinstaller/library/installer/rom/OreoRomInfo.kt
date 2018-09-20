@@ -23,9 +23,9 @@ package com.brit.swiftinstaller.library.installer.rom
 
 import android.content.Context
 import android.content.Intent
-import com.brit.swiftinstaller.library.ui.customize.CategoryMap
 import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
 import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
+import com.brit.swiftinstaller.library.ui.customize.PreviewHandler
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
 import com.brit.swiftinstaller.library.utils.ShellUtils
 import com.brit.swiftinstaller.library.utils.runCommand
@@ -105,17 +105,29 @@ open class OreoRomInfo(context: Context) : RomInfo(context) {
 
     override fun createCustomizeHandler(): CustomizeHandler {
         return object : CustomizeHandler(context) {
-            override fun populateCustomizeOptions(categories: CategoryMap) {
-                super.populateCustomizeOptions(categories)
-                categories.remove("icons")
-                categories.remove("clock")
-                categories.remove("style")
+            override fun createPreviewHandler(context: Context): PreviewHandler {
+                return OreoPreviewHandler(context)
             }
+        }
+    }
 
-            override fun getDefaultSelection(): CustomizeSelection {
-                val selection = super.getDefaultSelection()
-                selection["icons"] = "aosp"
-                return selection
+    class OreoPreviewHandler(context: Context): PreviewHandler(context) {
+        override fun updateIcons(selection: CustomizeSelection) {
+            for (icon in settingsIcons) {
+                icon.setColorFilter(selection.accentColor)
+                val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_aosp"
+                val id = context.resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName", null, null)
+                if (id > 0) {
+                    icon.setImageDrawable(context.getDrawable(id))
+                }
+            }
+            for (icon in systemUiIcons) {
+                val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_aosp"
+                val id = context.resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName", null, null)
+                if (id > 0) {
+                    icon.setImageDrawable(context.getDrawable(id))
+                }
+                icon.setColorFilter(selection.accentColor)
             }
         }
     }

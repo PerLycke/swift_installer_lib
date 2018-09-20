@@ -23,23 +23,20 @@ package com.brit.swiftinstaller.library.ui.customize
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.library.utils.ColorUtils
 import com.brit.swiftinstaller.library.utils.MaterialPalette
-import com.brit.swiftinstaller.library.utils.setVisible
 import kotlinx.android.synthetic.main.customize_preview_settings.view.*
 import kotlinx.android.synthetic.main.customize_preview_sysui.view.*
 
 abstract class PreviewHandler(val context: Context) {
 
-    private var settingsPreview: ViewGroup? = null
-    private var systemUiPreview: ViewGroup? = null
+    var settingsPreview: ViewGroup? = null
+    var systemUiPreview: ViewGroup? = null
 
     val settingsIcons = ArrayList<ImageView>()
     val systemUiIcons = ArrayList<ImageView>()
@@ -72,63 +69,19 @@ abstract class PreviewHandler(val context: Context) {
         return 2
     }
 
+    open fun updateIcons(selection: CustomizeSelection) {
+    }
+
     open fun updateView(palette: MaterialPalette, selection: CustomizeSelection) {
         if (systemUiPreview == null || settingsPreview == null) return
 
         updateAccentColor(selection.accentColor)
         updateBackgroundColor(palette)
-        for (icon in settingsIcons) {
-                val type: String = when {
-                    selection["icons"] == "aosp" -> {
-                        icon.setColorFilter(selection.accentColor)
-                        "aosp"
-                    }
-                    selection["icons"] == "p" -> {
-                        icon.clearColorFilter()
-                        "p"
-                    }
-                    selection["icons"] == "stock_multi" -> {
-                        icon.clearColorFilter()
-                        "stock"
-                    }
-                    else -> {
-                        icon.setColorFilter(selection.accentColor)
-                        "stock"
-                    }
-                }
+        updateIcons(selection)
 
-                val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_$type"
-                val id = context.resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName", null, null)
-                if (id > 0) {
-                    icon.setImageDrawable(context.getDrawable(id))
-                }
-        }
-
-        for (icon in systemUiIcons) {
-            val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_${selection["icons"]}"
-            val id = context.resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName", null, null)
-            if (id > 0) {
-                icon.setImageDrawable(context.getDrawable(id))
-            }
-            icon.setColorFilter(selection.accentColor)
-        }
-
-        val qsAlpha = selection.getInt("qsAlpha")
-        systemUiPreview!!.preview_wallpaper.setColorFilter(
-                ColorUtils.addAlphaColor(palette.backgroundColor,
-                        qsAlpha), PorterDuff.Mode.SRC_OVER)
-
-
-        if (selection.containsKey("clock")) {
-            val clockSelection = selection["clock"]
-            settingsPreview!!.clock_right.setVisible(clockSelection == "right")
-            settingsPreview!!.clock_left.setVisible(clockSelection == "left")
-            settingsPreview!!.clock_centered.setVisible(clockSelection == "centered")
-        }
 
         val darkNotif = (selection["notif_background"]) == "dark"
-        val notifShadow = (selection["shadow_fix"]) == "shadow"
-        val usePStyle = (selection["style"]) == "p"
+        val notifShadow = (selection["sender_name_fix"]) == "shadow"
 
         if (notifShadow) {
             systemUiPreview!!.preview_sysui_msg.text = context.getString(R.string.dark_notifications_preview_shadow)
@@ -141,12 +94,7 @@ abstract class PreviewHandler(val context: Context) {
             systemUiPreview!!.preview_sysui_sender.setTextColor(Color.WHITE)
             systemUiPreview!!.preview_sysui_sender.setShadowLayer(0.0f, 0.0f, 0.0f, Color.TRANSPARENT)
         }
-
-        if (usePStyle) {
-            systemUiPreview!!.notif_bg_layout.setImageResource(R.drawable.notif_bg_rounded)
-        } else {
-            systemUiPreview!!.notif_bg_layout.setImageResource(R.drawable.notif_bg)
-        }
+        systemUiPreview!!.notif_bg_layout.setImageResource(R.drawable.notif_bg)
 
         if (darkNotif) {
             if (notifShadow) {
@@ -154,11 +102,7 @@ abstract class PreviewHandler(val context: Context) {
             } else {
                 systemUiPreview!!.preview_sysui_sender.setTextColor(Color.WHITE)
             }
-            if (usePStyle) {
-                systemUiPreview!!.notif_bg_layout.drawable.setTint(ColorUtils.handleColor(palette.backgroundColor, 8))
-            } else {
-                systemUiPreview!!.notif_bg_layout.drawable.setTint(palette.backgroundColor)
-            }
+            systemUiPreview!!.notif_bg_layout.drawable.setTint(palette.backgroundColor)
             systemUiPreview!!.preview_sysui_sender.text = context.getString(R.string.dark_notifications)
             systemUiPreview!!.preview_sysui_msg.setTextColor(Color.parseColor("#b3ffffff"))
         } else {
