@@ -80,6 +80,7 @@ open class TutorialActivity : TutorialActivity() {
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("appHasRunBefore", false)) {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+            finish()
         } else {
             if (swift.romInfo.requiresRoot() && !ShellUtils.isRootAccessAvailable) {
                 val dialog = Dialog(this, R.style.AppTheme)
