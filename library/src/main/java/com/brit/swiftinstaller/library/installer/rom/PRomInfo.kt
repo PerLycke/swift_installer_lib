@@ -263,6 +263,8 @@ open class PRomInfo(context: Context) : RomInfo(context) {
         pieIconOptions.add(Option(context.getString(R.string.stock_icons), "stock_accented"))
         pieIconOptions.add(Option(context.getString(R.string.stock_icons_multi), "default_icons"))
         requiredApps.add("com.android.settings")
+        requiredApps.add("com.google.android.apps.wellbeing")
+        requiredApps.add("com.google.android.gms")
         categories.add(CustomizeCategory(context.getString(R.string.category_icons), "stock_pie_icons", "default_icons", pieIconOptions, requiredApps))
     }
 }
