@@ -31,7 +31,7 @@ class SwiftSwitchPreference(context: Context, attrs: AttributeSet) : SwitchPrefe
             val color = if (checked) { getAccentColor(context) } else { Color.LTGRAY }
             if (switch != null) {
                 switch!!.thumbDrawable.setColorFilter(color, PorterDuff.Mode.MULTIPLY)
-                switch!!.trackDrawable.setColorFilter(ColorUtils.addAlphaColor(color, 70), PorterDuff.Mode.MULTIPLY)
+                switch!!.trackDrawable.setColorFilter(ColorUtils.addAlphaColor(color, 10), PorterDuff.Mode.MULTIPLY)
             }
         }
     }
