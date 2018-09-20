@@ -30,6 +30,7 @@ import android.graphics.drawable.LayerDrawable
 import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -78,7 +79,7 @@ class MainActivity : ThemeActivity() {
             }
         }
 
-        if (ShellUtils.isRootAvailable &&
+        if (ShellUtils.isRootAccessAvailable &&
                 PreferenceManager.getDefaultSharedPreferences(this).getBoolean("reboot_card", false)) {
             card_reboot.visibility = View.VISIBLE
             PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("reboot_card", false).apply()

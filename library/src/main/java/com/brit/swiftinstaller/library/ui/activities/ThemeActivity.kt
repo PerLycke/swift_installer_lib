@@ -22,6 +22,8 @@
 package com.brit.swiftinstaller.library.ui.activities
 
 import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
+import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable

@@ -29,7 +29,6 @@ import android.content.IntentFilter
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -95,8 +94,9 @@ class InstallActivity : ThemeActivity() {
     }
 
     fun uninstallComplete() {
-        startActivity(Intent(this@InstallActivity,
-                UninstallFinishedActivity::class.java))
+        val intent = Intent(this@InstallActivity,
+                UninstallFinishedActivity::class.java)
+        swift.romInfo.postInstall(true, apps, null, intent)
         finish()
     }
 

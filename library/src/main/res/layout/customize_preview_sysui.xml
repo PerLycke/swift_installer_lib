@@ -69,6 +69,7 @@
             android:layout_marginStart="3dp"
             android:layout_marginTop="3dp"
             android:background="@drawable/round_outline"
+            android:src="@drawable/wallpaper_big"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

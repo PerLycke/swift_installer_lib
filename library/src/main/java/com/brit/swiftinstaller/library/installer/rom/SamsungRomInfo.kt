@@ -27,6 +27,7 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import androidx.core.content.FileProvider
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
@@ -148,6 +149,7 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
                             "com.brit.swiftinstaller.myprovider",
                             File(getOverlayPath(apps.elementAt(index))))
                 }
+                appInstall.addCategory(Intent.CATEGORY_DEFAULT)
                 appInstall.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 appInstall.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 appInstall
@@ -157,6 +159,9 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
             }
         }
 
+        for (inte in intents) {
+            Log.d("TEST", "intent - $inte")
+        }
         if (!intents.isEmpty()) {
             context.startActivities(intents)
         }
@@ -282,8 +287,18 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
                     icon.setImageDrawable(context.getDrawable(id))
                 }
             }
+
+            val type = when(selection["samsung_oreo_icons"]) {
+                "stock_multi", "stock_accent" -> {
+                    "stock"
+                }
+                else -> {
+                    "aosp"
+                }
+            }
+
             for (icon in systemUiIcons) {
-                val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_${selection["samsung_oreo_icons"]}"
+                val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_$type"
                 val id = context.resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName", null, null)
                 if (id > 0) {
                     icon.setImageDrawable(context.getDrawable(id))

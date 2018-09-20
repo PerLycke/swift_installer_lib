@@ -134,7 +134,7 @@ object OverlayUtils {
     fun checkAndHideOverlays(context: Context) {
         val overlays = context.assets.list("overlays") ?: emptyArray()
         val extras = context.swift.extrasHandler.appExtras.keys
-        for (overlay in overlays) {
+        for (overlay in overlays.plus(extras)) {
             if (checkOverlay(context, overlay)) {
                 addHiddenApp(context, overlay)
             } else {

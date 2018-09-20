@@ -339,6 +339,12 @@ class AppListFragment : Fragment() {
                         alertIconClickListener!!.onAlertIconClick(mApps[mVisible[adapterPosition]])
                     }
                 }
+
+                if (context!!.swift.extrasHandler.appExtras.containsKey(item.packageName)
+                        && getHiddenApps(context!!).contains(item.packageName)) {
+                    appCheckBox.isClickable = false
+                    appCheckBox.setVisible(false)
+                }
             }
         }
 

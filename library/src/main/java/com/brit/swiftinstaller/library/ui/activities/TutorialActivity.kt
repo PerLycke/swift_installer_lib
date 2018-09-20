@@ -30,6 +30,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.util.Log
 import android.view.View
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.utils.OverlayUtils
