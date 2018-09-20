@@ -33,7 +33,6 @@ import android.view.View
 import androidx.browser.customtabs.CustomTabsIntent
 import com.brit.swiftinstaller.library.R
 import android.graphics.drawable.LayerDrawable
-import android.os.Build
 import com.brit.swiftinstaller.library.ui.customize.*
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
@@ -216,7 +215,12 @@ open class PRomInfo(context: Context) : RomInfo(context) {
                             val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_p"
                             val id = context.resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName", null, null)
                             if (id > 0) {
-                                icon.setImageDrawable(context.getDrawable(id))
+                                val drawable = context.getDrawable(id)?.mutate() as LayerDrawable
+                                if (selection["stock_pie_icons"] == "stock_accented") {
+                                    drawable.findDrawableByLayerId(R.id.icon_bg).setTint(selection.accentColor)
+                                    drawable.findDrawableByLayerId(R.id.icon_fg).setTint(selection.backgroundColor)
+                                }
+                                icon.setImageDrawable(drawable)
                             }
                         }
                         for (icon in systemUiIcons) {
@@ -236,9 +240,9 @@ open class PRomInfo(context: Context) : RomInfo(context) {
                                             selection: CustomizeSelection) {
                         super.updateView(palette, selection)
                         val darkNotif = (selection["notif_background"]) == "dark"
-                        systemUiPreview!!.notif_bg_layout.setImageResource(R.drawable.notif_bg_rounded)
+                        systemUiPreview?.notif_bg_layout?.setImageResource(R.drawable.notif_bg_rounded)
                         if (darkNotif) {
-                            systemUiPreview!!.notif_bg_layout.drawable.setTint(
+                            systemUiPreview?.notif_bg_layout?.drawable?.setTint(
                                     ColorUtils.handleColor(palette.backgroundColor, 8))
                         }
                     }
@@ -246,9 +250,7 @@ open class PRomInfo(context: Context) : RomInfo(context) {
             }
 
             override fun populateCustomizeOptions(categories: CategoryMap) {
-                if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P) {
-                    populatePieCustomizeOptions(categories)
-                }
+                populatePieCustomizeOptions(categories)
                 super.populateCustomizeOptions(categories)
             }
 

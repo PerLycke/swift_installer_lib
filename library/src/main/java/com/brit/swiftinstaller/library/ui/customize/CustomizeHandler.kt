@@ -92,8 +92,15 @@ abstract class CustomizeHandler(val context: Context) {
     }
 
     fun getSelection(): CustomizeSelection {
-        return CustomizeSelection.fromString(PreferenceManager
+        val selection = CustomizeSelection.fromString(PreferenceManager
                 .getDefaultSharedPreferences(context).getString("customize_selection", getDefaultSelection().toString())!!)
+        val def = getDefaultSelection()
+        for (key in def.keys) {
+            if (!selection.containsKey(key)) {
+                selection[key] = def[key]
+            }
+        }
+        return selection
     }
 
     fun setSelection(selection: CustomizeSelection) {

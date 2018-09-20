@@ -38,9 +38,19 @@ open class SwiftApplication : ContainerApp() {
     lateinit var romInfo: RomInfo
     lateinit var extrasHandler: AppExtrasHandler
 
+    private var currentSelection: CustomizeSelection = CustomizeSelection()
+
     var selection: CustomizeSelection
-        get() = romInfo.getCustomizeHandler().getSelection()
-        set(value) = romInfo.getCustomizeHandler().setSelection(value)
+        get() {
+            if (currentSelection.isEmpty) {
+                currentSelection = romInfo.getCustomizeHandler().getSelection()
+            }
+            return currentSelection
+        }
+        set(value) {
+            romInfo.getCustomizeHandler().setSelection(value)
+            currentSelection = value
+        }
 
     val installApps: ArrayList<String>
         get() = SwiftApplication.staticInstallApps
