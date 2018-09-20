@@ -242,8 +242,8 @@ class CustomizeActivity : ThemeActivity() {
         if (option.isSliderOption) {
             optionView.slider_layout.setVisible(true)
             optionView.slider_title.text = option.name
-            optionView.percent.text = getString(R.string.alpha_value, selection[option.value].toInt())
-            optionView.slider.progress = selection[option.value].toInt()
+            optionView.percent.text = getString(R.string.alpha_value, selection.getInt(option.value))
+            optionView.slider.progress = selection.getInt(option.value)
             optionView.slider.setOnSeekBarChangeListener(object :SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                     optionView.percent.text = getString(R.string.alpha_value, p1)

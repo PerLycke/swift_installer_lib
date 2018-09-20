@@ -23,6 +23,7 @@ package com.brit.swiftinstaller.library.installer.rom
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.PorterDuff
 import android.net.Uri
 import android.os.Build
@@ -245,6 +246,10 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
                     if (darkNotif) {
                         systemUiPreview!!.notif_bg_layout.drawable.setTint(
                                 ColorUtils.handleColor(palette.backgroundColor, 8))
+                    } else {
+                        systemUiPreview!!.notif_bg_layout.drawable.setTint(
+                                Color.parseColor("#f5f5f5"))
+
                     }
                 }
             }
