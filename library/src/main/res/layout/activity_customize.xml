@@ -147,12 +147,12 @@
 
                 <LinearLayout
                     android:id="@+id/customize_options"
-                    android:orientation="vertical"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/background_card"/>
+                    app:layout_constraintTop_toBottomOf="@+id/background_card" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
