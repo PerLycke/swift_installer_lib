@@ -23,20 +23,24 @@ package com.brit.swiftinstaller.library.ui.applist
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.collection.ArrayMap
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import android.os.Handler
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.collection.ArrayMap
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.brit.swiftinstaller.library.R
+import com.brit.swiftinstaller.library.ui.activities.InstallActivity
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.checkVersionCompatible
 import com.brit.swiftinstaller.library.utils.OverlayUtils.overlayHasVersion
@@ -232,7 +236,7 @@ class AppListFragment : Fragment() {
                 blockedPackagesAlert.visibility = View.GONE
 
                 val appOptions = OverlayUtils.getOverlayOptions(context!!, item.packageName)
-                if (appOptions.isNotEmpty()) {
+                if (appOptions.isNotEmpty() && !mSummary) {
                     val optionsSelection = ArrayList<String>()
                     val selected = getSelectedOverlayOptions(context!!, item.packageName)
                     for (i in appOptions.keys.indices) {
@@ -244,12 +248,14 @@ class AppListFragment : Fragment() {
                     optionsIcon.setColorFilter(activity!!.swift.romInfo.getCustomizeHandler().getSelection().accentColor)
 
                     optionsIcon.setOnClickListener {
-                        val dialog = AlertDialog.Builder(context!!)
-                        dialog.setTitle(item.title)
-                        dialog.setIcon(item.icon)
-                        dialog.setAdapter(OptionsAdapter(context!!, appOptions, optionsSelection)) { _, _ ->
+                        val builder = AlertDialog.Builder(context!!, R.style.AppTheme_AlertDialog)
+                        val dialogBg = context!!.getDrawable(R.drawable.dialog_bg) as LayerDrawable
+                        dialogBg.findDrawableByLayerId(R.id.dialog_bg).setTint(context!!.swift.selection.backgroundColor)
+                        builder.setTitle(item.title)
+                        builder.setIcon(item.icon)
+                        builder.setAdapter(OptionsAdapter(context!!, appOptions, optionsSelection)) { _, _ ->
                         }
-                        dialog.setPositiveButton("Apply") { _, _ ->
+                        builder.setPositiveButton("Apply") { _, _ ->
                             for (pos in appOptions.keys.indices) {
                                 val value = optionsSelection.elementAtOrNull(pos)
                                 if (value != null) {
@@ -257,11 +263,22 @@ class AppListFragment : Fragment() {
                                             appOptions.keyAt(pos), value)
                                 }
                             }
+                            if (installed) {
+                                val intent = Intent(context!!, InstallActivity::class.java)
+                                val apps = ArrayList<String>()
+                                apps.add(item.packageName)
+                                intent.putStringArrayListExtra("apps", apps)
+                                startActivity(intent)
+                            }
                         }
-                        dialog.setNegativeButton(R.string.cancel) { dialogInterface, _ ->
+                        builder.setNegativeButton(R.string.cancel) { dialogInterface, _ ->
                             dialogInterface.dismiss()
                         }
+                        val dialog = builder.create()
                         dialog.show()
+                        dialog.window?.setBackgroundDrawable(dialogBg)
+                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(context!!.swift.selection.accentColor)
+                        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(context!!.swift.selection.accentColor)
                     }
                 } else {
                     optionsIcon.visibility = View.GONE
@@ -328,6 +345,9 @@ class AppListFragment : Fragment() {
     }
 
     class OptionsAdapter(context: Context, val options: ArrayMap<String, Array<String>>, val selection: ArrayList<String>) : ArrayAdapter<String>(context, R.layout.app_option_item) {
+
+        private val mHandler = Handler()
+
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.app_option_item, parent, false)
 
@@ -338,14 +358,19 @@ class AppListFragment : Fragment() {
                 view.checkbox.setOnCheckedChangeListener { _, b ->
                     if (selection.elementAtOrNull(position) != null)
                         selection.removeAt(position)
-                    selection.add(position, if (b) { "on" } else { "off" })
+                    mHandler.post {
+                        selection.add(position, if (b) { "on" } else { "off" })
+                    }
                 }
                 view.checkbox.isChecked = (selection.elementAtOrNull(position) ?: "off") == "on"
                 view.spinner.visibility = View.GONE
             } else {
                 view.spinner.visibility = View.VISIBLE
                 view.checkbox.visibility = View.GONE
-                view.spinner.adapter = ArrayAdapter<String>(context, R.layout.spinner_item, opts)
+                view.spinner.adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, opts)
+                val popupBg = context.getDrawable(R.drawable.popup_bg_options) as LayerDrawable
+                popupBg.findDrawableByLayerId(R.id.background_popup).setTint(MaterialPalette.get(context).cardBackgroud)
+                view.spinner.setPopupBackgroundDrawable(popupBg)
                 view.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                         if (selection.elementAtOrNull(position) != null)
