@@ -34,7 +34,6 @@ import android.os.Handler
 import android.preference.PreferenceManager
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -128,6 +127,11 @@ class CustomizeActivity : ThemeActivity() {
 
             updateColor(true)
         }
+    }
+
+    override fun onPostResume() {
+        super.onPostResume()
+        updateColor(true)
     }
 
     @SuppressLint("RestrictedApi")

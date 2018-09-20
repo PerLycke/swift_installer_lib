@@ -227,14 +227,14 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
             super.updateView(palette, selection)
             if (selection.containsKey("samsung_oreo_clock")) {
                 val clockSelection = selection["samsung_oreo_clock"]
-                settingsPreview!!.clock_right.setVisible(clockSelection == "right")
-                settingsPreview!!.clock_left.setVisible(clockSelection == "left")
-                settingsPreview!!.clock_centered.setVisible(clockSelection == "centered")
+                settingsPreview?.clock_right?.setVisible(clockSelection == "right")
+                settingsPreview?.clock_left?.setVisible(clockSelection == "left")
+                settingsPreview?.clock_centered?.setVisible(clockSelection == "centered")
             }
 
             if (selection.containsKey("samsung_oreo_qs_alpha")) {
                 val qsAlpha = selection.getInt("samsung_oreo_qs_alpha")
-                systemUiPreview!!.preview_wallpaper.setColorFilter(
+                systemUiPreview?.preview_wallpaper?.setColorFilter(
                         ColorUtils.addAlphaColor(palette.backgroundColor,
                                 qsAlpha), PorterDuff.Mode.SRC_OVER)
             }
@@ -242,12 +242,12 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
             if (selection.containsKey("samsung_oreo_notif_style")) {
                 val darkNotif = (selection["notif_background"]) == "dark"
                 if (selection["samsung_oreo_notif_style"] == "p") {
-                    systemUiPreview!!.notif_bg_layout.setImageResource(R.drawable.notif_bg_rounded)
+                    systemUiPreview?.notif_bg_layout?.setImageResource(R.drawable.notif_bg_rounded)
                     if (darkNotif) {
-                        systemUiPreview!!.notif_bg_layout.drawable.setTint(
+                        systemUiPreview?.notif_bg_layout?.drawable?.setTint(
                                 ColorUtils.handleColor(palette.backgroundColor, 8))
                     } else {
-                        systemUiPreview!!.notif_bg_layout.drawable.setTint(
+                        systemUiPreview?.notif_bg_layout?.drawable?.setTint(
                                 Color.parseColor("#f5f5f5"))
 
                     }
