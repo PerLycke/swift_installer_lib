@@ -22,14 +22,16 @@
 package com.brit.swiftinstaller.library.ui.activities
 
 import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.*
+import android.os.Build
+import android.os.Bundle
+import android.os.Environment
+import android.os.Handler
 import android.preference.PreferenceManager
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -44,8 +46,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_install_summary.*
 import kotlinx.android.synthetic.main.tab_layout_install_summary.*
+import org.jetbrains.anko.doAsync
 import java.io.File
-import java.lang.ref.WeakReference
 
 class InstallSummaryActivity : ThemeActivity() {
 
@@ -142,11 +144,43 @@ class InstallSummaryActivity : ThemeActivity() {
         mErrorMap.clear()
         mErrorMap.putAll(swift.errorMap)
         mPagerAdapter.clearApps()
-        AppLoader(this, mApps, mErrorMap, update, object : OverlaysActivity.Callback {
-            override fun updateApps(tab: Int, item: AppItem) {
-                mPagerAdapter.addApp(tab, item)
+
+        doAsync {
+            val pm = this@InstallSummaryActivity.packageManager
+            mApps.addAll(mErrorMap.keys)
+            for (pn: String in mApps) {
+                var info: ApplicationInfo? = null
+                var pInfo: PackageInfo? = null
+                try {
+                    info = pm.getApplicationInfo(pn, PackageManager.GET_META_DATA)
+                    pInfo = pm.getPackageInfo(pn, 0)
+                } catch (ex: Exception) {
+                }
+                if (info != null) {
+                    val item = AppItem()
+                    item.packageName = pn
+                    item.icon = pm.getApplicationIcon(item.packageName)
+                    item.title = info.loadLabel(pm) as String
+                    item.versionCode = pInfo!!.getVersionCode()
+                    item.versionName = pInfo.versionName
+                    if (mErrorMap.keys.contains(pn)) {
+                        mPagerAdapter.addApp(FAILED_TAB, item)
+                    } else if (swift.romInfo.isOverlayInstalled(pn)) {
+                        if (update && !OverlayUtils.wasUpdateSuccessful(this@InstallSummaryActivity, item.packageName)) {
+                            mErrorMap[pn] = "Update Failed"
+                            mPagerAdapter.addApp(FAILED_TAB, item)
+                        } else {
+                            mPagerAdapter.addApp(SUCCESS_TAB, item)
+                            removeAppToUpdate(this@InstallSummaryActivity, item.packageName)
+                        }
+                    } else {
+                        mErrorMap[pn] = "Install Cancelled"
+                        LocalBroadcastManager.getInstance(this@InstallSummaryActivity.applicationContext).sendBroadcast(Intent(ACTION_INSTALL_CANCELLED))
+                        mPagerAdapter.addApp(FAILED_TAB, item)
+                    }
+                }
             }
-        }).execute()
+        }
 
         if (!ShellUtils.isRootAvailable && mErrorMap.isNotEmpty()) {
             send_email_layout.visibility = View.VISIBLE
@@ -257,67 +291,5 @@ class InstallSummaryActivity : ThemeActivity() {
 
         emailIntent.putExtra(Intent.EXTRA_TEXT, text.toString())
         startActivity(emailIntent)
-    }
-
-    class AppLoader(context: Context, val apps: ArrayList<String>,
-                    private val errorMap: HashMap<String, String>,
-                    private val update: Boolean,
-                    private val mCallback: OverlaysActivity.Callback) :
-            AsyncTask<Void, AppLoader.Progress, Void>() {
-
-        private val mConRef: WeakReference<Context> = WeakReference(context)
-        private val mHandler = Handler()
-
-        class Progress(val tab: Int, val item: AppItem)
-
-        override fun doInBackground(vararg params: Void?): Void? {
-            assert(mConRef.get() != null)
-            val pm = mConRef.get()!!.packageManager
-            val context = mConRef.get()
-
-            apps.addAll(errorMap.keys)
-            for (pn: String in apps) {
-                if (context == null) continue
-                var info: ApplicationInfo? = null
-                var pInfo: PackageInfo? = null
-                try {
-                    info = pm.getApplicationInfo(pn, PackageManager.GET_META_DATA)
-                    pInfo = pm.getPackageInfo(pn, 0)
-                } catch (ex: Exception) {
-                }
-                if (info != null) {
-                    val item = AppItem()
-                    item.packageName = pn
-                    item.icon = pm.getApplicationIcon(item.packageName)
-                    item.title = info.loadLabel(pm) as String
-                    item.versionCode = pInfo!!.getVersionCode()
-                    item.versionName = pInfo.versionName
-                    if (errorMap.keys.contains(pn)) {
-                        onProgressUpdate(Progress(FAILED_TAB, item))
-                    } else if (context.swift.romInfo.isOverlayInstalled(pn)) {
-                        if (update && !OverlayUtils.wasUpdateSuccessful(context, item.packageName)) {
-                            errorMap[pn] = "Update Failed"
-                            onProgressUpdate(Progress(FAILED_TAB, item))
-                        } else {
-                            onProgressUpdate(Progress(SUCCESS_TAB, item))
-                            removeAppToUpdate(context, item.packageName)
-                        }
-                    } else {
-                        errorMap[pn] = "Install Cancelled"
-                        LocalBroadcastManager.getInstance(context.applicationContext).sendBroadcast(Intent(ACTION_INSTALL_CANCELLED))
-                        onProgressUpdate(Progress(FAILED_TAB, item))
-                    }
-                }
-            }
-            return null
-        }
-
-        override fun onProgressUpdate(vararg progress: Progress?) {
-            super.onProgressUpdate(*progress)
-            mHandler.post {
-                mCallback.updateApps(progress[0]!!.tab, progress[0]!!.item)
-            }
-        }
-
     }
 }
