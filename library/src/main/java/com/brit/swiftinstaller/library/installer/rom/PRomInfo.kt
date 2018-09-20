@@ -33,10 +33,8 @@ import android.view.View
 import androidx.browser.customtabs.CustomTabsIntent
 import com.brit.swiftinstaller.library.R
 import android.graphics.drawable.LayerDrawable
-import com.brit.swiftinstaller.library.ui.customize.CategoryMap
-import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
-import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
-import com.brit.swiftinstaller.library.ui.customize.PreviewHandler
+import android.os.Build
+import com.brit.swiftinstaller.library.ui.customize.*
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
 import com.hololo.tutorial.library.Step
@@ -205,6 +203,11 @@ open class PRomInfo(context: Context) : RomInfo(context) {
 
     override fun createCustomizeHandler(): CustomizeHandler {
         return object : CustomizeHandler(context) {
+            override fun getDefaultSelection(): CustomizeSelection {
+                val selection = super.getDefaultSelection()
+                selection["stock_pie_icons"] = "default_icons"
+                return selection
+            }
             override fun createPreviewHandler(context: Context) : PreviewHandler {
                 return object : PreviewHandler(context) {
                     override fun updateIcons(selection: CustomizeSelection) {
@@ -241,9 +244,23 @@ open class PRomInfo(context: Context) : RomInfo(context) {
                     }
                 }
             }
+
             override fun populateCustomizeOptions(categories: CategoryMap) {
-                categories["notif_background"]!!.options["dark"]!!.subOptions.clear()
+                if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P) {
+                    populatePieCustomizeOptions(categories)
+                }
+                super.populateCustomizeOptions(categories)
             }
+
         }
+    }
+
+    private fun populatePieCustomizeOptions(categories: CategoryMap) {
+        val requiredApps = ArrayList<String>()
+        val pieIconOptions = OptionsMap()
+        pieIconOptions.add(Option(context.getString(R.string.stock_icons), "stock_accented"))
+        pieIconOptions.add(Option(context.getString(R.string.stock_icons_multi), "default_icons"))
+        requiredApps.add("com.android.settings")
+        categories.add(CustomizeCategory(context.getString(R.string.category_icons), "stock_pie_icons", "default_icons", pieIconOptions, requiredApps))
     }
 }
