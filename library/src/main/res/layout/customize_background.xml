@@ -157,8 +157,8 @@
     <GridView
         android:id="@+id/background_palette"
         android:layout_width="0dp"
-        android:layout_height="160dp"
-        android:layout_marginTop="24dp"
+        android:layout_height="168dp"
+        android:layout_marginTop="16dp"
         android:columnWidth="50dp"
         android:gravity="center"
         android:numColumns="3"

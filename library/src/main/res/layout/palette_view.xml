@@ -31,8 +31,7 @@
         android:id="@+id/background_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:foreground="@drawable/item_background_rounded_light">
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/indicator"
@@ -50,6 +49,7 @@
             android:id="@+id/background_icon"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:background="?android:selectableItemBackgroundBorderless"
             android:contentDescription="@string/image"
@@ -62,7 +62,7 @@
             android:id="@+id/background_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="6dp"
             android:fontFamily="sans-serif"
             android:text="@string/swift_style"
             app:layout_constraintEnd_toEndOf="@+id/background_icon"

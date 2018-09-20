@@ -126,14 +126,14 @@ class CustomizeActivity : ThemeActivity() {
 
             baseThemeInfo.setOnClickListener(infoListener(getString(R.string.base_theme_dialog_title), getString(R.string.base_theme_dialog_info)))
             baseThemeInfo.setOnClickListener(infoListener(getString(R.string.base_theme_dialog_title), getString(R.string.base_theme_dialog_info)))
-
-            updateColor(true)
         }
     }
 
-    override fun onPostResume() {
-        super.onPostResume()
-        updateColor(true)
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        handler.post {
+            updateColor(true)
+        }
     }
 
     @SuppressLint("RestrictedApi")
@@ -636,6 +636,7 @@ class CustomizeActivity : ThemeActivity() {
                     selection.backgroundColor = colors[position].backgroundColor
                     updateColor(true)
                 }
+                mainView.isEnabled = false
             }
             return mainView
         }
