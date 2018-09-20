@@ -117,6 +117,8 @@ abstract class PreviewHandler(val context: Context) {
     }
 
     open fun updateAccentColor(accentColor: Int) {
+
+        settingsPreview!!.searchbar_search_icon.setColorFilter(accentColor)
     }
 
     open fun updateBackgroundColor(palette: MaterialPalette) {
