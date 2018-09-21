@@ -186,6 +186,6 @@
 You can find it: </string>
     <string name="magisk_module_link_text">HERE</string>
     <string name="changelog">Changelog</string>
-    <string name="magisk_module">Magisk Module For Pie: %s</string>
-    <string name="rescue_zip_pie">TWRP Flashable Rescue Zip: %s</string>
+    <string name="magisk_module">Magisk module for Pie: %s</string>
+    <string name="rescue_zip_pie">TWRP flashable rescue zip: %s</string>
 </resources>
