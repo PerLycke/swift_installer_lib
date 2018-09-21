@@ -96,7 +96,7 @@ class InstallActivity : ThemeActivity() {
     fun uninstallComplete() {
         val intent = Intent(this@InstallActivity,
                 UninstallFinishedActivity::class.java)
-        swift.romInfo.postInstall(true, apps, null, intent)
+        startActivity(intent)
         finish()
     }
 
