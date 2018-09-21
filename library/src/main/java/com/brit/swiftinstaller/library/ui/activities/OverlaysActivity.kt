@@ -40,12 +40,8 @@ import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.applist.AppItem
 import com.brit.swiftinstaller.library.ui.applist.AppListFragment
 import com.brit.swiftinstaller.library.ui.applist.AppsTabPagerAdapter
+import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getAvailableOverlayVersions
-import com.brit.swiftinstaller.library.utils.UpdateChecker
-import com.brit.swiftinstaller.library.utils.Utils
-import com.brit.swiftinstaller.library.utils.alert
-import com.brit.swiftinstaller.library.utils.getAppsToUpdate
-import com.brit.swiftinstaller.library.utils.swift
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_overlays.*
@@ -68,7 +64,6 @@ class OverlaysActivity : ThemeActivity() {
     private var mPagerAdapter: AppsTabPagerAdapter? = null
     private lateinit var mViewPager: ViewPager
     private var overlaysList = ArrayList<AppItem>()
-    private var hasUpdate = false
     private var checked = 0
     private var apps = 0
     private val mHandler = Handler()
@@ -282,7 +277,6 @@ class OverlaysActivity : ThemeActivity() {
                     if (updates.contains(pn)
                             && status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
                         updatesTabList.add(item)
-                        hasUpdate = true
                     } else {
                         activeTabsList.add(item)
                     }
@@ -307,13 +301,16 @@ class OverlaysActivity : ThemeActivity() {
                     apps = mPagerAdapter!!.getCheckableCount(this@OverlaysActivity,
                             container.currentItem)
                     uiThread { _ ->
-                        if (hasUpdate) {
-                            update_tab_indicator.visibility = View.VISIBLE
-                        }
                         setBackgroundImage()
                         loading_progress.visibility = View.INVISIBLE
                         select_all_btn.visibility = View.VISIBLE
                         select_all_btn.isClickable = true
+
+                        if (!updatesTabList.isEmpty()) {
+                            update_tab_indicator.visibility = View.VISIBLE
+                        } else if (update_tab_indicator.visibility == View.VISIBLE) {
+                            update_tab_indicator.visibility = View.GONE
+                        }
                     }
                 }
             }
