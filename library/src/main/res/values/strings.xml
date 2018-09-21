@@ -149,7 +149,7 @@
     <string name="empty_list_active">No active overlays</string>
     <string name="empty_list_updates">No updates available</string>
     <string name="help_msg">Here are some useful links if you need help:</string>
-    <string name="link_telegram">Telegram chat support: https://goo.gl/tpPji0</string>
+    <string name="telegram_support">Telegram chat support: %s</string>
     <string name="reboot_notif_title">System almost themed!…</string>
     <string name="reboot_notif_msg">New overlays were enabled at boot. The last step is to make a quick reboot in order for all apps to reload with the new colors. Tap this notification to proceed</string>
     <string name="reboot_dialog_title">Reboot</string>
@@ -160,14 +160,15 @@
     <string name="installation_failed">Installation failed</string>
     <string name="reboot_now_title">Reboot now?</string>
     <string name="info_card_compatibility_msg">Note that we cannot guarantee a stable experience if you use Swift Installer in combination with other themes or mods.</string>
-    <string name="link_faq">FAQ: https://goo.gl/F4V5j1</string>
+    <string name="faq">FAQ: %s</string>
     <string name="link_apps">Supported apps: https://goo.gl/gS84kK</string>
     <string name="no_root_msg">Root access is required for the Installer to work. We inform about this in the Play Store description. You can request a refund from the Play Store, or email us with your GPA code for a manual refund. Email is swiftuserhelp@gmail.com</string>
     <string name="exit">Exit</string>
     <string name="requesting_root_access">Requesting root access…</string>
     <string name="search_in_settings">Search in Settings</string>
     <string name="help">Help</string>
-    <string name="installer_version">Installer library version:</string>
+    <string name="installer_version">Swift Installer version: %s (%d)</string>
+    <string name="installer_library_version">Installer library version: %s (%d)</string>
     <string name="installer_source_link">https://github.com/PerLycke/swift_installer_lib</string>
     <string name="settings_title">Settings</string>
     <string name="soft_reboot_title">Use soft reboot</string>
@@ -185,6 +186,6 @@
 You can find it: </string>
     <string name="magisk_module_link_text">HERE</string>
     <string name="changelog">Changelog</string>
-    <string name="link_magisk">Magisk Module For Pie: https://goo.gl/6NHTHd</string>
-    <string name="link_rescue_pie">TWRP Flashable Rescue Zip: https://goo.gl/NgQxe3</string>
+    <string name="magisk_module">Magisk Module For Pie: %s</string>
+    <string name="rescue_zip_pie">TWRP Flashable Rescue Zip: %s</string>
 </resources>

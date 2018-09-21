@@ -2,8 +2,8 @@ package com.brit.swiftinstaller.library.utils
 
 import android.content.Context
 import android.content.DialogInterface
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.LayerDrawable
 import android.view.KeyEvent
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -12,6 +12,10 @@ import org.jetbrains.anko.AlertBuilder
 import org.jetbrains.anko.internals.AnkoInternals
 import org.jetbrains.anko.internals.AnkoInternals.NO_GETTER
 import kotlin.DeprecationLevel.ERROR
+import android.text.method.LinkMovementMethod
+import android.widget.TextView
+
+
 
 class SwiftAlertBuilder(override val ctx: Context) : AlertBuilder<AlertDialog> {
     private val builder = AlertDialog.Builder(ctx, R.style.AppTheme_AlertDialog)
@@ -129,8 +133,12 @@ class SwiftAlertBuilder(override val ctx: Context) : AlertBuilder<AlertDialog> {
             dialog.getButton(
                     android.app.AlertDialog.BUTTON_NEGATIVE)
                     .setTextColor(ctx.swift.selection.accentColor)
-            dialog.window?.setBackgroundDrawable(
-                    ColorDrawable(ctx.swift.selection.backgroundColor))
+            val dialogBg = ctx.getDrawable(R.drawable.dialog_bg) as LayerDrawable
+            dialogBg.findDrawableByLayerId(R.id.dialog_bg).setTint(ctx.swift.selection.backgroundColor)
+            dialog.window?.setBackgroundDrawable(dialogBg)
+            dialog.findViewById<TextView>(android.R.id.message)?.movementMethod =
+                    LinkMovementMethod.getInstance()
+
         }
         dialog.setCanceledOnTouchOutside(false)
         return dialog

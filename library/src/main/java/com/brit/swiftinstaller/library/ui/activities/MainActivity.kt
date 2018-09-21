@@ -47,6 +47,7 @@ import com.brit.swiftinstaller.library.utils.UpdateChecker
 import com.brit.swiftinstaller.library.utils.Utils
 import com.brit.swiftinstaller.library.utils.alert
 import com.brit.swiftinstaller.library.utils.getUseSoftReboot
+import com.brit.swiftinstaller.library.utils.getVersionCode
 import com.brit.swiftinstaller.library.utils.quickRebootCommand
 import com.brit.swiftinstaller.library.utils.rebootCommand
 import com.brit.swiftinstaller.library.utils.swift
@@ -54,8 +55,6 @@ import kotlinx.android.synthetic.main.card_compatibility_info.*
 import kotlinx.android.synthetic.main.card_install.*
 import kotlinx.android.synthetic.main.card_update.*
 import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.dialog_about.view.*
-import kotlinx.android.synthetic.main.dialog_help.view.*
 import kotlinx.android.synthetic.main.popup_menu.view.*
 import org.jetbrains.anko.doAsync
 
@@ -192,20 +191,20 @@ class MainActivity : ThemeActivity() {
         popupView.popup_menu_about.setOnClickListener { _ ->
             popup.dismiss()
             alert {
+                title = getString(R.string.swift_app_name)
 
-                val dialogView = View.inflate(ctx, R.layout.dialog_about, null)
+                val pi = packageManager.getPackageInfo(packageName, 0)
+                val m = getString(R.string.installer_version, pi.versionName, pi.getVersionCode()) + "\n\n" +
+                        getString(R.string.installer_library_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE) + "\n\n" +
+                        getString(R.string.installer_source_link)
+                val l = getString(R.string.installer_source_link)
 
-                customView = dialogView
-                show()
+                message = Utils.createLinkedString(this@MainActivity, m, l)
 
-                val dialog = build()
-
-                dialogView.about_ok_btn.setOnClickListener {
+                positiveButton(R.string.ok) { dialog ->
                     dialog.dismiss()
                 }
-                dialogView.installer_version.text = BuildConfig.VERSION_NAME
-
-                dialog.show()
+                show()
             }
         }
 
@@ -213,19 +212,33 @@ class MainActivity : ThemeActivity() {
             popup.dismiss()
 
             alert {
-                val dialogView = View.inflate(ctx, R.layout.dialog_help, null)
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
-                    dialogView.magisk_link.visibility = View.GONE
-                    dialogView.rescue_pie.visibility = View.GONE
+                title = getString(R.string.help)
+
+                val m = "${getString(R.string.help_msg)} \n\n" +
+                        "${getString(R.string.faq, getString(R.string.link_faq))} \n\n" +
+                        getString(R.string.telegram_support, getString(R.string.link_telegram)) +
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                            "\n\n${getString(R.string.magisk_module,
+                                    getString(R.string.link_magisk))} \n\n" +
+                                    "${getString(R.string.rescue_zip_pie,
+                                            getString(R.string.link_rescue_zip))} "
+                        } else {
+                            ""
+                        }
+
+                var mes = Utils.createLinkedString(ctx, m, getString(R.string.link_faq))
+                mes = Utils.createLinkedString(ctx, mes, getString(R.string.link_telegram))
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    mes = Utils.createLinkedString(ctx, mes, getString(R.string.link_magisk))
+                    mes = Utils.createLinkedString(ctx, mes, getString(R.string.link_rescue_zip))
                 }
-                customView = dialogView
 
-                val dialog = build()
+                message = mes
 
-                dialogView.help_ok_btn.setOnClickListener {
+                positiveButton(R.string.ok) { dialog ->
                     dialog.dismiss()
                 }
-                dialog.show()
+                show()
             }
         }
         popupView.popup_menu_settings.setOnClickListener {

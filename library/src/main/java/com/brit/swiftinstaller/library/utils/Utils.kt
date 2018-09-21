@@ -28,7 +28,15 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.net.Uri
 import android.os.Build
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ClickableSpan
+import android.text.style.ForegroundColorSpan
+import android.view.View
+import androidx.browser.customtabs.CustomTabsIntent
+import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.applist.AppItem
 
 object Utils {
@@ -105,5 +113,25 @@ object Utils {
         paint.color = color
         canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paint)
         return bitmap
+    }
+
+    fun createLinkedString(ctx: Context, m: CharSequence, l: String): SpannableString {
+        val click = object : ClickableSpan() {
+            override fun onClick(p0: View) {
+                val url = ctx.getString(R.string.installer_source_link)
+                val builder = CustomTabsIntent.Builder()
+                val intent = builder.build()
+                intent.launchUrl(ctx, Uri.parse(url))
+            }
+        }
+
+        m.indexOf(l)
+
+        val color = ForegroundColorSpan(ctx.swift.selection.accentColor)
+        val ss = SpannableString(m)
+        ss.setSpan(click, m.indexOf(l), m.indexOf(l) + l.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        ss.setSpan(color, m.indexOf(l), m.indexOf(l) + l.length, Spanned.SPAN_EXCLUSIVE_INCLUSIVE)
+        return ss
     }
 }
