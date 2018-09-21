@@ -30,6 +30,7 @@ import android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
 import android.os.AsyncTask
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.activities.OverlaysActivity
+import com.brit.swiftinstaller.library.ui.applist.AppList
 import java.lang.ref.WeakReference
 
 class UpdateChecker(context: Context, private val callback: Callback?) :
@@ -64,6 +65,13 @@ class UpdateChecker(context: Context, private val callback: Callback?) :
     override fun onPostExecute(result: Output?) {
         super.onPostExecute(result)
         callback?.finished(result!!.installedCount, result.updates)
+        result?.let {
+            mConRef.get()?.let { ctx ->
+                it.updates.forEach { packageName ->
+                    AppList.addApp(ctx, packageName)
+                }
+            }
+        }
         if (result!!.updates.isNotEmpty() && callback == null) {
             postNotification()
         }

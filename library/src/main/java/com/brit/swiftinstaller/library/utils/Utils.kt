@@ -22,8 +22,6 @@
 package com.brit.swiftinstaller.library.utils
 
 import android.content.Context
-import android.content.pm.ApplicationInfo
-import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -37,47 +35,8 @@ import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.browser.customtabs.CustomTabsIntent
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.library.ui.applist.AppItem
 
 object Utils {
-
-    private val sortedOverlays = arrayListOf<AppItem>()
-
-    fun sortedOverlaysList(context: Context): ArrayList<AppItem> {
-        if (sortedOverlays.isNotEmpty()) return sortedOverlays
-        sortedOverlays.clear()
-        val disabledOverlays = context.swift.romInfo.getDisabledOverlays()
-        val hiddenOverlays = getHiddenApps(context)
-        val pm = context.packageManager
-        val overlays = context.assets.list("overlays") ?: emptyArray()
-        val extras = context.swift.extrasHandler.appExtras.keys
-        for (pn: String in overlays.subtract(extras).plus(extras)) {
-            if (!extras.contains(pn) && disabledOverlays.contains(pn)) continue
-            if (hiddenOverlays.contains(pn)) continue
-            var info: ApplicationInfo?
-            var pInfo: PackageInfo?
-            try {
-                info = pm.getApplicationInfo(pn, PackageManager.GET_META_DATA)
-                pInfo = pm.getPackageInfo(pn, 0)
-            } catch (e: PackageManager.NameNotFoundException) {
-                continue
-            }
-            if (info != null) {
-                if (!info.enabled) continue
-                val item = AppItem()
-                item.packageName = pn
-                item.title = info.loadLabel(pm) as String
-                item.versionCode = pInfo!!.getVersionCode()
-                item.versionName = pInfo.versionName
-                sortedOverlays.add(item)
-            }
-        }
-        sortedOverlays.sortWith(Comparator { o1, o2 ->
-            o1.title.compareTo(o2.title)
-        })
-        Holder.overlaysList.addAll(sortedOverlays)
-        return sortedOverlays
-    }
 
     fun isAppInstalled(context: Context, packageName: String): Boolean {
         return try {

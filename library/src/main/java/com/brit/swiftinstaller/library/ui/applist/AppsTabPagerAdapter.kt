@@ -28,13 +28,14 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.brit.swiftinstaller.library.ui.activities.InstallSummaryActivity
 import com.brit.swiftinstaller.library.utils.OverlayUtils.checkVersionCompatible
+import com.brit.swiftinstaller.library.utils.SynchronizeArrayList
 import com.brit.swiftinstaller.library.utils.swift
 
 class AppsTabPagerAdapter(fm: FragmentManager, summary: Boolean, vararg tabs: Int) :
         FragmentPagerAdapter(fm) {
 
-    private val mApps = HashMap<Int, ArrayList<AppItem>>()
-    private var mFragments: ArrayList<AppListFragment> = ArrayList()
+    private val mApps = HashMap<Int, SynchronizeArrayList<AppItem>>()
+    private var mFragments: SynchronizeArrayList<AppListFragment> = SynchronizeArrayList()
     private val requiredApps = HashMap<Int, Array<String>>()
     private val mHandler = Handler()
 
@@ -42,7 +43,7 @@ class AppsTabPagerAdapter(fm: FragmentManager, summary: Boolean, vararg tabs: In
         for (index in tabs) {
             mFragments.add(AppListFragment.instance(summary,
                     (index == InstallSummaryActivity.FAILED_TAB)))
-            mApps[index] = ArrayList()
+            mApps[index] = SynchronizeArrayList()
         }
     }
 

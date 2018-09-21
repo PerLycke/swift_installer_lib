@@ -24,6 +24,7 @@ package com.brit.swiftinstaller.library
 import android.content.Intent
 import android.content.IntentFilter
 import com.brit.swiftinstaller.library.installer.rom.RomInfo
+import com.brit.swiftinstaller.library.ui.applist.AppList
 import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
 import com.brit.swiftinstaller.library.utils.AppExtrasHandler
 import com.brit.swiftinstaller.library.utils.PackageListener
@@ -31,6 +32,7 @@ import com.topjohnwu.superuser.BuildConfig
 import com.topjohnwu.superuser.BusyBox
 import com.topjohnwu.superuser.ContainerApp
 import com.topjohnwu.superuser.Shell
+import org.jetbrains.anko.doAsync
 import javax.crypto.Cipher
 
 open class SwiftApplication : ContainerApp() {
@@ -64,6 +66,10 @@ open class SwiftApplication : ContainerApp() {
         cipher = createCipher()
 
         startReceivers()
+
+        doAsync {
+            AppList.initLists(this@SwiftApplication)
+        }
 
         Shell.Config.verboseLogging(BuildConfig.DEBUG)
         Shell.Config.setFlags(Shell.FLAG_REDIRECT_STDERR)

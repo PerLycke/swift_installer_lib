@@ -24,8 +24,6 @@ package com.brit.swiftinstaller.library.ui.activities
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Handler
@@ -38,6 +36,7 @@ import androidx.viewpager.widget.ViewPager
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.applist.AppItem
+import com.brit.swiftinstaller.library.ui.applist.AppList
 import com.brit.swiftinstaller.library.ui.applist.AppListFragment
 import com.brit.swiftinstaller.library.ui.applist.AppsTabPagerAdapter
 import com.brit.swiftinstaller.library.utils.*
@@ -50,6 +49,7 @@ import kotlinx.android.synthetic.main.tab_layout_overlay.*
 import kotlinx.android.synthetic.main.tab_overlays_updates.*
 import kotlinx.android.synthetic.main.toolbar_overlays.*
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.runOnUiThread
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
 
@@ -60,10 +60,8 @@ class OverlaysActivity : ThemeActivity() {
         private const val ACTIVE_TAB = 1
         const val UPDATE_TAB = 2
     }
-
-    private var mPagerAdapter: AppsTabPagerAdapter? = null
+    private lateinit var mPagerAdapter: AppsTabPagerAdapter
     private lateinit var mViewPager: ViewPager
-    private var overlaysList = ArrayList<AppItem>()
     private var checked = 0
     private var apps = 0
     private val mHandler = Handler()
@@ -72,11 +70,10 @@ class OverlaysActivity : ThemeActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_overlays)
 
-        overlaysList = Holder.overlaysList
 
         mPagerAdapter = AppsTabPagerAdapter(supportFragmentManager,
                 false, INSTALL_TAB, ACTIVE_TAB, UPDATE_TAB)
-        mPagerAdapter!!.setAlertIconClickListener(object : AppListFragment.AlertIconClickListener {
+        mPagerAdapter.setAlertIconClickListener(object : AppListFragment.AlertIconClickListener {
             override fun onAlertIconClick(appItem: AppItem) {
                 val packageInfo = packageManager.getPackageInfo(appItem.packageName, 0)
                 alert {
@@ -93,28 +90,28 @@ class OverlaysActivity : ThemeActivity() {
                 }
             }
         })
-        mPagerAdapter!!.setAppCheckBoxClickListener(object :
+        mPagerAdapter.setAppCheckBoxClickListener(object :
                 AppListFragment.AppCheckBoxClickListener {
             override fun onCheckBoxClick(appItem: AppItem) {
                 if (select_all_btn.isChecked) {
                     select_all_btn.isChecked = false
                 }
                 mHandler.post {
-                    checked = mPagerAdapter!!.getCheckedCount(container.currentItem)
+                    checked = mPagerAdapter.getCheckedCount(container.currentItem)
                 }
             }
         })
-        mPagerAdapter!!.setViewClickListener(object : AppListFragment.ViewClickListener {
+        mPagerAdapter.setViewClickListener(object : AppListFragment.ViewClickListener {
             override fun onClick(appItem: AppItem) {
                 if (select_all_btn.isChecked) {
                     select_all_btn.isChecked = false
                 }
                 mHandler.post {
-                    checked = mPagerAdapter!!.getCheckedCount(container.currentItem)
+                    checked = mPagerAdapter.getCheckedCount(container.currentItem)
                 }
             }
         })
-        mPagerAdapter!!.setRequiredApps(INSTALL_TAB,
+        mPagerAdapter.setRequiredApps(INSTALL_TAB,
                 swift.romInfo.getRequiredApps())
 
         search_view.setOnSearchClickListener {
@@ -128,7 +125,7 @@ class OverlaysActivity : ThemeActivity() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                mPagerAdapter!!.querySearch(container.currentItem, newText!!)
+                mPagerAdapter.querySearch(container.currentItem, newText!!)
                 return true
             }
         })
@@ -146,16 +143,16 @@ class OverlaysActivity : ThemeActivity() {
 
         select_all_btn.setOnClickListener {
             if (checked == apps) {
-                mPagerAdapter!!.selectAll(container.currentItem, false)
+                mPagerAdapter.selectAll(container.currentItem, false)
                 if (select_all_btn.isChecked) {
                     select_all_btn.isChecked = false
                 }
             } else {
-                mPagerAdapter!!.selectAll(container.currentItem, true)
+                mPagerAdapter.selectAll(container.currentItem, true)
             }
-            mPagerAdapter!!.notifyFragmentDataSetChanged(container.currentItem)
+            mPagerAdapter.notifyFragmentDataSetChanged(container.currentItem)
             mHandler.post {
-                checked = mPagerAdapter!!.getCheckedCount(container.currentItem)
+                checked = mPagerAdapter.getCheckedCount(container.currentItem)
             }
         }
 
@@ -174,12 +171,12 @@ class OverlaysActivity : ThemeActivity() {
 
             override fun onPageSelected(position: Int) {
                 doAsync {
-                    apps = mPagerAdapter!!.getCheckableCount(this@OverlaysActivity,
+                    apps = mPagerAdapter.getCheckableCount(this@OverlaysActivity,
                             container.currentItem)
                 }
-                val checked = mPagerAdapter!!.getCheckedCount(position)
+                val checked = mPagerAdapter.getCheckedCount(position)
                 select_all_btn.isChecked =
-                        checked == mPagerAdapter!!.getAppsCount(position) && checked > 0
+                        checked == mPagerAdapter.getAppsCount(position) && checked > 0
                 setBackgroundImage()
             }
 
@@ -188,11 +185,15 @@ class OverlaysActivity : ThemeActivity() {
         if (intent.hasExtra("tab")) {
             mViewPager.currentItem = intent.getIntExtra("tab", 0)
         }
+
+        AppList.addSubscriber {
+            updateAdapter()
+        }
     }
 
     private fun setBackgroundImage() {
 
-        if (mPagerAdapter!!.getAppsCount(container.currentItem) == 0) {
+        if (mPagerAdapter.getAppsCount(container.currentItem) == 0) {
             when (container.currentItem) {
                 0 -> {
                     empty_list_image.setImageDrawable(getDrawable(R.drawable.ic_empty_inactive))
@@ -242,74 +243,42 @@ class OverlaysActivity : ThemeActivity() {
         if (select_all_btn.isChecked) {
             select_all_btn.isChecked = false
         }
-        updateAdapter()
+        mHandler.post {
+            updateAdapter()
+        }
     }
 
-    fun updateAdapter() {
+    @Synchronized
+    private fun updateAdapter() {
         select_all_btn.visibility = View.INVISIBLE
         select_all_btn.isClickable = false
         loading_progress.visibility = View.VISIBLE
         loading_progress.indeterminateDrawable.setColorFilter(swift.selection.accentColor,
                 PorterDuff.Mode.SRC_ATOP)
-        mPagerAdapter!!.clearApps()
+        mPagerAdapter.clearApps()
         doAsync {
-            if (overlaysList.size == 0) {
-                overlaysList = Utils.sortedOverlaysList(this@OverlaysActivity)
+            AppList.inactiveApps.forEach {
+                mPagerAdapter.addApp(INSTALL_TAB, it)
             }
-            val context = this@OverlaysActivity
-            val updates = getAppsToUpdate(context)
-            val pm = context.packageManager
-            val installTabList = arrayListOf<AppItem>()
-            val activeTabsList = arrayListOf<AppItem>()
-            val updatesTabList = arrayListOf<AppItem>()
-            for (item in overlaysList) {
-                var status: Int?
-                val pn = item.packageName
-                item.icon = pm.getApplicationIcon(item.packageName)
-                try {
-                    status = pm.getApplicationEnabledSetting(pn)
-                } catch (e: PackageManager.NameNotFoundException) {
-                    continue
-                }
-                if (swift.romInfo.isOverlayInstalled(pn)) {
-                    if (updates.contains(pn)
-                            && status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
-                        updatesTabList.add(item)
-                    } else {
-                        activeTabsList.add(item)
-                    }
-                } else if (status != COMPONENT_ENABLED_STATE_DISABLED_USER) {
-                    installTabList.add(item)
-                }
+            AppList.activeApps.forEach {
+                mPagerAdapter.addApp(ACTIVE_TAB, it)
             }
-
-            for (i in installTabList) {
-                mPagerAdapter!!.addApp(INSTALL_TAB, i)
+            AppList.appUpdates.forEach {
+                mPagerAdapter.addApp(UPDATE_TAB, it)
             }
-            for (i in activeTabsList) {
-                mPagerAdapter!!.addApp(ACTIVE_TAB, i)
-            }
-            for (i in updatesTabList) {
-                mPagerAdapter!!.addApp(UPDATE_TAB, i)
-            }
-
             uiThread { _ ->
-                doAsync {
-                    checked = mPagerAdapter!!.getCheckedCount(container.currentItem)
-                    apps = mPagerAdapter!!.getCheckableCount(this@OverlaysActivity,
-                            container.currentItem)
-                    uiThread { _ ->
-                        setBackgroundImage()
-                        loading_progress.visibility = View.INVISIBLE
-                        select_all_btn.visibility = View.VISIBLE
-                        select_all_btn.isClickable = true
+            checked = mPagerAdapter.getCheckedCount(container.currentItem)
+            apps = mPagerAdapter.getCheckableCount(this@OverlaysActivity,
+                    container.currentItem)
+                setBackgroundImage()
+                loading_progress.visibility = View.INVISIBLE
+                select_all_btn.visibility = View.VISIBLE
+                select_all_btn.isClickable = true
 
-                        if (!updatesTabList.isEmpty()) {
-                            update_tab_indicator.visibility = View.VISIBLE
-                        } else if (update_tab_indicator.visibility == View.VISIBLE) {
-                            update_tab_indicator.visibility = View.GONE
-                        }
-                    }
+                if (!AppList.appUpdates.isEmpty()) {
+                    update_tab_indicator.visibility = View.VISIBLE
+                } else if (update_tab_indicator.visibility == View.VISIBLE) {
+                    update_tab_indicator.visibility = View.GONE
                 }
             }
         }
@@ -321,7 +290,7 @@ class OverlaysActivity : ThemeActivity() {
     }
 
     private fun getCheckedItems(index: Int): ArrayList<AppItem> {
-        return mPagerAdapter!!.getCheckedItems(index)
+        return mPagerAdapter.getCheckedItems(index)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -477,7 +446,6 @@ class OverlaysActivity : ThemeActivity() {
         }
         UpdateChecker(this, object : UpdateChecker.Callback() {
             override fun finished(installedCount: Int, updates: ArrayList<String>) {
-                updateAdapter()
             }
         }).execute()
         val intent = Intent(this, InstallActivity::class.java)

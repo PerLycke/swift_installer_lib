@@ -48,6 +48,7 @@ import com.brit.swiftinstaller.library.utils.MaterialPalette
 import com.brit.swiftinstaller.library.utils.OverlayUtils
 import com.brit.swiftinstaller.library.utils.OverlayUtils.checkVersionCompatible
 import com.brit.swiftinstaller.library.utils.OverlayUtils.overlayHasVersion
+import com.brit.swiftinstaller.library.utils.SynchronizeArrayList
 import com.brit.swiftinstaller.library.utils.getAppsToUpdate
 import com.brit.swiftinstaller.library.utils.getHiddenApps
 import com.brit.swiftinstaller.library.utils.getHideFailedInfoCard
@@ -64,8 +65,8 @@ import kotlinx.android.synthetic.main.failed_info_card.view.*
 
 class AppListFragment : Fragment() {
 
-    var mApps: ArrayList<AppItem> = ArrayList()
-    var mVisible: ArrayList<Int> = ArrayList()
+    var mApps: SynchronizeArrayList<AppItem> = SynchronizeArrayList()
+    var mVisible: SynchronizeArrayList<Int> = SynchronizeArrayList()
 
     var requiredApps: Array<String> = emptyArray()
 

@@ -38,7 +38,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.library.ui.applist.AppItem
 import com.brit.swiftinstaller.library.ui.changelog.ChangelogHandler
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.enableAllOverlays
@@ -50,8 +49,6 @@ import kotlinx.android.synthetic.main.popup_menu.view.*
 import org.jetbrains.anko.doAsync
 
 class MainActivity : ThemeActivity() {
-
-    private var overlaysList = ArrayList<AppItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +62,6 @@ class MainActivity : ThemeActivity() {
 
         doAsync {
             enableAllOverlays()
-            Utils.sortedOverlaysList(this@MainActivity)
         }
 
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("not_closed", true)) {

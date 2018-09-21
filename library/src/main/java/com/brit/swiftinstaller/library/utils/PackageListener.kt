@@ -31,6 +31,7 @@ import android.util.Log
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.activities.OverlaysActivity
+import com.brit.swiftinstaller.library.ui.applist.AppList
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
 import org.jetbrains.anko.doAsync
 
@@ -45,6 +46,7 @@ class PackageListener : BroadcastReceiver() {
                 if (context.swift.romInfo.isOverlayInstalled(getOverlayPackageName(packageName))) {
                     context.swift.romInfo.uninstallOverlay(context, packageName)
                 }
+                AppList.removeApp(context, packageName)
             }
 
             Intent.ACTION_PACKAGE_ADDED -> {
@@ -84,6 +86,7 @@ class PackageListener : BroadcastReceiver() {
                             NotificationManager::class.java)
                     notifManager.notify(notificationID, notification)
                 }
+                AppList.addApp(context, packageName)
             }
         }
         if (BuildConfig.DEBUG) {
