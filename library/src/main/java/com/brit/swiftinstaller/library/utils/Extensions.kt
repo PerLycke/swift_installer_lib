@@ -26,7 +26,9 @@ import android.content.pm.PackageInfo
 import android.content.res.AssetManager
 import android.os.Build
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import com.brit.swiftinstaller.library.SwiftApplication
+import org.jetbrains.anko.AlertBuilder
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -43,6 +45,9 @@ fun PackageInfo.getVersionCode(): Long {
         versionCode.toLong()
     }
 }
+
+fun Context.alert(init: AlertBuilder<AlertDialog>.() -> Unit): AlertBuilder<AlertDialog> =
+        SwiftAlertBuilder(this).apply { init() }
 
 val Context.swift: SwiftApplication
     get() = applicationContext as SwiftApplication

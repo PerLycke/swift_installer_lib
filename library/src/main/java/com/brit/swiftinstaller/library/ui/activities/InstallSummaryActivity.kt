@@ -66,8 +66,6 @@ class InstallSummaryActivity : ThemeActivity() {
 
     var update = false
 
-    private var dialog: AlertDialog? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_install_summary)
@@ -210,40 +208,35 @@ class InstallSummaryActivity : ThemeActivity() {
     }
 
     private fun resultDialog() {
-        val builder = AlertDialog.Builder(this)
         val failed = mApps.size == mErrorMap.size
 
-        builder.setTitle(if (failed) {
-            R.string.installation_failed
-        } else if (!ShellUtils.isRootAvailable) {
-            R.string.reboot_to_finish
-        } else {
-            R.string.reboot_now_title
-        })
+        alert {
+            title = when {
+                failed -> getString(R.string.installation_failed)
+                !ShellUtils.isRootAvailable -> getString(R.string.reboot_to_finish)
+                else -> getString(R.string.reboot_now_title)
+            }
 
-        builder.setMessage(when {
-            failed -> R.string.examined_result_msg_error
-            mErrorMap.isNotEmpty() -> R.string.examined_result_msg
-            else -> R.string.examined_result_msg_noerror
-        })
-
-        if (ShellUtils.isRootAvailable && !failed) {
-            builder.setNegativeButton(R.string.reboot_later) { dialogInterface, _ ->
-                dialogInterface.dismiss()
+            message = when {
+                failed -> getString(R.string.examined_result_msg_error)
+                mErrorMap.isNotEmpty() -> getString(R.string.examined_result_msg)
+                else -> getString(R.string.examined_result_msg_noerror)
             }
-            builder.setPositiveButton(R.string.reboot_now) { dialogInterface, _ ->
-                dialogInterface.dismiss()
-                reboot()
+            if (ShellUtils.isRootAvailable && !failed) {
+                negativeButton(R.string.reboot_later) { dialog ->
+                    dialog.dismiss()
+                }
+                positiveButton(R.string.reboot_now) { dialog ->
+                    dialog.dismiss()
+                    reboot()
+                }
+            } else {
+                positiveButton(R.string.got_it) { dialog ->
+                    dialog.dismiss()
+                }
             }
-        } else {
-            builder.setPositiveButton(R.string.got_it) { dialogInterface, _ ->
-                dialogInterface.dismiss()
-            }
+            show()
         }
-
-        themeDialog()
-        dialog = builder.create()
-        dialog?.show()
 
         if (!failed) {
             container.currentItem = 0

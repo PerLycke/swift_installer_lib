@@ -110,21 +110,16 @@ class CustomizeActivity : ThemeActivity() {
 
             val infoListener: (String, String) -> View.OnClickListener = { title, message ->
                 View.OnClickListener {
-                    val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                    val dialogBg = getDrawable(R.drawable.dialog_bg) as LayerDrawable
-                    dialogBg.findDrawableByLayerId(R.id.dialog_bg).setTint(selection.backgroundColor)
-                    builder.setTitle(title)
-                    builder.setMessage(message)
-                    builder.setPositiveButton(R.string.ok) { dialogInterface, _ ->
-                        dialogInterface.dismiss()
+                    alert {
+                        this.title = title
+                        this.message = message
+                        positiveButton(R.string.ok) { d ->
+                            d.dismiss()
+                        }
+                        show()
                     }
-                    val dialog = builder.create()
-                    dialog.show()
-                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(selection.accentColor)
                 }
             }
-
-            baseThemeInfo.setOnClickListener(infoListener(getString(R.string.base_theme_dialog_title), getString(R.string.base_theme_dialog_info)))
             baseThemeInfo.setOnClickListener(infoListener(getString(R.string.base_theme_dialog_title), getString(R.string.base_theme_dialog_info)))
         }
     }
@@ -462,36 +457,29 @@ class CustomizeActivity : ThemeActivity() {
                                 getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "default").apply()
                                 startActivity(intent)
                             } else {
-                                val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                                        .setTitle(R.string.reboot_delay_title)
-                                        .setMessage(R.string.reboot_delay_msg)
-                                        .setPositiveButton(R.string.proceed) { dialogInterface, _ ->
-                                            getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "default").apply()
-                                            dialogInterface.dismiss()
-                                            startActivity(intent)
-                                        }
-                                        .setNegativeButton(R.string.cancel) { dialogInterface, _ ->
-                                            dialogInterface.dismiss()
-                                        }
-
-                                themeDialog()
-                                val dialog = builder.create()
-                                dialog.show()
+                                alert {
+                                    title = getString(R.string.reboot_delay_title)
+                                    message = getString(R.string.reboot_delay_msg)
+                                    positiveButton(R.string.proceed) { dialog ->
+                                        getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "default").apply()
+                                        dialog.dismiss()
+                                        startActivity(intent)
+                                    }
+                                    show()
+                                }
                             }
                         }
                         else -> {
-                            val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                                    .setTitle(R.string.installing_and_uninstalling_title)
-                                    .setMessage(R.string.installing_and_uninstalling_msg)
-                                    .setPositiveButton(R.string.proceed) { dialogInterface, _ ->
-                                        PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("thisLaunched", true).apply()
-                                        dialogInterface.dismiss()
-                                        startActivity(intent)
-                                    }
-
-                            themeDialog()
-                            val dialog = builder.create()
-                            dialog.show()
+                            alert {
+                                title = getString(R.string.installing_and_uninstalling_title)
+                                message = getString(R.string.installing_and_uninstalling_msg)
+                                positiveButton(R.string.proceed) { dialog ->
+                                    PreferenceManager.getDefaultSharedPreferences(ctx).edit().putBoolean("thisLaunched", true).apply()
+                                    dialog.dismiss()
+                                    startActivity(intent)
+                                }
+                                show()
+                            }
                         }
                     }
                 }

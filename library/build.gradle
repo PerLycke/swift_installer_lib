@@ -30,6 +30,9 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
+    androidExtensions {
+        experimental = true
+    }
 }
 
 Properties props = new Properties()

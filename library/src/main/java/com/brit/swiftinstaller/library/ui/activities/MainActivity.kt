@@ -30,12 +30,10 @@ import android.graphics.drawable.LayerDrawable
 import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.PopupWindow
-import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.brit.swiftinstaller.library.BuildConfig
@@ -180,40 +178,42 @@ class MainActivity : ThemeActivity() {
 
         popupView.popup_menu_about.setOnClickListener { _ ->
             popup.dismiss()
+            alert {
 
-            val dialogView = View.inflate(this, R.layout.dialog_about, null)
-            val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-            builder.setView(dialogView)
-            themeDialog()
+                val dialogView = View.inflate(ctx, R.layout.dialog_about, null)
 
-            val dialog = builder.create()
+                customView = dialogView
+                show()
 
-            dialogView.about_ok_btn.setOnClickListener {
-                dialog.dismiss()
+                val dialog = build()
+
+                dialogView.about_ok_btn.setOnClickListener {
+                    dialog.dismiss()
+                }
+                dialogView.installer_version.text = BuildConfig.VERSION_NAME
+
+                dialog.show()
             }
-
-            dialogView.installer_version.text = BuildConfig.VERSION_NAME
-            dialog.show()
         }
 
         popupView.popup_menu_help.setOnClickListener { _ ->
             popup.dismiss()
 
-            val dialogView = View.inflate(this, R.layout.dialog_help, null)
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
-                dialogView.magisk_link.visibility= View.GONE
-                dialogView.rescue_pie.visibility= View.GONE
-            }
-            val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-            builder.setView(dialogView)
-            themeDialog()
+            alert {
+                val dialogView = View.inflate(ctx, R.layout.dialog_help, null)
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+                    dialogView.magisk_link.visibility = View.GONE
+                    dialogView.rescue_pie.visibility = View.GONE
+                }
+                customView = dialogView
 
-            val dialog = builder.create()
+                val dialog = build()
 
-            dialogView.help_ok_btn.setOnClickListener {
-                dialog.dismiss()
+                dialogView.help_ok_btn.setOnClickListener {
+                    dialog.dismiss()
+                }
+                dialog.show()
             }
-            dialog.show()
         }
         popupView.popup_menu_settings.setOnClickListener {
             popup.dismiss()

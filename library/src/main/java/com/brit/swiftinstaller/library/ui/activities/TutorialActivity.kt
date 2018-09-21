@@ -59,21 +59,6 @@ open class TutorialActivity : TutorialActivity() {
                 "Listen for new and update overlays",
                 "Notifies when a new overlay is available to be installer, or an update is available")
 
-        if (!resources.getBoolean(R.bool.allow_unsupported_systems)) {
-            val samsung = packageManager.getApplicationInfo(packageName,
-                    PackageManager.GET_META_DATA).metaData.getBoolean("is_samsung_only", false)
-            if (samsung && !packageManager.hasSystemFeature("com.samsung.feature.samsung_experience_mobile")) {
-                AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                        .setTitle("Unsupported")
-                        .setMessage("Only supports samsung devices for now.")
-                        .setPositiveButton("EXIT") { _, _ ->
-                            finish()
-                        }
-                        .show()
-                return
-            }
-        }
-
         doAsync {
             OverlayUtils.checkAndHideOverlays(this@TutorialActivity)
         }
@@ -91,7 +76,7 @@ open class TutorialActivity : TutorialActivity() {
                 layout.no_root_msg.text = getString(R.string.no_root_msg)
                 layout.no_root_exit.visibility = View.VISIBLE
                 layout.no_root_exit.setOnClickListener {
-                    finish()
+                    finishAffinity()
                 }
                 dialog.show()
                 return

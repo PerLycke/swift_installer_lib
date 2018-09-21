@@ -44,7 +44,9 @@ import com.brit.swiftinstaller.library.ui.activities.InstallActivity
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.checkVersionCompatible
 import com.brit.swiftinstaller.library.utils.OverlayUtils.overlayHasVersion
+import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.activity_app_list.*
+import kotlinx.android.synthetic.main.app_item.*
 import kotlinx.android.synthetic.main.app_option_item.view.*
 import kotlinx.android.synthetic.main.failed_info_card.view.*
 
@@ -186,25 +188,15 @@ class AppListFragment : Fragment() {
             return mVisible.size
         }
 
-        inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-            private var appName: TextView = view.findViewById(R.id.app_item_name)
-            private var packageName: TextView = view.findViewById(R.id.app_name)
-            private var appIcon: ImageView = view.findViewById(R.id.app_item_image)
-            private var appCheckBox: CheckBox = view.findViewById(R.id.app_item_checkbox)
-            private var alertIcon: ImageView = view.findViewById(R.id.alert_icon)
-            private var downloadIcon: ImageView = view.findViewById(R.id.download_icon)
-            private var optionsIcon: ImageView = view.findViewById(R.id.options_icon)
-            private var required: TextView = view.findViewById(R.id.required)
-            private var blockedPackagesAlert: ImageView = view.findViewById(R.id.blocked_packages_alert)
+        inner class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
             private val checkListener: (CompoundButton, Boolean) -> Unit
-            private val clickListener: (View) -> Unit
+            private val clickListener: (View) -> Unit = {
+                viewClickListener!!.onClick(mApps[mVisible[adapterPosition]])
+                app_item_checkbox.toggle()
+            }
 
             init {
-                clickListener = {
-                    viewClickListener!!.onClick(mApps[mVisible[adapterPosition]])
-                    appCheckBox.toggle()
-                }
                 checkListener = { _: CompoundButton, checked: Boolean ->
                     mChecked.put(mVisible[adapterPosition], checked)
                 }
@@ -216,24 +208,24 @@ class AppListFragment : Fragment() {
                 val hasVersions = overlayHasVersion(context!!, item.packageName)
                 val hasUpdate = getAppsToUpdate(context!!).contains(item.packageName)
                 val isRequired = requiredApps.contains(item.packageName)
-                appName.text = item.title
-                appName.setTextColor(context!!.getColor(android.R.color.white))
-                appName.alpha = 1.0f
-                appIcon.setImageDrawable(item.icon)
-                packageName.text = item.packageName
-                view.setOnClickListener(clickListener)
-                appCheckBox.visibility = View.VISIBLE
-                appCheckBox.setOnCheckedChangeListener(checkListener)
-                appCheckBox.setOnClickListener {
+                app_item_name.text = item.title
+                app_item_name.setTextColor(context!!.getColor(android.R.color.white))
+                app_item_name.alpha = 1.0f
+                app_item_image.setImageDrawable(item.icon)
+                app_name.text = item.packageName
+                containerView.setOnClickListener(clickListener)
+                app_item_checkbox.visibility = View.VISIBLE
+                app_item_checkbox.setOnCheckedChangeListener(checkListener)
+                app_item_checkbox.setOnClickListener {
                     appCheckBoxClickListener!!.onCheckBoxClick(mApps[mVisible[adapterPosition]])
                 }
-                appCheckBox.isChecked = mChecked.get(mVisible[adapterPosition], false)
-                appCheckBox.alpha = 1.0f
-                alertIcon.visibility = View.GONE
-                alertIcon.setImageDrawable(context!!.getDrawable(R.drawable.ic_info))
+                app_item_checkbox.isChecked = mChecked.get(mVisible[adapterPosition], false)
+                app_item_checkbox.alpha = 1.0f
+                alert_icon.visibility = View.GONE
+                alert_icon.setImageDrawable(context!!.getDrawable(R.drawable.ic_info))
                 required.visibility = View.GONE
-                downloadIcon.visibility = View.GONE
-                blockedPackagesAlert.visibility = View.GONE
+                download_icon.visibility = View.GONE
+                blocked_packages_alert.visibility = View.GONE
 
                 val appOptions = OverlayUtils.getOverlayOptions(context!!, item.packageName)
                 if (appOptions.isNotEmpty() && !mSummary) {
@@ -244,10 +236,10 @@ class AppListFragment : Fragment() {
                             optionsSelection.add(i, selected[appOptions.keyAt(i)] ?: "")
                         }
                     }
-                    optionsIcon.visibility = View.VISIBLE
-                    optionsIcon.setColorFilter(activity!!.swift.romInfo.getCustomizeHandler().getSelection().accentColor)
+                    options_icon.visibility = View.VISIBLE
+                    options_icon.setColorFilter(activity!!.swift.romInfo.getCustomizeHandler().getSelection().accentColor)
 
-                    optionsIcon.setOnClickListener {
+                    options_icon.setOnClickListener {
                         val builder = AlertDialog.Builder(context!!, R.style.AppTheme_AlertDialog)
                         val dialogBg = context!!.getDrawable(R.drawable.dialog_bg) as LayerDrawable
                         dialogBg.findDrawableByLayerId(R.id.dialog_bg).setTint(context!!.swift.selection.backgroundColor)
@@ -281,69 +273,69 @@ class AppListFragment : Fragment() {
                         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(context!!.swift.selection.accentColor)
                     }
                 } else {
-                    optionsIcon.visibility = View.GONE
+                    options_icon.visibility = View.GONE
                 }
 
                 if (mSummary) {
-                    appCheckBox.visibility = View.GONE
-                    appCheckBox.isEnabled = false
-                    view.isClickable = false
+                    app_item_checkbox.visibility = View.GONE
+                    app_item_checkbox.isEnabled = false
+                    containerView.isClickable = false
                     if (mFailedTab) {
-                        alertIcon.visibility = View.VISIBLE
-                        alertIcon.setImageDrawable(context!!.getDrawable(R.drawable.ic_alert))
+                        alert_icon.visibility = View.VISIBLE
+                        alert_icon.setImageDrawable(context!!.getDrawable(R.drawable.ic_alert))
                     }
                 } else {
                     if (isRequired) {
-                        appCheckBox.isChecked = true
-                        appCheckBox.isClickable = false
-                        appCheckBox.alpha = 0.3f
+                        app_item_checkbox.isChecked = true
+                        app_item_checkbox.isClickable = false
+                        app_item_checkbox.alpha = 0.3f
                         required.visibility = View.VISIBLE
                         required.text = getString(R.string.required)
-                        appName.setTextColor(Color.parseColor("#4dffffff"))
-                        view.isClickable = false
+                        app_item_name.setTextColor(Color.parseColor("#4dffffff"))
+                        containerView.isClickable = false
                     }
                     if (incompatible) {
-                        appName.alpha = 0.3f
-                        alertIcon.setImageDrawable(context!!.getDrawable(R.drawable.ic_alert))
+                        app_item_name.alpha = 0.3f
+                        alert_icon.setImageDrawable(context!!.getDrawable(R.drawable.ic_alert))
                         required.visibility = View.VISIBLE
                         required.text = getString(R.string.unsupported)
                         if (!installed) {
-                            appCheckBox.visibility = View.GONE
-                            appCheckBox.isClickable = false
-                            appCheckBox.isChecked = false
-                            view.isClickable = false
+                            app_item_checkbox.visibility = View.GONE
+                            app_item_checkbox.isClickable = false
+                            app_item_checkbox.isChecked = false
+                            containerView.isClickable = false
                             required.visibility = View.GONE
                         }
                     }
                     if (hasUpdate && installed) {
-                        appName.setTextColor(context!!.getColor(R.color.minimal_orange))
+                        app_item_name.setTextColor(context!!.getColor(R.color.minimal_orange))
                     }
                     if (hasVersions) {
-                        alertIcon.visibility = View.VISIBLE
+                        alert_icon.visibility = View.VISIBLE
                     }
                     if (appExtrasHandler.appExtras.containsKey(item.packageName)) {
-                        downloadIcon.visibility = View.VISIBLE
-                        downloadIcon.setColorFilter(context!!.swift.selection.accentColor)
-                        downloadIcon.setOnClickListener {
-                            appExtrasHandler.appExtras[item.packageName]?.onInstall(activity!! as AppCompatActivity)
+                        download_icon.visibility = View.VISIBLE
+                        download_icon.setColorFilter(context!!.swift.selection.accentColor)
+                        download_icon.setOnClickListener {
+                            appExtrasHandler.appExtras[item.packageName]?.invoke(activity!! as AppCompatActivity)
                         }
                     }
-                    if (appName.text.contains("Samsung Music") || appName.text.contains("Voice Recorder")) {
-                        blockedPackagesAlert.visibility = View.VISIBLE
-                        blockedPackagesAlert.setColorFilter(context!!.swift.selection.accentColor)
+                    if (app_item_name.text.contains("Samsung Music") || app_item_name.text.contains("Voice Recorder")) {
+                        blocked_packages_alert.visibility = View.VISIBLE
+                        blocked_packages_alert.setColorFilter(context!!.swift.selection.accentColor)
                     }
                 }
 
-                if (alertIcon.visibility == View.VISIBLE) {
-                    alertIcon.setOnClickListener {
+                if (alert_icon.visibility == View.VISIBLE) {
+                    alert_icon.setOnClickListener {
                         alertIconClickListener!!.onAlertIconClick(mApps[mVisible[adapterPosition]])
                     }
                 }
 
                 if (context!!.swift.extrasHandler.appExtras.containsKey(item.packageName)
                         && getHiddenApps(context!!).contains(item.packageName)) {
-                    appCheckBox.isClickable = false
-                    appCheckBox.setVisible(false)
+                    app_item_checkbox.isClickable = false
+                    app_item_checkbox.setVisible(false)
                 }
             }
         }

@@ -240,10 +240,12 @@ open class PRomInfo(context: Context) : RomInfo(context) {
                                             selection: CustomizeSelection) {
                         super.updateView(palette, selection)
                         val darkNotif = (selection["notif_background"]) == "dark"
-                        systemUiPreview?.notif_bg_layout?.setImageResource(R.drawable.notif_bg_rounded)
-                        if (darkNotif) {
-                            systemUiPreview?.notif_bg_layout?.drawable?.setTint(
-                                    ColorUtils.handleColor(palette.backgroundColor, 8))
+                        systemUiPreview?.let {
+                            it.notif_bg_layout.setImageResource(R.drawable.notif_bg_rounded)
+                            if (darkNotif) {
+                                it.notif_bg_layout.drawable.setTint(
+                                        ColorUtils.handleColor(palette.backgroundColor, 8))
+                            }
                         }
                     }
                 }

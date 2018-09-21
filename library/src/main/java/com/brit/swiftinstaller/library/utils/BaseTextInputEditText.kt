@@ -29,7 +29,7 @@ import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.inputmethod.InputMethodManager
 
-class BaseTextInputEditText(context: Context?, attrs: AttributeSet) : AppCompatEditText(context, attrs){
+class BaseTextInputEditText(context: Context?, attrs: AttributeSet) : AppCompatEditText(context, attrs) {
 
     private val inputMethodManager = context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
 

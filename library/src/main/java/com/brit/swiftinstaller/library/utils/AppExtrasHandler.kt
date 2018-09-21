@@ -6,17 +6,13 @@ import androidx.collection.ArrayMap
 
 open class AppExtrasHandler(val context: Context) {
 
-    lateinit var appExtras: ArrayMap<String, AppExtraHandler>
+    lateinit var appExtras: ArrayMap<String, (AppCompatActivity) -> Unit>
 
     fun initialize() {
         appExtras = populateAppExtras()
     }
 
-    open fun populateAppExtras(): ArrayMap<String, AppExtraHandler> {
+    open fun populateAppExtras(): ArrayMap<String, (AppCompatActivity) -> Unit> {
         return ArrayMap()
-    }
-
-    interface AppExtraHandler {
-        fun onInstall(activity: AppCompatActivity)
     }
 }

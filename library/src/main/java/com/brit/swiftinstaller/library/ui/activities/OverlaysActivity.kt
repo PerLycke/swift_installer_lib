@@ -82,18 +82,18 @@ class OverlaysActivity : ThemeActivity() {
         mPagerAdapter!!.setAlertIconClickListener(object : AppListFragment.AlertIconClickListener {
             override fun onAlertIconClick(appItem: AppItem) {
                 val packageInfo = packageManager.getPackageInfo(appItem.packageName, 0)
-                val dialog = AlertDialog.Builder(this@OverlaysActivity, R.style.AppTheme_AlertDialog)
-                        .setTitle(appItem.title)
-                        .setIcon(appItem.icon)
-                        .setMessage("Version support info:" +
-                                "\nCurrent Version: ${packageInfo.versionName}" +
-                                "\nAvailable Versions: ${getAvailableOverlayVersions(
-                                        this@OverlaysActivity, appItem.packageName)}")
-                        .setPositiveButton(android.R.string.ok) { dialogInterface, _ ->
-                            dialogInterface.dismiss()
-                        }
-                themeDialog()
-                dialog.show()
+                alert {
+                    title = appItem.title
+                    icon = appItem.icon!!
+                    message = ("Version support info:" +
+                            "\nCurrent Version: ${packageInfo.versionName}" +
+                            "\nAvailable Versions: ${getAvailableOverlayVersions(
+                                    this@OverlaysActivity, appItem.packageName)}")
+                    positiveButton(R.string.ok) { dialog ->
+                        dialog.dismiss()
+                    }
+                    show()
+                }
             }
         })
         mPagerAdapter!!.setAppCheckBoxClickListener(object : AppListFragment.AppCheckBoxClickListener {
@@ -482,14 +482,13 @@ class OverlaysActivity : ThemeActivity() {
 
     @Suppress("UNUSED_PARAMETER")
     fun blockedPackagesInfo(view: View) {
-        val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                .setTitle(R.string.blocked_packages_title)
-                .setMessage(R.string.blocked_packages_message)
-                .setNegativeButton(R.string.ok) { dialogInterface, _ ->
-                    dialogInterface.dismiss()
-                }
-        themeDialog()
-        val dialog = builder.create()
-        dialog.show()
+        alert {
+            title = getString(R.string.blocked_packages_title)
+            message = getString(R.string.blocked_packages_message)
+            positiveButton(R.string.ok) { dialog ->
+                dialog.dismiss()
+            }
+            show()
+        }
     }
 }

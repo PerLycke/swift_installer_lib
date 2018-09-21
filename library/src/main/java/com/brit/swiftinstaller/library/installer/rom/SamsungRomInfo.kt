@@ -63,6 +63,9 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
     }
 
     override fun getRequiredApps(): Array<String> {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            return arrayOf()
+        }
         return Array(31) {
             when (it) {
                 0 -> "android"
@@ -230,31 +233,34 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
     private class SamsungOreoPreviewHandler(context: Context): PreviewHandler(context) {
         override fun updateView(palette: MaterialPalette, selection: CustomizeSelection) {
             super.updateView(palette, selection)
-            if (selection.containsKey("samsung_oreo_clock")) {
-                val clockSelection = selection["samsung_oreo_clock"]
-                settingsPreview?.clock_right?.setVisible(clockSelection == "right")
-                settingsPreview?.clock_left?.setVisible(clockSelection == "left")
-                settingsPreview?.clock_centered?.setVisible(clockSelection == "centered")
-            }
+            settingsPreview?.let {
+                if (selection.containsKey("samsung_oreo_clock")) {
+                    val clockSelection = selection["samsung_oreo_clock"]
+                    it.clock_right.setVisible(clockSelection == "right")
+                    it.clock_left.setVisible(clockSelection == "left")
+                    it.clock_centered.setVisible(clockSelection == "centered")
+                }
 
-            if (selection.containsKey("samsung_oreo_qs_alpha")) {
-                val qsAlpha = selection.getInt("samsung_oreo_qs_alpha")
-                systemUiPreview?.preview_wallpaper?.setColorFilter(
-                        ColorUtils.addAlphaColor(palette.backgroundColor,
-                                qsAlpha), PorterDuff.Mode.SRC_OVER)
-            }
+                if (selection.containsKey("samsung_oreo_qs_alpha")) {
+                    val qsAlpha = selection.getInt("samsung_oreo_qs_alpha")
+                    it.preview_wallpaper.setColorFilter(
+                            ColorUtils.addAlphaColor(palette.backgroundColor,
+                                    qsAlpha), PorterDuff.Mode.SRC_OVER)
+                }
 
-            if (selection.containsKey("samsung_oreo_notif_style")) {
-                val darkNotif = (selection["notif_background"]) == "dark"
-                if (selection["samsung_oreo_notif_style"] == "p") {
-                    systemUiPreview?.notif_bg_layout?.setImageResource(R.drawable.notif_bg_rounded)
-                    if (darkNotif) {
-                        systemUiPreview?.notif_bg_layout?.drawable?.setTint(
-                                ColorUtils.handleColor(palette.backgroundColor, 8))
-                    } else {
-                        systemUiPreview?.notif_bg_layout?.drawable?.setTint(
-                                Color.parseColor("#f5f5f5"))
+                if (selection.containsKey("samsung_oreo_notif_style")) {
+                    val darkNotif = (selection["notif_background"]) == "dark"
+                    if (selection["samsung_oreo_notif_style"] == "p") {
+                        it.notif_bg_layout.setImageResource(
+                                R.drawable.notif_bg_rounded)
+                        if (darkNotif) {
+                            it.notif_bg_layout.drawable.setTint(
+                                    ColorUtils.handleColor(palette.backgroundColor, 8))
+                        } else {
+                            it.notif_bg_layout.drawable.setTint(
+                                    Color.parseColor("#f5f5f5"))
 
+                        }
                     }
                 }
             }
@@ -262,16 +268,16 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
 
         override fun updateIcons(selection: CustomizeSelection) {
             for (icon in settingsIcons) {
-                val type: String = when {
-                    selection["samsung_oreo_icons"] == "aosp" -> {
+                val type: String = when(selection["samsung_oreo_icons"]) {
+                    "aosp" -> {
                         icon.setColorFilter(selection.accentColor)
                         "aosp"
                     }
-                    selection["samsung_oreo_icons"] == "p" -> {
+                    "p" -> {
                         icon.clearColorFilter()
                         "p"
                     }
-                    selection["samsung_oreo_icons"] == "stock_multi" -> {
+                    "stock_multi" -> {
                         icon.clearColorFilter()
                         "stock"
                     }
