@@ -75,6 +75,7 @@ object Utils {
         sortedOverlays.sortWith(Comparator { o1, o2 ->
             o1.title.compareTo(o2.title)
         })
+        Holder.overlaysList.addAll(sortedOverlays)
         return sortedOverlays
     }
 

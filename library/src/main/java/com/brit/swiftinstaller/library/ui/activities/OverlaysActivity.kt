@@ -72,9 +72,7 @@ class OverlaysActivity : ThemeActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_overlays)
 
-        val bundle = intent.extras
-        overlaysList = bundle?.getParcelableArrayList("overlays_list") ?:
-                Utils.sortedOverlaysList(this)
+        overlaysList = Holder.overlaysList
 
         mPagerAdapter = AppsTabPagerAdapter(supportFragmentManager,
                 false, INSTALL_TAB, ACTIVE_TAB, UPDATE_TAB)

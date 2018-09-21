@@ -40,17 +40,8 @@ import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.applist.AppItem
 import com.brit.swiftinstaller.library.ui.changelog.ChangelogHandler
-import com.brit.swiftinstaller.library.utils.MaterialPalette
+import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.enableAllOverlays
-import com.brit.swiftinstaller.library.utils.ShellUtils
-import com.brit.swiftinstaller.library.utils.UpdateChecker
-import com.brit.swiftinstaller.library.utils.Utils
-import com.brit.swiftinstaller.library.utils.alert
-import com.brit.swiftinstaller.library.utils.getUseSoftReboot
-import com.brit.swiftinstaller.library.utils.getVersionCode
-import com.brit.swiftinstaller.library.utils.quickRebootCommand
-import com.brit.swiftinstaller.library.utils.rebootCommand
-import com.brit.swiftinstaller.library.utils.swift
 import kotlinx.android.synthetic.main.card_compatibility_info.*
 import kotlinx.android.synthetic.main.card_install.*
 import kotlinx.android.synthetic.main.card_update.*
@@ -74,7 +65,7 @@ class MainActivity : ThemeActivity() {
 
         doAsync {
             enableAllOverlays()
-            overlaysList = Utils.sortedOverlaysList(this@MainActivity)
+            Utils.sortedOverlaysList(this@MainActivity)
         }
 
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("not_closed", true)) {
@@ -117,18 +108,12 @@ class MainActivity : ThemeActivity() {
 
         card_install.setOnClickListener {
             val intent = Intent(this, OverlaysActivity::class.java)
-            val bundle = Bundle()
-            bundle.putParcelableArrayList("overlays_list", overlaysList)
-            intent.putExtras(bundle)
             startActivity(intent)
         }
 
         card_update.setOnClickListener {
             val intent = Intent(this, OverlaysActivity::class.java)
             intent.putExtra("tab", OverlaysActivity.UPDATE_TAB)
-            val bundle = Bundle()
-            bundle.putParcelableArrayList("overlays_list", overlaysList)
-            intent.putExtras(bundle)
             startActivity(intent)
         }
 
