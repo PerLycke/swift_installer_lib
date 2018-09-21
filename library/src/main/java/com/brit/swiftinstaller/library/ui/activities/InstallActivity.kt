@@ -35,6 +35,7 @@ import android.widget.TextView
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.installer.Notifier
+import com.brit.swiftinstaller.library.utils.Holder
 import com.brit.swiftinstaller.library.utils.InstallerServiceHelper
 import com.brit.swiftinstaller.library.utils.ShellUtils
 import com.brit.swiftinstaller.library.utils.swift
@@ -84,10 +85,10 @@ class InstallActivity : ThemeActivity() {
             }
         }
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        swift.installApps.clear()
-        swift.installApps.addAll(apps)
-        swift.errorMap.clear()
-        swift.errorMap.putAll(errorMap)
+        Holder.installApps.clear()
+        Holder.installApps.addAll(apps)
+        Holder.errorMap.clear()
+        Holder.errorMap.putAll(errorMap)
         swift.romInfo.postInstall(false, apps, updateAppsToUninstall, intent)
         finish()
     }

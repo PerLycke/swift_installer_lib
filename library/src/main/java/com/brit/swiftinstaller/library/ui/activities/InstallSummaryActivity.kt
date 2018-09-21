@@ -40,6 +40,7 @@ import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.applist.AppItem
 import com.brit.swiftinstaller.library.ui.applist.AppListFragment
 import com.brit.swiftinstaller.library.ui.applist.AppsTabPagerAdapter
+import com.brit.swiftinstaller.library.utils.Holder
 import com.brit.swiftinstaller.library.utils.OverlayUtils
 import com.brit.swiftinstaller.library.utils.OverlayUtils.isOverlayEnabled
 import com.brit.swiftinstaller.library.utils.ShellUtils
@@ -151,9 +152,9 @@ class InstallSummaryActivity : ThemeActivity() {
 
     private fun updateList() {
         mApps.clear()
-        mApps.addAll(swift.installApps)
+        mApps.addAll(Holder.installApps)
         mErrorMap.clear()
-        mErrorMap.putAll(swift.errorMap)
+        mErrorMap.putAll(Holder.errorMap)
         mPagerAdapter.clearApps()
 
         doAsync {
