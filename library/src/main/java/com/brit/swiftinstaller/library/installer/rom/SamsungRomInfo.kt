@@ -39,9 +39,17 @@ import com.brit.swiftinstaller.library.ui.customize.Option
 import com.brit.swiftinstaller.library.ui.customize.OptionsMap
 import com.brit.swiftinstaller.library.ui.customize.PreviewHandler
 import com.brit.swiftinstaller.library.ui.customize.SliderOption
-import com.brit.swiftinstaller.library.utils.*
+import com.brit.swiftinstaller.library.utils.ColorUtils
+import com.brit.swiftinstaller.library.utils.MaterialPalette
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPath
+import com.brit.swiftinstaller.library.utils.ShellUtils
+import com.brit.swiftinstaller.library.utils.addAppToUninstall
+import com.brit.swiftinstaller.library.utils.clearAppsToInstall
+import com.brit.swiftinstaller.library.utils.clearAppsToUninstall
+import com.brit.swiftinstaller.library.utils.runCommand
+import com.brit.swiftinstaller.library.utils.setVisible
+import com.brit.swiftinstaller.library.utils.swift
 import kotlinx.android.synthetic.main.customize_preview_settings.view.*
 import kotlinx.android.synthetic.main.customize_preview_sysui.view.*
 import java.io.File
@@ -104,7 +112,8 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
         }
     }
 
-    override fun postInstall(uninstall: Boolean, apps: ArrayList<String>, oppositeApps: ArrayList<String>?, intent: Intent?) {
+    override fun postInstall(uninstall: Boolean, apps: ArrayList<String>,
+                             oppositeApps: ArrayList<String>?, intent: Intent?) {
         val extraIntent = intent != null
 
         if (ShellUtils.isRootAvailable) {
@@ -217,6 +226,7 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
                 selection["samsung_oreo_qs_alpha"] = "0"
                 return selection
             }
+
             override fun populateCustomizeOptions(categories: CategoryMap) {
                 if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O) {
                     populateOreoCustomizeOptions(categories)
@@ -230,7 +240,7 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
         }
     }
 
-    private class SamsungOreoPreviewHandler(context: Context): PreviewHandler(context) {
+    private class SamsungOreoPreviewHandler(context: Context) : PreviewHandler(context) {
         override fun updateView(palette: MaterialPalette, selection: CustomizeSelection) {
             super.updateView(palette, selection)
             settingsPreview?.let {
@@ -269,45 +279,30 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
         }
 
         override fun updateIcons(selection: CustomizeSelection) {
+
+            val option = context.swift.romInfo.getCustomizeHandler()
+                    .getCustomizeOptions()["samsung_oreo_icons"]!!.options[selection["samsung_oreo_icons"]]!!
+
             for (icon in settingsIcons) {
-                val type: String = when(selection["samsung_oreo_icons"]) {
-                    "aosp" -> {
-                        icon.setColorFilter(selection.accentColor)
-                        "aosp"
-                    }
-                    "p" -> {
-                        icon.clearColorFilter()
-                        "p"
-                    }
-                    "stock_multi" -> {
-                        icon.clearColorFilter()
-                        "stock"
-                    }
-                    else -> {
-                        icon.setColorFilter(selection.accentColor)
-                        "stock"
-                    }
+                if (option.iconTint) {
+                    icon.setColorFilter(selection.accentColor)
+                } else {
+                    icon.clearColorFilter()
                 }
 
-                val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_$type"
-                val id = context.resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName", null, null)
+                val idName =
+                        "ic_${context.resources.getResourceEntryName(icon.id)}_${option.resTag}"
+                val id = context.resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName",
+                        null, null)
                 if (id > 0) {
                     icon.setImageDrawable(context.getDrawable(id))
                 }
             }
-
-            val type = when(selection["samsung_oreo_icons"]) {
-                "stock_multi", "stock_accent" -> {
-                    "stock"
-                }
-                else -> {
-                    "aosp"
-                }
-            }
-
             for (icon in systemUiIcons) {
-                val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_$type"
-                val id = context.resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName", null, null)
+                val idName =
+                        "ic_${context.resources.getResourceEntryName(icon.id)}_${option.resTag}"
+                val id = context.resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName",
+                        null, null)
                 if (id > 0) {
                     icon.setImageDrawable(context.getDrawable(id))
                 }
@@ -322,7 +317,9 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
         iconOptions.add(Option(context.getString(R.string.aosp_icons), "aosp", "aosp", true))
         iconOptions.add(
                 Option(context.getString(R.string.stock_icons), "stock_accent", "stock", true))
-        iconOptions.add(Option(context.getString(R.string.stock_icons_multi), "stock_multi", "stock", false))
+        iconOptions.add(
+                Option(context.getString(R.string.stock_icons_multi), "stock_multi", "stock",
+                        false))
         iconOptions.add(Option(context.getString(R.string.android_p), "p", "p", false))
         requiredApps.add("com.android.systemui")
         requiredApps.add("com.samsung.android.lool")
@@ -330,7 +327,9 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
         requiredApps.add("com.android.settings")
         requiredApps.add("com.samsung.android.app.aodservice")
         requiredApps.add("android")
-        categories.add(CustomizeCategory(context.getString(R.string.category_icons), "samsung_oreo_icons", "stock_accent", iconOptions, requiredApps))
+        categories.add(
+                CustomizeCategory(context.getString(R.string.category_icons), "samsung_oreo_icons",
+                        "stock_accent", iconOptions, requiredApps))
         requiredApps.clear()
 
         val clockOptions = OptionsMap()
@@ -338,20 +337,24 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
         clockOptions.add(Option(context.getString(R.string.left), "left"))
         clockOptions.add(Option(context.getString(R.string.centered), "centered"))
         requiredApps.add("com.android.systemui")
-        categories.add(CustomizeCategory(context.getString(R.string.clock), "samsung_oreo_clock", "right", clockOptions, requiredApps))
+        categories.add(
+                CustomizeCategory(context.getString(R.string.clock), "samsung_oreo_clock", "right",
+                        clockOptions, requiredApps))
         requiredApps.clear()
 
         val notifOptions = OptionsMap()
         notifOptions.add(Option(context.getString(R.string.default_style), "default"))
         notifOptions.add(Option(context.getString(R.string.android_p_rounded_style), "p"))
-        val trans = SliderOption(context.getString(R.string.qs_transparency), "samsung_oreo_qs_alpha")
+        val trans =
+                SliderOption(context.getString(R.string.qs_transparency), "samsung_oreo_qs_alpha")
         trans.current = 0
         notifOptions.add(trans)
         notifOptions["p"]!!.infoDialogTitle = context.getString(R.string.rounded_dialog_title)
         notifOptions["p"]!!.infoDialogText = context.getString(R.string.rounded_dialog_info)
         requiredApps.add("com.android.systemui")
         requiredApps.add("android")
-        categories.add(CustomizeCategory(context.getString(R.string.notification_style), "samsung_oreo_notif_style", "default", notifOptions, requiredApps))
+        categories.add(CustomizeCategory(context.getString(R.string.notification_style),
+                "samsung_oreo_notif_style", "default", notifOptions, requiredApps))
         requiredApps.clear()
     }
 }

@@ -41,9 +41,11 @@ abstract class PreviewHandler(val context: Context) {
     val settingsIcons = ArrayList<ImageView>()
     val systemUiIcons = ArrayList<ImageView>()
 
-    open fun getPage(container: ViewGroup, position: Int) : View {
+    open fun getPage(container: ViewGroup, position: Int): View {
         return if (position == 0) {
-            settingsPreview = LayoutInflater.from(context).inflate(R.layout.customize_preview_settings, container, false) as ViewGroup
+            settingsPreview =
+                    LayoutInflater.from(context).inflate(R.layout.customize_preview_settings,
+                            container, false) as ViewGroup
 
             settingsPreview?.let {
                 settingsIcons.add(it.settings_connections_icon)
@@ -53,7 +55,8 @@ abstract class PreviewHandler(val context: Context) {
 
             settingsPreview!!
         } else {
-            systemUiPreview = LayoutInflater.from(context).inflate(R.layout.customize_preview_sysui, container, false) as ViewGroup
+            systemUiPreview = LayoutInflater.from(context).inflate(R.layout.customize_preview_sysui,
+                    container, false) as ViewGroup
 
             systemUiPreview?.let {
                 it.preview_wallpaper.clipToOutline = true
@@ -83,7 +86,6 @@ abstract class PreviewHandler(val context: Context) {
         updateAccentColor(selection.accentColor)
         updateBackgroundColor(palette)
         updateIcons(selection)
-
 
         val darkNotif = (selection["notif_background"]) == "dark"
         val notifShadow = (selection["sender_name_fix"]) == "shadow"

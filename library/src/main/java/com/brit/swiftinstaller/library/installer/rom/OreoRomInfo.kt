@@ -73,7 +73,8 @@ open class OreoRomInfo(context: Context) : RomInfo(context) {
         }
     }
 
-    override fun postInstall(uninstall: Boolean, apps: ArrayList<String>, oppositeApps: ArrayList<String>?, intent: Intent?) {
+    override fun postInstall(uninstall: Boolean, apps: ArrayList<String>,
+                             oppositeApps: ArrayList<String>?, intent: Intent?) {
         if (ShellUtils.isRootAvailable && !uninstall) {
             for (app in apps) {
                 runCommand("cmd overlay enable " + getOverlayPackageName(app), true)
@@ -101,7 +102,9 @@ open class OreoRomInfo(context: Context) : RomInfo(context) {
         runCommand("cmd overlay disable ${getOverlayPackageName(targetPackage)}", true)
     }
 
-    override fun useHotSwap(): Boolean { return true }
+    override fun useHotSwap(): Boolean {
+        return true
+    }
 
     override fun createCustomizeHandler(): CustomizeHandler {
         return object : CustomizeHandler(context) {
@@ -111,19 +114,21 @@ open class OreoRomInfo(context: Context) : RomInfo(context) {
         }
     }
 
-    class OreoPreviewHandler(context: Context): PreviewHandler(context) {
+    class OreoPreviewHandler(context: Context) : PreviewHandler(context) {
         override fun updateIcons(selection: CustomizeSelection) {
             for (icon in settingsIcons) {
                 icon.setColorFilter(selection.accentColor)
                 val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_aosp"
-                val id = context.resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName", null, null)
+                val id = context.resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName",
+                        null, null)
                 if (id > 0) {
                     icon.setImageDrawable(context.getDrawable(id))
                 }
             }
             for (icon in systemUiIcons) {
                 val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_aosp"
-                val id = context.resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName", null, null)
+                val id = context.resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName",
+                        null, null)
                 if (id > 0) {
                     icon.setImageDrawable(context.getDrawable(id))
                 }

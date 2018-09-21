@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ /*
   ~  * Copyright (C) 2018 Griffin Millender
   ~  * Copyright (C) 2018 Per Lycke
@@ -167,6 +166,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toBottomOf="@+id/custom_bg_title" />
+
     <TextView
         android:id="@+id/hashtag_bg"
         android:layout_width="wrap_content"

@@ -33,7 +33,9 @@ import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.ArrayMap
 import androidx.fragment.app.Fragment
@@ -41,9 +43,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.activities.InstallActivity
-import com.brit.swiftinstaller.library.utils.*
+import com.brit.swiftinstaller.library.utils.AppExtrasHandler
+import com.brit.swiftinstaller.library.utils.MaterialPalette
+import com.brit.swiftinstaller.library.utils.OverlayUtils
 import com.brit.swiftinstaller.library.utils.OverlayUtils.checkVersionCompatible
 import com.brit.swiftinstaller.library.utils.OverlayUtils.overlayHasVersion
+import com.brit.swiftinstaller.library.utils.getAppsToUpdate
+import com.brit.swiftinstaller.library.utils.getHiddenApps
+import com.brit.swiftinstaller.library.utils.getHideFailedInfoCard
+import com.brit.swiftinstaller.library.utils.getSelectedOverlayOptions
+import com.brit.swiftinstaller.library.utils.setHideFailedInfoCard
+import com.brit.swiftinstaller.library.utils.setOverlayOption
+import com.brit.swiftinstaller.library.utils.setVisible
+import com.brit.swiftinstaller.library.utils.swift
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.activity_app_list.*
 import kotlinx.android.synthetic.main.app_item.*
@@ -79,7 +91,8 @@ class AppListFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
         appExtrasHandler = context!!.swift.extrasHandler
         val view = inflater.inflate(R.layout.activity_app_list, container, false)
         if (arguments != null) {
@@ -170,7 +183,8 @@ class AppListFragment : Fragment() {
             holder.bindAppItem(mApps[mVisible[position]])
 
             if (position + 1 == itemCount) {
-                setBottomMargin(holder.itemView, (64 * Resources.getSystem().displayMetrics.density).toInt())
+                setBottomMargin(holder.itemView,
+                        (64 * Resources.getSystem().displayMetrics.density).toInt())
             } else {
                 setBottomMargin(holder.itemView, 0)
             }
@@ -179,7 +193,8 @@ class AppListFragment : Fragment() {
         private fun setBottomMargin(view: View, bottomMargin: Int) {
             if (view.layoutParams is ViewGroup.MarginLayoutParams) {
                 val params = view.layoutParams as ViewGroup.MarginLayoutParams
-                params.setMargins(params.leftMargin, params.topMargin, params.rightMargin, bottomMargin)
+                params.setMargins(params.leftMargin, params.topMargin, params.rightMargin,
+                        bottomMargin)
                 view.requestLayout()
             }
         }
@@ -188,7 +203,8 @@ class AppListFragment : Fragment() {
             return mVisible.size
         }
 
-        inner class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
+        inner class ViewHolder(override val containerView: View) :
+                RecyclerView.ViewHolder(containerView), LayoutContainer {
 
             private val checkListener: (CompoundButton, Boolean) -> Unit
             private val clickListener: (View) -> Unit = {
@@ -237,15 +253,18 @@ class AppListFragment : Fragment() {
                         }
                     }
                     options_icon.visibility = View.VISIBLE
-                    options_icon.setColorFilter(activity!!.swift.romInfo.getCustomizeHandler().getSelection().accentColor)
+                    options_icon.setColorFilter(
+                            activity!!.swift.romInfo.getCustomizeHandler().getSelection().accentColor)
 
                     options_icon.setOnClickListener {
                         val builder = AlertDialog.Builder(context!!, R.style.AppTheme_AlertDialog)
                         val dialogBg = context!!.getDrawable(R.drawable.dialog_bg) as LayerDrawable
-                        dialogBg.findDrawableByLayerId(R.id.dialog_bg).setTint(context!!.swift.selection.backgroundColor)
+                        dialogBg.findDrawableByLayerId(R.id.dialog_bg)
+                                .setTint(context!!.swift.selection.backgroundColor)
                         builder.setTitle(item.title)
                         builder.setIcon(item.icon)
-                        builder.setAdapter(OptionsAdapter(context!!, appOptions, optionsSelection)) { _, _ ->
+                        builder.setAdapter(
+                                OptionsAdapter(context!!, appOptions, optionsSelection)) { _, _ ->
                         }
                         builder.setPositiveButton("Apply") { _, _ ->
                             for (pos in appOptions.keys.indices) {
@@ -269,8 +288,10 @@ class AppListFragment : Fragment() {
                         val dialog = builder.create()
                         dialog.show()
                         dialog.window?.setBackgroundDrawable(dialogBg)
-                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(context!!.swift.selection.accentColor)
-                        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(context!!.swift.selection.accentColor)
+                        dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                                .setTextColor(context!!.swift.selection.accentColor)
+                        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                                .setTextColor(context!!.swift.selection.accentColor)
                     }
                 } else {
                     options_icon.visibility = View.GONE
@@ -317,10 +338,12 @@ class AppListFragment : Fragment() {
                         download_icon.visibility = View.VISIBLE
                         download_icon.setColorFilter(context!!.swift.selection.accentColor)
                         download_icon.setOnClickListener {
-                            appExtrasHandler.appExtras[item.packageName]?.invoke(activity!! as AppCompatActivity)
+                            appExtrasHandler.appExtras[item.packageName]?.invoke(
+                                    activity!! as AppCompatActivity)
                         }
                     }
-                    if (app_item_name.text.contains("Samsung Music") || app_item_name.text.contains("Voice Recorder")) {
+                    if (app_item_name.text.contains("Samsung Music") || app_item_name.text.contains(
+                                    "Voice Recorder")) {
                         blocked_packages_alert.visibility = View.VISIBLE
                         blocked_packages_alert.setColorFilter(context!!.swift.selection.accentColor)
                     }
@@ -342,12 +365,15 @@ class AppListFragment : Fragment() {
 
     }
 
-    class OptionsAdapter(context: Context, val options: ArrayMap<String, Array<String>>, val selection: ArrayList<String>) : ArrayAdapter<String>(context, R.layout.app_option_item) {
+    class OptionsAdapter(context: Context, val options: ArrayMap<String, Array<String>>,
+                         val selection: ArrayList<String>) :
+            ArrayAdapter<String>(context, R.layout.app_option_item) {
 
         private val mHandler = Handler()
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-            val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.app_option_item, parent, false)
+            val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.app_option_item,
+                    parent, false)
 
             view.options_title.text = options.keyAt(position)
             val opts = options[options.keyAt(position)]
@@ -357,7 +383,11 @@ class AppListFragment : Fragment() {
                     if (selection.elementAtOrNull(position) != null)
                         selection.removeAt(position)
                     mHandler.post {
-                        selection.add(position, if (b) { "on" } else { "off" })
+                        selection.add(position, if (b) {
+                            "on"
+                        } else {
+                            "off"
+                        })
                     }
                 }
                 view.checkbox.isChecked = (selection.elementAtOrNull(position) ?: "off") == "on"
@@ -365,9 +395,12 @@ class AppListFragment : Fragment() {
             } else {
                 view.spinner.visibility = View.VISIBLE
                 view.checkbox.visibility = View.GONE
-                view.spinner.adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, opts)
+                view.spinner.adapter =
+                        ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item,
+                                opts)
                 val popupBg = context.getDrawable(R.drawable.popup_bg_options) as LayerDrawable
-                popupBg.findDrawableByLayerId(R.id.background_popup).setTint(MaterialPalette.get(context).cardBackgroud)
+                popupBg.findDrawableByLayerId(R.id.background_popup)
+                        .setTint(MaterialPalette.get(context).cardBackgroud)
                 view.spinner.setPopupBackgroundDrawable(popupBg)
                 view.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {

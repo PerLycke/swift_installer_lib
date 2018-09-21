@@ -21,7 +21,12 @@
 
 package com.brit.swiftinstaller.library.ui
 
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.ColorFilter
+import android.graphics.Paint
+import android.graphics.PixelFormat
+import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
@@ -40,8 +45,10 @@ class CircleDrawable(color: Int) : Drawable() {
 
     override fun draw(canvas: Canvas) {
         val bounds = bounds
-        canvas.drawCircle(bounds.centerX().toFloat(), bounds.centerY().toFloat(), mRadius.toFloat(), mOuterPaint)
-        canvas.drawCircle(bounds.centerX().toFloat(), bounds.centerY().toFloat(), (mRadius - 5).toFloat(), mInnerPaint)
+        canvas.drawCircle(bounds.centerX().toFloat(), bounds.centerY().toFloat(), mRadius.toFloat(),
+                mOuterPaint)
+        canvas.drawCircle(bounds.centerX().toFloat(), bounds.centerY().toFloat(),
+                (mRadius - 5).toFloat(), mInnerPaint)
     }
 
     override fun onBoundsChange(bounds: Rect) {

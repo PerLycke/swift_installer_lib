@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ /*
   ~  * Copyright (C) 2018 Griffin Millender
   ~  * Copyright (C) 2018 Per Lycke
@@ -41,12 +40,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:background="?android:selectableItemBackgroundBorderless"
             android:contentDescription="@string/image"
             android:onClick="overlaysBackClick"
-            android:paddingBottom="8dp"
-            android:paddingEnd="8dp"
             android:paddingTop="8dp"
-            android:background="?android:selectableItemBackgroundBorderless"
+            android:paddingEnd="8dp"
+            android:paddingBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -72,8 +71,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="customizeBtnClick"
-            android:paddingBottom="4dp"
             android:paddingEnd="4dp"
+            android:paddingBottom="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/title"
             app:layout_constraintTop_toBottomOf="@+id/title"
@@ -85,10 +84,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:fontFamily="sans-serif-condensed"
-                tools:text="#ff0000"
                 android:textAppearance="@style/ToolbarSubtitle"
                 app:layout_constraintStart_toEndOf="@+id/toolbar_subtitle_accent_title"
-                app:layout_constraintTop_toTopOf="@+id/toolbar_subtitle_accent_title" />
+                app:layout_constraintTop_toTopOf="@+id/toolbar_subtitle_accent_title"
+                tools:text="#ff0000" />
 
             <TextView
                 android:id="@+id/toolbar_subtitle_accent_title"
@@ -107,9 +106,9 @@
         android:id="@+id/search_view_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttons"
         app:layout_constraintStart_toStartOf="parent"

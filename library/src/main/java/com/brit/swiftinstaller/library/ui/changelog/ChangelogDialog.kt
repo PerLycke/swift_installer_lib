@@ -50,7 +50,8 @@ class ChangelogDialog : DialogFragment() {
         d.window!!.setBackgroundDrawable(ColorDrawable(activity!!.swift.selection.backgroundColor))
         d.setOnShowListener {
             d.setIcon(R.mipmap.ic_launcher)
-            d.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(activity!!.swift.selection.accentColor)
+            d.getButton(AlertDialog.BUTTON_POSITIVE)
+                    .setTextColor(activity!!.swift.selection.accentColor)
         }
         return d
     }

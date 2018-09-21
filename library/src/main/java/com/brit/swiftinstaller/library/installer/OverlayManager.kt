@@ -84,7 +84,8 @@ class OverlayManager(private val context: Context) {
                                 Notifier.broadcastInstallFinished(context)
                             }
                         }
-                        Notifier.broadcastOverlayInstalled(context, overlayTask.packageName, overlayTask.index, msg.arg2)
+                        Notifier.broadcastOverlayInstalled(context, overlayTask.packageName,
+                                overlayTask.index, msg.arg2)
                     }
 
                     OVERLAY_UNINSTALLED -> {
@@ -94,7 +95,8 @@ class OverlayManager(private val context: Context) {
                             }
                             Notifier.broadcastUninstallFinished(context)
                         }
-                        Notifier.broadcastOverlayUninstalled(context, overlayTask.packageName, overlayTask.index, msg.arg2)
+                        Notifier.broadcastOverlayUninstalled(context, overlayTask.packageName,
+                                overlayTask.index, msg.arg2)
                     }
                 }
             }

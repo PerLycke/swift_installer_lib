@@ -9,14 +9,10 @@ open class Option(val name: String, val value: String) {
     var infoText = ""
     val subOptions = OptionsMap()
     var subOptionKey = ""
-    var subOptionDefault = "default"
     var isSliderOption = false
 
-    constructor(name: String, value: String, resTag: String) : this(name, value) {
-        this.resTag = resTag
-    }
-
-    constructor(name: String, value: String, resTag: String, iconTint: Boolean) : this(name, value) {
+    constructor(name: String, value: String, resTag: String, iconTint: Boolean) : this(name,
+            value) {
         this.resTag = resTag
         this.iconTint = iconTint
     }

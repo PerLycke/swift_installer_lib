@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ /*
   ~  * Copyright (C) 2018 Griffin Millender
   ~  * Copyright (C) 2018 Per Lycke
@@ -62,8 +61,8 @@
         android:id="@+id/accent_category_divider"
         android:layout_width="0dp"
         android:layout_height="2dp"
-        android:layout_marginEnd="32dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="32dp"
         android:background="@color/divider"
         android:contentDescription="@string/image"
         android:visibility="visible"

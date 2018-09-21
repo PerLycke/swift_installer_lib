@@ -40,21 +40,34 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.BaseAdapter
+import android.widget.CompoundButton
+import android.widget.ImageView
+import android.widget.RadioButton
+import android.widget.SeekBar
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.viewpager.widget.PagerAdapter
-import androidx.viewpager.widget.ViewPager
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.CircleDrawable
 import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
 import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
 import com.brit.swiftinstaller.library.ui.customize.Option
 import com.brit.swiftinstaller.library.ui.customize.PreviewHandler
-import com.brit.swiftinstaller.library.utils.*
+import com.brit.swiftinstaller.library.utils.ColorUtils
 import com.brit.swiftinstaller.library.utils.ColorUtils.checkAccentColor
 import com.brit.swiftinstaller.library.utils.ColorUtils.checkBackgroundColor
 import com.brit.swiftinstaller.library.utils.ColorUtils.convertToColorInt
+import com.brit.swiftinstaller.library.utils.IdLists
+import com.brit.swiftinstaller.library.utils.MaterialPalette
+import com.brit.swiftinstaller.library.utils.Utils
+import com.brit.swiftinstaller.library.utils.alert
+import com.brit.swiftinstaller.library.utils.setUseBackgroundPalette
+import com.brit.swiftinstaller.library.utils.setVisible
+import com.brit.swiftinstaller.library.utils.swift
+import com.brit.swiftinstaller.library.utils.useBackgroundPalette
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_customize.*
 import kotlinx.android.synthetic.main.customize_accent.*
@@ -99,10 +112,9 @@ class CustomizeActivity : ThemeActivity() {
             setupHexInputs()
             setupThemeOptions()
 
-            val viewpager: ViewPager = findViewById(R.id.preview_pager)
-            viewpager.pageMargin = 64
+            preview_pager.pageMargin = 64
             val adapter = PreviewPagerAdapter()
-            viewpager.adapter = adapter
+            preview_pager.adapter = adapter
 
             personalize_fab.setOnClickListener {
                 personalizeFabClick()
@@ -120,7 +132,9 @@ class CustomizeActivity : ThemeActivity() {
                     }
                 }
             }
-            baseThemeInfo.setOnClickListener(infoListener(getString(R.string.base_theme_dialog_title), getString(R.string.base_theme_dialog_info)))
+            baseThemeInfo.setOnClickListener(
+                    infoListener(getString(R.string.base_theme_dialog_title),
+                            getString(R.string.base_theme_dialog_info)))
         }
     }
 
@@ -136,12 +150,15 @@ class CustomizeActivity : ThemeActivity() {
         handler.postDelayed({
             if (personalize_fab.visibility == View.GONE) {
                 personalize_fab.visibility = View.VISIBLE
-                personalize_fab.startAnimation(AnimationUtils.loadAnimation(this@CustomizeActivity, android.R.anim.fade_in))
+                personalize_fab.startAnimation(AnimationUtils.loadAnimation(this@CustomizeActivity,
+                        android.R.anim.fade_in))
             }
             if (accent_hex_input.hasFocus() || hex_input_bg.hasFocus()) {
-                personalize_fab.setImageDrawable(ContextCompat.getDrawable(this@CustomizeActivity, R.drawable.ic_done))
+                personalize_fab.setImageDrawable(
+                        ContextCompat.getDrawable(this@CustomizeActivity, R.drawable.ic_done))
             } else {
-                personalize_fab.setImageDrawable(ContextCompat.getDrawable(this@CustomizeActivity, R.drawable.ic_fab_install))
+                personalize_fab.setImageDrawable(ContextCompat.getDrawable(this@CustomizeActivity,
+                        R.drawable.ic_fab_install))
             }
         }, 300)
     }
@@ -238,21 +255,27 @@ class CustomizeActivity : ThemeActivity() {
         }
     }
 
-    private fun setupOption(optionsContainer: ViewGroup, option: Option, categoryKey: String, group: RadioGroup) {
-        val optionView = LayoutInflater.from(this).inflate(R.layout.customize_option_item, optionsContainer, false) as ViewGroup
+    private fun setupOption(optionsContainer: ViewGroup, option: Option, categoryKey: String,
+                            group: RadioGroup) {
+        val optionView =
+                LayoutInflater.from(this).inflate(R.layout.customize_option_item, optionsContainer,
+                        false) as ViewGroup
         if (option.isSliderOption) {
             optionView.slider_layout.setVisible(true)
             optionView.slider_title.text = option.name
-            optionView.percent.text = getString(R.string.alpha_value, selection.getInt(option.value))
+            optionView.percent.text =
+                    getString(R.string.alpha_value, selection.getInt(option.value))
             optionView.slider.progress = selection.getInt(option.value)
-            optionView.slider.setOnSeekBarChangeListener(object :SeekBar.OnSeekBarChangeListener {
+            optionView.slider.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                     optionView.percent.text = getString(R.string.alpha_value, p1)
                 }
+
                 override fun onStopTrackingTouch(p0: SeekBar?) {
                     selection[option.value] = p0!!.progress.toString()
                     updateColor(false)
                 }
+
                 override fun onStartTrackingTouch(p0: SeekBar?) {
                 }
             })
@@ -301,11 +324,9 @@ class CustomizeActivity : ThemeActivity() {
     }
 
     private fun setupThemeOptions() {
-        material_theme.isChecked = usePalette
-        flat_theme.isChecked = !usePalette
-
         for (category in customizeHandler.getCustomizeOptions().reversed()) {
-            val categoryView = LayoutInflater.from(this).inflate(R.layout.customize_option_layout, customize_options, false)
+            val categoryView = LayoutInflater.from(this)
+                    .inflate(R.layout.customize_option_layout, customize_options, false)
             categoryView.customize_category_title.text = category.name
             val optionGroup = RadioGroup()
             for (option in category.options) {
@@ -328,6 +349,9 @@ class CustomizeActivity : ThemeActivity() {
 
         material_theme.setOnCheckedChangeListener(baseThemeListener)
         flat_theme.setOnCheckedChangeListener(baseThemeListener)
+
+        material_theme.isChecked = usePalette
+        flat_theme.isChecked = !usePalette
     }
 
     override fun onBackPressed() {
@@ -382,8 +406,11 @@ class CustomizeActivity : ThemeActivity() {
             val oldPalette = useBackgroundPalette(this)
             val oldSelection = customizeHandler.getSelection()
 
-            fun hotSwapPrefOn() = PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("hotswap", true).apply()
-            fun hotSwapPrefOff() = PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("hotswap", false).apply()
+            fun hotSwapPrefOn() = PreferenceManager.getDefaultSharedPreferences(
+                    this).edit().putBoolean("hotswap", true).apply()
+
+            fun hotSwapPrefOff() = PreferenceManager.getDefaultSharedPreferences(
+                    this).edit().putBoolean("hotswap", false).apply()
 
             for (key in oldSelection.keys) {
                 if (oldSelection[key] != selection[key]) {
@@ -440,8 +467,11 @@ class CustomizeActivity : ThemeActivity() {
 
                 finish = true
                 val intent = Intent(this, InstallActivity::class.java)
-                val launch = getSharedPreferences("launched", Context.MODE_PRIVATE).getString("launched","first")
-                val thisLaunch = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("thisLaunched", false)
+                val launch =
+                        getSharedPreferences("launched", Context.MODE_PRIVATE).getString("launched",
+                                "first")
+                val thisLaunch = PreferenceManager.getDefaultSharedPreferences(this)
+                        .getBoolean("thisLaunched", false)
                 intent.putStringArrayListExtra("apps", apps)
 
                 if (launch == "default" && thisLaunch) {
@@ -449,19 +479,23 @@ class CustomizeActivity : ThemeActivity() {
                 } else {
                     when (launch) {
                         "first" -> {
-                            getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "second").apply()
+                            getSharedPreferences("launched", Context.MODE_PRIVATE).edit()
+                                    .putString("launched", "second").apply()
                             startActivity(intent)
                         }
                         "second" -> {
                             if (!Utils.isSamsungOreo()) {
-                                getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "default").apply()
+                                getSharedPreferences("launched", Context.MODE_PRIVATE).edit()
+                                        .putString("launched", "default").apply()
                                 startActivity(intent)
                             } else {
                                 alert {
                                     title = getString(R.string.reboot_delay_title)
                                     message = getString(R.string.reboot_delay_msg)
                                     positiveButton(R.string.proceed) { dialog ->
-                                        getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "default").apply()
+                                        getSharedPreferences("launched",
+                                                Context.MODE_PRIVATE).edit()
+                                                .putString("launched", "default").apply()
                                         dialog.dismiss()
                                         startActivity(intent)
                                     }
@@ -474,7 +508,8 @@ class CustomizeActivity : ThemeActivity() {
                                 title = getString(R.string.installing_and_uninstalling_title)
                                 message = getString(R.string.installing_and_uninstalling_msg)
                                 positiveButton(R.string.proceed) { dialog ->
-                                    PreferenceManager.getDefaultSharedPreferences(ctx).edit().putBoolean("thisLaunched", true).apply()
+                                    PreferenceManager.getDefaultSharedPreferences(ctx).edit()
+                                            .putBoolean("thisLaunched", true).apply()
                                     dialog.dismiss()
                                     startActivity(intent)
                                 }
@@ -514,13 +549,16 @@ class CustomizeActivity : ThemeActivity() {
         updateColors(selection.backgroundColor, usePalette)
         for (id in IdLists.radioButtons) {
             val b = findViewById<RadioButton>(id)
-            b.buttonTintList = ColorUtils.radioButtonColor(this, R.color.radio_button_disabled, selection.accentColor)
+            b.buttonTintList = ColorUtils.radioButtonColor(this, R.color.radio_button_disabled,
+                    selection.accentColor)
+            b.jumpDrawablesToCurrentState()
         }
 
         backgroundIndicatorHandler.setIndicatorColor(selection.accentColor)
         backgroundIndicatorHandler.setActiveIndicator(selection.backgroundColor)
 
-        val buttonTint = ColorUtils.radioButtonColor(this, R.color.radio_button_disabled, selection.accentColor)
+        val buttonTint = ColorUtils.radioButtonColor(this, R.color.radio_button_disabled,
+                selection.accentColor)
         for (position in customize_options.childCount.downTo(0)) {
             val view = customize_options.getChildAt(position)
             if (view != null) {
@@ -539,7 +577,8 @@ class CustomizeActivity : ThemeActivity() {
                                     }
                                 }
                             }
-                            v.slider.thumb.setColorFilter(selection.accentColor, PorterDuff.Mode.SRC_ATOP)
+                            v.slider.thumb.setColorFilter(selection.accentColor,
+                                    PorterDuff.Mode.SRC_ATOP)
                             v.slider.progressDrawable.setColorFilter(selection.accentColor,
                                     PorterDuff.Mode.SRC_ATOP)
                         }
@@ -548,8 +587,10 @@ class CustomizeActivity : ThemeActivity() {
             }
         }
 
-        if (updateHex && accent_hex_input.text.toString() != Integer.toHexString(selection.accentColor).substring(2))
-            accent_hex_input.setText(Integer.toHexString(selection.accentColor).substring(2), TextView.BufferType.EDITABLE)
+        if (updateHex && accent_hex_input.text.toString() != Integer.toHexString(
+                        selection.accentColor).substring(2))
+            accent_hex_input.setText(Integer.toHexString(selection.accentColor).substring(2),
+                    TextView.BufferType.EDITABLE)
 
         accent_hex_input.background.setTint(selection.accentColor)
         hex_input_bg.background.setTint(selection.accentColor)
@@ -558,8 +599,10 @@ class CustomizeActivity : ThemeActivity() {
 
         materialPalette = MaterialPalette.createPalette(selection.backgroundColor, usePalette)
 
-        if (updateHex && hex_input_bg.text.toString() != Integer.toHexString(materialPalette.backgroundColor).substring(2))
-            hex_input_bg.setText(Integer.toHexString(materialPalette.backgroundColor).substring(2), TextView.BufferType.EDITABLE)
+        if (updateHex && hex_input_bg.text.toString() != Integer.toHexString(
+                        materialPalette.backgroundColor).substring(2))
+            hex_input_bg.setText(Integer.toHexString(materialPalette.backgroundColor).substring(2),
+                    TextView.BufferType.EDITABLE)
 
         previewHandler.updateBackgroundColor(materialPalette)
         previewHandler.updateView(materialPalette, selection)
@@ -570,11 +613,13 @@ class CustomizeActivity : ThemeActivity() {
         fun addIndicator(indicator: ImageView) {
             indicators.add(indicator)
         }
+
         fun setIndicatorColor(color: Int) {
             for (ind in indicators) {
                 ind.drawable.setTint(color)
             }
         }
+
         fun setActiveIndicator(color: Int) {
             for (ind in indicators) {
                 ind.setVisible(ind.tag == color)
@@ -582,7 +627,9 @@ class CustomizeActivity : ThemeActivity() {
         }
     }
 
-    inner class PaletteAdapter constructor(private val colors: ArrayList<CustomizeHandler.PaletteItem>, private val isAccent: Boolean) : BaseAdapter() {
+    inner class PaletteAdapter constructor(
+            private val colors: ArrayList<CustomizeHandler.PaletteItem>,
+            private val isAccent: Boolean) : BaseAdapter() {
 
         override fun getCount(): Int {
             return colors.size
@@ -604,7 +651,8 @@ class CustomizeActivity : ThemeActivity() {
             }
             if (isAccent) {
                 mainView!!.accent_layout.setVisible(isAccent)
-                mainView.accent_layout.icon.background = CircleDrawable(colors[position].accentColor)
+                mainView.accent_layout.icon.background =
+                        CircleDrawable(colors[position].accentColor)
                 mainView.tag = colors[position]
                 mainView.setOnClickListener {
                     selection.accentColor = colors[position].accentColor
@@ -614,10 +662,12 @@ class CustomizeActivity : ThemeActivity() {
                 mainView!!.background_layout.setVisible(!isAccent)
                 mainView.background_layout.indicator.tag = colors[position].backgroundColor
                 mainView.background_layout.indicator.drawable.setTint(selection.accentColor)
-                mainView.background_layout.indicator.setVisible(selection.backgroundColor == colors[position].backgroundColor)
+                mainView.background_layout.indicator.setVisible(
+                        selection.backgroundColor == colors[position].backgroundColor)
                 backgroundIndicatorHandler.addIndicator(mainView.background_layout.indicator)
                 mainView.background_layout.background_icon.tag = colors[position].backgroundColor
-                mainView.background_layout.background_icon.setImageDrawable(CircleDrawable(colors[position].backgroundColor))
+                mainView.background_layout.background_icon.setImageDrawable(
+                        CircleDrawable(colors[position].backgroundColor))
                 mainView.background_layout.background_title.text = colors[position].backgroundName
                 mainView.background_layout.background_icon.setOnClickListener {
                     backgroundIndicatorHandler.setActiveIndicator(colors[position].backgroundColor)

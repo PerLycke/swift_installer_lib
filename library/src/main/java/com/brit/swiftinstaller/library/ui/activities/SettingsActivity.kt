@@ -13,7 +13,7 @@ import com.brit.swiftinstaller.library.utils.swift
 
 class SettingsActivity : AppCompatActivity() {
 
-    lateinit var palette: MaterialPalette
+    private lateinit var palette: MaterialPalette
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +23,8 @@ class SettingsActivity : AppCompatActivity() {
         window.statusBarColor = palette.darkerBackgroundColor
         window.navigationBarColor = palette.darkerBackgroundColor
 
-        supportFragmentManager.beginTransaction().replace(android.R.id.content, SettingsFragment()).commit()
+        supportFragmentManager.beginTransaction().replace(android.R.id.content, SettingsFragment())
+                .commit()
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setBackgroundDrawable(ColorDrawable(palette.darkBackgroundColor))

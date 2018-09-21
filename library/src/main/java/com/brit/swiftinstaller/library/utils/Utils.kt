@@ -29,7 +29,6 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.Build
-import android.util.Log
 import com.brit.swiftinstaller.library.ui.applist.AppItem
 
 object Utils {
@@ -99,7 +98,7 @@ object Utils {
                 getProperty("ro.config.knox", "def") != "def"
     }
 
-    fun createImage(width:Int, height:Int, color:Int):Bitmap {
+    fun createImage(width: Int, height: Int, color: Int): Bitmap {
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         val paint = Paint()

@@ -30,7 +30,8 @@ import com.brit.swiftinstaller.library.ui.activities.InstallSummaryActivity
 import com.brit.swiftinstaller.library.utils.OverlayUtils.checkVersionCompatible
 import com.brit.swiftinstaller.library.utils.swift
 
-class AppsTabPagerAdapter(fm: FragmentManager, summary: Boolean, vararg tabs: Int) : FragmentPagerAdapter(fm) {
+class AppsTabPagerAdapter(fm: FragmentManager, summary: Boolean, vararg tabs: Int) :
+        FragmentPagerAdapter(fm) {
 
     private val mApps = HashMap<Int, ArrayList<AppItem>>()
     private var mFragments: ArrayList<AppListFragment> = ArrayList()

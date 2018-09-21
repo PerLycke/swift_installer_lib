@@ -32,6 +32,7 @@ abstract class CustomizeHandler(val context: Context) {
     private val accents = arrayListOf<PaletteItem>()
     private val backgrounds = arrayListOf<PaletteItem>()
     private val categories = CategoryMap()
+
     init {
         initialize()
     }
@@ -51,6 +52,7 @@ abstract class CustomizeHandler(val context: Context) {
         constructor(accentColor: Int) {
             this.accentColor = accentColor
         }
+
         var backgroundColor = -1
         var backgroundName = ""
         var accentColor = -1
@@ -74,11 +76,16 @@ abstract class CustomizeHandler(val context: Context) {
     }
 
     open fun populateBackgroundColors(backgrounds: ArrayList<PaletteItem>) {
-        backgrounds.add(PaletteItem(convertToColorInt("202026"), context.getString(R.string.swift_dark)))
-        backgrounds.add(PaletteItem(convertToColorInt("000000"), context.getString(R.string.swift_black)))
-        backgrounds.add(PaletteItem(convertToColorInt("202833"), context.getString(R.string.swift_style)))
-        backgrounds.add(PaletteItem(convertToColorInt("1C3B3A"), context.getString(R.string.bg_nature)))
-        backgrounds.add(PaletteItem(convertToColorInt("173145"), context.getString(R.string.bg_ocean)))
+        backgrounds.add(
+                PaletteItem(convertToColorInt("202026"), context.getString(R.string.swift_dark)))
+        backgrounds.add(
+                PaletteItem(convertToColorInt("000000"), context.getString(R.string.swift_black)))
+        backgrounds.add(
+                PaletteItem(convertToColorInt("202833"), context.getString(R.string.swift_style)))
+        backgrounds.add(
+                PaletteItem(convertToColorInt("1C3B3A"), context.getString(R.string.bg_nature)))
+        backgrounds.add(
+                PaletteItem(convertToColorInt("173145"), context.getString(R.string.bg_ocean)))
         backgrounds.add(PaletteItem(convertToColorInt("363844"), context.getString(R.string.night)))
     }
 
@@ -86,14 +93,15 @@ abstract class CustomizeHandler(val context: Context) {
         return backgrounds
     }
 
-    open fun createPreviewHandler(context: Context) : PreviewHandler {
+    open fun createPreviewHandler(context: Context): PreviewHandler {
         return object : PreviewHandler(context) {
         }
     }
 
     fun getSelection(): CustomizeSelection {
         val selection = CustomizeSelection.fromString(PreferenceManager
-                .getDefaultSharedPreferences(context).getString("customize_selection", getDefaultSelection().toString())!!)
+                .getDefaultSharedPreferences(context).getString("customize_selection",
+                        getDefaultSelection().toString())!!)
         val def = getDefaultSelection()
         for (key in def.keys) {
             if (!selection.containsKey(key)) {
@@ -123,18 +131,20 @@ abstract class CustomizeHandler(val context: Context) {
         val notifBackgroundOptions = OptionsMap()
         notifBackgroundOptions.add(Option(context.getString(R.string.white), "white"))
         notifBackgroundOptions.add(Option(context.getString(R.string.dark), "dark"))
-        notifBackgroundOptions["dark"]!!.infoText = context.getString(R.string.notif_fix_desc_summary)
+        notifBackgroundOptions["dark"]!!.infoText =
+                context.getString(R.string.notif_fix_desc_summary)
         val senderNameOptions = OptionsMap()
         senderNameOptions.add(Option(context.getString(R.string.disable), "default"))
         senderNameOptions.add(Option(context.getString(R.string.enable_shadow_title), "shadow"))
         notifBackgroundOptions["dark"]!!.subOptions.putAll(senderNameOptions)
         notifBackgroundOptions["dark"]!!.subOptionKey = "sender_name_fix"
         requiredApps.add("android")
-        categories.add(CustomizeCategory(context.getString(R.string.notification_tweaks), "notif_background", "white", notifBackgroundOptions, requiredApps))
+        categories.add(CustomizeCategory(context.getString(R.string.notification_tweaks),
+                "notif_background", "white", notifBackgroundOptions, requiredApps))
         requiredApps.clear()
     }
 
-    fun getCustomizeOptions() : CategoryMap {
+    fun getCustomizeOptions(): CategoryMap {
         return categories
     }
 }

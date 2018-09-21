@@ -3,7 +3,7 @@ package com.brit.swiftinstaller.library.ui.changelog
 import android.content.Context
 import com.michaelflisar.changelog.tags.IChangelogTag
 
-class SwiftChangelogTag(val tag: String, private val prefix: String): IChangelogTag {
+class SwiftChangelogTag(val tag: String, private val prefix: String) : IChangelogTag {
     override fun getXMLTagName(): String {
         return tag
     }

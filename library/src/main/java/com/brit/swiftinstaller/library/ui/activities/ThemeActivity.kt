@@ -22,8 +22,6 @@
 package com.brit.swiftinstaller.library.ui.activities
 
 import android.annotation.SuppressLint
-import android.content.pm.ActivityInfo
-import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -31,25 +29,30 @@ import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.StateListDrawable
 import android.os.Bundle
 import android.preference.PreferenceManager
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.library.utils.*
+import com.brit.swiftinstaller.library.utils.IdLists
+import com.brit.swiftinstaller.library.utils.KEY_BACKGROUND_PALETTE
+import com.brit.swiftinstaller.library.utils.MaterialPalette
+import com.brit.swiftinstaller.library.utils.swift
+import com.brit.swiftinstaller.library.utils.useBackgroundPalette
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 @SuppressLint("Registered")
 open class ThemeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener { _, key ->
-            if (key == "customize_options" || key == KEY_BACKGROUND_PALETTE) {
-                updateColors(swift.selection.backgroundColor, useBackgroundPalette(this))
-            }
-        }
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .registerOnSharedPreferenceChangeListener { _, key ->
+                    if (key == "customize_options" || key == KEY_BACKGROUND_PALETTE) {
+                        updateColors(swift.selection.backgroundColor, useBackgroundPalette(this))
+                    }
+                }
     }
 
     override fun onResume() {
@@ -73,7 +76,8 @@ open class ThemeActivity : AppCompatActivity() {
             }
         }
         if (findViewById<FloatingActionButton>(R.id.fab) != null) {
-            findViewById<FloatingActionButton>(R.id.fab).background.setTint(swift.selection.accentColor)
+            findViewById<FloatingActionButton>(R.id.fab).background.setTint(
+                    swift.selection.accentColor)
         }
         for (id in IdLists.cardIds) {
             val v = findViewById<View>(id)

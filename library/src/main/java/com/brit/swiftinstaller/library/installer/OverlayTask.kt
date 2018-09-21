@@ -28,10 +28,19 @@ import android.graphics.Color
 import android.os.Environment
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
-import com.brit.swiftinstaller.library.utils.*
+import com.brit.swiftinstaller.library.utils.ColorUtils
+import com.brit.swiftinstaller.library.utils.MaterialPalette
+import com.brit.swiftinstaller.library.utils.NO_PERMISSION_PACKAGES
+import com.brit.swiftinstaller.library.utils.OverlayUtils
 import com.brit.swiftinstaller.library.utils.OverlayUtils.checkVersionCompatible
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPath
+import com.brit.swiftinstaller.library.utils.ShellUtils
+import com.brit.swiftinstaller.library.utils.deleteFileShell
+import com.brit.swiftinstaller.library.utils.extractAsset
+import com.brit.swiftinstaller.library.utils.getVersionCode
+import com.brit.swiftinstaller.library.utils.swift
+import com.brit.swiftinstaller.library.utils.useBackgroundPalette
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
@@ -55,13 +64,15 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     var uninstall: Boolean = false
     var index = 0
 
-    fun initializeOverlayTask(context: Context, packageName: String, index: Int, uninstall: Boolean) {
+    fun initializeOverlayTask(context: Context, packageName: String, index: Int,
+                              uninstall: Boolean) {
         this.context = context
         this.selection = context.swift.romInfo.getCustomizeHandler().getSelection()
         this.packageName = packageName
         this.packageInfo = context.packageManager.getPackageInfo(packageName, 0)
         this.appInfo = context.packageManager.getApplicationInfo(packageName, 0)
-        this.overlayDir = File(Environment.getExternalStorageDirectory(), ".swift/overlays/$packageName")
+        this.overlayDir =
+                File(Environment.getExternalStorageDirectory(), ".swift/overlays/$packageName")
         this.resDir = File(overlayDir, "res")
         this.assetDir = File(overlayDir, "assets")
         if (resDir.exists())
@@ -109,7 +120,8 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         val am = context.assets
         val resourcePaths = ArrayList<String>()
         val assetPaths = ArrayList<String>()
-        OverlayUtils.parseOverlayResourcePath(context, "overlays/$packageName", packageName, resourcePaths)
+        OverlayUtils.parseOverlayResourcePath(context, "overlays/$packageName", packageName,
+                resourcePaths)
         OverlayUtils.parseOverlayAssetPath(am, "overlays/$packageName", assetPaths)
         for (path in resourcePaths) {
             am.extractAsset(path, resDir.absolutePath, context.swift.cipher)
@@ -133,9 +145,10 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         if (assetDir.exists() && assetDir.isDirectory && !assetDir.list().isEmpty()) {
             assets = assetDir.absolutePath
         }
-        val output = ShellUtils.compileOverlay(context, BuildConfig.APPLICATION_ID, resDir.absolutePath,
-                overlayDir.absolutePath + "/AndroidManifest.xml",
-                overlayPath, assets, appInfo)
+        val output =
+                ShellUtils.compileOverlay(context, BuildConfig.APPLICATION_ID, resDir.absolutePath,
+                        overlayDir.absolutePath + "/AndroidManifest.xml",
+                        overlayPath, assets, appInfo)
         if (output.exitCode == 0) {
             context.swift.romInfo.installOverlay(context, packageName, overlayPath)
         } else {
@@ -149,8 +162,11 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         val file = StringBuilder()
         file.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
         file.append("<resources>\n")
-        file.append("<color name=\"material_blue_grey_900\">#${String.format("%06x", accent).substring(2)}</color>\n")
-        file.append("<color name=\"highlighted_text_dark\">#${String.format("%06x", ColorUtils.addAlphaColor(accent, 30)).substring(2)}</color>\n")
+        file.append(
+                "<color name=\"material_blue_grey_900\">#${String.format("%06x", accent).substring(
+                        2)}</color>\n")
+        file.append("<color name=\"highlighted_text_dark\">#${String.format("%06x",
+                ColorUtils.addAlphaColor(accent, 30)).substring(2)}</color>\n")
         file.append("</resources>")
 
         val values = File(resDir, "/values")
@@ -171,18 +187,27 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     }
 
     private fun applyBackground() {
-        val palette = MaterialPalette.createPalette(selection.backgroundColor, useBackgroundPalette(context))
+        val palette = MaterialPalette.createPalette(selection.backgroundColor,
+                useBackgroundPalette(context))
         val file = StringBuilder()
         file.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
         file.append("<resources>\n")
-        file.append("<color name=\"background_material_dark\">#${toHexString(palette.backgroundColor)}</color>\n")
-        file.append("<color name=\"background_floating_material_dark\">#${toHexString(palette.floatingBackground)}</color>\n")
-        file.append("<color name=\"button_material_dark\">#${toHexString(palette.buttonBackground)}</color>\n")
-        file.append("<color name=\"legacy_primary\">#${toHexString(palette.darkBackgroundColor)}</color>\n")
+        file.append("<color name=\"background_material_dark\">#${toHexString(
+                palette.backgroundColor)}</color>\n")
+        file.append("<color name=\"background_floating_material_dark\">#${toHexString(
+                palette.floatingBackground)}</color>\n")
+        file.append("<color name=\"button_material_dark\">#${toHexString(
+                palette.buttonBackground)}</color>\n")
+        file.append("<color name=\"legacy_primary\">#${toHexString(
+                palette.darkBackgroundColor)}</color>\n")
         file.append("<color name=\"legacy_green\">#${toHexString(palette.cardBackgroud)}</color>\n")
-        file.append("<color name=\"legacy_orange\">#${toHexString(palette.otherBackground)}</color>\n")
-        file.append("<color name=\"legacy_control_activated\">#${ColorUtils.getAlpha(palette.backgroundColor, selection.getInt("alpha"))}</color>\n")
-        file.append("<item type=\"dimen\" name=\"disabled_alpha_leanback_formwizard\">${getAlphaDimen(selection.getInt("alpha"))}</item>\n")
+        file.append(
+                "<color name=\"legacy_orange\">#${toHexString(palette.otherBackground)}</color>\n")
+        file.append("<color name=\"legacy_control_activated\">#${ColorUtils.getAlpha(
+                palette.backgroundColor, selection.getInt("alpha"))}</color>\n")
+        file.append(
+                "<item type=\"dimen\" name=\"disabled_alpha_leanback_formwizard\">${getAlphaDimen(
+                        selection.getInt("alpha"))}</item>\n")
         file.append("</resources>")
 
         val values = File(resDir, "/values")
@@ -226,14 +251,19 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         manifest.append("android:versionCode=\"$overlayVersion\"\n")
         manifest.append("android:versionName=\"$overlayVersion\">\n")
         if (!NO_PERMISSION_PACKAGES.contains(targetPackage)) {
-            manifest.append("<uses-permission android:name=\"com.samsung.android.permission.SAMSUNG_OVERLAY_COMPONENT\" />\n")
+            manifest.append(
+                    "<uses-permission android:name=\"com.samsung.android.permission.SAMSUNG_OVERLAY_COMPONENT\" />\n")
         }
         manifest.append("<overlay android:targetPackage=\"$targetPackage\"/>\n")
         manifest.append("<application android:allowBackup=\"false\" android:hasCode=\"false\">\n")
-        manifest.append("<meta-data android:name=\"app_version\" android:value=\"v=$appVersion\"/>\n")
-        manifest.append("<meta-data android:name=\"app_version_code\" android:value=\"$appVersionCode\"/>\n")
-        manifest.append("<meta-data android:name=\"overlay_version\" android:value=\"$overlayVersion\"/>\n")
-        manifest.append("<meta-data android:name=\"target_package\" android:value=\"$targetPackage\"/>\n")
+        manifest.append(
+                "<meta-data android:name=\"app_version\" android:value=\"v=$appVersion\"/>\n")
+        manifest.append(
+                "<meta-data android:name=\"app_version_code\" android:value=\"$appVersionCode\"/>\n")
+        manifest.append(
+                "<meta-data android:name=\"overlay_version\" android:value=\"$overlayVersion\"/>\n")
+        manifest.append(
+                "<meta-data android:name=\"target_package\" android:value=\"$targetPackage\"/>\n")
         manifest.append("</application>\n")
         manifest.append("</manifest>")
 

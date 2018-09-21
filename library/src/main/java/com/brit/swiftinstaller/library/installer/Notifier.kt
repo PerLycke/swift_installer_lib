@@ -26,7 +26,6 @@ import android.content.Intent
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.brit.swiftinstaller.library.BuildConfig
 
-
 class Notifier {
 
     companion object {
@@ -41,7 +40,6 @@ class Notifier {
         const val EXTRA_PROGRESS = "$installerPackage.extra.PROGRESS"
         const val EXTRA_MAX = "$installerPackage.extra.MAX"
 
-
         fun broadcastOverlayFailed(context: Context, packageName: String, errorLog: String) {
             val intent = Intent(ACTION_FAILED)
             intent.putExtra(EXTRA_PACKAGE_NAME, packageName)
@@ -49,7 +47,8 @@ class Notifier {
             LocalBroadcastManager.getInstance(context.applicationContext).sendBroadcast(intent)
         }
 
-        fun broadcastOverlayInstalled(context: Context, packageName: String, progress: Int, max: Int) {
+        fun broadcastOverlayInstalled(context: Context, packageName: String, progress: Int,
+                                      max: Int) {
             val intent = Intent(ACTION_INSTALLED)
             intent.putExtra(EXTRA_PACKAGE_NAME, packageName)
             intent.putExtra(EXTRA_PROGRESS, progress)
@@ -57,7 +56,8 @@ class Notifier {
             LocalBroadcastManager.getInstance(context.applicationContext).sendBroadcast(intent)
         }
 
-        fun broadcastOverlayUninstalled(context: Context, packageName: String, progress: Int, max: Int) {
+        fun broadcastOverlayUninstalled(context: Context, packageName: String, progress: Int,
+                                        max: Int) {
             val intent = Intent(ACTION_UNINSTALLED)
             intent.putExtra(EXTRA_PACKAGE_NAME, packageName)
             intent.putExtra(EXTRA_PROGRESS, progress)

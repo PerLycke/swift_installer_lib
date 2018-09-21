@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ /*
   ~  * Copyright (C) 2018 Griffin Millender
   ~  * Copyright (C) 2018 Per Lycke
@@ -26,8 +25,7 @@
     android:background="@android:color/transparent"
     android:orientation="vertical">
 
-    <include
-        layout="@layout/failed_info_card" />
+    <include layout="@layout/failed_info_card" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/app_list_view"

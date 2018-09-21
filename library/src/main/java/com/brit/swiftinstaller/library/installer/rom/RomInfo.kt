@@ -31,19 +31,19 @@ import android.os.Build
 import androidx.core.content.ContextCompat
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
-import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
+import com.brit.swiftinstaller.library.utils.Utils
+import com.brit.swiftinstaller.library.utils.getProperty
 import com.hololo.tutorial.library.PermissionStep
 import com.hololo.tutorial.library.Step
 import com.hololo.tutorial.library.TutorialActivity
-
 
 @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
 abstract class RomInfo constructor(var context: Context) {
 
     private var customizeHandler: CustomizeHandler? = null
 
-    open fun getDefaultAccent() : Int {
+    open fun getDefaultAccent(): Int {
         return context.getColor(R.color.minimal_green)
     }
 
@@ -55,38 +55,47 @@ abstract class RomInfo constructor(var context: Context) {
         return emptyArray()
     }
 
-    open fun addTutorialSteps(tutorial : TutorialActivity) {
+    open fun addTutorialSteps(tutorial: TutorialActivity) {
         tutorial.addFragment(Step.Builder().setTitle(tutorial.getString(R.string.swift_app_name))
                 .setContent(tutorial.getString(R.string.tutorial_guide))
                 .setBackgroundColor(ContextCompat.getColor(tutorial, R.color.background_main))
                 .setDrawable(R.drawable.ic_tutorial_logo) // int top drawable
                 .build(), TUTORIAL_PAGE_MAIN)
-        tutorial.addFragment(Step.Builder().setTitle(tutorial.getString(R.string.tutorial_apps_title))
-                .setContent(tutorial.getString(R.string.tutorial_apps))
-                .setBackgroundColor(ContextCompat.getColor(tutorial, R.color.background_main))
-                .setDrawable(R.drawable.ic_apps) // int top drawable
-                .build(), TUTORIAL_PAGE_APPS)
+        tutorial.addFragment(
+                Step.Builder().setTitle(tutorial.getString(R.string.tutorial_apps_title))
+                        .setContent(tutorial.getString(R.string.tutorial_apps))
+                        .setBackgroundColor(
+                                ContextCompat.getColor(tutorial, R.color.background_main))
+                        .setDrawable(R.drawable.ic_apps) // int top drawable
+                        .build(), TUTORIAL_PAGE_APPS)
         tutorial.addFragment(Step.Builder().setTitle(tutorial.getString(R.string.basic_usage))
                 .setContent(tutorial.getString(R.string.tutorial_basic_usage_content))
                 .setBackgroundColor(ContextCompat.getColor(tutorial, R.color.background_main))
                 .setDrawable(R.drawable.ic_tutorial_hand) // int top drawable
                 .build(), TUTORIAL_PAGE_USAGE)
-        tutorial.addFragment(Step.Builder().setTitle(tutorial.getString(R.string.tutorial_more_usage_title))
-                .setContent(tutorial.getString(R.string.tutorial_more_usage_info))
-                .setBackgroundColor(ContextCompat.getColor(tutorial, R.color.background_main))
-                .setDrawable(R.drawable.ic_tutorial_clicks) // int top drawable
-                .build(), TUTORIAL_PAGE_FIRST_INSTALL)
-        tutorial.addFragment(PermissionStep.Builder().setTitle(tutorial.getString(R.string.tutorial_permission_title))
+        tutorial.addFragment(
+                Step.Builder().setTitle(tutorial.getString(R.string.tutorial_more_usage_title))
+                        .setContent(tutorial.getString(R.string.tutorial_more_usage_info))
+                        .setBackgroundColor(
+                                ContextCompat.getColor(tutorial, R.color.background_main))
+                        .setDrawable(R.drawable.ic_tutorial_clicks) // int top drawable
+                        .build(), TUTORIAL_PAGE_FIRST_INSTALL)
+        tutorial.addFragment(PermissionStep.Builder().setTitle(
+                tutorial.getString(R.string.tutorial_permission_title))
                 .setContent(tutorial.getString(R.string.tutorial_permission_content))
-                .setBackgroundColor(ContextCompat.getColor(tutorial, R.color.background_main)) // int background color
+                .setBackgroundColor(ContextCompat.getColor(tutorial,
+                        R.color.background_main)) // int background color
                 .setDrawable(R.drawable.ic_tutorial_permission)
-                .setPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                .setPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE))
                 .build(), TUTORIAL_PAGE_PERMISSIONS)
-        tutorial.addFragment(Step.Builder().setTitle(tutorial.getString(R.string.tutorial_customize_title))
-                .setContent(tutorial.getString(R.string.tutorial_customize_content))
-                .setBackgroundColor(ContextCompat.getColor(tutorial, R.color.background_main))
-                .setDrawable(R.drawable.ic_tutorial_customize) // int top drawable
-                .build(), TUTORIAL_PAGE_PERSONALIZE)
+        tutorial.addFragment(
+                Step.Builder().setTitle(tutorial.getString(R.string.tutorial_customize_title))
+                        .setContent(tutorial.getString(R.string.tutorial_customize_content))
+                        .setBackgroundColor(
+                                ContextCompat.getColor(tutorial, R.color.background_main))
+                        .setDrawable(R.drawable.ic_tutorial_customize) // int top drawable
+                        .build(), TUTORIAL_PAGE_PERSONALIZE)
     }
 
     open fun isOverlayInstalled(targetPackage: String): Boolean {
@@ -113,10 +122,14 @@ abstract class RomInfo constructor(var context: Context) {
         }
     }
 
-    open fun useHotSwap(): Boolean { return false }
+    open fun useHotSwap(): Boolean {
+        return false
+    }
 
     abstract fun installOverlay(context: Context, targetPackage: String, overlayPath: String)
-    abstract fun postInstall(uninstall: Boolean, apps: ArrayList<String>, oppositeApps: ArrayList<String>?, intent: Intent?)
+    abstract fun postInstall(uninstall: Boolean, apps: ArrayList<String>,
+                             oppositeApps: ArrayList<String>?, intent: Intent?)
+
     abstract fun uninstallOverlay(context: Context, packageName: String)
     abstract fun getChangelogTag(): String
 
@@ -124,7 +137,7 @@ abstract class RomInfo constructor(var context: Context) {
         return pm.getPackageInfo(getOverlayPackageName(packageName), PackageManager.GET_META_DATA)
     }
 
-    open fun magiskEnabled() : Boolean {
+    open fun magiskEnabled(): Boolean {
         return false
     }
 
@@ -143,15 +156,15 @@ abstract class RomInfo constructor(var context: Context) {
         @Synchronized
         @JvmStatic
         fun createRomInfo(context: Context): RomInfo {
-                return when {
-                    getProperty("ro.oxygen.version", "def") != "def"
-                            && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P -> OOSPRomInfo(context)
-                    getProperty("ro.oxygen.version", "def") != "def"
-                            && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> OOSOreoRomInfo(context)
-                    getProperty("ro.config.knox", "def") != "def" -> SamsungRomInfo(context)
-                    Build.VERSION_CODES.P == Build.VERSION.SDK_INT -> PRomInfo(context)
-                    else -> OreoRomInfo(context)
-                }
+            return when {
+                getProperty("ro.oxygen.version", "def") != "def"
+                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P -> OOSPRomInfo(context)
+                getProperty("ro.oxygen.version", "def") != "def"
+                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> OOSOreoRomInfo(context)
+                getProperty("ro.config.knox", "def") != "def" -> SamsungRomInfo(context)
+                Build.VERSION_CODES.P == Build.VERSION.SDK_INT -> PRomInfo(context)
+                else -> OreoRomInfo(context)
+            }
         }
 
         @Suppress("DEPRECATION", "unused")

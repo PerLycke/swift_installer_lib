@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!--
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
   ~ /*
   ~  * Copyright (C) 2018 Griffin Millender
   ~  * Copyright (C) 2018 Per Lycke
@@ -20,7 +19,7 @@
   ~  */
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="swift_app_name">Swift Installer</string>
     <string name="aosp_icons">AOSP</string>
     <string name="apply">Apply</string>
@@ -76,7 +75,6 @@
     <string name="overlays_action_uninstall">Uninstall</string>
     <string name="overlays_action_update">Update</string>
     <string name="overlays_toolbar_accent">Accent:</string>
-    <string name="overlays_toolbar_bg">Bg:</string>
     <string name="preview_time_string">22:20 | Sun 19 April</string>
     <string name="proceed">Proceed</string>
     <string name="progress_installing_title">Installing overlays…</string>
@@ -137,11 +135,11 @@
     <string name="rounded_dialog_title">Rounded style info</string>
     <string name="white">White</string>
     <string name="alpha_value">%1$d %%</string>
-    <string name="gboard_bg_info">To make the Gboard overlay work, you need to set up and activate a theme with a custom picture background from Gboard\'s theme settings. Download an image with your selected background by clicking save, and use the image in Gboard.\n\nImage will be saved as swift_bg.png in sdcard/Download/</string>
-    <string name="gboard_dialog_title">Gboard background</string>
-    <string name="save">Save</string>
-    <string name="saved">Saved!</string>
-    <string name="save_error">Error saving image</string>
+    <string name="gboard_bg_info" tools:keep="@string/gboard_bg_info">To make the Gboard overlay work, you need to set up and activate a theme with a custom picture background from Gboard\'s theme settings. Download an image with your selected background by clicking save, and use the image in Gboard.\n\nImage will be saved as swift_bg.png in sdcard/Download/</string>
+    <string name="gboard_dialog_title" tools:keep="@string/gboard_dialog_title">Gboard background</string>
+    <string name="save" tools:keep="@string/save">Save</string>
+    <string name="saved" tools:keep="@string/saved">Saved!</string>
+    <string name="save_error" tools:keep="@string/save_error">Error saving image</string>
     <string name="unsupported">Unsupported, please uninstall</string>
     <string name="qs_transparency">Quick settings transparency:</string>
     <string name="whats_this">What\'s this?</string>
@@ -166,7 +164,6 @@
     <string name="link_apps">Supported apps: https://goo.gl/gS84kK</string>
     <string name="no_root_msg">Root access is required for the Installer to work. We inform about this in the Play Store description. You can request a refund from the Play Store, or email us with your GPA code for a manual refund. Email is swiftuserhelp@gmail.com</string>
     <string name="exit">Exit</string>
-    <string name="transparency">Transparency</string>
     <string name="requesting_root_access">Requesting root access…</string>
     <string name="search_in_settings">Search in Settings</string>
     <string name="help">Help</string>

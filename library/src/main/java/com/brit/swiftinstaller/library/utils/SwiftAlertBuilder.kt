@@ -9,48 +9,60 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import com.brit.swiftinstaller.library.R
 import org.jetbrains.anko.AlertBuilder
-import org.jetbrains.anko.AlertBuilderFactory
 import org.jetbrains.anko.internals.AnkoInternals
 import org.jetbrains.anko.internals.AnkoInternals.NO_GETTER
 import kotlin.DeprecationLevel.ERROR
 
-val Android: AlertBuilderFactory<AlertDialog> = ::SwiftAlertBuilder
-
-
-class SwiftAlertBuilder(override val ctx: Context): AlertBuilder<AlertDialog> {
+class SwiftAlertBuilder(override val ctx: Context) : AlertBuilder<AlertDialog> {
     private val builder = AlertDialog.Builder(ctx, R.style.AppTheme_AlertDialog)
 
     override var title: CharSequence
         @Deprecated(NO_GETTER, level = ERROR) get() = AnkoInternals.noGetter()
-        set(value) { builder.setTitle(value) }
+        set(value) {
+            builder.setTitle(value)
+        }
 
     override var titleResource: Int
         @Deprecated(NO_GETTER, level = ERROR) get() = AnkoInternals.noGetter()
-        set(value) { builder.setTitle(value) }
+        set(value) {
+            builder.setTitle(value)
+        }
 
     override var message: CharSequence
         @Deprecated(NO_GETTER, level = ERROR) get() = AnkoInternals.noGetter()
-        set(value) { builder.setMessage(value) }
+        set(value) {
+            builder.setMessage(value)
+        }
 
     override var messageResource: Int
         @Deprecated(NO_GETTER, level = ERROR) get() = AnkoInternals.noGetter()
-        set(value) { builder.setMessage(value) }
+        set(value) {
+            builder.setMessage(value)
+        }
 
     override var icon: Drawable
         @Deprecated(NO_GETTER, level = ERROR) get() = AnkoInternals.noGetter()
-        set(value) { builder.setIcon(value) }
+        set(value) {
+            builder.setIcon(value)
+        }
 
     override var iconResource: Int
         @Deprecated(NO_GETTER, level = ERROR) get() = AnkoInternals.noGetter()
-        set(value) { builder.setIcon(value) }
+        set(value) {
+            builder.setIcon(value)
+        }
 
     override var customTitle: View
         @Deprecated(NO_GETTER, level = ERROR) get() = AnkoInternals.noGetter()
-        set(value) { builder.setCustomTitle(value) }
+        set(value) {
+            builder.setCustomTitle(value)
+        }
 
     override var customView: View
         @Deprecated(NO_GETTER, level = ERROR) get() = AnkoInternals.noGetter()
-        set(value) { builder.setView(value) }
+        set(value) {
+            builder.setView(value)
+        }
 
     override var isCancelable: Boolean
         @Deprecated(NO_GETTER, level = ERROR) get() = AnkoInternals.noGetter()
@@ -62,7 +74,8 @@ class SwiftAlertBuilder(override val ctx: Context): AlertBuilder<AlertDialog> {
         builder.setOnCancelListener(handler)
     }
 
-    override fun onKeyPressed(handler: (dialog: DialogInterface, keyCode: Int, e: KeyEvent) -> Boolean) {
+    override fun onKeyPressed(
+            handler: (dialog: DialogInterface, keyCode: Int, e: KeyEvent) -> Boolean) {
         builder.setOnKeyListener(handler)
     }
 
@@ -70,7 +83,8 @@ class SwiftAlertBuilder(override val ctx: Context): AlertBuilder<AlertDialog> {
         builder.setPositiveButton(buttonText) { dialog, _ -> onClicked(dialog) }
     }
 
-    override fun positiveButton(buttonTextResource: Int, onClicked: (dialog: DialogInterface) -> Unit) {
+    override fun positiveButton(buttonTextResource: Int,
+                                onClicked: (dialog: DialogInterface) -> Unit) {
         builder.setPositiveButton(buttonTextResource) { dialog, _ -> onClicked(dialog) }
     }
 
@@ -78,7 +92,8 @@ class SwiftAlertBuilder(override val ctx: Context): AlertBuilder<AlertDialog> {
         builder.setNegativeButton(buttonText) { dialog, _ -> onClicked(dialog) }
     }
 
-    override fun negativeButton(buttonTextResource: Int, onClicked: (dialog: DialogInterface) -> Unit) {
+    override fun negativeButton(buttonTextResource: Int,
+                                onClicked: (dialog: DialogInterface) -> Unit) {
         builder.setNegativeButton(buttonTextResource) { dialog, _ -> onClicked(dialog) }
     }
 
@@ -86,17 +101,20 @@ class SwiftAlertBuilder(override val ctx: Context): AlertBuilder<AlertDialog> {
         builder.setNeutralButton(buttonText) { dialog, _ -> onClicked(dialog) }
     }
 
-    override fun neutralPressed(buttonTextResource: Int, onClicked: (dialog: DialogInterface) -> Unit) {
+    override fun neutralPressed(buttonTextResource: Int,
+                                onClicked: (dialog: DialogInterface) -> Unit) {
         builder.setNeutralButton(buttonTextResource) { dialog, _ -> onClicked(dialog) }
     }
 
-    override fun items(items: List<CharSequence>, onItemSelected: (dialog: DialogInterface, index: Int) -> Unit) {
+    override fun items(items: List<CharSequence>,
+                       onItemSelected: (dialog: DialogInterface, index: Int) -> Unit) {
         builder.setItems(Array(items.size) { i -> items[i].toString() }) { dialog, which ->
             onItemSelected(dialog, which)
         }
     }
 
-    override fun <T> items(items: List<T>, onItemSelected: (dialog: DialogInterface, item: T, index: Int) -> Unit) {
+    override fun <T> items(items: List<T>,
+                           onItemSelected: (dialog: DialogInterface, item: T, index: Int) -> Unit) {
         builder.setItems(Array(items.size) { i -> items[i].toString() }) { dialog, which ->
             onItemSelected(dialog, items[which], which)
         }
@@ -106,9 +124,11 @@ class SwiftAlertBuilder(override val ctx: Context): AlertBuilder<AlertDialog> {
         val dialog = builder.create()
         dialog.setOnShowListener {
             dialog.getButton(
-                    android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(ctx.swift.selection.accentColor)
+                    android.app.AlertDialog.BUTTON_POSITIVE)
+                    .setTextColor(ctx.swift.selection.accentColor)
             dialog.getButton(
-                    android.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(ctx.swift.selection.accentColor)
+                    android.app.AlertDialog.BUTTON_NEGATIVE)
+                    .setTextColor(ctx.swift.selection.accentColor)
             dialog.window?.setBackgroundDrawable(
                     ColorDrawable(ctx.swift.selection.backgroundColor))
         }

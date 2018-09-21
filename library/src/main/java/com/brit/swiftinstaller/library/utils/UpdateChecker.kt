@@ -32,7 +32,8 @@ import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.activities.OverlaysActivity
 import java.lang.ref.WeakReference
 
-class UpdateChecker(context: Context, private val callback: Callback?) : AsyncTask<Void, Void, UpdateChecker.Output>() {
+class UpdateChecker(context: Context, private val callback: Callback?) :
+        AsyncTask<Void, Void, UpdateChecker.Output>() {
 
     private val mConRef: WeakReference<Context> = WeakReference(context)
 
@@ -47,7 +48,8 @@ class UpdateChecker(context: Context, private val callback: Callback?) : AsyncTa
         for (packageName in overlays) {
             if (context.swift.romInfo.isOverlayInstalled(packageName)
                     && Utils.isAppInstalled(context, packageName)
-                    && pm.getApplicationEnabledSetting(packageName) != COMPONENT_ENABLED_STATE_DISABLED_USER) {
+                    && pm.getApplicationEnabledSetting(
+                            packageName) != COMPONENT_ENABLED_STATE_DISABLED_USER) {
                 installedCount++
                 if (OverlayUtils.checkOverlayVersion(context, packageName)
                         || OverlayUtils.checkAppVersion(context, packageName)) {

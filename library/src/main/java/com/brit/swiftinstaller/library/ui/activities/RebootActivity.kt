@@ -38,7 +38,8 @@ class RebootActivity : ThemeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("reboot_card", false).apply()
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("reboot_card", false)
+                .apply()
 
         alert {
             title = getString(R.string.reboot_dialog_title)

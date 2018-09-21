@@ -11,7 +11,8 @@ import androidx.preference.SwitchPreference
 import com.brit.swiftinstaller.library.utils.ColorUtils
 import com.brit.swiftinstaller.library.utils.swift
 
-class SwiftSwitchPreference(context: Context, attrs: AttributeSet) : SwitchPreference(context, attrs) {
+class SwiftSwitchPreference(context: Context, attrs: AttributeSet) :
+        SwitchPreference(context, attrs) {
 
     var switch: Switch? = null
 
@@ -25,10 +26,15 @@ class SwiftSwitchPreference(context: Context, attrs: AttributeSet) : SwitchPrefe
 
     private fun changeColor(checked: Boolean, enabled: Boolean) {
         if (enabled) {
-            val color = if (checked) { context.swift.selection.accentColor } else { Color.LTGRAY }
+            val color = if (checked) {
+                context.swift.selection.accentColor
+            } else {
+                Color.LTGRAY
+            }
             if (switch != null) {
                 switch!!.thumbDrawable.setColorFilter(color, PorterDuff.Mode.MULTIPLY)
-                switch!!.trackDrawable.setColorFilter(ColorUtils.addAlphaColor(color, 10), PorterDuff.Mode.MULTIPLY)
+                switch!!.trackDrawable.setColorFilter(ColorUtils.addAlphaColor(color, 10),
+                        PorterDuff.Mode.MULTIPLY)
             }
         }
     }

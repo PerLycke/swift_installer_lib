@@ -47,22 +47,27 @@ object OverlayUtils {
                 context.packageManager, packageName).applicationInfo.metaData
                 .getInt("app_version_code").toLong()
         val overlayVersion = getOverlayVersion(context, packageName)
-        val curOverlayVersion = context.swift.romInfo.getOverlayInfo(context.packageManager, packageName).getVersionCode()
+        val curOverlayVersion =
+                context.swift.romInfo.getOverlayInfo(context.packageManager, packageName)
+                        .getVersionCode()
         return (appVersion == overlayAppVersion) && (overlayVersion == curOverlayVersion)
     }
 
     fun checkAppVersion(context: Context, packageName: String): Boolean {
         if (!context.swift.romInfo.isOverlayInstalled(packageName)) return false
         val appVersionCode = context.packageManager.getPackageInfo(packageName, 0).getVersionCode()
-        val curVersionCode = context.swift.romInfo.getOverlayInfo(context.packageManager, packageName)
-                .applicationInfo.metaData.getInt("app_version_code")
+        val curVersionCode =
+                context.swift.romInfo.getOverlayInfo(context.packageManager, packageName)
+                        .applicationInfo.metaData.getInt("app_version_code")
         return appVersionCode > curVersionCode
     }
 
     fun checkOverlayVersion(context: Context, packageName: String): Boolean {
         if (!context.swift.romInfo.isOverlayInstalled(packageName)) return false
         val overlayVersion = getOverlayVersion(context, packageName)
-        val currentVersion = context.swift.romInfo.getOverlayInfo(context.packageManager, packageName).getVersionCode()
+        val currentVersion =
+                context.swift.romInfo.getOverlayInfo(context.packageManager, packageName)
+                        .getVersionCode()
         return overlayVersion > currentVersion
     }
 
@@ -119,7 +124,7 @@ object OverlayUtils {
         return versions.substring(0, versions.length - 2)
     }
 
-    fun getOverlayOptions(context: Context, packageName: String) : ArrayMap<String, Array<String>> {
+    fun getOverlayOptions(context: Context, packageName: String): ArrayMap<String, Array<String>> {
         val optionsMap = ArrayMap<String, Array<String>>()
         val options = context.assets.list("overlays/$packageName/options") ?: emptyArray()
         for (option in options) {
@@ -143,7 +148,7 @@ object OverlayUtils {
         }
     }
 
-    fun enableAllOverlays() : Boolean {
+    fun enableAllOverlays(): Boolean {
         var hasEnabledOverlays = false
         val overlays = runCommand("cmd overlay list", true).output
         for (overlay in overlays!!.split("\n")) {
@@ -165,7 +170,8 @@ object OverlayUtils {
         return overlays.contains(packageName)
     }
 
-    fun parseOverlayResourcePath(context: Context, path: String, packageName: String, resourcePaths: ArrayList<String>) {
+    fun parseOverlayResourcePath(context: Context, path: String, packageName: String,
+                                 resourcePaths: ArrayList<String>) {
         val am = context.assets
         val variants = am.list(path) ?: return
         if (variants.contains("common")) {
@@ -184,18 +190,21 @@ object OverlayUtils {
                         val propVal = getProperty(prop) ?: "default"
                         val vals = am.list("$path/props/$prop") ?: continue
                         if (vals.contains("common")) {
-                            checkResourcePath(context, "$path/props/$prop/common", packageName, resourcePaths)
+                            checkResourcePath(context, "$path/props/$prop/common", packageName,
+                                    resourcePaths)
                         }
                         for (`val` in vals) {
                             if (`val` == propVal || `val`.startsWith(propVal)) {
-                                checkResourcePath(context, "$path/props/$prop/$propVal", packageName, resourcePaths)
+                                checkResourcePath(context, "$path/props/$prop/$propVal",
+                                        packageName, resourcePaths)
                             }
                         }
                     }
                 }
                 if (!found) {
                     if (props.contains("default")) {
-                        checkResourcePath(context, "$path/props/default", packageName, resourcePaths)
+                        checkResourcePath(context, "$path/props/default", packageName,
+                                resourcePaths)
                     }
                 }
             }
@@ -207,7 +216,8 @@ object OverlayUtils {
                 if (optionsMap.containsKey(option)) {
                     val optionsArray = context.assets.list("$path/options/$option") ?: emptyArray()
                     if (optionsArray.isNotEmpty()) {
-                        checkResourcePath(context, "$path/options/$option/${optionsMap[option]}", packageName, resourcePaths)
+                        checkResourcePath(context, "$path/options/$option/${optionsMap[option]}",
+                                packageName, resourcePaths)
                     }
                 }
             }
@@ -220,14 +230,15 @@ object OverlayUtils {
                     val selection = cHandler.getSelection()[cust]
                     val cList = context.assets.list("$path/customize/$cust") ?: emptyArray()
                     if (cList.contains(selection)) {
-                        checkResourcePath(context, "$path/customize/$cust/$selection", packageName, resourcePaths)
+                        checkResourcePath(context, "$path/customize/$cust/$selection", packageName,
+                                resourcePaths)
                     }
                 }
             }
         }
     }
 
-    private fun checkOverlay(context: Context, packageName: String) : Boolean {
+    private fun checkOverlay(context: Context, packageName: String): Boolean {
         val variants = context.assets.list("overlays/$packageName") ?: emptyArray()
         if (variants.contains("versions")) return false
 
@@ -245,7 +256,8 @@ object OverlayUtils {
         return assets.isEmpty()
     }
 
-    private fun checkResourcePath(context: Context, path: String, packageName: String, resourcePaths: ArrayList<String>) {
+    private fun checkResourcePath(context: Context, path: String, packageName: String,
+                                  resourcePaths: ArrayList<String>) {
         val variants = context.assets.list(path) ?: return
         if (!variants.contains("props")
                 && !variants.contains("versions") && !variants.contains("common")) {
@@ -266,7 +278,8 @@ object OverlayUtils {
         }
     }
 
-    private fun parseOverlayVersions(context: Context, packageName: String, resourcePaths: ArrayList<String>, path: String) {
+    private fun parseOverlayVersions(context: Context, packageName: String,
+                                     resourcePaths: ArrayList<String>, path: String) {
         val vers = context.assets.list(path) ?: return
         try {
             val packageInfo = context.packageManager.getPackageInfo(packageName, 0)

@@ -33,7 +33,10 @@ import android.util.Log
 import com.android.apksig.ApkSigner
 import com.topjohnwu.superuser.Shell
 import com.topjohnwu.superuser.io.SuFile
-import java.io.*
+import java.io.DataOutputStream
+import java.io.File
+import java.io.IOException
+import java.io.InputStream
 import java.lang.reflect.InvocationTargetException
 import java.security.KeyStore
 import java.security.PrivateKey
@@ -102,7 +105,8 @@ object ShellUtils {
     }
 
     fun compileOverlay(context: Context, themePackage: String, res: String?, manifest: String,
-                       overlayPath: String, assetPath: String?, targetInfo: ApplicationInfo?): CommandOutput {
+                       overlayPath: String, assetPath: String?,
+                       targetInfo: ApplicationInfo?): CommandOutput {
         val overlay = File(overlayPath)
         @Suppress("LocalVariableName")
         val unsigned_unaligned = File(overlay.parent, "unsigned_unaligned" + overlay.name)
@@ -114,7 +118,8 @@ object ShellUtils {
             }
         }
 
-        if (fileExists(unsigned_unaligned.absolutePath) && !deleteFileShell(unsigned_unaligned.absolutePath)) {
+        if (fileExists(unsigned_unaligned.absolutePath) && !deleteFileShell(
+                        unsigned_unaligned.absolutePath)) {
             Log.e(TAG, "Unable to delete " + unsigned_unaligned.absolutePath)
         }
         if (fileExists(unsigned.absolutePath) && !deleteFileShell(unsigned.absolutePath)) {
@@ -260,7 +265,7 @@ fun deleteFileRoot(path: String): Boolean {
     return output.exitCode == 0
 }
 
-fun fileExistsRoot(path: String) : Boolean {
+fun fileExistsRoot(path: String): Boolean {
     val output = runCommand("test -f $path", true)
     return output.exitCode == 0
 }
@@ -288,10 +293,14 @@ fun getProperty(name: String): String? {
 
 fun getProperty(name: String, def: String): String {
     val value = getProperty(name)
-    return if (value.isNullOrEmpty()) { def } else { value!! }
+    return if (value.isNullOrEmpty()) {
+        def
+    } else {
+        value!!
+    }
 }
 
-private fun resultToOutput(result: Shell.Result) : CommandOutput {
+private fun resultToOutput(result: Shell.Result): CommandOutput {
     var out = ""
     for (r in result.out) {
         out += "${r.trim()}\n"

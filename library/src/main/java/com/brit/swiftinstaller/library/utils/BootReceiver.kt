@@ -24,7 +24,6 @@ package com.brit.swiftinstaller.library.utils
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import org.jetbrains.anko.doAsync
 
 class BootReceiver : BroadcastReceiver() {

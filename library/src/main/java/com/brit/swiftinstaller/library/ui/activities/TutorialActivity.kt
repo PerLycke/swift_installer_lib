@@ -21,16 +21,13 @@
 
 package com.brit.swiftinstaller.library.ui.activities
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.util.Log
 import android.view.View
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.utils.OverlayUtils
@@ -63,7 +60,8 @@ open class TutorialActivity : TutorialActivity() {
             OverlayUtils.checkAndHideOverlays(this@TutorialActivity)
         }
 
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("appHasRunBefore", false)) {
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("appHasRunBefore",
+                        false)) {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
@@ -92,7 +90,8 @@ open class TutorialActivity : TutorialActivity() {
         super.finishTutorial()
         val intent = Intent(this, CustomizeActivity::class.java)
         intent.putExtra("parentActivity", "tutorial")
-        PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("appHasRunBefore", true).apply()
+        PreferenceManager.getDefaultSharedPreferences(this).edit()
+                .putBoolean("appHasRunBefore", true).apply()
         startActivity(intent)
         finish()
     }

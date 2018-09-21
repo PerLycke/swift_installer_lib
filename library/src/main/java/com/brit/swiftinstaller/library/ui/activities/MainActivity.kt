@@ -40,8 +40,16 @@ import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.applist.AppItem
 import com.brit.swiftinstaller.library.ui.changelog.ChangelogHandler
-import com.brit.swiftinstaller.library.utils.*
+import com.brit.swiftinstaller.library.utils.MaterialPalette
 import com.brit.swiftinstaller.library.utils.OverlayUtils.enableAllOverlays
+import com.brit.swiftinstaller.library.utils.ShellUtils
+import com.brit.swiftinstaller.library.utils.UpdateChecker
+import com.brit.swiftinstaller.library.utils.Utils
+import com.brit.swiftinstaller.library.utils.alert
+import com.brit.swiftinstaller.library.utils.getUseSoftReboot
+import com.brit.swiftinstaller.library.utils.quickRebootCommand
+import com.brit.swiftinstaller.library.utils.rebootCommand
+import com.brit.swiftinstaller.library.utils.swift
 import kotlinx.android.synthetic.main.card_compatibility_info.*
 import kotlinx.android.synthetic.main.card_install.*
 import kotlinx.android.synthetic.main.card_update.*
@@ -62,7 +70,8 @@ class MainActivity : ThemeActivity() {
 
         ChangelogHandler.showChangelog(this, true)
 
-        update_checker_spinner.indeterminateDrawable.setColorFilter(swift.selection.accentColor, PorterDuff.Mode.SRC_ATOP)
+        update_checker_spinner.indeterminateDrawable.setColorFilter(swift.selection.accentColor,
+                PorterDuff.Mode.SRC_ATOP)
 
         doAsync {
             enableAllOverlays()
@@ -72,15 +81,18 @@ class MainActivity : ThemeActivity() {
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("not_closed", true)) {
             card_compatibility.visibility = View.VISIBLE
             card_compatibility_close.setOnClickListener {
-                PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("not_closed", false).apply()
+                PreferenceManager.getDefaultSharedPreferences(this).edit()
+                        .putBoolean("not_closed", false).apply()
                 card_compatibility.visibility = View.GONE
             }
         }
 
         if (ShellUtils.isRootAccessAvailable &&
-                PreferenceManager.getDefaultSharedPreferences(this).getBoolean("reboot_card", false)) {
+                PreferenceManager.getDefaultSharedPreferences(this).getBoolean("reboot_card",
+                        false)) {
             card_reboot.visibility = View.VISIBLE
-            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("reboot_card", false).apply()
+            PreferenceManager.getDefaultSharedPreferences(this).edit()
+                    .putBoolean("reboot_card", false).apply()
             card_reboot.setOnClickListener {
                 card_reboot.visibility = View.GONE
                 val intent = Intent(this, RebootActivity::class.java)
@@ -174,7 +186,8 @@ class MainActivity : ThemeActivity() {
         popup.isFocusable = true
 
         val b = popupView.background as LayerDrawable
-        b.findDrawableByLayerId(R.id.background_popup).setTint(MaterialPalette.get(this).cardBackgroud)
+        b.findDrawableByLayerId(R.id.background_popup)
+                .setTint(MaterialPalette.get(this).cardBackgroud)
 
         popupView.popup_menu_about.setOnClickListener { _ ->
             popup.dismiss()

@@ -21,11 +21,11 @@
 
 package com.brit.swiftinstaller.library
 
+import android.content.Intent
+import android.content.IntentFilter
 import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
 import com.brit.swiftinstaller.library.utils.AppExtrasHandler
-import android.content.Intent
-import android.content.IntentFilter
 import com.brit.swiftinstaller.library.utils.PackageListener
 import com.topjohnwu.superuser.BuildConfig
 import com.topjohnwu.superuser.BusyBox
@@ -81,7 +81,7 @@ open class SwiftApplication : ContainerApp() {
         BusyBox.setup(this)
     }
 
-    open fun createCipher() : Cipher? {
+    open fun createCipher(): Cipher? {
         return null
     }
 

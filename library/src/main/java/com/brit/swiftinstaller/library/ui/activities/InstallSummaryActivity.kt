@@ -40,8 +40,17 @@ import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.applist.AppItem
 import com.brit.swiftinstaller.library.ui.applist.AppListFragment
 import com.brit.swiftinstaller.library.ui.applist.AppsTabPagerAdapter
-import com.brit.swiftinstaller.library.utils.*
+import com.brit.swiftinstaller.library.utils.OverlayUtils
 import com.brit.swiftinstaller.library.utils.OverlayUtils.isOverlayEnabled
+import com.brit.swiftinstaller.library.utils.ShellUtils
+import com.brit.swiftinstaller.library.utils.alert
+import com.brit.swiftinstaller.library.utils.getUseSoftReboot
+import com.brit.swiftinstaller.library.utils.getVersionCode
+import com.brit.swiftinstaller.library.utils.quickRebootCommand
+import com.brit.swiftinstaller.library.utils.rebootCommand
+import com.brit.swiftinstaller.library.utils.removeAppToUpdate
+import com.brit.swiftinstaller.library.utils.restartSysUi
+import com.brit.swiftinstaller.library.utils.swift
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_install_summary.*
@@ -76,11 +85,13 @@ class InstallSummaryActivity : ThemeActivity() {
         mPagerAdapter = AppsTabPagerAdapter(supportFragmentManager, true, SUCCESS_TAB, FAILED_TAB)
         mPagerAdapter.setAlertIconClickListener(object : AppListFragment.AlertIconClickListener {
             override fun onAlertIconClick(appItem: AppItem) {
-                val dialog = AlertDialog.Builder(this@InstallSummaryActivity, R.style.AppTheme_AlertDialog_Error)
+                val dialog = AlertDialog.Builder(this@InstallSummaryActivity,
+                        R.style.AppTheme_AlertDialog_Error)
                         .setTitle(appItem.title)
                         .setIcon(appItem.icon)
                         .setMessage(mErrorMap[appItem.packageName])
-                        .setPositiveButton(android.R.string.ok) { dialogInterface: DialogInterface, _: Int ->
+                        .setPositiveButton(
+                                android.R.string.ok) { dialogInterface: DialogInterface, _: Int ->
                             dialogInterface.dismiss()
                         }
                 themeDialog()
@@ -90,8 +101,10 @@ class InstallSummaryActivity : ThemeActivity() {
         })
 
         container.adapter = mPagerAdapter
-        container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tab_install_summary_root))
-        tab_install_summary_root.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
+        container.addOnPageChangeListener(
+                TabLayout.TabLayoutOnPageChangeListener(tab_install_summary_root))
+        tab_install_summary_root.addOnTabSelectedListener(
+                TabLayout.ViewPagerOnTabSelectedListener(container))
 
         //updateList()
     }
@@ -164,7 +177,8 @@ class InstallSummaryActivity : ThemeActivity() {
                     if (mErrorMap.keys.contains(pn)) {
                         mPagerAdapter.addApp(FAILED_TAB, item)
                     } else if (swift.romInfo.isOverlayInstalled(pn)) {
-                        if (update && !OverlayUtils.wasUpdateSuccessful(this@InstallSummaryActivity, item.packageName)) {
+                        if (update && !OverlayUtils.wasUpdateSuccessful(this@InstallSummaryActivity,
+                                        item.packageName)) {
                             mErrorMap[pn] = "Update Failed"
                             mPagerAdapter.addApp(FAILED_TAB, item)
                         } else {
@@ -173,7 +187,9 @@ class InstallSummaryActivity : ThemeActivity() {
                         }
                     } else {
                         mErrorMap[pn] = "Install Cancelled"
-                        LocalBroadcastManager.getInstance(this@InstallSummaryActivity.applicationContext).sendBroadcast(Intent(ACTION_INSTALL_CANCELLED))
+                        LocalBroadcastManager.getInstance(
+                                this@InstallSummaryActivity.applicationContext)
+                                .sendBroadcast(Intent(ACTION_INSTALL_CANCELLED))
                         mPagerAdapter.addApp(FAILED_TAB, item)
                     }
                 }
@@ -187,7 +203,8 @@ class InstallSummaryActivity : ThemeActivity() {
             }
         }
 
-        val hotSwap = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("hotswap", false)
+        val hotSwap =
+                PreferenceManager.getDefaultSharedPreferences(this).getBoolean("hotswap", false)
 
         if (ShellUtils.isRootAvailable && !hotSwap) {
             fab_install_finished.show()
@@ -198,7 +215,8 @@ class InstallSummaryActivity : ThemeActivity() {
             }
         } else {
             restartSysUi()
-            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("hotswap", false).apply()
+            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("hotswap", false)
+                    .apply()
         }
     }
 

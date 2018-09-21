@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ /*
   ~  * Copyright (C) 2018 Griffin Millender
   ~  * Copyright (C) 2018 Per Lycke
@@ -29,26 +28,26 @@
         android:id="@+id/card_compatibility_bg"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:contentDescription="@string/image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/big_tile_bg"
-        android:contentDescription="@string/image" />
+        app:srcCompat="@drawable/big_tile_bg" />
 
     <ImageView
         android:id="@+id/card_compatibility_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="62dp"
-        android:layout_marginEnd="6dp"
         android:layout_marginTop="4dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="62dp"
         android:contentDescription="@string/image"
+        android:foreground="@drawable/item_background_rounded"
         android:padding="8dp"
         android:tint="@color/minimal_red"
-        android:foreground="@drawable/item_background_rounded"
         app:layout_constraintBottom_toBottomOf="@+id/card_compatibility_bg"
         app:layout_constraintEnd_toEndOf="@+id/card_compatibility_bg"
         app:layout_constraintTop_toTopOf="@+id/card_compatibility_bg"
@@ -58,8 +57,8 @@
         android:id="@+id/card_compatibility_desc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
         android:layout_marginStart="20dp"
+        android:layout_marginBottom="2dp"
         android:text="@string/info_card_compatibility_msg"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/card_compatibility_bg"

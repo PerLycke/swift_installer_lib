@@ -57,7 +57,8 @@ class PackageListener : BroadcastReceiver() {
                         }
                     }
                 }
-                if (!replacing && OverlayUtils.hasOverlay(context, packageName) && newAppNotificationEnabled(context)) {
+                if (!replacing && OverlayUtils.hasOverlay(context,
+                                packageName) && newAppNotificationEnabled(context)) {
                     val notificationID = 102
                     val rebootIntent = Intent(context, OverlaysActivity::class.java)
                     val pendingIntent = PendingIntent.getActivity(
@@ -72,13 +73,15 @@ class PackageListener : BroadcastReceiver() {
                             channelID)
                             .setContentTitle(context.getString(R.string.notif_new_app_title))
                             .setContentText(context.getString(R.string.notif_new_app_summary,
-                                    context.packageManager.getApplicationInfo(packageName, 0).loadLabel(context.packageManager)))
+                                    context.packageManager.getApplicationInfo(packageName,
+                                            0).loadLabel(context.packageManager)))
                             .setSmallIcon(R.drawable.notif)
                             .setChannelId(channelID)
                             .setContentIntent(pendingIntent)
                             .setAutoCancel(true)
                             .build()
-                    val notifManager = context.applicationContext.getSystemService(NotificationManager::class.java)
+                    val notifManager = context.applicationContext.getSystemService(
+                            NotificationManager::class.java)
                     notifManager.notify(notificationID, notification)
                 }
             }

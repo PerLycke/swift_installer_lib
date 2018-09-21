@@ -25,6 +25,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.graphics.drawable.LayerDrawable
 import android.net.Uri
 import android.text.SpannableString
 import android.text.Spanned
@@ -32,10 +33,21 @@ import android.text.style.ClickableSpan
 import android.view.View
 import androidx.browser.customtabs.CustomTabsIntent
 import com.brit.swiftinstaller.library.R
-import android.graphics.drawable.LayerDrawable
-import com.brit.swiftinstaller.library.ui.customize.*
-import com.brit.swiftinstaller.library.utils.*
+import com.brit.swiftinstaller.library.ui.customize.CategoryMap
+import com.brit.swiftinstaller.library.ui.customize.CustomizeCategory
+import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
+import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
+import com.brit.swiftinstaller.library.ui.customize.Option
+import com.brit.swiftinstaller.library.ui.customize.OptionsMap
+import com.brit.swiftinstaller.library.ui.customize.PreviewHandler
+import com.brit.swiftinstaller.library.utils.ColorUtils
+import com.brit.swiftinstaller.library.utils.MaterialPalette
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
+import com.brit.swiftinstaller.library.utils.ShellUtils
+import com.brit.swiftinstaller.library.utils.deleteFileRoot
+import com.brit.swiftinstaller.library.utils.getVersionCode
+import com.brit.swiftinstaller.library.utils.remountRO
+import com.brit.swiftinstaller.library.utils.remountRW
 import com.hololo.tutorial.library.Step
 import com.hololo.tutorial.library.TutorialActivity
 import com.topjohnwu.superuser.io.SuFile
@@ -89,11 +101,13 @@ open class PRomInfo(context: Context) : RomInfo(context) {
             }
         }
         val ss = SpannableString("$content $link")
-        ss.setSpan(click, content.length + 1, content.length + 1 + link.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        ss.setSpan(click, content.length + 1, content.length + 1 + link.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         tutorial.addFragment(Step.Builder().setTitle("Magisk Module")
                 .setContent(ss)
                 .setDrawable(R.drawable.ic_magisk_logo)
-                .setBackgroundColor(tutorial.getColor(R.color.background_main)).build(), TUTORIAL_PAGE_FIRST_INSTALL)
+                .setBackgroundColor(tutorial.getColor(R.color.background_main)).build(),
+                TUTORIAL_PAGE_FIRST_INSTALL)
     }
 
     override fun getRequiredApps(): Array<String> {
@@ -128,7 +142,8 @@ open class PRomInfo(context: Context) : RomInfo(context) {
         }
     }
 
-    override fun postInstall(uninstall: Boolean, apps: ArrayList<String>, oppositeApps: ArrayList<String>?, intent: Intent?) {
+    override fun postInstall(uninstall: Boolean, apps: ArrayList<String>,
+                             oppositeApps: ArrayList<String>?, intent: Intent?) {
 
         if (!uninstall && oppositeApps != null && oppositeApps.isNotEmpty()) {
             for (app in oppositeApps) {
@@ -157,14 +172,17 @@ open class PRomInfo(context: Context) : RomInfo(context) {
 
     override fun getOverlayInfo(pm: PackageManager, packageName: String): PackageInfo {
         val overlayPackage = getOverlayPackageName(packageName)
-        return pm.getPackageArchiveInfo("$appPath/$overlayPackage/$overlayPackage.apk", PackageManager.GET_META_DATA)
+        return pm.getPackageArchiveInfo("$appPath/$overlayPackage/$overlayPackage.apk",
+                PackageManager.GET_META_DATA)
     }
 
     override fun magiskEnabled(): Boolean {
         return useMagisk && !moduleDisabled
     }
 
-    override fun useHotSwap(): Boolean { return true }
+    override fun useHotSwap(): Boolean {
+        return true
+    }
 
     override fun getChangelogTag(): String {
         return "p"
@@ -199,7 +217,6 @@ open class PRomInfo(context: Context) : RomInfo(context) {
         }
     }
 
-
     override fun createCustomizeHandler(): CustomizeHandler {
         return object : CustomizeHandler(context) {
             override fun getDefaultSelection(): CustomizeSelection {
@@ -207,29 +224,36 @@ open class PRomInfo(context: Context) : RomInfo(context) {
                 selection["stock_pie_icons"] = "default_icons"
                 return selection
             }
-            override fun createPreviewHandler(context: Context) : PreviewHandler {
+
+            override fun createPreviewHandler(context: Context): PreviewHandler {
                 return object : PreviewHandler(context) {
                     override fun updateIcons(selection: CustomizeSelection) {
                         for (icon in settingsIcons) {
                             icon.clearColorFilter()
                             val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_p"
-                            val id = context.resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName", null, null)
+                            val id = context.resources.getIdentifier(
+                                    "com.brit.swiftinstaller:drawable/$idName", null, null)
                             if (id > 0) {
                                 val drawable = context.getDrawable(id)?.mutate() as LayerDrawable
                                 if (selection["stock_pie_icons"] == "stock_accented") {
-                                    drawable.findDrawableByLayerId(R.id.icon_bg).setTint(selection.accentColor)
-                                    drawable.findDrawableByLayerId(R.id.icon_fg).setTint(selection.backgroundColor)
+                                    drawable.findDrawableByLayerId(R.id.icon_bg)
+                                            .setTint(selection.accentColor)
+                                    drawable.findDrawableByLayerId(R.id.icon_fg)
+                                            .setTint(selection.backgroundColor)
                                 }
                                 icon.setImageDrawable(drawable)
                             }
                         }
                         for (icon in systemUiIcons) {
-                            val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_aosp"
-                            val id = context.resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName",null, null)
+                            val idName =
+                                    "ic_${context.resources.getResourceEntryName(icon.id)}_aosp"
+                            val id = context.resources.getIdentifier(
+                                    "com.brit.swiftinstaller:drawable/$idName", null, null)
                             if (id > 0) {
                                 val layerDrawable = context.getDrawable(id) as LayerDrawable
                                 icon.setImageDrawable(layerDrawable)
-                                layerDrawable.findDrawableByLayerId(R.id.icon_bg).setTint(selection.accentColor)
+                                layerDrawable.findDrawableByLayerId(R.id.icon_bg)
+                                        .setTint(selection.accentColor)
                                 layerDrawable.findDrawableByLayerId(
                                         R.id.icon_tint).setTint(selection.backgroundColor)
                             }
@@ -267,6 +291,8 @@ open class PRomInfo(context: Context) : RomInfo(context) {
         requiredApps.add("com.android.settings")
         requiredApps.add("com.google.android.apps.wellbeing")
         requiredApps.add("com.google.android.gms")
-        categories.add(CustomizeCategory(context.getString(R.string.category_icons), "stock_pie_icons", "default_icons", pieIconOptions, requiredApps))
+        categories.add(
+                CustomizeCategory(context.getString(R.string.category_icons), "stock_pie_icons",
+                        "default_icons", pieIconOptions, requiredApps))
     }
 }

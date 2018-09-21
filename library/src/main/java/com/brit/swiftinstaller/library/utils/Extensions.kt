@@ -53,7 +53,11 @@ val Context.swift: SwiftApplication
     get() = applicationContext as SwiftApplication
 
 fun View.setVisible(visible: Boolean) {
-    visibility = if (visible) { View.VISIBLE } else { View.GONE }
+    visibility = if (visible) {
+        View.VISIBLE
+    } else {
+        View.GONE
+    }
 }
 
 fun AssetManager.extractAsset(assetPath: String, devicePath: String, cipher: Cipher?): Boolean {
@@ -86,7 +90,8 @@ fun AssetManager.extractAsset(assetPath: String, devicePath: String): Boolean {
     return extractAsset(assetPath, devicePath, null)
 }
 
-private fun handleExtractAsset(am: AssetManager, assetPath: String, devicePath: String, cipher: Cipher?): Boolean {
+private fun handleExtractAsset(am: AssetManager, assetPath: String, devicePath: String,
+                               cipher: Cipher?): Boolean {
     var path = devicePath
     var `in`: InputStream? = null
     var out: OutputStream? = null

@@ -43,7 +43,8 @@ class EnableOverlaysActivity : Activity() {
             return finish()
         }
 
-        PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("reboot_card", true).apply()
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("reboot_card", true)
+                .apply()
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         sendNotification()
         finish()
@@ -58,7 +59,7 @@ class EnableOverlaysActivity : Activity() {
                 0,
                 rebootIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT
-        )
+                                                     )
 
         val channelID = "boot_enabled"
 

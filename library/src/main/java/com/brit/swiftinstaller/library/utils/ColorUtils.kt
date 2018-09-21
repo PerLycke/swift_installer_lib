@@ -24,8 +24,8 @@ package com.brit.swiftinstaller.library.utils
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
-import androidx.core.content.ContextCompat
 import android.util.Log
+import androidx.core.content.ContextCompat
 
 @Suppress("unused")
 object ColorUtils {
@@ -86,7 +86,8 @@ object ColorUtils {
         g += offset
         b += offset
 
-        return Color.rgb(Math.min(Math.max(r, 1), 255), Math.min(Math.max(g, 1), 255), Math.min(Math.max(b, 1), 255))
+        return Color.rgb(Math.min(Math.max(r, 1), 255), Math.min(Math.max(g, 1), 255),
+                Math.min(Math.max(b, 1), 255))
     }
 
     fun changeColor(color: Int, factor: Float): Int {
@@ -182,17 +183,17 @@ object ColorUtils {
         return Color.argb(alpha, red, green, blue)
     }
 
-    fun radioButtonColor(context: Context, disabled: Int, accent: Int) : ColorStateList {
+    fun radioButtonColor(context: Context, disabled: Int, accent: Int): ColorStateList {
 
         return ColorStateList(
                 arrayOf(
                         intArrayOf(-android.R.attr.state_checked), //disabled
                         intArrayOf(android.R.attr.state_checked) //enabled
-                ),
+                       ),
                 intArrayOf(
                         ContextCompat.getColor(context, disabled)
                         , accent
-                )
-        )
+                          )
+                             )
     }
 }

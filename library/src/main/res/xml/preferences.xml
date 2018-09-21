@@ -1,19 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--suppress ALL -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <com.brit.swiftinstaller.library.ui.preference.SwiftSwitchPreference
+        android:defaultValue="true"
         android:key="use_soft_reboot"
-        android:title="@string/soft_reboot_title"
         android:summary="@string/soft_reboot_summary"
-        android:defaultValue="true"/>
+        android:title="@string/soft_reboot_title" />
 
     <com.brit.swiftinstaller.library.ui.preference.SwiftSwitchPreference
         android:key="update_notification_enabled"
-        android:title="@string/update_notif_setting_title"
-        android:summary="@string/update_notif_setting_summary" />
+        android:summary="@string/update_notif_setting_summary"
+        android:title="@string/update_notif_setting_title" />
 
     <com.brit.swiftinstaller.library.ui.preference.SwiftSwitchPreference
         android:key="new_app_notification_enabled"
-        android:title="@string/new_app_notif_setting_title"
-        android:summary="@string/new_app_notif_setting_summary" />
+        android:summary="@string/new_app_notif_setting_summary"
+        android:title="@string/new_app_notif_setting_title" />
 </PreferenceScreen>

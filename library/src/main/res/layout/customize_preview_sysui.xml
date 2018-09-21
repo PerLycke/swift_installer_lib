@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ /*
   ~  * Copyright (C) 2018 Griffin Millender
   ~  * Copyright (C) 2018 Per Lycke
@@ -65,25 +64,25 @@
             android:id="@+id/preview_wallpaper"
             android:layout_width="0dp"
             android:layout_height="256dp"
-            android:layout_marginEnd="3dp"
             android:layout_marginStart="3dp"
             android:layout_marginTop="3dp"
+            android:layout_marginEnd="3dp"
             android:background="@drawable/round_outline"
-            android:src="@drawable/wallpaper_big"
+            android:contentDescription="@string/image"
             android:scaleType="centerCrop"
+            android:src="@drawable/wallpaper_big"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/preview_sysui_bg"
-            android:contentDescription="@string/image" />
+            app:layout_constraintTop_toTopOf="@+id/preview_sysui_bg" />
 
         <ImageView
             android:id="@+id/notif_bg_layout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginBottom="14dp"
-            android:layout_marginEnd="4dp"
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="14dp"
             android:contentDescription="@string/image"
             app:layout_constraintBottom_toBottomOf="@+id/preview_sysui_bg"
             app:layout_constraintEnd_toEndOf="parent"
@@ -203,8 +202,8 @@
             android:id="@+id/preview_sysui_divider"
             android:layout_width="0dp"
             android:layout_height="2dp"
-            android:layout_marginEnd="3dp"
             android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
             android:background="#26000000"
             android:contentDescription="@null"
             app:layout_constraintEnd_toEndOf="parent"
@@ -254,9 +253,9 @@
             android:id="@+id/preview_sysui_msg"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginTop="2dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:fontFamily="sans-serif"
             android:text="@string/dark_notifications_preview_shadow"
             android:textSize="12sp"

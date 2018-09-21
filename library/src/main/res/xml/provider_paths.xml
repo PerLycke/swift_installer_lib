@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ /*
   ~  * Copyright (C) 2018 Griffin Millender
   ~  * Copyright (C) 2018 Per Lycke
@@ -20,7 +19,12 @@
   ~  */
   -->
 
-<paths>
-    <external-path name="external_files" path=".swift/overlays/compiled"/>
-    <external-path name="extras" path=".swift/extras" />
+<paths xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@xml/provider_paths">
+    <external-path
+        name="external_files"
+        path=".swift/overlays/compiled" />
+    <external-path
+        name="extras"
+        path=".swift/extras" />
 </paths>

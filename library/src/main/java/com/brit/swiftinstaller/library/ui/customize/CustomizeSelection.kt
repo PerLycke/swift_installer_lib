@@ -21,22 +21,24 @@
 
 package com.brit.swiftinstaller.library.ui.customize
 
-import android.util.Log
 import androidx.collection.ArrayMap
 import org.json.JSONObject
-import java.lang.NumberFormatException
 
 class CustomizeSelection : ArrayMap<String, String>() {
 
     var accentColor
         get() = get("accent").toInt()
-        set(v) { put("accent", v.toString()) }
+        set(v) {
+            put("accent", v.toString())
+        }
 
     var backgroundColor
         get() = get("background").toInt()
-        set(v) { put("background", v.toString()) }
+        set(v) {
+            put("background", v.toString())
+        }
 
-    override fun toString() : String {
+    override fun toString(): String {
         val json = JSONObject()
         for (key in keys) {
             json.put(key, get(key))
@@ -45,25 +47,29 @@ class CustomizeSelection : ArrayMap<String, String>() {
     }
 
     override fun get(key: String?): String {
-        val s =  super.get(key)
-        return if (s.isNullOrEmpty()) { "" } else { s!! }
+        val s = super.get(key)
+        return if (s.isNullOrEmpty()) {
+            ""
+        } else {
+            s!!
+        }
     }
 
     fun getInt(key: String): Int {
         val s = super.get(key)
-        if (s.isNullOrEmpty()) {
-            return 0
+        return if (s.isNullOrEmpty()) {
+            0
         } else {
             try {
-                return s!!.toInt()
+                s!!.toInt()
             } catch (e: NumberFormatException) {
-                return 0
+                0
             }
         }
     }
 
     companion object {
-        fun fromString(json: String) : CustomizeSelection {
+        fun fromString(json: String): CustomizeSelection {
             if (json.isEmpty()) return CustomizeSelection()
             val selection = CustomizeSelection()
             val jsonObject = JSONObject(json)

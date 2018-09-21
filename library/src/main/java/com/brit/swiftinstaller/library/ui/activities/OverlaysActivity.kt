@@ -40,8 +40,12 @@ import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.applist.AppItem
 import com.brit.swiftinstaller.library.ui.applist.AppListFragment
 import com.brit.swiftinstaller.library.ui.applist.AppsTabPagerAdapter
-import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getAvailableOverlayVersions
+import com.brit.swiftinstaller.library.utils.UpdateChecker
+import com.brit.swiftinstaller.library.utils.Utils
+import com.brit.swiftinstaller.library.utils.alert
+import com.brit.swiftinstaller.library.utils.getAppsToUpdate
+import com.brit.swiftinstaller.library.utils.swift
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_overlays.*
@@ -96,7 +100,8 @@ class OverlaysActivity : ThemeActivity() {
                 }
             }
         })
-        mPagerAdapter!!.setAppCheckBoxClickListener(object : AppListFragment.AppCheckBoxClickListener {
+        mPagerAdapter!!.setAppCheckBoxClickListener(object :
+                AppListFragment.AppCheckBoxClickListener {
             override fun onCheckBoxClick(appItem: AppItem) {
                 if (select_all_btn.isChecked) {
                     select_all_btn.isChecked = false
@@ -138,7 +143,8 @@ class OverlaysActivity : ThemeActivity() {
             onClose()
             false
         }
-        val textViewId = search_view.findViewById(androidx.appcompat.R.id.search_src_text) as EditText
+        val textViewId =
+                search_view.findViewById(androidx.appcompat.R.id.search_src_text) as EditText
         setCursorPointerColor(textViewId, swift.selection.accentColor)
         setCursorDrawableColor(textViewId, swift.selection.accentColor)
 
@@ -161,18 +167,22 @@ class OverlaysActivity : ThemeActivity() {
         }
 
         container.adapter = mPagerAdapter
-        container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs_overlays_root))
-        tabs_overlays_root.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
+        container.addOnPageChangeListener(
+                TabLayout.TabLayoutOnPageChangeListener(tabs_overlays_root))
+        tabs_overlays_root.addOnTabSelectedListener(
+                TabLayout.ViewPagerOnTabSelectedListener(container))
         container.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
             }
 
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            override fun onPageScrolled(position: Int, positionOffset: Float,
+                                        positionOffsetPixels: Int) {
             }
 
             override fun onPageSelected(position: Int) {
                 doAsync {
-                    apps = mPagerAdapter!!.getCheckableCount(this@OverlaysActivity, container.currentItem)
+                    apps = mPagerAdapter!!.getCheckableCount(this@OverlaysActivity,
+                            container.currentItem)
                 }
                 val checked = mPagerAdapter!!.getCheckedCount(position)
                 select_all_btn.isChecked =
@@ -246,7 +256,8 @@ class OverlaysActivity : ThemeActivity() {
         select_all_btn.visibility = View.INVISIBLE
         select_all_btn.isClickable = false
         loading_progress.visibility = View.VISIBLE
-        loading_progress.indeterminateDrawable.setColorFilter(swift.selection.accentColor, PorterDuff.Mode.SRC_ATOP)
+        loading_progress.indeterminateDrawable.setColorFilter(swift.selection.accentColor,
+                PorterDuff.Mode.SRC_ATOP)
         mPagerAdapter!!.clearApps()
         doAsync {
             if (overlaysList.size == 0) {
@@ -293,7 +304,8 @@ class OverlaysActivity : ThemeActivity() {
             uiThread { _ ->
                 doAsync {
                     checked = mPagerAdapter!!.getCheckedCount(container.currentItem)
-                    apps = mPagerAdapter!!.getCheckableCount(this@OverlaysActivity, container.currentItem)
+                    apps = mPagerAdapter!!.getCheckableCount(this@OverlaysActivity,
+                            container.currentItem)
                     uiThread { _ ->
                         if (hasUpdate) {
                             update_tab_indicator.visibility = View.VISIBLE
@@ -341,13 +353,15 @@ class OverlaysActivity : ThemeActivity() {
         val sheetListener = View.OnClickListener {
             when (it) {
                 install -> {
-                    val launch = getSharedPreferences("launched", Context.MODE_PRIVATE).getString("launched","first")
+                    val launch = getSharedPreferences("launched", Context.MODE_PRIVATE).getString(
+                            "launched", "first")
                     bottomSheetDialog.dismiss()
 
                     when (launch) {
                         "default" -> installAction()
                         "first" -> {
-                            getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "second").apply()
+                            getSharedPreferences("launched", Context.MODE_PRIVATE).edit()
+                                    .putString("launched", "second").apply()
                             installAction()
                         }
                         "second" -> {
@@ -355,7 +369,9 @@ class OverlaysActivity : ThemeActivity() {
                                     .setTitle(R.string.reboot_delay_title)
                                     .setMessage(R.string.reboot_delay_msg)
                                     .setPositiveButton(R.string.proceed) { dialogInterface, _ ->
-                                        getSharedPreferences("launched", Context.MODE_PRIVATE).edit().putString("launched", "default").apply()
+                                        getSharedPreferences("launched",
+                                                Context.MODE_PRIVATE).edit()
+                                                .putString("launched", "default").apply()
                                         dialogInterface.dismiss()
                                         installAction()
                                     }
@@ -440,7 +456,8 @@ class OverlaysActivity : ThemeActivity() {
             bottomSheetDialog.dismiss()
             uninstallProgressAction(checked)
 
-            Toast.makeText(this, "This can take a lot of time, have patience!", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "This can take a lot of time, have patience!", Toast.LENGTH_LONG)
+                    .show()
         }
 
         sheetView.cancel_layout.setOnClickListener {

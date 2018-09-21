@@ -83,8 +83,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="14dp"
             android:contentDescription="@string/image"
-            android:maxHeight="8dp"
             android:maxWidth="8dp"
+            android:maxHeight="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/connections_desc"
             app:layout_constraintEnd_toStartOf="@+id/connections_title"
             app:layout_constraintTop_toTopOf="@+id/connections_title"
@@ -96,8 +96,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="14dp"
             android:contentDescription="@string/image"
-            android:maxHeight="8dp"
             android:maxWidth="8dp"
+            android:maxHeight="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/sounds_desc"
             app:layout_constraintEnd_toStartOf="@+id/sounds_title"
             app:layout_constraintTop_toTopOf="@+id/sounds_title"
@@ -109,8 +109,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="14dp"
             android:contentDescription="@string/image"
-            android:maxHeight="8dp"
             android:maxWidth="8dp"
+            android:maxHeight="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/notifications_desc"
             app:layout_constraintEnd_toStartOf="@+id/notifications_title"
             app:layout_constraintTop_toTopOf="@+id/notifications_title"
@@ -194,8 +194,8 @@
             android:id="@+id/notifications_desc"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/notifications_desc"
             android:textColor="@android:color/white"
             android:textSize="9sp"
@@ -262,22 +262,22 @@
                 android:layout_width="10dp"
                 android:layout_height="10dp"
                 android:layout_marginEnd="2dp"
+                android:contentDescription="@string/image"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/battery"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_wifi"
-                android:contentDescription="@string/image" />
+                app:srcCompat="@drawable/ic_wifi" />
 
             <ImageView
                 android:id="@+id/battery"
                 android:layout_width="10dp"
                 android:layout_height="10dp"
                 android:layout_marginEnd="2dp"
+                android:contentDescription="@string/image"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/clock_right"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_battery"
-                android:contentDescription="@string/image" />
+                app:srcCompat="@drawable/ic_battery" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

@@ -42,8 +42,8 @@ class UninstallFinishedActivity : ThemeActivity() {
         InstallActivity().finish()
 
         val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-        .setTitle(R.string.reboot)
-        .setMessage(R.string.reboot_manually)
+                .setTitle(R.string.reboot)
+                .setMessage(R.string.reboot_manually)
         if (!ShellUtils.isRootAvailable) {
             builder.setPositiveButton(R.string.reboot_later) { dialogInterface, _ ->
                 dialogInterface.dismiss()

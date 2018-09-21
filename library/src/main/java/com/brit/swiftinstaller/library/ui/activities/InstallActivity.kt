@@ -33,8 +33,8 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.brit.swiftinstaller.library.installer.Notifier
 import com.brit.swiftinstaller.library.R
+import com.brit.swiftinstaller.library.installer.Notifier
 import com.brit.swiftinstaller.library.utils.InstallerServiceHelper
 import com.brit.swiftinstaller.library.utils.ShellUtils
 import com.brit.swiftinstaller.library.utils.swift
@@ -42,7 +42,6 @@ import kotlinx.android.synthetic.main.progress_dialog_install.view.*
 import java.util.ArrayList
 import kotlin.collections.HashMap
 import kotlin.collections.set
-
 
 @Suppress("UNUSED_PARAMETER")
 class InstallActivity : ThemeActivity() {
@@ -209,7 +208,8 @@ class InstallActivity : ThemeActivity() {
                     errorMap[intent.getStringExtra(Notifier.EXTRA_PACKAGE_NAME)] =
                             intent.getStringExtra(Notifier.EXTRA_LOG)
                     if (update) {
-                        updateAppsToUninstall.add(intent.getStringExtra(Notifier.EXTRA_PACKAGE_NAME))
+                        updateAppsToUninstall.add(
+                                intent.getStringExtra(Notifier.EXTRA_PACKAGE_NAME))
                     }
                 }
                 intent.action == Notifier.ACTION_INSTALL_COMPLETE -> {
