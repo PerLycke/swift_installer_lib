@@ -36,7 +36,6 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorBackgroundFloating">#1b1b21</item>
-        <item name="actionOverflowMenuStyle">@style/PopupMenuOverflow</item>
     </style>
 
     <style name="AppTheme.Settings" parent="Theme.AppCompat">
@@ -53,7 +52,6 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorBackgroundFloating">#1b1b21</item>
-        <item name="actionOverflowMenuStyle">@style/PopupMenuOverflow</item>
     </style>
 
     <style name="AppTheme.Translucent" parent="Theme.AppCompat.NoActionBar">
@@ -115,18 +113,8 @@
 
     <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal" />
 
-    <style name="PopupMenuOverflow" parent="Widget.AppCompat.PopupMenu.Overflow">
-        <item name="android:popupBackground">@drawable/popup_bg</item>
-        <item name="android:dropDownHorizontalOffset">0.0dip</item>
-        <item name="android:dropDownVerticalOffset">8.0dip</item>
-        <item name="android:popupElevation">2.0dip</item>
-        <item name="android:dropDownWidth">24dp</item>
-    </style>
-
     <style name="PopupWindow" parent="Widget.AppCompat.PopupWindow">
-        <item name="android:popupBackground">@drawable/popup_bg</item>
-        <item name="android:windowEnterAnimation">@anim/popup_open</item>
-        <item name="android:windowExitAnimation">@anim/popup_open</item>
+        <item name="android:popupBackground">@null</item>
     </style>
 
     <style name="PopupWindowAnimation" parent="Widget.AppCompat.PopupWindow">

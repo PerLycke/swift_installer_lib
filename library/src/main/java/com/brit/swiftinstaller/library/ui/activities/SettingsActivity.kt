@@ -28,6 +28,7 @@ class SettingsActivity : AppCompatActivity() {
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setBackgroundDrawable(ColorDrawable(palette.darkBackgroundColor))
+        supportActionBar!!.elevation = 0.0f
     }
 
     class SettingsFragment : PreferenceFragmentCompat() {
