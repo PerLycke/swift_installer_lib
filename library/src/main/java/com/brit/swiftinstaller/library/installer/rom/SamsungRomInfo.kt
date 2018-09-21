@@ -240,7 +240,9 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
                     it.clock_left.setVisible(clockSelection == "left")
                     it.clock_centered.setVisible(clockSelection == "centered")
                 }
+            }
 
+            systemUiPreview?.let {
                 if (selection.containsKey("samsung_oreo_qs_alpha")) {
                     val qsAlpha = selection.getInt("samsung_oreo_qs_alpha")
                     it.preview_wallpaper.setColorFilter(
