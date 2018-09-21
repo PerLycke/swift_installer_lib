@@ -23,12 +23,14 @@ package com.brit.swiftinstaller.library.ui.customize
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.brit.swiftinstaller.library.R
+import com.brit.swiftinstaller.library.utils.ColorUtils
 import com.brit.swiftinstaller.library.utils.MaterialPalette
 import kotlinx.android.synthetic.main.customize_preview_settings.view.*
 import kotlinx.android.synthetic.main.customize_preview_sysui.view.*
@@ -155,6 +157,9 @@ abstract class PreviewHandler(val context: Context) {
                 systemUiBackground.findDrawableByLayerId(R.id.preview_background)
                         .setTint(palette.backgroundColor)
             }
+            it.preview_wallpaper.setColorFilter(
+                    ColorUtils.addAlphaColor(palette.backgroundColor,
+                            0), PorterDuff.Mode.SRC_OVER)
         }
     }
 }
