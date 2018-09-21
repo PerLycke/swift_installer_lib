@@ -161,6 +161,11 @@ class MainActivity : ThemeActivity() {
         }).execute()
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finishAffinity()
+    }
+
     @SuppressLint("RtlHardcoded", "InflateParams")
     fun overflowClick(view: View) {
         val popup = PopupWindow(this, null, 0, R.style.PopupWindow)
