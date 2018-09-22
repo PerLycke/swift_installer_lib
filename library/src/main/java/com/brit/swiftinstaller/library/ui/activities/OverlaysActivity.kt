@@ -260,30 +260,34 @@ class OverlaysActivity : ThemeActivity() {
         }
     }
 
-    @Synchronized
     private fun updateAdapter() {
         select_all_btn.visibility = View.INVISIBLE
         select_all_btn.isClickable = false
         loading_progress.visibility = View.VISIBLE
         loading_progress.indeterminateDrawable.setColorFilter(swift.selection.accentColor,
                 PorterDuff.Mode.SRC_ATOP)
-        doAsync {
+
+        handler.post {
             pagerAdapter.setApps(INSTALL_TAB, AppList.inactiveApps)
             pagerAdapter.setApps(ACTIVE_TAB, AppList.activeApps)
             pagerAdapter.setApps(UPDATE_TAB, AppList.appUpdates)
-            uiThread { _ ->
-            checked = pagerAdapter.getCheckedCount(container.currentItem)
-            apps = pagerAdapter.getCheckableCount(this@OverlaysActivity,
-                    container.currentItem)
-                setBackgroundImage()
-                loading_progress.visibility = View.INVISIBLE
-                select_all_btn.visibility = View.VISIBLE
-                select_all_btn.isClickable = true
 
-                if (!AppList.appUpdates.isEmpty()) {
-                    update_tab_indicator.visibility = View.VISIBLE
-                } else if (update_tab_indicator.visibility == View.VISIBLE) {
-                    update_tab_indicator.visibility = View.GONE
+            handler.post {
+                checked = pagerAdapter.getCheckedCount(container.currentItem)
+                apps = pagerAdapter.getCheckableCount(this@OverlaysActivity,
+                        container.currentItem)
+
+                handler.post {
+                    setBackgroundImage()
+                    loading_progress.visibility = View.INVISIBLE
+                    select_all_btn.visibility = View.VISIBLE
+                    select_all_btn.isClickable = true
+
+                    if (!AppList.appUpdates.isEmpty()) {
+                        update_tab_indicator.visibility = View.VISIBLE
+                    } else if (update_tab_indicator.visibility == View.VISIBLE) {
+                        update_tab_indicator.visibility = View.GONE
+                    }
                 }
             }
         }

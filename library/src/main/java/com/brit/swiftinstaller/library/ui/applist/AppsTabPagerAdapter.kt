@@ -57,7 +57,9 @@ class AppsTabPagerAdapter(fm: FragmentManager, summary: Boolean, vararg tabs: In
     }
 
     fun addApp(tab: Int, app: AppItem) {
-        fragments[tab].addApp(app)
+        handler.post {
+            fragments[tab].addApp(app)
+        }
     }
 
     fun setViewClickListener(listener: AppListFragment.ViewClickListener) {

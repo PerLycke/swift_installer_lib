@@ -55,6 +55,7 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_install_summary.*
 import kotlinx.android.synthetic.main.tab_layout_install_summary.*
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import java.io.File
 
 class InstallSummaryActivity : ThemeActivity() {
@@ -172,22 +173,30 @@ class InstallSummaryActivity : ThemeActivity() {
                             pInfo.versionName,
                             info.loadIcon(pm))
                     if (errorMap.keys.contains(pn)) {
-                        pagerAdapter.addApp(FAILED_TAB, item)
+                        uiThread {
+                            pagerAdapter.addApp(FAILED_TAB, item)
+                        }
                     } else if (swift.romInfo.isOverlayInstalled(pn)) {
                         if (update && !OverlayUtils.wasUpdateSuccessful(this@InstallSummaryActivity,
                                         item.packageName)) {
-                            errorMap[pn] = "Update Failed"
-                            pagerAdapter.addApp(FAILED_TAB, item)
+                            uiThread {
+                                errorMap[pn] = "Update Failed"
+                                pagerAdapter.addApp(FAILED_TAB, item)
+                            }
                         } else {
-                            pagerAdapter.addApp(SUCCESS_TAB, item)
+                            uiThread {
+                                pagerAdapter.addApp(SUCCESS_TAB, item)
+                            }
                             removeAppToUpdate(this@InstallSummaryActivity, item.packageName)
                         }
                     } else {
-                        errorMap[pn] = "Install Cancelled"
-                        LocalBroadcastManager.getInstance(
-                                this@InstallSummaryActivity.applicationContext)
-                                .sendBroadcast(Intent(ACTION_INSTALL_CANCELLED))
-                        pagerAdapter.addApp(FAILED_TAB, item)
+                        uiThread {
+                            errorMap[pn] = "Install Cancelled"
+                            LocalBroadcastManager.getInstance(
+                                    this@InstallSummaryActivity.applicationContext)
+                                    .sendBroadcast(Intent(ACTION_INSTALL_CANCELLED))
+                            pagerAdapter.addApp(FAILED_TAB, item)
+                        }
                     }
                 }
             }
@@ -219,7 +228,9 @@ class InstallSummaryActivity : ThemeActivity() {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        updateList()
+        handler.post {
+            updateList()
+        }
     }
 
     private fun resultDialog() {
