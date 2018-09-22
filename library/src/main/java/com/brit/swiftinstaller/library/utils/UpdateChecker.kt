@@ -40,7 +40,7 @@ class UpdateChecker(context: Context, private val callback: Callback?) :
 
     override fun doInBackground(vararg params: Void?): Output {
         var installedCount = 0
-        val updates = ArrayList<String>()
+        val updates = SynchronizedArrayList<String>()
         val context = mConRef.get()
         val pm = mConRef.get()!!.packageManager
 
@@ -105,8 +105,8 @@ class UpdateChecker(context: Context, private val callback: Callback?) :
     }
 
     abstract class Callback {
-        abstract fun finished(installedCount: Int, updates: ArrayList<String>)
+        abstract fun finished(installedCount: Int, updates: SynchronizedArrayList<String>)
     }
 
-    inner class Output(var installedCount: Int, var updates: ArrayList<String>)
+    inner class Output(var installedCount: Int, var updates: SynchronizedArrayList<String>)
 }

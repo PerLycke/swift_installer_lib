@@ -13,6 +13,7 @@ import org.jetbrains.anko.internals.AnkoInternals
 import org.jetbrains.anko.internals.AnkoInternals.NO_GETTER
 import kotlin.DeprecationLevel.ERROR
 import android.text.method.LinkMovementMethod
+import android.widget.ListAdapter
 import android.widget.TextView
 
 
@@ -122,6 +123,13 @@ class SwiftAlertBuilder(override val ctx: Context) : AlertBuilder<AlertDialog> {
         builder.setItems(Array(items.size) { i -> items[i].toString() }) { dialog, which ->
             onItemSelected(dialog, items[which], which)
         }
+    }
+
+    fun adapter(adapter: ListAdapter, onItemSelected: (dialog: DialogInterface, index: Int) -> Unit) {
+        builder.setAdapter(adapter) { dialog, which ->
+            onItemSelected(dialog, which)
+        }
+
     }
 
     override fun build(): AlertDialog {

@@ -44,12 +44,14 @@ import com.brit.swiftinstaller.library.utils.MaterialPalette
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPath
 import com.brit.swiftinstaller.library.utils.ShellUtils
+import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
 import com.brit.swiftinstaller.library.utils.addAppToUninstall
 import com.brit.swiftinstaller.library.utils.clearAppsToInstall
 import com.brit.swiftinstaller.library.utils.clearAppsToUninstall
 import com.brit.swiftinstaller.library.utils.runCommand
 import com.brit.swiftinstaller.library.utils.setVisible
 import com.brit.swiftinstaller.library.utils.swift
+import com.brit.swiftinstaller.library.utils.synchronizedArrayListOf
 import kotlinx.android.synthetic.main.customize_preview_settings.view.*
 import kotlinx.android.synthetic.main.customize_preview_sysui.view.*
 import java.io.File
@@ -64,61 +66,58 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
         return "samsung"
     }
 
-    override fun getDisabledOverlays(): ArrayList<String> {
-        val disable = ArrayList<String>()
-        disable.add("com.android.emergency")
-        return disable
+    override fun getDisabledOverlays(): SynchronizedArrayList<String> {
+        return synchronizedArrayListOf(
+                "com.android.emergency"
+        )
     }
 
     override fun getRequiredApps(): Array<String> {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             return arrayOf()
         }
-        return Array(31) {
-            when (it) {
-                0 -> "android"
-                1 -> "com.android.systemui"
-                2 -> "com.amazon.clouddrive.photos"
-                3 -> "com.android.settings"
-                4 -> "com.anydo"
-                5 -> "com.apple.android.music"
-                6 -> "com.ebay.mobile"
-                7 -> "com.embermitre.pixolor.app"
-                8 -> "com.google.android.apps.genie.geniewidget"
-                9 -> "com.google.android.apps.inbox"
-                10 -> "com.google.android.apps.messaging"
-                11 -> "com.google.android.gm"
-                12 -> "com.google.android.talk"
-                13 -> "com.mxtech.videoplayer.ad"
-                14 -> "com.mxtech.videoplayer.pro"
-                15 -> "com.pandora.android"
-                16 -> "com.simplecity.amp.pro"
-                17 -> "com.Slack"
-                18 -> "com.samsung.android.incallui"
-                19 -> "com.twitter.android"
-                20 -> "com.samsung.android.contacts"
-                21 -> "com.samsung.android.scloud"
-                22 -> "com.samsung.android.themestore"
-                23 -> "com.samsung.android.lool"
-                24 -> "com.samsung.android.samsungpassautofill"
-                25 -> "com.google.android.gms"
-                26 -> "com.sec.android.daemonapp"
-                27 -> "de.axelspringer.yana.zeropage"
-                28 -> "com.google.android.apps.nexuslauncher"
-                29 -> "com.lastpass.lpandroid"
-                30 -> "com.weather.Weather"
-                else -> ""
-            }
-        }
+        return arrayOf(
+                "android",
+                "com.android.systemui",
+                "com.amazon.clouddrive.photos",
+                "com.android.settings",
+                "com.anydo",
+                "com.apple.android.music",
+                "com.ebay.mobile",
+                "com.embermitre.pixolor.app",
+                "com.google.android.apps.genie.geniewidget",
+                "com.google.android.apps.inbox",
+                "com.google.android.apps.messaging",
+                "com.google.android.gm",
+                "com.google.android.talk",
+                "com.mxtech.videoplayer.ad",
+                "com.mxtech.videoplayer.pro",
+                "com.pandora.android",
+                "com.simplecity.amp.pro",
+                "com.Slack",
+                "com.samsung.android.incallui",
+                "com.twitter.android",
+                "com.samsung.android.contacts",
+                "com.samsung.android.scloud",
+                "com.samsung.android.themestore",
+                "com.samsung.android.lool",
+                "com.samsung.android.samsungpassautofill",
+                "com.google.android.gms",
+                "com.sec.android.daemonapp",
+                "de.axelspringer.yana.zeropage",
+                "com.google.android.apps.nexuslauncher",
+                "com.lastpass.lpandroid",
+                "com.weather.Weather"
+        )
     }
 
-    override fun postInstall(uninstall: Boolean, apps: ArrayList<String>,
-                             oppositeApps: ArrayList<String>?, intent: Intent?) {
+    override fun postInstall(uninstall: Boolean, apps: SynchronizedArrayList<String>,
+                             oppositeApps: SynchronizedArrayList<String>, intent: Intent?) {
         val extraIntent = intent != null
 
         if (ShellUtils.isRootAvailable) {
-            if (!uninstall && oppositeApps != null && oppositeApps.isNotEmpty()) {
-                for (app in oppositeApps) {
+            if (!uninstall && oppositeApps.isNotEmpty()) {
+                oppositeApps.forEach { app ->
                     uninstallOverlay(context, app)
                 }
             }
@@ -170,15 +169,11 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
                 intent
             }
         }
-
-        for (inte in intents) {
-            Log.d("TEST", "intent - $inte")
-        }
         if (!intents.isEmpty()) {
             context.startActivities(intents)
         }
 
-        if (oppositeApps != null && !oppositeApps.isEmpty()) {
+        if (!oppositeApps.isEmpty()) {
             val oppositeIntents = Array(oppositeApps.size) {
                 val appInstall = Intent()
                 if (!uninstall) {
@@ -283,7 +278,7 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
             val option = context.swift.romInfo.getCustomizeHandler()
                     .getCustomizeOptions()["samsung_oreo_icons"]!!.options[selection["samsung_oreo_icons"]]!!
 
-            for (icon in settingsIcons) {
+            settingsIcons.forEach { icon ->
                 if (option.iconTint) {
                     icon.setColorFilter(selection.accentColor)
                 } else {
@@ -298,7 +293,7 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
                     icon.setImageDrawable(context.getDrawable(id))
                 }
             }
-            for (icon in systemUiIcons) {
+            systemUiIcons.forEach { icon ->
                 val idName =
                         "ic_${context.resources.getResourceEntryName(icon.id)}_${option.resTag}"
                 val id = context.resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName",
@@ -312,7 +307,7 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
     }
 
     private fun populateOreoCustomizeOptions(categories: CategoryMap) {
-        val requiredApps = ArrayList<String>()
+        val requiredApps = SynchronizedArrayList<String>()
         val iconOptions = OptionsMap()
         iconOptions.add(Option(context.getString(R.string.aosp_icons), "aosp", "aosp", true))
         iconOptions.add(

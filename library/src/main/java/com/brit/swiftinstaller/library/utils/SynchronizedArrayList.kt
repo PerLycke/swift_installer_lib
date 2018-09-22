@@ -1,9 +1,22 @@
 package com.brit.swiftinstaller.library.utils
 
+import java.util.Comparator
 import java.util.function.Consumer
 import java.util.function.Predicate
+import java.util.function.UnaryOperator
 
-class SynchronizeArrayList<T>: ArrayList<T>() {
+class SynchronizedArrayList<T>(): ArrayList<T>() {
+
+    constructor(arrayList: ArrayList<T>): this() {
+        arrayList.forEach {
+            add(it)
+        }
+        arrayList.clear()
+    }
+
+    override val size: Int
+        @Synchronized
+        get() = super.size
 
     @Synchronized
     override fun add(element: T): Boolean {
@@ -84,14 +97,14 @@ class SynchronizeArrayList<T>: ArrayList<T>() {
 
                 @Synchronized
                 override fun hasNext(): Boolean {
-                    synchronized(this@SynchronizeArrayList) {
+                    synchronized(this@SynchronizedArrayList) {
                         return index < size
                     }
                 }
 
                 @Synchronized
                 override fun next(): T {
-                    synchronized(this@SynchronizeArrayList) {
+                    synchronized(this@SynchronizedArrayList) {
                         if (index >= size) throw NoSuchElementException()
                         lastIndex = index++
                         return get(lastIndex)
@@ -100,7 +113,7 @@ class SynchronizeArrayList<T>: ArrayList<T>() {
 
                 @Synchronized
                 override fun remove() {
-                    synchronized(this@SynchronizeArrayList) {
+                    synchronized(this@SynchronizedArrayList) {
                         check(lastIndex != -1) { "Call next() or previous() before removing element from the iterator." }
                         removeAt(lastIndex)
                         index = lastIndex
@@ -137,6 +150,48 @@ class SynchronizeArrayList<T>: ArrayList<T>() {
     override fun removeRange(fromIndex: Int, toIndex: Int) {
         synchronized(this) {
             super.removeRange(fromIndex, toIndex)
+        }
+    }
+
+    @Synchronized
+    override fun clone(): Any {
+        synchronized(this) {
+            return super.clone()
+        }
+    }
+
+    @Synchronized
+    override fun ensureCapacity(minCapacity: Int) {
+        synchronized(this) {
+            super.ensureCapacity(minCapacity)
+        }
+    }
+
+    @Synchronized
+    override fun lastIndexOf(element: T): Int {
+        synchronized(this) {
+            return super.lastIndexOf(element)
+        }
+    }
+
+    @Synchronized
+    override fun removeAll(elements: Collection<T>): Boolean {
+        synchronized(this) {
+            return super.removeAll(elements)
+        }
+    }
+
+    @Synchronized
+    override fun replaceAll(operator: UnaryOperator<T>) {
+        synchronized(this) {
+            super.replaceAll(operator)
+        }
+    }
+
+    @Synchronized
+    override fun sort(c: Comparator<in T>?) {
+        synchronized(this) {
+            super.sort(c)
         }
     }
 }

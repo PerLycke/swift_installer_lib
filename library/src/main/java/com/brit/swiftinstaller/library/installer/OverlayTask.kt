@@ -36,6 +36,7 @@ import com.brit.swiftinstaller.library.utils.OverlayUtils.checkVersionCompatible
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPath
 import com.brit.swiftinstaller.library.utils.ShellUtils
+import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
 import com.brit.swiftinstaller.library.utils.deleteFileShell
 import com.brit.swiftinstaller.library.utils.extractAsset
 import com.brit.swiftinstaller.library.utils.getVersionCode
@@ -118,15 +119,15 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
         resDir.mkdirs()
 
         val am = context.assets
-        val resourcePaths = ArrayList<String>()
-        val assetPaths = ArrayList<String>()
+        val resourcePaths = SynchronizedArrayList<String>()
+        val assetPaths = SynchronizedArrayList<String>()
         OverlayUtils.parseOverlayResourcePath(context, "overlays/$packageName", packageName,
                 resourcePaths)
         OverlayUtils.parseOverlayAssetPath(am, "overlays/$packageName", assetPaths)
-        for (path in resourcePaths) {
+        resourcePaths.forEach { path ->
             am.extractAsset(path, resDir.absolutePath, context.swift.cipher)
         }
-        for (path in assetPaths) {
+        assetPaths.forEach { path ->
             am.extractAsset(path, assetDir.absolutePath, context.swift.cipher)
         }
         if (packageName == "android") {

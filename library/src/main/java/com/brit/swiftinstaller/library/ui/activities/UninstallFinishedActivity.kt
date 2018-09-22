@@ -35,7 +35,7 @@ import com.brit.swiftinstaller.library.utils.swift
 class UninstallFinishedActivity : ThemeActivity() {
 
     private lateinit var dialog: AlertDialog
-    private val mHandler = Handler()
+    private val handler = Handler()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +54,7 @@ class UninstallFinishedActivity : ThemeActivity() {
                 val dialog = Dialog(this, R.style.AppTheme_Translucent)
                 dialog.setContentView(R.layout.reboot)
                 dialog.show()
-                mHandler.post {
+                handler.post {
                     if (!swift.romInfo.magiskEnabled() && getUseSoftReboot(this)) {
                         quickRebootCommand()
                     } else {

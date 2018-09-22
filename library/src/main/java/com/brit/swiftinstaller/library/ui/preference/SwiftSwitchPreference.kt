@@ -19,8 +19,8 @@ class SwiftSwitchPreference(context: Context, attrs: AttributeSet) :
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
         switch = findSwitchInChildViews(holder.itemView as ViewGroup)
-        if (switch != null) {
-            changeColor(switch!!.isChecked, switch!!.isEnabled)
+        switch?.let {
+            changeColor(it.isChecked, it.isEnabled)
         }
     }
 
@@ -31,9 +31,9 @@ class SwiftSwitchPreference(context: Context, attrs: AttributeSet) :
             } else {
                 Color.LTGRAY
             }
-            if (switch != null) {
-                switch!!.thumbDrawable.setColorFilter(color, PorterDuff.Mode.MULTIPLY)
-                switch!!.trackDrawable.setColorFilter(ColorUtils.addAlphaColor(color, 10),
+            switch?.let {
+                it.thumbDrawable.setColorFilter(color, PorterDuff.Mode.MULTIPLY)
+                it.trackDrawable.setColorFilter(ColorUtils.addAlphaColor(color, 10),
                         PorterDuff.Mode.MULTIPLY)
             }
         }

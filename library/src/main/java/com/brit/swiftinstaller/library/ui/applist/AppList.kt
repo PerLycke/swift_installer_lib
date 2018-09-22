@@ -3,7 +3,7 @@ package com.brit.swiftinstaller.library.ui.applist
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import com.brit.swiftinstaller.library.utils.SynchronizeArrayList
+import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
 import com.brit.swiftinstaller.library.utils.getAppsToUpdate
 import com.brit.swiftinstaller.library.utils.getHiddenApps
 import com.brit.swiftinstaller.library.utils.getVersionCode
@@ -15,12 +15,13 @@ object AppList {
     private const val ACTIVE = 1
     private const val UPDATE = 2
 
-    val appUpdates = SynchronizeArrayList<AppItem>()
-    val activeApps = SynchronizeArrayList<AppItem>()
-    val inactiveApps = SynchronizeArrayList<AppItem>()
+    val appUpdates = SynchronizedArrayList<AppItem>()
+    val activeApps = SynchronizedArrayList<AppItem>()
+    val inactiveApps = SynchronizedArrayList<AppItem>()
 
-    private val subscribers = ArrayList<(Int) -> Unit>()
+    private val subscribers = SynchronizedArrayList<(Int) -> Unit>()
 
+    @Synchronized
     fun initLists(context: Context) {
         val disabledOverlays = context.swift.romInfo.getDisabledOverlays()
         val hiddenOverlays = getHiddenApps(context)
@@ -52,71 +53,82 @@ object AppList {
         })
     }
 
+    @Synchronized
     fun addSubscriber(add: (Int) -> Unit) {
-        subscribers.add(add)
+        synchronized(this) {
+            subscribers.add(add)
+        }
     }
 
+    @Synchronized
     private fun updateSubscribers(list: Int) {
-        subscribers.forEach {
-            it.invoke(list)
+        synchronized(this) {
+            subscribers.forEach {
+                it.invoke(list)
+            }
         }
     }
 
+    @Synchronized
     fun addApp(context: Context, packageName: String) {
-        removeApp(context, packageName)
-        val updates = getAppsToUpdate(context)
-        val item = AppItem()
-        val pInfo = context.packageManager.getPackageInfo(packageName, 0)
-        item.packageName = packageName
-        item.title = pInfo.applicationInfo.loadLabel(context.packageManager) as String
-        item.versionCode = pInfo.getVersionCode()
-        item.versionName = pInfo.versionName
-        item.icon = pInfo.applicationInfo.loadIcon(context.packageManager)
-        if (context.swift.romInfo.isOverlayInstalled(packageName)) {
-            if (updates.contains(packageName)) {
-                appUpdates.add(item)
-                updateSubscribers(UPDATE)
+        synchronized(this) {
+            removeApp(context, packageName)
+            val updates = getAppsToUpdate(context)
+            val pInfo = context.packageManager.getPackageInfo(packageName, 0)
+            val item = AppItem(packageName,
+                    pInfo.applicationInfo.loadLabel(context.packageManager) as String,
+                    pInfo.getVersionCode(),
+                    pInfo.versionName,
+                    pInfo.applicationInfo.loadIcon(context.packageManager))
+            if (context.swift.romInfo.isOverlayInstalled(packageName)) {
+                if (updates.contains(packageName)) {
+                    appUpdates.add(item)
+                    updateSubscribers(UPDATE)
+                } else {
+                    activeApps.add(item)
+                    updateSubscribers(ACTIVE)
+                }
             } else {
-                activeApps.add(item)
-                updateSubscribers(ACTIVE)
+                inactiveApps.add(item)
+                updateSubscribers(INACTIVE)
             }
-        } else {
-            inactiveApps.add(item)
-            updateSubscribers(INACTIVE)
         }
     }
 
+    @Synchronized
     fun removeApp(@Suppress("UNUSED_PARAMETER") context: Context, packageName: String) {
-        var item: AppItem? = null
-        appUpdates.forEach {
-            if (it.packageName == packageName) {
-                item = it
-                updateSubscribers(UPDATE)
-                return@forEach
+        synchronized(this) {
+            var item: AppItem? = null
+            appUpdates.forEach {
+                if (it.packageName == packageName) {
+                    item = it
+                    updateSubscribers(UPDATE)
+                    return@forEach
+                }
             }
-        }
-        item?.let {
-            appUpdates.remove(it)
-            item = null
-        }
-        activeApps.forEach {
-            if (it.packageName == packageName) {
-                item = it
-                updateSubscribers(ACTIVE)
-                return@forEach
+            item?.let {
+                appUpdates.remove(it)
+                item = null
             }
-        }
-        item?.let {
-            activeApps.remove(it)
-            item = null
-        }
-        inactiveApps.forEach {
-            if (it.packageName == packageName) {
-                item = it
-                updateSubscribers(INACTIVE)
-                return@forEach
+            activeApps.forEach {
+                if (it.packageName == packageName) {
+                    item = it
+                    updateSubscribers(ACTIVE)
+                    return@forEach
+                }
             }
+            item?.let {
+                activeApps.remove(it)
+                item = null
+            }
+            inactiveApps.forEach {
+                if (it.packageName == packageName) {
+                    item = it
+                    updateSubscribers(INACTIVE)
+                    return@forEach
+                }
+            }
+            item?.let { inactiveApps.remove(it) }
         }
-        item?.let { inactiveApps.remove(it) }
     }
 }

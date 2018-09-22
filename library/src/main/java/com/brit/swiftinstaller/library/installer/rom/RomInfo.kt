@@ -32,8 +32,10 @@ import androidx.core.content.ContextCompat
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
+import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
 import com.brit.swiftinstaller.library.utils.Utils
 import com.brit.swiftinstaller.library.utils.getProperty
+import com.brit.swiftinstaller.library.utils.synchronizedArrayListOf
 import com.hololo.tutorial.library.PermissionStep
 import com.hololo.tutorial.library.Step
 import com.hololo.tutorial.library.TutorialActivity
@@ -47,8 +49,8 @@ abstract class RomInfo constructor(var context: Context) {
         return context.getColor(R.color.minimal_green)
     }
 
-    open fun getDisabledOverlays(): ArrayList<String> {
-        return ArrayList()
+    open fun getDisabledOverlays(): SynchronizedArrayList<String> {
+        return SynchronizedArrayList()
     }
 
     open fun getRequiredApps(): Array<String> {
@@ -127,8 +129,10 @@ abstract class RomInfo constructor(var context: Context) {
     }
 
     abstract fun installOverlay(context: Context, targetPackage: String, overlayPath: String)
-    abstract fun postInstall(uninstall: Boolean, apps: ArrayList<String>,
-                             oppositeApps: ArrayList<String>?, intent: Intent?)
+    abstract fun postInstall(uninstall: Boolean = false,
+                             apps: SynchronizedArrayList<String> = synchronizedArrayListOf(),
+                             oppositeApps: SynchronizedArrayList<String> = synchronizedArrayListOf(),
+                             intent: Intent? = null)
 
     abstract fun uninstallOverlay(context: Context, packageName: String)
     abstract fun getChangelogTag(): String

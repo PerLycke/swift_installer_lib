@@ -32,6 +32,7 @@ import android.widget.ImageView
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.utils.ColorUtils
 import com.brit.swiftinstaller.library.utils.MaterialPalette
+import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
 import kotlinx.android.synthetic.main.customize_preview_settings.view.*
 import kotlinx.android.synthetic.main.customize_preview_sysui.view.*
 
@@ -40,8 +41,8 @@ abstract class PreviewHandler(val context: Context) {
     var settingsPreview: ViewGroup? = null
     var systemUiPreview: ViewGroup? = null
 
-    val settingsIcons = ArrayList<ImageView>()
-    val systemUiIcons = ArrayList<ImageView>()
+    val settingsIcons = SynchronizedArrayList<ImageView>()
+    val systemUiIcons = SynchronizedArrayList<ImageView>()
 
     open fun getPage(container: ViewGroup, position: Int): View {
         return if (position == 0) {

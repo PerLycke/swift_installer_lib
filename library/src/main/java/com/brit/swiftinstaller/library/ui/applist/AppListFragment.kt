@@ -21,7 +21,6 @@
 
 package com.brit.swiftinstaller.library.ui.applist
 
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
@@ -48,7 +47,8 @@ import com.brit.swiftinstaller.library.utils.MaterialPalette
 import com.brit.swiftinstaller.library.utils.OverlayUtils
 import com.brit.swiftinstaller.library.utils.OverlayUtils.checkVersionCompatible
 import com.brit.swiftinstaller.library.utils.OverlayUtils.overlayHasVersion
-import com.brit.swiftinstaller.library.utils.SynchronizeArrayList
+import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
+import com.brit.swiftinstaller.library.utils.alert
 import com.brit.swiftinstaller.library.utils.getAppsToUpdate
 import com.brit.swiftinstaller.library.utils.getHiddenApps
 import com.brit.swiftinstaller.library.utils.getHideFailedInfoCard
@@ -65,8 +65,8 @@ import kotlinx.android.synthetic.main.failed_info_card.view.*
 
 class AppListFragment : Fragment() {
 
-    var mApps: SynchronizeArrayList<AppItem> = SynchronizeArrayList()
-    var mVisible: SynchronizeArrayList<Int> = SynchronizeArrayList()
+    var mApps: SynchronizedArrayList<AppItem> = SynchronizedArrayList()
+    var mVisible: SynchronizedArrayList<Int> = SynchronizedArrayList()
 
     var requiredApps: Array<String> = emptyArray()
 
@@ -136,8 +136,8 @@ class AppListFragment : Fragment() {
         app_list_view.layoutManager = LinearLayoutManager(activity)
     }
 
-    fun getCheckedItems(): ArrayList<AppItem> {
-        val apps = ArrayList<AppItem>()
+    fun getCheckedItems(): SynchronizedArrayList<AppItem> {
+        val apps = SynchronizedArrayList<AppItem>()
         for (i in mApps.indices) {
             if (mChecked.get(i) || requiredApps.contains(mApps[i].packageName)) {
                 apps.add(mApps[i])
@@ -159,7 +159,7 @@ class AppListFragment : Fragment() {
         }
     }
 
-    fun setAppList(apps: ArrayList<AppItem>?) {
+    fun setAppList(apps: SynchronizedArrayList<AppItem>?) {
         mApps.clear()
         mVisible.clear()
         mApps.addAll(apps!!)
@@ -246,7 +246,7 @@ class AppListFragment : Fragment() {
 
                 val appOptions = OverlayUtils.getOverlayOptions(context!!, item.packageName)
                 if (appOptions.isNotEmpty() && !mSummary) {
-                    val optionsSelection = ArrayList<String>()
+                    val optionsSelection = SynchronizedArrayList<String>()
                     val selected = getSelectedOverlayOptions(context!!, item.packageName)
                     for (i in appOptions.keys.indices) {
                         if (selected.containsKey(appOptions.keyAt(i))) {
@@ -258,41 +258,33 @@ class AppListFragment : Fragment() {
                             activity!!.swift.romInfo.getCustomizeHandler().getSelection().accentColor)
 
                     options_icon.setOnClickListener {
-                        val builder = AlertDialog.Builder(context!!, R.style.AppTheme_AlertDialog)
-                        val dialogBg = context!!.getDrawable(R.drawable.dialog_bg) as LayerDrawable
-                        dialogBg.findDrawableByLayerId(R.id.dialog_bg)
-                                .setTint(context!!.swift.selection.backgroundColor)
-                        builder.setTitle(item.title)
-                        builder.setIcon(item.icon)
-                        builder.setAdapter(
-                                OptionsAdapter(context!!, appOptions, optionsSelection)) { _, _ ->
-                        }
-                        builder.setPositiveButton("Apply") { _, _ ->
-                            for (pos in appOptions.keys.indices) {
-                                val value = optionsSelection.elementAtOrNull(pos)
-                                if (value != null) {
-                                    setOverlayOption(context!!, item.packageName,
-                                            appOptions.keyAt(pos), value)
+                        context!!.alert {
+                            title = item.title
+                            icon = item.icon
+                            adapter(OptionsAdapter(ctx, appOptions, optionsSelection)) { _, _ ->
+                            }
+                            positiveButton("Apply") { dialog ->
+                                for (pos in appOptions.keys.indices) {
+                                    val value = optionsSelection.elementAtOrNull(pos)
+                                    if (value != null) {
+                                        setOverlayOption(context!!, item.packageName,
+                                                appOptions.keyAt(pos), value)
+                                    }
                                 }
+                                if (installed) {
+                                    val intent = Intent(context!!, InstallActivity::class.java)
+                                    val apps = SynchronizedArrayList<String>()
+                                    apps.add(item.packageName)
+                                    intent.putStringArrayListExtra("apps", apps)
+                                    startActivity(intent)
+                                }
+                                dialog.dismiss()
                             }
-                            if (installed) {
-                                val intent = Intent(context!!, InstallActivity::class.java)
-                                val apps = ArrayList<String>()
-                                apps.add(item.packageName)
-                                intent.putStringArrayListExtra("apps", apps)
-                                startActivity(intent)
+                            negativeButton(R.string.cancel) { dialog ->
+                                dialog.dismiss()
                             }
+                            show()
                         }
-                        builder.setNegativeButton(R.string.cancel) { dialogInterface, _ ->
-                            dialogInterface.dismiss()
-                        }
-                        val dialog = builder.create()
-                        dialog.show()
-                        dialog.window?.setBackgroundDrawable(dialogBg)
-                        dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                                .setTextColor(context!!.swift.selection.accentColor)
-                        dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-                                .setTextColor(context!!.swift.selection.accentColor)
                     }
                 } else {
                     options_icon.visibility = View.GONE
@@ -367,7 +359,7 @@ class AppListFragment : Fragment() {
     }
 
     class OptionsAdapter(context: Context, val options: ArrayMap<String, Array<String>>,
-                         val selection: ArrayList<String>) :
+                         val selection: SynchronizedArrayList<String>) :
             ArrayAdapter<String>(context, R.layout.app_option_item) {
 
         private val mHandler = Handler()

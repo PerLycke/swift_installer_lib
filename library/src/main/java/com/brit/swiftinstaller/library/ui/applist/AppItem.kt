@@ -21,13 +21,11 @@
 
 package com.brit.swiftinstaller.library.ui.applist
 
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 
-class AppItem {
-    var packageName: String = ""
-    var title: String = ""
-    private var required: String = ""
-    var versionCode: Long = 0
-    var versionName: String = ""
-    var icon: Drawable? = null
-}
+class AppItem(val packageName: String = "",
+              val title: String = "",
+              val versionCode: Long = 0,
+              val versionName: String = "",
+              var icon: Drawable = ColorDrawable())

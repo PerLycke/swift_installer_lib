@@ -52,20 +52,20 @@ class OverlayManager(private val context: Context) {
 
     private var callback: Callback? = null
 
-    private var mMax = 0
+    private var max = 0
 
-    private val mThreadPool: ThreadPoolExecutor
+    private val threadPool: ThreadPoolExecutor
 
-    private val mHandler: Handler
+    private val handler: Handler
 
     init {
 
         overlayQueue = LinkedBlockingQueue<OverlayTask>()
 
-        mThreadPool = ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_SIZE,
+        threadPool = ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_SIZE,
                 KEEP_ALIVE_TIME, TimeUnit.SECONDS, compileQueue)
 
-        mHandler = object : Handler(Looper.myLooper()) {
+        handler = object : Handler(Looper.myLooper()) {
             override fun handleMessage(msg: Message?) {
                 super.handleMessage(msg)
 
@@ -108,16 +108,16 @@ class OverlayManager(private val context: Context) {
     }
 
     fun installOverlays(apps: Array<String>) {
-        mMax = apps.size
-        for (pn in apps) {
+        max = apps.size
+        apps.forEach { pn ->
             installOverlay(pn, apps.indexOf(pn))
         }
     }
 
     fun uninstallOverlays(apps: Array<String>) {
-        mMax = apps.size
-        //mNotifier.broadcastInstallStarted(mMax)
-        for (pn in apps) {
+        max = apps.size
+        //mNotifier.broadcastInstallStarted(max)
+        apps.forEach { pn ->
             uninstallOverlay(pn, apps.indexOf(pn))
         }
     }
@@ -132,11 +132,11 @@ class OverlayManager(private val context: Context) {
             task.initializeOverlayTask(context, packageName, index, false)
         }
 
-        mThreadPool.execute(task.getRunnable())
+        threadPool.execute(task.getRunnable())
     }
 
     fun isRunning(): Boolean {
-        return mThreadPool.queue.isEmpty()
+        return threadPool.queue.isEmpty()
     }
 
     private fun uninstallOverlay(packageName: String, index: Int) {
@@ -146,26 +146,26 @@ class OverlayManager(private val context: Context) {
         }
 
         task.initializeOverlayTask(context, packageName, index, true)
-        mThreadPool.execute(task.getRunnable())
+        threadPool.execute(task.getRunnable())
     }
 
     fun handleState(task: OverlayTask, state: Int) {
         when (state) {
             OVERLAY_INSTALLED -> {
-                val installed = mHandler.obtainMessage(state, task)
+                val installed = handler.obtainMessage(state, task)
                 installed.arg1 = task.index
-                installed.arg2 = mMax
+                installed.arg2 = max
                 installed.sendToTarget()
             }
             OVERLAY_UNINSTALLED -> {
-                val uninstalled = mHandler.obtainMessage(state, task)
+                val uninstalled = handler.obtainMessage(state, task)
                 uninstalled.arg1 = task.index
-                uninstalled.arg2 = mMax
+                uninstalled.arg2 = max
                 uninstalled.sendToTarget()
             }
 
             OVERLAY_FAILED -> {
-                val failed = mHandler.obtainMessage(state, task)
+                val failed = handler.obtainMessage(state, task)
                 failed.arg1 = task.index
                 failed.sendToTarget()
             }

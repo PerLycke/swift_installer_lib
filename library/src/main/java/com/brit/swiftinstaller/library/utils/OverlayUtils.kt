@@ -26,9 +26,16 @@ import android.content.pm.PackageManager
 import android.content.res.AssetManager
 import android.os.Environment
 import androidx.collection.ArrayMap
-import java.util.*
 
 object OverlayUtils {
+
+    fun getTargetPackageName(packageName: String): String {
+        if (packageName.endsWith(".swiftinstaller.overlay")) {
+            return packageName.substring(0, packageName.length - ".swiftinstaller.overlay".length)
+        } else {
+            return packageName
+        }
+    }
 
     fun getOverlayVersion(context: Context, targetPackage: String): Long {
         return try {
@@ -171,7 +178,7 @@ object OverlayUtils {
     }
 
     fun parseOverlayResourcePath(context: Context, path: String, packageName: String,
-                                 resourcePaths: ArrayList<String>) {
+                                 resourcePaths: SynchronizedArrayList<String>) {
         val am = context.assets
         val variants = am.list(path) ?: return
         if (variants.contains("common")) {
@@ -242,8 +249,8 @@ object OverlayUtils {
         val variants = context.assets.list("overlays/$packageName") ?: emptyArray()
         if (variants.contains("versions")) return false
 
-        val resourcePaths = ArrayList<String>()
-        val assets = ArrayList<String>()
+        val resourcePaths = SynchronizedArrayList<String>()
+        val assets = SynchronizedArrayList<String>()
         parseOverlayResourcePath(context, "overlays/$packageName", packageName, resourcePaths)
         for (path in resourcePaths) {
             val list = context.assets.list(path) ?: emptyArray()
@@ -257,7 +264,7 @@ object OverlayUtils {
     }
 
     private fun checkResourcePath(context: Context, path: String, packageName: String,
-                                  resourcePaths: ArrayList<String>) {
+                                  resourcePaths: SynchronizedArrayList<String>) {
         val variants = context.assets.list(path) ?: return
         if (!variants.contains("props")
                 && !variants.contains("versions") && !variants.contains("common")) {
@@ -267,11 +274,11 @@ object OverlayUtils {
         }
     }
 
-    private fun addResourcePath(resourcePaths: ArrayList<String>, path: String) {
+    private fun addResourcePath(resourcePaths: SynchronizedArrayList<String>, path: String) {
         resourcePaths.add(path.trimEnd('/'))
     }
 
-    fun parseOverlayAssetPath(am: AssetManager, path: String, assetPaths: ArrayList<String>) {
+    fun parseOverlayAssetPath(am: AssetManager, path: String, assetPaths: SynchronizedArrayList<String>) {
         val variants = am.list("$path/assets") ?: return
         if (variants.contains("common")) {
             assetPaths.add("$path/assets/common")
@@ -279,7 +286,7 @@ object OverlayUtils {
     }
 
     private fun parseOverlayVersions(context: Context, packageName: String,
-                                     resourcePaths: ArrayList<String>, path: String) {
+                                     resourcePaths: SynchronizedArrayList<String>, path: String) {
         val vers = context.assets.list(path) ?: return
         try {
             val packageInfo = context.packageManager.getPackageInfo(packageName, 0)

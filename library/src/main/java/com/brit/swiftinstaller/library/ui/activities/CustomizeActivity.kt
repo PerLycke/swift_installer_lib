@@ -22,13 +22,11 @@
 package com.brit.swiftinstaller.library.ui.activities
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.PorterDuff
-import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.preference.PreferenceManager
@@ -46,7 +44,6 @@ import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.SeekBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.viewpager.widget.PagerAdapter
@@ -62,6 +59,7 @@ import com.brit.swiftinstaller.library.utils.ColorUtils.checkBackgroundColor
 import com.brit.swiftinstaller.library.utils.ColorUtils.convertToColorInt
 import com.brit.swiftinstaller.library.utils.IdLists
 import com.brit.swiftinstaller.library.utils.MaterialPalette
+import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
 import com.brit.swiftinstaller.library.utils.Utils
 import com.brit.swiftinstaller.library.utils.alert
 import com.brit.swiftinstaller.library.utils.setUseBackgroundPalette
@@ -76,6 +74,7 @@ import kotlinx.android.synthetic.main.customize_option_item.view.*
 import kotlinx.android.synthetic.main.customize_option_layout.view.*
 import kotlinx.android.synthetic.main.fab_sheet_personalize.view.*
 import kotlinx.android.synthetic.main.palette_view.view.*
+import org.jetbrains.anko.toast
 
 class CustomizeActivity : ThemeActivity() {
 
@@ -213,8 +212,7 @@ class CustomizeActivity : ThemeActivity() {
                         selection.accentColor = convertToColorInt(s.toString())
                         updateColor(false)
                     } else {
-                        Toast.makeText(this@CustomizeActivity, R.string.invalid_accent,
-                                Toast.LENGTH_SHORT).show()
+                        toast(R.string.invalid_accent)
                     }
                 }
             }
@@ -233,8 +231,7 @@ class CustomizeActivity : ThemeActivity() {
                         selection.backgroundColor = convertToColorInt(s.toString())
                         updateColor(false)
                     } else {
-                        Toast.makeText(this@CustomizeActivity,
-                                R.string.invalid_background, Toast.LENGTH_SHORT).show()
+                        toast(R.string.invalid_background)
                     }
                 }
             }
@@ -242,14 +239,14 @@ class CustomizeActivity : ThemeActivity() {
     }
 
     inner class RadioGroup {
-        private val buttons = ArrayList<RadioButton>()
+        private val buttons = SynchronizedArrayList<RadioButton>()
 
         fun addRadioButton(button: RadioButton) {
             buttons.add(button)
         }
 
         fun setCurrentButton(button: RadioButton) {
-            for (but in buttons) {
+            buttons.forEach { but ->
                 but.isChecked = but == button
             }
         }
@@ -295,17 +292,14 @@ class CustomizeActivity : ThemeActivity() {
             group.addRadioButton(optionView.option_button)
             optionView.option_button.text = option.name
             optionView.option_info.setOnClickListener {
-                val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                val dialogBg = getDrawable(R.drawable.dialog_bg) as LayerDrawable
-                dialogBg.findDrawableByLayerId(R.id.dialog_bg).setTint(selection.backgroundColor)
-                builder.setTitle(option.infoDialogTitle)
-                builder.setMessage(option.infoDialogText)
-                builder.setPositiveButton(R.string.ok) { dialogInterface, _ ->
-                    dialogInterface.dismiss()
+                alert {
+                    title = option.infoDialogTitle
+                    message = option.infoDialogText
+                    positiveButton(R.string.ok) { dialog ->
+                        dialog.dismiss()
+                    }
+                    show()
                 }
-                val dialog = builder.create()
-                dialog.show()
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(selection.accentColor)
             }
             optionView.option_info.setVisible(option.infoDialogText.isNotEmpty())
             optionView.rounded_divider.setVisible(option.infoDialogText.isNotEmpty())
@@ -314,7 +308,7 @@ class CustomizeActivity : ThemeActivity() {
                     optionView.option_info_text.text = option.infoText
                 }
                 val subGroup = RadioGroup()
-                for (subOption in option.subOptions.reversed()) {
+                option.subOptions.reversed().forEach { subOption ->
                     setupOption(optionView.sub_options_container, subOption, option.subOptionKey,
                             subGroup)
                 }
@@ -324,12 +318,12 @@ class CustomizeActivity : ThemeActivity() {
     }
 
     private fun setupThemeOptions() {
-        for (category in customizeHandler.getCustomizeOptions().reversed()) {
+        customizeHandler.getCustomizeOptions().reversed().forEach { category ->
             val categoryView = LayoutInflater.from(this)
                     .inflate(R.layout.customize_option_layout, customize_options, false)
             categoryView.customize_category_title.text = category.name
             val optionGroup = RadioGroup()
-            for (option in category.options) {
+            category.options.forEachOption { option ->
                 setupOption(categoryView.options, option, category.key, optionGroup)
             }
             customize_options.addView(categoryView)
@@ -368,7 +362,7 @@ class CustomizeActivity : ThemeActivity() {
         if (finish) finish()
     }
 
-    private fun checkAndAddApp(apps: ArrayList<String>, app: String) {
+    private fun checkAndAddApp(apps: SynchronizedArrayList<String>, app: String) {
         if (!apps.contains(app) && swift.romInfo.isOverlayInstalled("android")) {
             apps.add(app)
             recompile = true
@@ -401,7 +395,7 @@ class CustomizeActivity : ThemeActivity() {
 
         sheetView.personalization_confirm.setOnClickListener {
             bottomSheetDialog.dismiss()
-            val apps = ArrayList<String>()
+            val apps = SynchronizedArrayList<String>()
 
             val oldPalette = useBackgroundPalette(this)
             val oldSelection = customizeHandler.getSelection()
@@ -412,11 +406,11 @@ class CustomizeActivity : ThemeActivity() {
             fun hotSwapPrefOff() = PreferenceManager.getDefaultSharedPreferences(
                     this).edit().putBoolean("hotswap", false).apply()
 
-            for (key in oldSelection.keys) {
+            oldSelection.keys.forEach { key ->
                 if (oldSelection[key] != selection[key]) {
                     val cat = customizeHandler.getCustomizeOptions()[key]
                     if (cat != null) {
-                        for (app in cat.requiredApps) {
+                        cat.requiredApps.forEach { app ->
                             if (app == "android") {
                                 if (swift.romInfo.useHotSwap()) {
                                     hotSwapPrefOn()
@@ -451,7 +445,7 @@ class CustomizeActivity : ThemeActivity() {
                 val receiver = object : BroadcastReceiver() {
                     override fun onReceive(context: Context, intent: Intent) {
                         if (intent.action == InstallSummaryActivity.ACTION_INSTALL_CANCELLED) {
-                            for (key in selection.keys) {
+                            selection.keys.forEach { key ->
                                 if (oldSelection[key] != selection[key]) {
                                     selection[key] = oldSelection[key]
                                 }
@@ -547,7 +541,7 @@ class CustomizeActivity : ThemeActivity() {
 
     fun updateColor(updateHex: Boolean) {
         updateColors(selection.backgroundColor, usePalette)
-        for (id in IdLists.radioButtons) {
+        IdLists.radioButtons.forEach { id ->
             val b = findViewById<RadioButton>(id)
             b.buttonTintList = ColorUtils.radioButtonColor(this, R.color.radio_button_disabled,
                     selection.accentColor)
@@ -559,17 +553,17 @@ class CustomizeActivity : ThemeActivity() {
 
         val buttonTint = ColorUtils.radioButtonColor(this, R.color.radio_button_disabled,
                 selection.accentColor)
-        for (position in customize_options.childCount.downTo(0)) {
+        customize_options.childCount.downTo(0).forEach { position ->
             val view = customize_options.getChildAt(position)
             if (view != null) {
                 if (view.options.childCount > 0) {
-                    for (pos in view.options.childCount.downTo(0)) {
+                    view.options.childCount.downTo(0).forEach { pos ->
                         val v = view.options.getChildAt(pos)
                         if (v != null) {
                             v.option_button.buttonTintList = buttonTint
                             v.option_info.setTextColor(selection.accentColor)
                             if (v.sub_options_container.childCount > 0) {
-                                for (posi in v.sub_options_container.childCount.downTo(0)) {
+                                v.sub_options_container.childCount.downTo(0).forEach { posi ->
                                     val vi = v.sub_options_container.getChildAt(posi)
                                     if (vi != null) {
                                         vi.option_button.buttonTintList = buttonTint
@@ -615,20 +609,20 @@ class CustomizeActivity : ThemeActivity() {
         }
 
         fun setIndicatorColor(color: Int) {
-            for (ind in indicators) {
-                ind.drawable.setTint(color)
+            indicators.forEach {
+                it.drawable.setTint(color)
             }
         }
 
         fun setActiveIndicator(color: Int) {
-            for (ind in indicators) {
-                ind.setVisible(ind.tag == color)
+            indicators.forEach {
+                it.setVisible(it.tag == color)
             }
         }
     }
 
     inner class PaletteAdapter constructor(
-            private val colors: ArrayList<CustomizeHandler.PaletteItem>,
+            private val colors: SynchronizedArrayList<CustomizeHandler.PaletteItem>,
             private val isAccent: Boolean) : BaseAdapter() {
 
         override fun getCount(): Int {

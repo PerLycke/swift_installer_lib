@@ -25,12 +25,13 @@ import android.content.Context
 import android.preference.PreferenceManager
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.utils.ColorUtils.convertToColorInt
+import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
 import com.brit.swiftinstaller.library.utils.swift
 
 abstract class CustomizeHandler(val context: Context) {
 
-    private val accents = arrayListOf<PaletteItem>()
-    private val backgrounds = arrayListOf<PaletteItem>()
+    private val accents = SynchronizedArrayList<PaletteItem>()
+    private val backgrounds = SynchronizedArrayList<PaletteItem>()
     private val categories = CategoryMap()
 
     init {
@@ -58,7 +59,7 @@ abstract class CustomizeHandler(val context: Context) {
         var accentColor = -1
     }
 
-    open fun populateAccentColors(accents: ArrayList<PaletteItem>) {
+    open fun populateAccentColors(accents: SynchronizedArrayList<PaletteItem>) {
         accents.add(PaletteItem(context.getColor(R.color.minimal_green)))
         accents.add(PaletteItem(context.getColor(R.color.minimal_blue)))
         accents.add(PaletteItem(context.getColor(R.color.minimal_orange)))
@@ -71,11 +72,11 @@ abstract class CustomizeHandler(val context: Context) {
         accents.add(PaletteItem(context.getColor(R.color.violet)))
     }
 
-    fun getAccentColors(): ArrayList<PaletteItem> {
+    fun getAccentColors(): SynchronizedArrayList<PaletteItem> {
         return accents
     }
 
-    open fun populateBackgroundColors(backgrounds: ArrayList<PaletteItem>) {
+    open fun populateBackgroundColors(backgrounds: SynchronizedArrayList<PaletteItem>) {
         backgrounds.add(
                 PaletteItem(convertToColorInt("202026"), context.getString(R.string.swift_dark)))
         backgrounds.add(
@@ -89,7 +90,7 @@ abstract class CustomizeHandler(val context: Context) {
         backgrounds.add(PaletteItem(convertToColorInt("363844"), context.getString(R.string.night)))
     }
 
-    fun getBackgroundColors(): ArrayList<PaletteItem> {
+    fun getBackgroundColors(): SynchronizedArrayList<PaletteItem> {
         return backgrounds
     }
 
@@ -126,7 +127,7 @@ abstract class CustomizeHandler(val context: Context) {
     }
 
     open fun populateCustomizeOptions(categories: CategoryMap) {
-        val requiredApps = ArrayList<String>()
+        val requiredApps = SynchronizedArrayList<String>()
 
         val notifBackgroundOptions = OptionsMap()
         notifBackgroundOptions.add(Option(context.getString(R.string.white), "white"))

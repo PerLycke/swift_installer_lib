@@ -22,7 +22,6 @@
 package com.brit.swiftinstaller.library.ui.activities
 
 import android.app.Dialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
@@ -34,7 +33,6 @@ import android.os.Environment
 import android.os.Handler
 import android.preference.PreferenceManager
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.applist.AppItem
@@ -68,11 +66,11 @@ class InstallSummaryActivity : ThemeActivity() {
         const val ACTION_INSTALL_CANCELLED = "com.brit.swiftinstaller.action.INSTALL_CANCELLED"
     }
 
-    private lateinit var mPagerAdapter: AppsTabPagerAdapter
-    private val mHandler = Handler()
+    private lateinit var pagerAdapter: AppsTabPagerAdapter
+    private val handler = Handler()
 
-    private var mErrorMap: HashMap<String, String> = HashMap()
-    private var mApps = arrayListOf<String>()
+    private var errorMap: HashMap<String, String> = HashMap()
+    private var apps = arrayListOf<String>()
 
     var update = false
 
@@ -83,25 +81,23 @@ class InstallSummaryActivity : ThemeActivity() {
 
         update = intent.getBooleanExtra("update", false)
 
-        mPagerAdapter = AppsTabPagerAdapter(supportFragmentManager, true, SUCCESS_TAB, FAILED_TAB)
-        mPagerAdapter.setAlertIconClickListener(object : AppListFragment.AlertIconClickListener {
+        pagerAdapter = AppsTabPagerAdapter(supportFragmentManager, true, SUCCESS_TAB, FAILED_TAB)
+        pagerAdapter.setAlertIconClickListener(object : AppListFragment.AlertIconClickListener {
             override fun onAlertIconClick(appItem: AppItem) {
-                val dialog = AlertDialog.Builder(this@InstallSummaryActivity,
-                        R.style.AppTheme_AlertDialog_Error)
-                        .setTitle(appItem.title)
-                        .setIcon(appItem.icon)
-                        .setMessage(mErrorMap[appItem.packageName])
-                        .setPositiveButton(
-                                android.R.string.ok) { dialogInterface: DialogInterface, _: Int ->
-                            dialogInterface.dismiss()
-                        }
-                themeDialog()
-                dialog.show()
+                alert {
+                    title = appItem.title
+                    icon = appItem.icon
+                    message = errorMap[appItem.packageName]!!
+                    positiveButton(R.string.ok) { dialog ->
+                        dialog.dismiss()
+                    }
+                    show()
+                }
             }
 
         })
 
-        container.adapter = mPagerAdapter
+        container.adapter = pagerAdapter
         container.addOnPageChangeListener(
                 TabLayout.TabLayoutOnPageChangeListener(tab_install_summary_root))
         tab_install_summary_root.addOnTabSelectedListener(
@@ -121,14 +117,14 @@ class InstallSummaryActivity : ThemeActivity() {
         val sendLog = sheetView.findViewById<View>(R.id.send_email_layout)
         val reboot = sheetView.findViewById<View>(R.id.reboot_layout)
 
-        if (mErrorMap.isNotEmpty()) {
+        if (errorMap.isNotEmpty()) {
             sendLog.visibility = View.VISIBLE
             sendLog.setOnClickListener {
                 sendErrorLog()
             }
         }
 
-        if (mPagerAdapter.getAppsCount(0) > 0) {
+        if (pagerAdapter.getAppsCount(0) > 0) {
             reboot.visibility = View.VISIBLE
             reboot.setOnClickListener {
                 bottomSheetDialog.dismiss()
@@ -141,7 +137,7 @@ class InstallSummaryActivity : ThemeActivity() {
         val rebootDialog = Dialog(this, R.style.AppTheme_Translucent)
         rebootDialog.setContentView(R.layout.reboot)
         rebootDialog.show()
-        mHandler.post {
+        handler.post {
             if (!swift.romInfo.magiskEnabled() && getUseSoftReboot(this)) {
                 quickRebootCommand()
             } else {
@@ -151,53 +147,53 @@ class InstallSummaryActivity : ThemeActivity() {
     }
 
     private fun updateList() {
-        mApps.clear()
-        mApps.addAll(Holder.installApps)
-        mErrorMap.clear()
-        mErrorMap.putAll(Holder.errorMap)
-        mPagerAdapter.clearApps()
+        apps.clear()
+        apps.addAll(Holder.installApps)
+        errorMap.clear()
+        errorMap.putAll(Holder.errorMap)
+        pagerAdapter.clearApps()
 
         doAsync {
             val pm = this@InstallSummaryActivity.packageManager
-            mApps.addAll(mErrorMap.keys)
-            for (pn: String in mApps) {
-                var info: ApplicationInfo? = null
-                var pInfo: PackageInfo? = null
+            apps.addAll(errorMap.keys)
+            apps.forEach { pn ->
+                val info: ApplicationInfo?
+                val pInfo: PackageInfo
                 try {
                     info = pm.getApplicationInfo(pn, PackageManager.GET_META_DATA)
                     pInfo = pm.getPackageInfo(pn, 0)
                 } catch (ex: Exception) {
+                    return@forEach
                 }
                 if (info != null) {
-                    val item = AppItem()
-                    item.packageName = pn
-                    item.icon = pm.getApplicationIcon(item.packageName)
-                    item.title = info.loadLabel(pm) as String
-                    item.versionCode = pInfo!!.getVersionCode()
-                    item.versionName = pInfo.versionName
-                    if (mErrorMap.keys.contains(pn)) {
-                        mPagerAdapter.addApp(FAILED_TAB, item)
+                    val item = AppItem(pn,
+                            info.loadLabel(pm) as String,
+                            pInfo.getVersionCode(),
+                            pInfo.versionName,
+                            info.loadIcon(pm))
+                    if (errorMap.keys.contains(pn)) {
+                        pagerAdapter.addApp(FAILED_TAB, item)
                     } else if (swift.romInfo.isOverlayInstalled(pn)) {
                         if (update && !OverlayUtils.wasUpdateSuccessful(this@InstallSummaryActivity,
                                         item.packageName)) {
-                            mErrorMap[pn] = "Update Failed"
-                            mPagerAdapter.addApp(FAILED_TAB, item)
+                            errorMap[pn] = "Update Failed"
+                            pagerAdapter.addApp(FAILED_TAB, item)
                         } else {
-                            mPagerAdapter.addApp(SUCCESS_TAB, item)
+                            pagerAdapter.addApp(SUCCESS_TAB, item)
                             removeAppToUpdate(this@InstallSummaryActivity, item.packageName)
                         }
                     } else {
-                        mErrorMap[pn] = "Install Cancelled"
+                        errorMap[pn] = "Install Cancelled"
                         LocalBroadcastManager.getInstance(
                                 this@InstallSummaryActivity.applicationContext)
                                 .sendBroadcast(Intent(ACTION_INSTALL_CANCELLED))
-                        mPagerAdapter.addApp(FAILED_TAB, item)
+                        pagerAdapter.addApp(FAILED_TAB, item)
                     }
                 }
             }
         }
 
-        if (!ShellUtils.isRootAvailable && mErrorMap.isNotEmpty()) {
+        if (!ShellUtils.isRootAvailable && errorMap.isNotEmpty()) {
             send_email_layout.visibility = View.VISIBLE
             send_email_btn.setOnClickListener {
                 sendErrorLog()
@@ -211,7 +207,7 @@ class InstallSummaryActivity : ThemeActivity() {
             fab_install_finished.show()
         }
         if (!hotSwap || !isOverlayEnabled("android")) {
-            mHandler.post {
+            handler.post {
                 resultDialog()
             }
         } else {
@@ -227,7 +223,7 @@ class InstallSummaryActivity : ThemeActivity() {
     }
 
     private fun resultDialog() {
-        val failed = mApps.size == mErrorMap.size
+        val failed = apps.size == errorMap.size
 
         alert {
             title = when {
@@ -238,7 +234,7 @@ class InstallSummaryActivity : ThemeActivity() {
 
             message = when {
                 failed -> getString(R.string.examined_result_msg_error)
-                mErrorMap.isNotEmpty() -> getString(R.string.examined_result_msg)
+                errorMap.isNotEmpty() -> getString(R.string.examined_result_msg)
                 else -> getString(R.string.examined_result_msg_noerror)
             }
             if (ShellUtils.isRootAvailable && !failed) {
@@ -286,15 +282,15 @@ class InstallSummaryActivity : ThemeActivity() {
         text.append("\n")
         text.append("**********************************")
         text.append("\n")
-        for (item in mPagerAdapter.getApps(FAILED_TAB).iterator()) {
-            if (mErrorMap.containsKey(item.packageName)) {
+        pagerAdapter.getApps(FAILED_TAB).forEach { item ->
+            if (errorMap.containsKey(item.packageName)) {
                 text.append("App: " + item.title)
                 text.append("\n")
                 text.append("App Package: " + item.packageName)
                 text.append("\n")
                 text.append("App Version: " + item.versionName)
                 text.append("\n")
-                text.append("Error Log: " + mErrorMap[item.packageName])
+                text.append("Error Log: " + errorMap[item.packageName])
                 text.append("\n")
                 text.append("-------------------")
                 text.append("\n")

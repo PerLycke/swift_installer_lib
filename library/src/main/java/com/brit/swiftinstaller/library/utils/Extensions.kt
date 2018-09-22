@@ -26,9 +26,7 @@ import android.content.pm.PackageInfo
 import android.content.res.AssetManager
 import android.os.Build
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import com.brit.swiftinstaller.library.SwiftApplication
-import org.jetbrains.anko.AlertBuilder
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -46,7 +44,15 @@ fun PackageInfo.getVersionCode(): Long {
     }
 }
 
-fun Context.alert(init: AlertBuilder<AlertDialog>.() -> Unit): AlertBuilder<AlertDialog> =
+fun <T>synchronizedArrayListOf(vararg items: T): SynchronizedArrayList<T> {
+    val array = SynchronizedArrayList<T>()
+    for (item in items) {
+        array.add(item)
+    }
+    return array
+}
+
+fun Context.alert(init: SwiftAlertBuilder.() -> Unit): SwiftAlertBuilder =
         SwiftAlertBuilder(this).apply { init() }
 
 val Context.swift: SwiftApplication

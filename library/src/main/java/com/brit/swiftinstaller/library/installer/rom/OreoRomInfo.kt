@@ -28,6 +28,7 @@ import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
 import com.brit.swiftinstaller.library.ui.customize.PreviewHandler
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
 import com.brit.swiftinstaller.library.utils.ShellUtils
+import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
 import com.brit.swiftinstaller.library.utils.runCommand
 
 open class OreoRomInfo(context: Context) : RomInfo(context) {
@@ -43,46 +44,43 @@ open class OreoRomInfo(context: Context) : RomInfo(context) {
     }
 
     override fun getRequiredApps(): Array<String> {
-        return Array(23) {
-            when (it) {
-                0 -> "android"
-                1 -> "com.android.systemui"
-                2 -> "com.amazon.clouddrive.photos"
-                3 -> "com.android.settings"
-                4 -> "com.anydo"
-                5 -> "com.apple.android.music"
-                6 -> "com.ebay.mobile"
-                7 -> "com.embermitre.pixolor.app"
-                8 -> "com.google.android.apps.genie.geniewidget"
-                9 -> "com.google.android.apps.inbox"
-                10 -> "com.google.android.apps.messaging"
-                11 -> "com.google.android.gm"
-                12 -> "com.google.android.talk"
-                13 -> "com.mxtech.videoplayer.ad"
-                14 -> "com.mxtech.videoplayer.pro"
-                15 -> "com.pandora.android"
-                16 -> "com.simplecity.amp.pro"
-                17 -> "com.Slack"
-                18 -> "com.twitter.android"
-                19 -> "com.google.android.gms"
-                20 -> "com.google.android.apps.nexuslauncher"
-                21 -> "com.lastpass.lpandroid"
-                22 -> "com.weather.Weather"
-                else -> ""
-            }
-        }
+        return arrayOf(
+                "android",
+                "com.android.systemui",
+                "com.amazon.clouddrive.photos",
+                "com.android.settings",
+                "com.anydo",
+                "com.apple.android.music",
+                "com.ebay.mobile",
+                "com.embermitre.pixolor.app",
+                "com.google.android.apps.genie.geniewidget",
+                "com.google.android.apps.inbox",
+                "com.google.android.apps.messaging",
+                "com.google.android.gm",
+                "com.google.android.talk",
+                "com.mxtech.videoplayer.ad",
+                "com.mxtech.videoplayer.pro",
+                "com.pandora.android",
+                "com.simplecity.amp.pro",
+                "com.Slack",
+                "com.twitter.android",
+                "com.google.android.gms",
+                "com.google.android.apps.nexuslauncher",
+                "com.lastpass.lpandroid",
+                "com.weather.Weather"
+        )
     }
 
-    override fun postInstall(uninstall: Boolean, apps: ArrayList<String>,
-                             oppositeApps: ArrayList<String>?, intent: Intent?) {
+    override fun postInstall(uninstall: Boolean, apps: SynchronizedArrayList<String>,
+                             oppositeApps: SynchronizedArrayList<String>, intent: Intent?) {
         if (ShellUtils.isRootAvailable && !uninstall) {
-            for (app in apps) {
+            apps.forEach { app ->
                 runCommand("cmd overlay enable " + getOverlayPackageName(app), true)
             }
         }
 
-        if (!uninstall && oppositeApps != null && oppositeApps.isNotEmpty()) {
-            for (app in oppositeApps) {
+        if (!uninstall && oppositeApps.isNotEmpty()) {
+            oppositeApps.forEach { app ->
                 uninstallOverlay(context, app)
             }
         }
@@ -116,7 +114,7 @@ open class OreoRomInfo(context: Context) : RomInfo(context) {
 
     class OreoPreviewHandler(context: Context) : PreviewHandler(context) {
         override fun updateIcons(selection: CustomizeSelection) {
-            for (icon in settingsIcons) {
+            settingsIcons.forEach { icon ->
                 icon.setColorFilter(selection.accentColor)
                 val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_aosp"
                 val id = context.resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName",
@@ -125,7 +123,7 @@ open class OreoRomInfo(context: Context) : RomInfo(context) {
                     icon.setImageDrawable(context.getDrawable(id))
                 }
             }
-            for (icon in systemUiIcons) {
+            systemUiIcons.forEach { icon ->
                 val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_aosp"
                 val id = context.resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName",
                         null, null)

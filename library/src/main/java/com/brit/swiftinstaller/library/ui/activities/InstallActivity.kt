@@ -38,9 +38,9 @@ import com.brit.swiftinstaller.library.installer.Notifier
 import com.brit.swiftinstaller.library.utils.Holder
 import com.brit.swiftinstaller.library.utils.InstallerServiceHelper
 import com.brit.swiftinstaller.library.utils.ShellUtils
+import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
 import com.brit.swiftinstaller.library.utils.swift
 import kotlinx.android.synthetic.main.progress_dialog_install.view.*
-import java.util.ArrayList
 import kotlin.collections.HashMap
 import kotlin.collections.set
 
@@ -51,15 +51,15 @@ class InstallActivity : ThemeActivity() {
     private lateinit var progressCount: TextView
     private lateinit var progressPercent: TextView
     private val installListener = InstallListener()
-    private val mHandler = Handler()
+    private val handler = Handler()
 
     private var uninstall = false
     private var update = false
 
     private var dialog: AlertDialog? = null
 
-    private lateinit var apps: ArrayList<String>
-    private val updateAppsToUninstall = ArrayList<String>()
+    private lateinit var apps: SynchronizedArrayList<String>
+    private val updateAppsToUninstall = SynchronizedArrayList<String>()
 
     private val errorMap: HashMap<String, String> = HashMap()
 
@@ -104,7 +104,7 @@ class InstallActivity : ThemeActivity() {
         super.onCreate(savedInstanceState)
         uninstall = intent.getBooleanExtra("uninstall", false)
         update = intent.getBooleanExtra("update", false)
-        apps = intent.getStringArrayListExtra("apps")
+        apps = SynchronizedArrayList(intent.getStringArrayListExtra("apps"))
 
         if (apps.contains("android")) {
             apps.remove("android")
@@ -124,7 +124,7 @@ class InstallActivity : ThemeActivity() {
 
         if (uninstall) {
             inflate.install_progress_txt.setText(R.string.progress_uninstalling_title)
-            mHandler.postDelayed({
+            handler.postDelayed({
                 if (dialog != null && dialog?.isShowing!!) {
                     fc.visibility = View.VISIBLE
                     fc.setOnClickListener {
@@ -172,7 +172,7 @@ class InstallActivity : ThemeActivity() {
                         }
                     }
                 }, intentfilter)
-                swift.romInfo.postInstall(true, apps, null, null)
+                swift.romInfo.postInstall(uninstall = true, apps = apps)
             } else {
                 InstallerServiceHelper.uninstall(this, apps)
             }

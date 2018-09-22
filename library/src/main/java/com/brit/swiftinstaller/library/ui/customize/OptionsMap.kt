@@ -1,5 +1,7 @@
 package com.brit.swiftinstaller.library.ui.customize
 
+import java.util.function.Consumer
+
 class OptionsMap : HashMap<String, Option>(), Iterable<Option> {
     override fun iterator(): Iterator<Option> {
         return object : Iterator<Option> {
@@ -13,6 +15,10 @@ class OptionsMap : HashMap<String, Option>(), Iterable<Option> {
             }
 
         }
+    }
+
+    fun forEachOption(action: (Option) -> Unit) {
+            values.forEach { action.invoke(it) }
     }
 
     fun add(option: Option) {

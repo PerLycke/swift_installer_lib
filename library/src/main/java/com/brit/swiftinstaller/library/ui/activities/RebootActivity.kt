@@ -33,7 +33,7 @@ import com.brit.swiftinstaller.library.utils.rebootCommand
 
 class RebootActivity : ThemeActivity() {
 
-    private val mHandler = Handler()
+    private val handler = Handler()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +48,7 @@ class RebootActivity : ThemeActivity() {
                 val rebootingDialog = Dialog(ctx, R.style.AppTheme_Translucent)
                 rebootingDialog.setContentView(R.layout.reboot)
                 rebootingDialog.show()
-                mHandler.post {
+                handler.post {
                     if (getUseSoftReboot(ctx)) {
                         quickRebootCommand()
                     } else {
