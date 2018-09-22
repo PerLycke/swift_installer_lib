@@ -22,6 +22,7 @@
 package com.brit.swiftinstaller.library.utils
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -34,7 +35,6 @@ import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.browser.customtabs.CustomTabsIntent
-import com.brit.swiftinstaller.library.R
 
 object Utils {
 
@@ -78,10 +78,14 @@ object Utils {
     fun createLinkedString(ctx: Context, m: CharSequence, l: String): SpannableString {
         val click = object : ClickableSpan() {
             override fun onClick(p0: View) {
-                val url = ctx.getString(R.string.installer_source_link)
                 val builder = CustomTabsIntent.Builder()
+                builder.setToolbarColor(ctx.swift.selection.backgroundColor)
+                builder.setSecondaryToolbarColor(ctx.swift.selection.backgroundColor)
+                builder.setShowTitle(false)
+                builder.enableUrlBarHiding()
                 val intent = builder.build()
-                intent.launchUrl(ctx, Uri.parse(url))
+                intent.intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.launchUrl(ctx, Uri.parse(l))
             }
         }
 
