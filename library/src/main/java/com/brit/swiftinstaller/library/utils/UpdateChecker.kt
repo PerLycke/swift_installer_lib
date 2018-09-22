@@ -31,7 +31,6 @@ import android.os.AsyncTask
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.activities.OverlaysActivity
 import com.brit.swiftinstaller.library.ui.applist.AppList
-import org.jetbrains.anko.doAsync
 import java.lang.ref.WeakReference
 
 class UpdateChecker(context: Context, private val callback: Callback?) :
@@ -58,6 +57,8 @@ class UpdateChecker(context: Context, private val callback: Callback?) :
                     updates.add(packageName)
                     AppList.addApp(context, packageName)
                     addAppToUpdate(context, packageName)
+                } else {
+                    removeAppToUpdate(context, packageName)
                 }
             }
         }
