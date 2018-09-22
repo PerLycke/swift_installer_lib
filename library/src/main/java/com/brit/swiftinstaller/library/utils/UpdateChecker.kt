@@ -55,8 +55,8 @@ class UpdateChecker(context: Context, private val callback: Callback?) :
                 if (OverlayUtils.checkOverlayVersion(context, packageName)
                         || OverlayUtils.checkAppVersion(context, packageName)) {
                     updates.add(packageName)
-                    AppList.addApp(context, packageName)
                     addAppToUpdate(context, packageName)
+                    AppList.addApp(context, packageName)
                 } else {
                     removeAppToUpdate(context, packageName)
                 }
