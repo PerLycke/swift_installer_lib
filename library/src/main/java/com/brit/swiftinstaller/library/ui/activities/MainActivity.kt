@@ -247,6 +247,7 @@ class MainActivity : ThemeActivity() {
 
         popupView.popup_menu_changelog.setOnClickListener {
             ChangelogHandler.showChangelog(this, false)
+            popup.dismiss()
         }
 
         popup.showAtLocation(view, Gravity.TOP or Gravity.RIGHT, 0, 0)
