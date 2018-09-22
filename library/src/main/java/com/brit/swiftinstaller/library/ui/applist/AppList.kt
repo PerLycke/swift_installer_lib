@@ -3,11 +3,7 @@ package com.brit.swiftinstaller.library.ui.applist
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
-import com.brit.swiftinstaller.library.utils.getAppsToUpdate
-import com.brit.swiftinstaller.library.utils.getHiddenApps
-import com.brit.swiftinstaller.library.utils.getVersionCode
-import com.brit.swiftinstaller.library.utils.swift
+import com.brit.swiftinstaller.library.utils.*
 
 object AppList {
 
@@ -42,15 +38,15 @@ object AppList {
             }
             addApp(context, pn)
         }
-        appUpdates.sortWith(Comparator { o1, o2 ->
-            o1.title.compareTo(o2.title)
-        })
-        activeApps.sortWith(Comparator { o1, o2 ->
-            o1.title.compareTo(o2.title)
-        })
-        inactiveApps.sortWith(Comparator { o1, o2 ->
-            o1.title.compareTo(o2.title)
-        })
+//        appUpdates.sortWith(Comparator { o1, o2 ->
+//            o1.title.compareTo(o2.title)
+//        })
+//        activeApps.sortWith(Comparator { o1, o2 ->
+//            o1.title.compareTo(o2.title)
+//        })
+//        inactiveApps.sortWith(Comparator { o1, o2 ->
+//            o1.title.compareTo(o2.title)
+//        })
     }
 
     @Synchronized
@@ -69,6 +65,18 @@ object AppList {
         }
     }
 
+    private fun getPosition(item: AppItem, list: SynchronizedArrayList<AppItem>) : Int {
+        var position = 0
+        for (i in 0 until list.size) {
+            val name = list[i].title
+            if (item.title.compareTo(name, false) < 0) {
+                break
+            }
+            position++
+        }
+        return position
+    }
+
     @Synchronized
     fun addApp(context: Context, packageName: String) {
         synchronized(this) {
@@ -82,14 +90,14 @@ object AppList {
                     pInfo.applicationInfo.loadIcon(context.packageManager))
             if (context.swift.romInfo.isOverlayInstalled(packageName)) {
                 if (updates.contains(packageName)) {
-                    appUpdates.add(item)
+                    appUpdates.add(getPosition(item, appUpdates), item)
                     updateSubscribers(UPDATE)
                 } else {
-                    activeApps.add(item)
+                    activeApps.add(getPosition(item, activeApps), item)
                     updateSubscribers(ACTIVE)
                 }
             } else {
-                inactiveApps.add(item)
+                inactiveApps.add(getPosition(item, inactiveApps), item)
                 updateSubscribers(INACTIVE)
             }
         }
