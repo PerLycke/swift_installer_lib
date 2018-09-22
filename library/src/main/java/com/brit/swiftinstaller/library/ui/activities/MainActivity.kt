@@ -139,13 +139,10 @@ class MainActivity : ThemeActivity() {
     override fun onResume() {
         super.onResume()
 
-        card_install.isClickable = false
-
         UpdateChecker(this, object : UpdateChecker.Callback() {
             override fun finished(installedCount: Int, updates: SynchronizedArrayList<String>) {
                 active_count.text = String.format("%d", installedCount)
                 update_checker_spinner.visibility = View.GONE
-                card_install.isClickable = true
                 if (updates.isEmpty()) {
                     card_update.visibility = View.GONE
                 } else {
