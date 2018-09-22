@@ -21,8 +21,12 @@
 
 package com.brit.swiftinstaller.library
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.brit.swiftinstaller.library.installer.Notifier
 import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.ui.applist.AppList
 import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
@@ -32,10 +36,12 @@ import com.topjohnwu.superuser.BuildConfig
 import com.topjohnwu.superuser.BusyBox
 import com.topjohnwu.superuser.ContainerApp
 import com.topjohnwu.superuser.Shell
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.debug
 import org.jetbrains.anko.doAsync
 import javax.crypto.Cipher
 
-open class SwiftApplication : ContainerApp() {
+open class SwiftApplication : ContainerApp(), AnkoLogger {
 
     lateinit var romInfo: RomInfo
     lateinit var extrasHandler: AppExtrasHandler

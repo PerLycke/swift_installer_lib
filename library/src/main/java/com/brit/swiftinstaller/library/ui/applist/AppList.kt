@@ -3,7 +3,11 @@ package com.brit.swiftinstaller.library.ui.applist
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import com.brit.swiftinstaller.library.utils.*
+import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
+import com.brit.swiftinstaller.library.utils.getAppsToUpdate
+import com.brit.swiftinstaller.library.utils.getHiddenApps
+import com.brit.swiftinstaller.library.utils.getVersionCode
+import com.brit.swiftinstaller.library.utils.swift
 
 object AppList {
 
@@ -11,9 +15,9 @@ object AppList {
     private const val ACTIVE = 1
     private const val UPDATE = 2
 
-    val appUpdates = SynchronizedArrayList<AppItem>()
-    val activeApps = SynchronizedArrayList<AppItem>()
-    val inactiveApps = SynchronizedArrayList<AppItem>()
+    val appUpdates = AppItemArrayList()
+    val activeApps = AppItemArrayList()
+    val inactiveApps = AppItemArrayList()
 
     private val subscribers = SynchronizedArrayList<(Int) -> Unit>()
 
@@ -38,15 +42,6 @@ object AppList {
             }
             addApp(context, pn)
         }
-//        appUpdates.sortWith(Comparator { o1, o2 ->
-//            o1.title.compareTo(o2.title)
-//        })
-//        activeApps.sortWith(Comparator { o1, o2 ->
-//            o1.title.compareTo(o2.title)
-//        })
-//        inactiveApps.sortWith(Comparator { o1, o2 ->
-//            o1.title.compareTo(o2.title)
-//        })
     }
 
     @Synchronized
@@ -66,15 +61,12 @@ object AppList {
     }
 
     private fun getPosition(item: AppItem, list: SynchronizedArrayList<AppItem>) : Int {
-        var position = 0
-        for (i in 0 until list.size) {
-            val name = list[i].title
-            if (item.title.compareTo(name, false) < 0) {
-                break
+        for (i in list.indices) {
+            if (item.title.compareTo(list[i].title, false) < 0) {
+                return i
             }
-            position++
         }
-        return position
+        return 0
     }
 
     @Synchronized
@@ -106,37 +98,32 @@ object AppList {
     @Synchronized
     fun removeApp(@Suppress("UNUSED_PARAMETER") context: Context, packageName: String) {
         synchronized(this) {
-            var item: AppItem? = null
-            appUpdates.forEach {
-                if (it.packageName == packageName) {
-                    item = it
-                    updateSubscribers(UPDATE)
-                    return@forEach
-                }
+            if (appUpdates.contains(packageName)) {
+                appUpdates.remove(packageName)
+                updateSubscribers(UPDATE)
             }
-            item?.let {
-                appUpdates.remove(it)
-                item = null
+            if (activeApps.contains(packageName)) {
+                activeApps.remove(packageName)
+                updateSubscribers(ACTIVE)
             }
-            activeApps.forEach {
-                if (it.packageName == packageName) {
-                    item = it
-                    updateSubscribers(ACTIVE)
-                    return@forEach
-                }
+            if (inactiveApps.contains(packageName)) {
+                inactiveApps.remove(packageName)
+                updateSubscribers(INACTIVE)
             }
-            item?.let {
-                activeApps.remove(it)
-                item = null
-            }
-            inactiveApps.forEach {
-                if (it.packageName == packageName) {
-                    item = it
-                    updateSubscribers(INACTIVE)
-                    return@forEach
-                }
-            }
-            item?.let { inactiveApps.remove(it) }
         }
+    }
+}
+
+class AppItemArrayList: SynchronizedArrayList<AppItem>() {
+    fun contains(packageName: String): Boolean {
+        forEach {
+            if (packageName == it.packageName) {
+                return true
+            }
+        }
+        return false
+    }
+    fun remove(packageName: String) {
+        removeIf { it.packageName == packageName }
     }
 }

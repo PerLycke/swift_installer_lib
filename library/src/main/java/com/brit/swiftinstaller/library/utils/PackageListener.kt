@@ -46,7 +46,9 @@ class PackageListener : BroadcastReceiver() {
                 if (context.swift.romInfo.isOverlayInstalled(getOverlayPackageName(packageName))) {
                     context.swift.romInfo.uninstallOverlay(context, packageName)
                 }
-                AppList.removeApp(context, OverlayUtils.getTargetPackageName(packageName))
+                if (!packageName.endsWith(".swiftinstaller.overlay")) {
+                    AppList.removeApp(context, packageName)
+                }
             }
 
             Intent.ACTION_PACKAGE_ADDED -> {
@@ -86,7 +88,9 @@ class PackageListener : BroadcastReceiver() {
                             NotificationManager::class.java)
                     notifManager.notify(notificationID, notification)
                 }
-                AppList.addApp(context, OverlayUtils.getTargetPackageName(packageName))
+                if (!packageName.endsWith(".swiftinstaller.overlay")) {
+                    AppList.addApp(context, packageName)
+                }
             }
         }
         if (BuildConfig.DEBUG) {

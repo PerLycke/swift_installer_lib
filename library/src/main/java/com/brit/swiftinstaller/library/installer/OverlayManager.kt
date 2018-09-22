@@ -25,6 +25,7 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import com.brit.swiftinstaller.library.ui.applist.AppList
 import com.brit.swiftinstaller.library.utils.Utils
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
@@ -78,17 +79,19 @@ class OverlayManager(private val context: Context) {
                     }
 
                     OVERLAY_INSTALLED -> {
+                        AppList.addApp(context, overlayTask.packageName)
+                        Notifier.broadcastOverlayInstalled(context, overlayTask.packageName,
+                                overlayTask.index, msg.arg2)
                         if (msg.arg1 == (msg.arg2 - 1)) {
                             if (callback != null) {
                                 callback!!.installFinished()
                                 Notifier.broadcastInstallFinished(context)
                             }
                         }
-                        Notifier.broadcastOverlayInstalled(context, overlayTask.packageName,
-                                overlayTask.index, msg.arg2)
                     }
 
                     OVERLAY_UNINSTALLED -> {
+                        AppList.addApp(context, overlayTask.packageName)
                         if (msg.arg1 == (msg.arg2 - 1)) {
                             if (callback != null) {
                                 callback!!.installFinished()

@@ -26,8 +26,11 @@ import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AlertDialog
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.library.ui.applist.AppList
-import com.brit.swiftinstaller.library.utils.*
+import com.brit.swiftinstaller.library.utils.ShellUtils
+import com.brit.swiftinstaller.library.utils.getUseSoftReboot
+import com.brit.swiftinstaller.library.utils.quickRebootCommand
+import com.brit.swiftinstaller.library.utils.rebootCommand
+import com.brit.swiftinstaller.library.utils.swift
 
 class UninstallFinishedActivity : ThemeActivity() {
 
@@ -37,7 +40,6 @@ class UninstallFinishedActivity : ThemeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         InstallActivity().finish()
-        AppList.initLists(this)
 
         val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
                 .setTitle(R.string.reboot)

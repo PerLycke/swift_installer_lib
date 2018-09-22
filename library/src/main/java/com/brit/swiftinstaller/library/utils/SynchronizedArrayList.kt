@@ -5,7 +5,7 @@ import java.util.function.Consumer
 import java.util.function.Predicate
 import java.util.function.UnaryOperator
 
-class SynchronizedArrayList<T>(): ArrayList<T>() {
+open class SynchronizedArrayList<T>(): ArrayList<T>() {
 
     constructor(arrayList: ArrayList<T>): this() {
         arrayList.forEach {

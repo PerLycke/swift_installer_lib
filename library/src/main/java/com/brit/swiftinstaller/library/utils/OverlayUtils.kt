@@ -29,14 +29,6 @@ import androidx.collection.ArrayMap
 
 object OverlayUtils {
 
-    fun getTargetPackageName(packageName: String): String {
-        if (packageName.endsWith(".swiftinstaller.overlay")) {
-            return packageName.substring(0, packageName.length - ".swiftinstaller.overlay".length)
-        } else {
-            return packageName
-        }
-    }
-
     fun getOverlayVersion(context: Context, targetPackage: String): Long {
         return try {
             Integer.parseInt(ShellUtils.inputStreamToString(context.assets.open(

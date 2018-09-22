@@ -36,7 +36,6 @@ import android.view.View
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.applist.AppItem
-import com.brit.swiftinstaller.library.ui.applist.AppList
 import com.brit.swiftinstaller.library.ui.applist.AppListFragment
 import com.brit.swiftinstaller.library.ui.applist.AppsTabPagerAdapter
 import com.brit.swiftinstaller.library.utils.Holder
@@ -190,7 +189,6 @@ class InstallSummaryActivity : ThemeActivity() {
                                 .sendBroadcast(Intent(ACTION_INSTALL_CANCELLED))
                         pagerAdapter.addApp(FAILED_TAB, item)
                     }
-                    AppList.addApp(this@InstallSummaryActivity, pn)
                 }
             }
         }
