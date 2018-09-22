@@ -56,6 +56,7 @@ class UpdateChecker(context: Context, private val callback: Callback?) :
                 if (OverlayUtils.checkOverlayVersion(context, packageName)
                         || OverlayUtils.checkAppVersion(context, packageName)) {
                     updates.add(packageName)
+                    AppList.addApp(context, packageName)
                     addAppToUpdate(context, packageName)
                 }
             }
@@ -66,15 +67,6 @@ class UpdateChecker(context: Context, private val callback: Callback?) :
     override fun onPostExecute(result: Output?) {
         super.onPostExecute(result)
         callback?.finished(result!!.installedCount, result.updates)
-        doAsync {
-            result?.let {
-                mConRef.get()?.let { ctx ->
-                    it.updates.forEach { packageName ->
-                        AppList.addApp(ctx, packageName)
-                    }
-                }
-            }
-        }
         if (result!!.updates.isNotEmpty() && callback == null) {
             postNotification()
         }

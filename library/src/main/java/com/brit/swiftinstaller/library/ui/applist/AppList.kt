@@ -11,9 +11,9 @@ import com.brit.swiftinstaller.library.utils.swift
 
 object AppList {
 
-    private const val INACTIVE = 0
-    private const val ACTIVE = 1
-    private const val UPDATE = 2
+    const val INACTIVE = 0
+    const val ACTIVE = 1
+    const val UPDATE = 2
 
     val appUpdates = AppItemArrayList()
     val activeApps = AppItemArrayList()
@@ -48,6 +48,13 @@ object AppList {
     fun addSubscriber(add: (Int) -> Unit) {
         synchronized(this) {
             subscribers.add(add)
+        }
+    }
+
+    @Synchronized
+    fun removeSubscriber(subscription: (Int) -> Unit) {
+        synchronized(this) {
+            subscribers.remove(subscription)
         }
     }
 

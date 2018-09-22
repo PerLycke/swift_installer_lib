@@ -63,6 +63,24 @@ class OverlaysActivity : ThemeActivity() {
     private var apps = 0
     private val handler = Handler()
 
+    private val subscription = { index: Int ->
+        when(index) {
+            AppList.ACTIVE -> pagerAdapter.setApps(ACTIVE_TAB, AppList.activeApps)
+            AppList.INACTIVE -> pagerAdapter.setApps(INSTALL_TAB, AppList.inactiveApps)
+            AppList.UPDATE -> pagerAdapter.setApps(UPDATE_TAB, AppList.appUpdates)
+        }
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        AppList.addSubscriber(subscription)
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        AppList.removeSubscriber(subscription)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_overlays)
@@ -182,9 +200,7 @@ class OverlaysActivity : ThemeActivity() {
             container.currentItem = intent.getIntExtra("tab", 0)
         }
 
-        AppList.addSubscriber {
-            updateAdapter()
-        }
+        AppList.addSubscriber(subscription)
     }
 
     private fun setBackgroundImage() {
