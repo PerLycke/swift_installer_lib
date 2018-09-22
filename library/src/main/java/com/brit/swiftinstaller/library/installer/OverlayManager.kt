@@ -92,14 +92,14 @@ class OverlayManager(private val context: Context) {
 
                     OVERLAY_UNINSTALLED -> {
                         AppList.addApp(context, overlayTask.packageName)
+                        Notifier.broadcastOverlayUninstalled(context, overlayTask.packageName,
+                                overlayTask.index, msg.arg2)
                         if (msg.arg1 == (msg.arg2 - 1)) {
                             if (callback != null) {
                                 callback!!.installFinished()
                             }
                             Notifier.broadcastUninstallFinished(context)
                         }
-                        Notifier.broadcastOverlayUninstalled(context, overlayTask.packageName,
-                                overlayTask.index, msg.arg2)
                     }
                 }
             }
