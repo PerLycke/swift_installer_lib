@@ -57,8 +57,7 @@ class AppsTabPagerAdapter(fm: FragmentManager, summary: Boolean, vararg tabs: In
     }
 
     fun addApp(tab: Int, app: AppItem) {
-        fragments[tab].apps.add(app)
-        notifyFragmentDataSetChanged(tab)
+        fragments[tab].addApp(app)
     }
 
     fun setViewClickListener(listener: AppListFragment.ViewClickListener) {

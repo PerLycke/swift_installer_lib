@@ -137,13 +137,24 @@ class AppListFragment : Fragment() {
     }
 
     fun getCheckedItems(): SynchronizedArrayList<AppItem> {
-        val apps = SynchronizedArrayList<AppItem>()
+        val checkedApps = SynchronizedArrayList<AppItem>()
         for (i in apps.indices) {
             if (checked.get(i) || requiredApps.contains(apps[i].packageName)) {
-                apps.add(apps[i])
+                checkedApps.add(apps[i])
             }
         }
-        return apps
+        return checkedApps
+    }
+
+    fun addApp(app: AppItem) {
+        apps.add(app)
+        visible.clear()
+        visible.addAll(apps.indices)
+        app_list_view?.let {
+            if (!it.isComputingLayout) {
+                it.adapter?.notifyDataSetChanged()
+            }
+        }
     }
 
     fun selectAll(check: Boolean) {

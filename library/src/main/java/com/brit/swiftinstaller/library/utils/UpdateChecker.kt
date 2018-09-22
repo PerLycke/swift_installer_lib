@@ -31,6 +31,7 @@ import android.os.AsyncTask
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.activities.OverlaysActivity
 import com.brit.swiftinstaller.library.ui.applist.AppList
+import org.jetbrains.anko.doAsync
 import java.lang.ref.WeakReference
 
 class UpdateChecker(context: Context, private val callback: Callback?) :
@@ -65,10 +66,12 @@ class UpdateChecker(context: Context, private val callback: Callback?) :
     override fun onPostExecute(result: Output?) {
         super.onPostExecute(result)
         callback?.finished(result!!.installedCount, result.updates)
-        result?.let {
-            mConRef.get()?.let { ctx ->
-                it.updates.forEach { packageName ->
-                    AppList.addApp(ctx, packageName)
+        doAsync {
+            result?.let {
+                mConRef.get()?.let { ctx ->
+                    it.updates.forEach { packageName ->
+                        AppList.addApp(ctx, packageName)
+                    }
                 }
             }
         }
