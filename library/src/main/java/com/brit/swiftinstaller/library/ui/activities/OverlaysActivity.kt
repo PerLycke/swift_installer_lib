@@ -251,17 +251,10 @@ class OverlaysActivity : ThemeActivity() {
         loading_progress.visibility = View.VISIBLE
         loading_progress.indeterminateDrawable.setColorFilter(swift.selection.accentColor,
                 PorterDuff.Mode.SRC_ATOP)
-        pagerAdapter.clearApps()
         doAsync {
-            AppList.inactiveApps.forEach {
-                pagerAdapter.addApp(INSTALL_TAB, it)
-            }
-            AppList.activeApps.forEach {
-                pagerAdapter.addApp(ACTIVE_TAB, it)
-            }
-            AppList.appUpdates.forEach {
-                pagerAdapter.addApp(UPDATE_TAB, it)
-            }
+            pagerAdapter.setApps(INSTALL_TAB, AppList.inactiveApps)
+            pagerAdapter.setApps(ACTIVE_TAB, AppList.activeApps)
+            pagerAdapter.setApps(UPDATE_TAB, AppList.appUpdates)
             uiThread { _ ->
             checked = pagerAdapter.getCheckedCount(container.currentItem)
             apps = pagerAdapter.getCheckableCount(this@OverlaysActivity,

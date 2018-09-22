@@ -34,58 +34,54 @@ import com.brit.swiftinstaller.library.utils.swift
 class AppsTabPagerAdapter(fm: FragmentManager, summary: Boolean, vararg tabs: Int) :
         FragmentPagerAdapter(fm) {
 
-    private val mApps = HashMap<Int, SynchronizedArrayList<AppItem>>()
-    private var mFragments: SynchronizedArrayList<AppListFragment> = SynchronizedArrayList()
-    private val requiredApps = HashMap<Int, Array<String>>()
-    private val mHandler = Handler()
+    private var fragments: SynchronizedArrayList<AppListFragment> = SynchronizedArrayList()
+    private val handler = Handler()
 
     init {
         for (index in tabs) {
-            mFragments.add(AppListFragment.instance(summary,
+            fragments.add(AppListFragment.instance(summary,
                     (index == InstallSummaryActivity.FAILED_TAB)))
-            mApps[index] = SynchronizedArrayList()
         }
     }
 
     fun setAlertIconClickListener(listener: AppListFragment.AlertIconClickListener) {
-        mFragments.forEach {
+        fragments.forEach {
             it.alertIconClickListener = listener
         }
     }
 
     fun setAppCheckBoxClickListener(listener: AppListFragment.AppCheckBoxClickListener) {
-        mFragments.forEach {
+        fragments.forEach {
             it.appCheckBoxClickListener = listener
         }
     }
 
+    fun addApp(tab: Int, app: AppItem) {
+        fragments[tab].apps.add(app)
+        notifyFragmentDataSetChanged(tab)
+    }
+
     fun setViewClickListener(listener: AppListFragment.ViewClickListener) {
-        mFragments.forEach {
+        fragments.forEach {
             it.viewClickListener = listener
         }
     }
 
     fun querySearch(tab: Int, query: String) {
-        mHandler.post { mFragments[tab].querySearch(query) }
-    }
-
-    fun addApp(tab: Int, app: AppItem) {
-        mApps[tab]!!.add(app)
-        notifyFragmentDataSetChanged(tab)
+        handler.post { fragments[tab].querySearch(query) }
     }
 
     fun setRequiredApps(tab: Int, apps: Array<String>) {
-        requiredApps[tab] = apps
-        notifyFragmentDataSetChanged(tab)
+        fragments[tab].setRequiredAppList(apps)
     }
 
     fun getAppsCount(tab: Int): Int {
-        return mApps[tab]!!.size
+        return fragments[tab].apps.size
     }
 
     fun getCheckableCount(context: Context, tab: Int): Int {
         val checkableList = arrayListOf<AppItem>()
-        for (item in mApps[tab]!!) {
+        for (item in fragments[tab].apps) {
             if (checkVersionCompatible(context, item.packageName) ||
                     context.swift.romInfo.isOverlayInstalled(item.packageName)) {
                 checkableList.add(item)
@@ -95,43 +91,46 @@ class AppsTabPagerAdapter(fm: FragmentManager, summary: Boolean, vararg tabs: In
     }
 
     fun clearApps() {
-        for (key in mApps.keys) {
-            mApps[key]!!.clear()
-            mFragments[key].selectAll(false)
+        for (key in fragments.indices) {
+            fragments[key].apps.clear()
+            fragments[key].selectAll(false)
             notifyFragmentDataSetChanged(key)
         }
     }
 
     fun selectAll(index: Int, checked: Boolean) {
-        mFragments[index].selectAll(checked)
+        fragments[index].selectAll(checked)
     }
 
     fun getCheckedCount(index: Int): Int {
-        return mFragments[index].getCheckedItems().count()
+        return fragments[index].getCheckedItems().count()
+    }
+
+    fun setApps(tab: Int, apps: SynchronizedArrayList<AppItem>) {
+        handler.post {
+            fragments[tab].setAppList(apps)
+        }
     }
 
     fun getApps(tab: Int): SynchronizedArrayList<AppItem> {
-        return mApps[tab]!!
+        return fragments[tab].apps
     }
 
     fun getCheckedItems(index: Int): SynchronizedArrayList<AppItem> {
-        return mFragments[index].getCheckedItems()
+        return fragments[index].getCheckedItems()
     }
 
     override fun getItem(position: Int): Fragment {
-        return mFragments[position]
+        return fragments[position]
     }
 
     fun notifyFragmentDataSetChanged(position: Int) {
-        mHandler.post {
-            mFragments[position].setAppList(mApps[position])
-            if (requiredApps[position] != null) {
-                mFragments[position].setRequiredAppList(requiredApps[position]!!)
-            }
+        handler.post {
+            fragments[position].notifyDataSetChanged()
         }
     }
 
     override fun getCount(): Int {
-        return mFragments.size
+        return fragments.size
     }
 }

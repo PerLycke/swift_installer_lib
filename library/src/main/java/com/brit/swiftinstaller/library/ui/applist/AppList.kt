@@ -61,12 +61,12 @@ object AppList {
     }
 
     private fun getPosition(item: AppItem, list: SynchronizedArrayList<AppItem>) : Int {
-        for (i in list.indices) {
-            if (item.title.compareTo(list[i].title, false) < 0) {
-                return i
+        for (i in list) {
+            if (item.title.compareTo(i.title, false) < 0) {
+                return list.indexOf(i)
             }
         }
-        return 0
+        return list.size
     }
 
     @Synchronized

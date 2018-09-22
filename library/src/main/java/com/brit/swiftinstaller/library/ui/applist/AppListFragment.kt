@@ -65,21 +65,21 @@ import kotlinx.android.synthetic.main.failed_info_card.view.*
 
 class AppListFragment : Fragment() {
 
-    var mApps: SynchronizedArrayList<AppItem> = SynchronizedArrayList()
-    var mVisible: SynchronizedArrayList<Int> = SynchronizedArrayList()
+    var apps: SynchronizedArrayList<AppItem> = SynchronizedArrayList()
+    var visible: SynchronizedArrayList<Int> = SynchronizedArrayList()
 
     var requiredApps: Array<String> = emptyArray()
 
     lateinit var appExtrasHandler: AppExtrasHandler
 
-    private val mChecked = SparseBooleanArray()
+    private val checked = SparseBooleanArray()
 
     var alertIconClickListener: AlertIconClickListener? = null
     var appCheckBoxClickListener: AppCheckBoxClickListener? = null
     var viewClickListener: ViewClickListener? = null
 
-    private var mSummary = false
-    private var mFailedTab = false
+    private var summary = false
+    private var failedTab = false
 
     companion object {
         fun instance(summary: Boolean, failedTab: Boolean): AppListFragment {
@@ -97,10 +97,10 @@ class AppListFragment : Fragment() {
         appExtrasHandler = context!!.swift.extrasHandler
         val view = inflater.inflate(R.layout.activity_app_list, container, false)
         if (arguments != null) {
-            mSummary = arguments!!.getBoolean("summary", false)
-            mFailedTab = arguments!!.getBoolean("failed_tab", false)
+            summary = arguments!!.getBoolean("summary", false)
+            failedTab = arguments!!.getBoolean("failed_tab", false)
         }
-        if (mSummary && mFailedTab && !getHideFailedInfoCard(context!!)) {
+        if (summary && failedTab && !getHideFailedInfoCard(context!!)) {
             view.failed_info_card.visibility = View.VISIBLE
         } else {
             view.failed_info_card.visibility = View.GONE
@@ -114,13 +114,13 @@ class AppListFragment : Fragment() {
     }
 
     fun querySearch(query: String) {
-        mVisible.clear()
+        visible.clear()
         if (query.isEmpty() || query.isBlank()) {
-            mApps.forEach { mVisible.add(mApps.indexOf(it)) }
+            apps.forEach { visible.add(apps.indexOf(it)) }
         } else {
-            mApps.forEach {
+            apps.forEach {
                 if (it.title.toLowerCase().contains(query.toLowerCase())) {
-                    mVisible.add(mApps.indexOf(it))
+                    visible.add(apps.indexOf(it))
                 }
             }
         }
@@ -138,32 +138,32 @@ class AppListFragment : Fragment() {
 
     fun getCheckedItems(): SynchronizedArrayList<AppItem> {
         val apps = SynchronizedArrayList<AppItem>()
-        for (i in mApps.indices) {
-            if (mChecked.get(i) || requiredApps.contains(mApps[i].packageName)) {
-                apps.add(mApps[i])
+        for (i in apps.indices) {
+            if (checked.get(i) || requiredApps.contains(apps[i].packageName)) {
+                apps.add(apps[i])
             }
         }
         return apps
     }
 
-    fun selectAll(checked: Boolean) {
-        for (index in mApps.indices) {
+    fun selectAll(check: Boolean) {
+        for (index in apps.indices) {
             if (context != null) {
-                if (checkVersionCompatible(context!!, mApps[index].packageName) ||
-                        context!!.swift.romInfo.isOverlayInstalled(mApps[index].packageName)) {
-                    mChecked.put(index, checked)
+                if (checkVersionCompatible(context!!, apps[index].packageName) ||
+                        context!!.swift.romInfo.isOverlayInstalled(apps[index].packageName)) {
+                    checked.put(index, check)
                 }
             } else {
-                mChecked.put(index, checked)
+                checked.put(index, check)
             }
         }
     }
 
-    fun setAppList(apps: SynchronizedArrayList<AppItem>?) {
-        mApps.clear()
-        mVisible.clear()
-        mApps.addAll(apps!!)
-        mVisible.addAll(mApps.indices)
+    fun setAppList(newApps: SynchronizedArrayList<AppItem>) {
+        apps.clear()
+        visible.clear()
+        apps.addAll(newApps)
+        visible.addAll(apps.indices)
         if (app_list_view != null && !app_list_view.isComputingLayout) {
             app_list_view.adapter?.notifyDataSetChanged()
         }
@@ -171,6 +171,10 @@ class AppListFragment : Fragment() {
 
     fun setRequiredAppList(apps: Array<String>) {
         requiredApps = apps
+    }
+    
+    fun notifyDataSetChanged() {
+        app_list_view.adapter?.notifyDataSetChanged()
     }
 
     inner class AppAdapter : RecyclerView.Adapter<AppAdapter.ViewHolder>() {
@@ -181,7 +185,7 @@ class AppListFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.bindAppItem(mApps[mVisible[position]])
+            holder.bindAppItem(apps[visible[position]])
 
             if (position + 1 == itemCount) {
                 setBottomMargin(holder.itemView,
@@ -201,7 +205,7 @@ class AppListFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return mVisible.size
+            return visible.size
         }
 
         inner class ViewHolder(override val containerView: View) :
@@ -209,13 +213,13 @@ class AppListFragment : Fragment() {
 
             private val checkListener: (CompoundButton, Boolean) -> Unit
             private val clickListener: (View) -> Unit = {
-                viewClickListener!!.onClick(mApps[mVisible[adapterPosition]])
+                viewClickListener!!.onClick(apps[visible[adapterPosition]])
                 app_item_checkbox.toggle()
             }
 
             init {
-                checkListener = { _: CompoundButton, checked: Boolean ->
-                    mChecked.put(mVisible[adapterPosition], checked)
+                checkListener = { _, check ->
+                    checked.put(visible[adapterPosition], check)
                 }
             }
 
@@ -234,9 +238,9 @@ class AppListFragment : Fragment() {
                 app_item_checkbox.visibility = View.VISIBLE
                 app_item_checkbox.setOnCheckedChangeListener(checkListener)
                 app_item_checkbox.setOnClickListener {
-                    appCheckBoxClickListener!!.onCheckBoxClick(mApps[mVisible[adapterPosition]])
+                    appCheckBoxClickListener!!.onCheckBoxClick(apps[visible[adapterPosition]])
                 }
-                app_item_checkbox.isChecked = mChecked.get(mVisible[adapterPosition], false)
+                app_item_checkbox.isChecked = checked.get(visible[adapterPosition], false)
                 app_item_checkbox.alpha = 1.0f
                 alert_icon.visibility = View.GONE
                 alert_icon.setImageDrawable(context!!.getDrawable(R.drawable.ic_info))
@@ -245,7 +249,7 @@ class AppListFragment : Fragment() {
                 blocked_packages_alert.visibility = View.GONE
 
                 val appOptions = OverlayUtils.getOverlayOptions(context!!, item.packageName)
-                if (appOptions.isNotEmpty() && !mSummary) {
+                if (appOptions.isNotEmpty() && !summary) {
                     val optionsSelection = SynchronizedArrayList<String>()
                     val selected = getSelectedOverlayOptions(context!!, item.packageName)
                     for (i in appOptions.keys.indices) {
@@ -290,11 +294,11 @@ class AppListFragment : Fragment() {
                     options_icon.visibility = View.GONE
                 }
 
-                if (mSummary) {
+                if (summary) {
                     app_item_checkbox.visibility = View.GONE
                     app_item_checkbox.isEnabled = false
                     containerView.isClickable = false
-                    if (mFailedTab) {
+                    if (failedTab) {
                         alert_icon.visibility = View.VISIBLE
                         alert_icon.setImageDrawable(context!!.getDrawable(R.drawable.ic_alert))
                     }
@@ -344,7 +348,7 @@ class AppListFragment : Fragment() {
 
                 if (alert_icon.visibility == View.VISIBLE) {
                     alert_icon.setOnClickListener {
-                        alertIconClickListener!!.onAlertIconClick(mApps[mVisible[adapterPosition]])
+                        alertIconClickListener!!.onAlertIconClick(apps[visible[adapterPosition]])
                     }
                 }
 
