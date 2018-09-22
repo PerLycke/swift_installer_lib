@@ -98,6 +98,7 @@ open class PRomInfo(context: Context) : RomInfo(context) {
                 val url = context.getString(R.string.magisk_module_link)
                 val builder = CustomTabsIntent.Builder()
                 val intent = builder.build()
+                intent.intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 intent.launchUrl(context, Uri.parse(url))
             }
         }
