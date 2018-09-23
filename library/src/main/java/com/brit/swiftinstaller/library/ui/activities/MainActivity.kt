@@ -105,17 +105,20 @@ class MainActivity : ThemeActivity() {
         card_install.setOnClickListener {
             val intent = Intent(this, OverlaysActivity::class.java)
             startActivity(intent)
+            card_install.isEnabled = false
         }
 
         card_update.setOnClickListener {
             val intent = Intent(this, OverlaysActivity::class.java)
             intent.putExtra("tab", OverlaysActivity.UPDATE_TAB)
             startActivity(intent)
+            card_update.isEnabled = false
         }
 
         card_personalize.setOnClickListener {
             val intent = Intent(this, CustomizeActivity::class.java)
             startActivity(intent)
+            card_personalize.isEnabled = false
         }
     }
 
@@ -152,6 +155,10 @@ class MainActivity : ThemeActivity() {
             }
 
         }).execute()
+
+        card_install.isEnabled = true
+        card_update.isEnabled = true
+        card_personalize.isEnabled = true
     }
 
     override fun onBackPressed() {
