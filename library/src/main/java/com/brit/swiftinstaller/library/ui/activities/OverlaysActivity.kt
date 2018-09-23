@@ -49,7 +49,6 @@ import kotlinx.android.synthetic.main.toolbar_overlays.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.longToast
 import org.jetbrains.anko.toast
-import org.jetbrains.anko.uiThread
 
 class OverlaysActivity : ThemeActivity() {
 
@@ -440,6 +439,7 @@ class OverlaysActivity : ThemeActivity() {
         checked.mapTo(apps) { it.packageName }
         intent.putStringArrayListExtra("apps", apps)
         intent.putExtra("uninstall", true)
+        pagerAdapter.clearCheckedItems(container.currentItem)
         startActivity(intent)
     }
 

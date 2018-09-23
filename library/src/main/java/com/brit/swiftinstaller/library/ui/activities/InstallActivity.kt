@@ -35,13 +35,10 @@ import android.widget.TextView
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.installer.Notifier
-import com.brit.swiftinstaller.library.utils.Holder
-import com.brit.swiftinstaller.library.utils.InstallerServiceHelper
-import com.brit.swiftinstaller.library.utils.ShellUtils
-import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
-import com.brit.swiftinstaller.library.utils.swift
+import com.brit.swiftinstaller.library.utils.*
 import kotlinx.android.synthetic.main.progress_dialog_install.view.*
-import kotlin.collections.HashMap
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import kotlin.collections.set
 
 @Suppress("UNUSED_PARAMETER")
@@ -113,13 +110,6 @@ class InstallActivity : ThemeActivity() {
 
         val inflate = View.inflate(this, R.layout.progress_dialog_install, null)
         val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-
-        themeDialog()
-
-        builder.setView(inflate)
-        dialog = builder.create()
-        dialog?.setCanceledOnTouchOutside(false)
-        dialog?.setCancelable(false)
         val fc = inflate.findViewById<TextView>(R.id.force_close)
 
         if (uninstall) {
@@ -134,13 +124,10 @@ class InstallActivity : ThemeActivity() {
             }, 60000)
         }
 
-        val filter = IntentFilter(Notifier.ACTION_FAILED)
-        filter.addAction(Notifier.ACTION_INSTALLED)
-        filter.addAction(Notifier.ACTION_INSTALL_COMPLETE)
-        filter.addAction(Notifier.ACTION_UNINSTALLED)
-        filter.addAction(Notifier.ACTION_UNINSTALL_COMPLETE)
-        LocalBroadcastManager.getInstance(applicationContext)
-                .registerReceiver(installListener, filter)
+        builder.setView(inflate)
+        dialog = builder.create()
+        dialog?.setCanceledOnTouchOutside(false)
+        dialog?.setCancelable(false)
 
         progressBar = inflate.install_progress_bar
         progressBar.indeterminateTintList = ColorStateList.valueOf(
@@ -156,29 +143,51 @@ class InstallActivity : ThemeActivity() {
             progressCount.visibility = View.INVISIBLE
             progressPercent.visibility = View.INVISIBLE
         }
-        dialog?.show()
 
-        if (uninstall) {
-            if (!ShellUtils.isRootAvailable) {
-                val intentfilter = IntentFilter(Intent.ACTION_PACKAGE_FULLY_REMOVED)
-                intentfilter.addDataScheme("package")
-                registerReceiver(object : BroadcastReceiver() {
-                    var count = apps.size
-                    override fun onReceive(context: Context?, intent: Intent?) {
-                        count--
-                        if (count == 0) {
-                            uninstallComplete()
-                            context!!.unregisterReceiver(this)
+        dialog?.setOnShowListener {
+            doAsync {
+
+                val filter = IntentFilter(Notifier.ACTION_FAILED)
+                filter.addAction(Notifier.ACTION_INSTALLED)
+                filter.addAction(Notifier.ACTION_INSTALL_COMPLETE)
+                filter.addAction(Notifier.ACTION_UNINSTALLED)
+                filter.addAction(Notifier.ACTION_UNINSTALL_COMPLETE)
+                LocalBroadcastManager.getInstance(applicationContext)
+                        .registerReceiver(installListener, filter)
+
+                if (uninstall) {
+                    if (!ShellUtils.isRootAvailable) {
+                        val intentfilter = IntentFilter(Intent.ACTION_PACKAGE_FULLY_REMOVED)
+                        intentfilter.addDataScheme("package")
+                        registerReceiver(object : BroadcastReceiver() {
+                            var count = apps.size
+                            override fun onReceive(context: Context?, intent: Intent?) {
+                                count--
+                                if (count == 0) {
+                                    uninstallComplete()
+                                    context!!.unregisterReceiver(this)
+                                }
+                            }
+                        }, intentfilter)
+                        uiThread { _ ->
+                            swift.romInfo.postInstall(uninstall = true, apps = apps)
+                        }
+                    } else {
+                        uiThread { _ ->
+                            InstallerServiceHelper.uninstall(this@InstallActivity, apps)
                         }
                     }
-                }, intentfilter)
-                swift.romInfo.postInstall(uninstall = true, apps = apps)
-            } else {
-                InstallerServiceHelper.uninstall(this, apps)
+                } else {
+                    uiThread { _ ->
+                        InstallerServiceHelper.install(this@InstallActivity, apps)
+                    }
+                }
             }
-        } else {
-            InstallerServiceHelper.install(this, apps)
+
         }
+
+        themeDialog()
+        dialog?.show()
     }
 
     override fun recreate() {

@@ -146,6 +146,10 @@ class AppListFragment : Fragment() {
         return checkedApps
     }
 
+    fun clearCheckedITems() {
+        checked.clear()
+    }
+
     fun addApp(app: AppItem) {
         apps.add(app)
         visible.clear()

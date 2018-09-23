@@ -121,6 +121,10 @@ class AppsTabPagerAdapter(fm: FragmentManager, summary: Boolean, vararg tabs: In
         return fragments[index].getCheckedItems()
     }
 
+    fun clearCheckedItems(index: Int) {
+        fragments[index].clearCheckedITems()
+    }
+
     override fun getItem(position: Int): Fragment {
         return fragments[position]
     }

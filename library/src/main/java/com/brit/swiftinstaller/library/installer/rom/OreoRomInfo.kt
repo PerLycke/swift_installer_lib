@@ -23,11 +23,9 @@ package com.brit.swiftinstaller.library.installer.rom
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
 import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
 import com.brit.swiftinstaller.library.ui.customize.PreviewHandler
-import com.brit.swiftinstaller.library.utils.Holder
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
 import com.brit.swiftinstaller.library.utils.ShellUtils
 import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
@@ -86,8 +84,6 @@ open class OreoRomInfo(context: Context) : RomInfo(context) {
                 uninstallOverlay(context, app)
             }
         }
-
-        Log.d("TEST", "apps - ${Holder.installApps}")
 
         if (intent != null) {
             context.applicationContext.startActivity(intent)

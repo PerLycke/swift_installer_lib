@@ -36,20 +36,11 @@ import android.view.View
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.applist.AppItem
+import com.brit.swiftinstaller.library.ui.applist.AppList
 import com.brit.swiftinstaller.library.ui.applist.AppListFragment
 import com.brit.swiftinstaller.library.ui.applist.AppsTabPagerAdapter
-import com.brit.swiftinstaller.library.utils.Holder
-import com.brit.swiftinstaller.library.utils.OverlayUtils
+import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.isOverlayEnabled
-import com.brit.swiftinstaller.library.utils.ShellUtils
-import com.brit.swiftinstaller.library.utils.alert
-import com.brit.swiftinstaller.library.utils.getUseSoftReboot
-import com.brit.swiftinstaller.library.utils.getVersionCode
-import com.brit.swiftinstaller.library.utils.quickRebootCommand
-import com.brit.swiftinstaller.library.utils.rebootCommand
-import com.brit.swiftinstaller.library.utils.removeAppToUpdate
-import com.brit.swiftinstaller.library.utils.restartSysUi
-import com.brit.swiftinstaller.library.utils.swift
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_install_summary.*
@@ -196,6 +187,11 @@ class InstallSummaryActivity : ThemeActivity() {
                                     this@InstallSummaryActivity.applicationContext)
                                     .sendBroadcast(Intent(ACTION_INSTALL_CANCELLED))
                             pagerAdapter.addApp(FAILED_TAB, item)
+                        }
+                    }
+                    if (Utils.isSamsungOreo()) {
+                        uiThread {
+                            AppList.addApp(this@InstallSummaryActivity, pn)
                         }
                     }
                 }
