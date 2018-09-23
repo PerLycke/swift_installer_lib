@@ -38,12 +38,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
-import android.widget.BaseAdapter
-import android.widget.CompoundButton
-import android.widget.ImageView
-import android.widget.RadioButton
-import android.widget.SeekBar
-import android.widget.TextView
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.viewpager.widget.PagerAdapter
@@ -53,19 +48,10 @@ import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
 import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
 import com.brit.swiftinstaller.library.ui.customize.Option
 import com.brit.swiftinstaller.library.ui.customize.PreviewHandler
-import com.brit.swiftinstaller.library.utils.ColorUtils
+import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.ColorUtils.checkAccentColor
 import com.brit.swiftinstaller.library.utils.ColorUtils.checkBackgroundColor
 import com.brit.swiftinstaller.library.utils.ColorUtils.convertToColorInt
-import com.brit.swiftinstaller.library.utils.IdLists
-import com.brit.swiftinstaller.library.utils.MaterialPalette
-import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
-import com.brit.swiftinstaller.library.utils.Utils
-import com.brit.swiftinstaller.library.utils.alert
-import com.brit.swiftinstaller.library.utils.setUseBackgroundPalette
-import com.brit.swiftinstaller.library.utils.setVisible
-import com.brit.swiftinstaller.library.utils.swift
-import com.brit.swiftinstaller.library.utils.useBackgroundPalette
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_customize.*
 import kotlinx.android.synthetic.main.customize_accent.*
@@ -97,51 +83,18 @@ class CustomizeActivity : ThemeActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_customize)
 
         customizeHandler = swift.romInfo.getCustomizeHandler()
         previewHandler = customizeHandler.createPreviewHandler(this)
         selection = customizeHandler.getSelection()
-
         parentActivity = intent.getStringExtra("parentActivity")
+        usePalette = useBackgroundPalette(this)
 
-        setContentView(R.layout.activity_customize)
-        handler.post {
-            setupAccentSheet()
-            usePalette = useBackgroundPalette(this)
-            setupHexInputs()
-            setupThemeOptions()
-
-            preview_pager.pageMargin = 64
-            val adapter = PreviewPagerAdapter()
-            preview_pager.adapter = adapter
-
-            personalize_fab.setOnClickListener {
-                personalizeFabClick()
-            }
-
-            val infoListener: (String, String) -> View.OnClickListener = { title, message ->
-                View.OnClickListener {
-                    alert {
-                        this.title = title
-                        this.message = message
-                        positiveButton(R.string.ok) { d ->
-                            d.dismiss()
-                        }
-                        show()
-                    }
-                }
-            }
-            baseThemeInfo.setOnClickListener(
-                    infoListener(getString(R.string.base_theme_dialog_title),
-                            getString(R.string.base_theme_dialog_info)))
-        }
-    }
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        handler.post {
-            updateColor(true)
-        }
+        setupPreview()
+        setupAccentSheet()
+        setupHexInputs()
+        setupThemeOptions()
     }
 
     @SuppressLint("RestrictedApi")
@@ -166,6 +119,14 @@ class CustomizeActivity : ThemeActivity() {
     private fun hideFab() {
         if (personalize_fab.visibility == View.VISIBLE) {
             personalize_fab.visibility = View.GONE
+        }
+    }
+
+    private fun setupPreview() {
+        preview_pager.pageMargin = 64
+        val adapter = PreviewPagerAdapter()
+        handler.post {
+            preview_pager.adapter = adapter
         }
     }
 
@@ -326,7 +287,9 @@ class CustomizeActivity : ThemeActivity() {
             category.options.forEachOption { option ->
                 setupOption(categoryView.options, option, category.key, optionGroup)
             }
-            customize_options.addView(categoryView)
+            handler.post {
+                customize_options.addView(categoryView)
+            }
         }
 
         val baseThemeListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
@@ -358,7 +321,9 @@ class CustomizeActivity : ThemeActivity() {
 
     override fun onResume() {
         super.onResume()
-        updateColors(selection.backgroundColor, usePalette)
+        handler.post {
+            updateColor(true)
+        }
         if (finish) finish()
     }
 
@@ -369,7 +334,20 @@ class CustomizeActivity : ThemeActivity() {
         }
     }
 
-    private fun personalizeFabClick() {
+    @Suppress("UNUSED_PARAMETER")
+    fun baseThemeInfoClick(view: View) {
+        alert {
+            this.title = getString(R.string.base_theme_dialog_title)
+            this.message = getString(R.string.base_theme_dialog_info)
+            positiveButton(R.string.ok) { d ->
+                d.dismiss()
+            }
+            show()
+        }
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun personalizeFabClick(view: View) {
 
         if (hex_input_bg.hasFocus() || accent_hex_input.hasFocus()) {
             val imm = getSystemService(InputMethodManager::class.java)
@@ -598,7 +576,6 @@ class CustomizeActivity : ThemeActivity() {
             hex_input_bg.setText(Integer.toHexString(materialPalette.backgroundColor).substring(2),
                     TextView.BufferType.EDITABLE)
 
-        previewHandler.updateBackgroundColor(materialPalette)
         previewHandler.updateView(materialPalette, selection)
     }
 
@@ -679,6 +656,7 @@ class CustomizeActivity : ThemeActivity() {
         override fun instantiateItem(collection: ViewGroup, position: Int): Any {
             val view = previewHandler.getPage(collection, position)
             collection.addView(view)
+            previewHandler.updateView(materialPalette, selection)
             return view
         }
 
