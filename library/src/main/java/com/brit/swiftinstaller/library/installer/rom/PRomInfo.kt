@@ -33,22 +33,9 @@ import android.text.style.ClickableSpan
 import android.view.View
 import androidx.browser.customtabs.CustomTabsIntent
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.library.ui.customize.CategoryMap
-import com.brit.swiftinstaller.library.ui.customize.CustomizeCategory
-import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
-import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
-import com.brit.swiftinstaller.library.ui.customize.Option
-import com.brit.swiftinstaller.library.ui.customize.OptionsMap
-import com.brit.swiftinstaller.library.ui.customize.PreviewHandler
-import com.brit.swiftinstaller.library.utils.ColorUtils
-import com.brit.swiftinstaller.library.utils.MaterialPalette
+import com.brit.swiftinstaller.library.ui.customize.*
+import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
-import com.brit.swiftinstaller.library.utils.ShellUtils
-import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
-import com.brit.swiftinstaller.library.utils.deleteFileRoot
-import com.brit.swiftinstaller.library.utils.getVersionCode
-import com.brit.swiftinstaller.library.utils.remountRO
-import com.brit.swiftinstaller.library.utils.remountRW
 import com.hololo.tutorial.library.Step
 import com.hololo.tutorial.library.TutorialActivity
 import com.topjohnwu.superuser.io.SuFile
@@ -221,6 +208,7 @@ open class PRomInfo(context: Context) : RomInfo(context) {
             override fun getDefaultSelection(): CustomizeSelection {
                 val selection = super.getDefaultSelection()
                 selection["stock_pie_icons"] = "default_icons"
+                selection["notif_background"] = "dark"
                 return selection
             }
 
@@ -268,6 +256,10 @@ open class PRomInfo(context: Context) : RomInfo(context) {
                             if (darkNotif) {
                                 it.notif_bg_layout.drawable.setTint(
                                         ColorUtils.handleColor(palette.backgroundColor, 8))
+                            } else {
+                                it.notif_bg_layout.drawable.setTint(
+                                        context.getColor(R.color.notification_bg_light))
+
                             }
                         }
                     }

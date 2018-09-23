@@ -247,7 +247,7 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
                                     ColorUtils.handleColor(palette.backgroundColor, 8))
                         } else {
                             it.notif_bg_layout.drawable.setTint(
-                                    Color.parseColor("#f5f5f5"))
+                                    context.getColor(R.color.notification_bg_light))
 
                         }
                     }
