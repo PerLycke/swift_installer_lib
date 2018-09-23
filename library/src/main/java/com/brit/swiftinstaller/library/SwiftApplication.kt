@@ -59,15 +59,15 @@ open class SwiftApplication : ContainerApp() {
     override fun onCreate() {
         super.onCreate()
 
-        romInfo = RomInfo.createRomInfo(this)
-        extrasHandler = createExtrasHandler()
-        extrasHandler.initialize()
-
-        cipher = createCipher()
-
-        startReceivers()
-
         doAsync {
+            romInfo = RomInfo.createRomInfo(this@SwiftApplication)
+            extrasHandler = createExtrasHandler()
+            extrasHandler.initialize()
+
+            cipher = createCipher()
+
+            startReceivers()
+
             AppList.updateList(this@SwiftApplication)
         }
 
