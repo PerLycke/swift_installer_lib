@@ -1,17 +1,21 @@
 package com.brit.swiftinstaller.library.ui.changelog
 
 import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.library.utils.alert
 import com.brit.swiftinstaller.library.utils.swift
 import com.michaelflisar.changelog.ChangelogBuilder
 import com.michaelflisar.changelog.internal.ChangelogParserAsyncTask
+import kotlinx.android.synthetic.main.swift_changelog_dialog.view.*
 
 class ChangelogDialog : DialogFragment() {
 
@@ -29,24 +33,29 @@ class ChangelogDialog : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = arguments?.getParcelable<ChangelogBuilder>("builder")
+        val dialog = AlertDialog.Builder(activity!!)
+                .setTitle(R.string.swift_app_name)
+                .setIcon(R.mipmap.ic_launcher)
 
-        return context!!.alert {
-            title = getString(R.string.swift_app_name)
-            positiveButton(R.string.ok) { dialog ->
-                dialog.dismiss()
-            }
+        val view = View.inflate(activity, R.layout.swift_changelog_dialog, null)
+        val pb = view.findViewById<ProgressBar>(R.id.pbLoading)
+        val rv = view.findViewById<RecyclerView>(R.id.rvChangelog)
+        val adapter = builder!!.setupEmptyRecyclerView(rv)
 
-            val view = View.inflate(activity, R.layout.changelog_dialog, null)
-            view.setBackgroundColor(activity!!.swift.selection.backgroundColor)
-            val pb = view.findViewById<ProgressBar>(R.id.pbLoading)
-            val rv = view.findViewById<RecyclerView>(R.id.rvChangelog)
-            val adapter = builder!!.setupEmptyRecyclerView(rv)
+        view.btn_ok.setTextColor(context!!.swift.selection.accentColor)
+        view.btn_ok.setOnClickListener {
+            getDialog().dismiss()
+        }
 
-            task = ChangelogParserAsyncTask(activity, pb, adapter, builder)
-            task!!.execute()
+        task = ChangelogParserAsyncTask(activity, pb, adapter, builder)
+        task!!.execute()
 
-            customView = view
-        }.build()
+        dialog.setView(view)
+        val d = dialog.create()
+        val dialogBg = context?.getDrawable(R.drawable.dialog_bg) as LayerDrawable
+        dialogBg.findDrawableByLayerId(R.id.dialog_bg).setTint(context!!.swift.selection.backgroundColor)
+        d.window!!.setBackgroundDrawable(dialogBg)
+        return d
     }
 
     override fun onDestroy() {

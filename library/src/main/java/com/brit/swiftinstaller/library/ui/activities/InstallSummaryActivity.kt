@@ -147,8 +147,7 @@ class InstallSummaryActivity : ThemeActivity() {
 
         doAsync {
             val pm = this@InstallSummaryActivity.packageManager
-            apps.addAll(errorMap.keys)
-            apps.forEach { pn ->
+            apps.plus(errorMap.keys).forEach { pn ->
                 val info: ApplicationInfo?
                 val pInfo: PackageInfo
                 try {
