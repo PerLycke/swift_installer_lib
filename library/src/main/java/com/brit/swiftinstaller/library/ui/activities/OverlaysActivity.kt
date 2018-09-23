@@ -441,6 +441,7 @@ class OverlaysActivity : ThemeActivity() {
         intent.putExtra("uninstall", true)
         pagerAdapter.clearCheckedItems(container.currentItem)
         startActivity(intent)
+        finish()
     }
 
     private fun updateAction() {
@@ -459,6 +460,7 @@ class OverlaysActivity : ThemeActivity() {
         intent.putStringArrayListExtra("apps", apps)
         intent.putExtra("update", true)
         startActivity(intent)
+        finish()
     }
 
     fun overlaysBackClick(@Suppress("UNUSED_PARAMETER") view: View) {

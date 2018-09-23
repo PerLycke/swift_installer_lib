@@ -215,7 +215,7 @@ class InstallSummaryActivity : ThemeActivity() {
                 resultDialog()
             }
         } else {
-            restartSysUi()
+            restartSysUi(this)
             PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("hotswap", false)
                     .apply()
         }

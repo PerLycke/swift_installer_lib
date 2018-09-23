@@ -30,6 +30,7 @@ import com.brit.swiftinstaller.library.utils.alert
 import com.brit.swiftinstaller.library.utils.getUseSoftReboot
 import com.brit.swiftinstaller.library.utils.quickRebootCommand
 import com.brit.swiftinstaller.library.utils.rebootCommand
+import com.brit.swiftinstaller.library.utils.restartSysUi
 
 class RebootActivity : ThemeActivity() {
 
@@ -49,10 +50,17 @@ class RebootActivity : ThemeActivity() {
                 rebootingDialog.setContentView(R.layout.reboot)
                 rebootingDialog.show()
                 handler.post {
-                    if (getUseSoftReboot(ctx)) {
-                        quickRebootCommand()
+                    if (PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean("hotswap", false)) {
+                        restartSysUi(ctx)
+                        PreferenceManager.getDefaultSharedPreferences(ctx).edit()
+                                .putBoolean("hotswap", false).apply()
+                        finish()
                     } else {
-                        rebootCommand()
+                        if (getUseSoftReboot(ctx)) {
+                            quickRebootCommand()
+                        } else {
+                            rebootCommand()
+                        }
                     }
                 }
             }

@@ -23,6 +23,7 @@ package com.brit.swiftinstaller.library.installer.rom
 
 import android.content.Context
 import android.content.Intent
+import android.preference.PreferenceManager
 import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
 import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
 import com.brit.swiftinstaller.library.ui.customize.PreviewHandler
@@ -36,6 +37,11 @@ open class OreoRomInfo(context: Context) : RomInfo(context) {
     override fun installOverlay(context: Context, targetPackage: String, overlayPath: String) {
         if (ShellUtils.isRootAvailable) {
             runCommand("pm install -r $overlayPath", true)
+            if (runCommand("cmd overlay list", true).output?.contains(getOverlayPackageName(targetPackage)) == true) {
+                runCommand("cmd overlay enable ${getOverlayPackageName(targetPackage)}", true)
+                PreferenceManager.getDefaultSharedPreferences(
+                        context).edit().putBoolean("hotswap", true).apply()
+            }
         }
     }
 
@@ -93,6 +99,9 @@ open class OreoRomInfo(context: Context) : RomInfo(context) {
     override fun uninstallOverlay(context: Context, packageName: String) {
         if (ShellUtils.isRootAvailable) {
             runCommand("pm uninstall " + getOverlayPackageName(packageName), true)
+            runCommand("pkill $packageName")
+            PreferenceManager.getDefaultSharedPreferences(context)
+                    .edit().putBoolean("hotswap", true).apply()
         }
     }
 

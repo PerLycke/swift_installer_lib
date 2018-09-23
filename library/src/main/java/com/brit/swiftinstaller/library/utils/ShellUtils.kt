@@ -33,6 +33,7 @@ import android.util.Log
 import com.android.apksig.ApkSigner
 import com.topjohnwu.superuser.Shell
 import com.topjohnwu.superuser.io.SuFile
+import org.jetbrains.anko.toast
 import java.io.DataOutputStream
 import java.io.File
 import java.io.IOException
@@ -324,8 +325,9 @@ fun quickRebootCommand() {
     }, 1500)
 }
 
-fun restartSysUi() {
+fun restartSysUi(context: Context) {
+    context.toast("SystemUI is about to restart.")
     Handler().postDelayed({
         runCommand("killall com.android.systemui", true)
-    }, 750)
+    }, 2000)
 }
