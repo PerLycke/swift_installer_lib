@@ -33,8 +33,9 @@ import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
 import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
-import com.brit.swiftinstaller.library.utils.Utils
 import com.brit.swiftinstaller.library.utils.getProperty
+import com.brit.swiftinstaller.library.utils.isAppInstalled
+import com.brit.swiftinstaller.library.utils.pm
 import com.brit.swiftinstaller.library.utils.synchronizedArrayListOf
 import com.hololo.tutorial.library.PermissionStep
 import com.hololo.tutorial.library.Step
@@ -101,7 +102,7 @@ abstract class RomInfo constructor(var context: Context) {
     }
 
     open fun isOverlayInstalled(targetPackage: String): Boolean {
-        return Utils.isAppInstalled(context, getOverlayPackageName(targetPackage))
+        return context.pm.isAppInstalled(getOverlayPackageName(targetPackage))
     }
 
     open fun disableOverlay(targetPackage: String) {

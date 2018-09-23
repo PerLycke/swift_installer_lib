@@ -23,7 +23,6 @@ package com.brit.swiftinstaller.library.utils
 
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -37,29 +36,6 @@ import android.view.View
 import androidx.browser.customtabs.CustomTabsIntent
 
 object Utils {
-
-    fun isAppInstalled(context: Context, packageName: String): Boolean {
-        return try {
-            val ai = context.packageManager.getApplicationInfo(packageName, 0)
-            ai.enabled
-        } catch (e: PackageManager.NameNotFoundException) {
-            false
-        }
-    }
-
-    /*fun checkOverlayStatus() : Boolean {
-        try {
-            val pi = Class.forName("android.content.pm.PackageInfo")
-            for (field : Field in pi.declaredFields) {
-                if (field.name == "FLAG_OVERLAY_STATIC" || field.name == "FLAG_OVERLAY_TRUSTED") {
-                    return true
-                }
-            }
-        } catch (e : Exception) {
-            e.printStackTrace()
-        }
-        return false
-    }*/
 
     fun isSamsungOreo(): Boolean {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&

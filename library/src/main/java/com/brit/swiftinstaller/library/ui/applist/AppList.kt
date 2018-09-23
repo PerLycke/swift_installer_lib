@@ -22,7 +22,7 @@ object AppList {
     private val subscribers = SynchronizedArrayList<(Int) -> Unit>()
 
     @Synchronized
-    fun initLists(context: Context) {
+    fun updateList(context: Context) {
         val disabledOverlays = context.swift.romInfo.getDisabledOverlays()
         val hiddenOverlays = getHiddenApps(context)
         val pm = context.packageManager
@@ -40,7 +40,7 @@ object AppList {
             if (!info.enabled) {
                 continue
             }
-            addApp(context, pn)
+            updateApp(context, pn)
         }
     }
 
@@ -76,29 +76,58 @@ object AppList {
         return list.size
     }
 
+    private fun contains(packageName: String): Int {
+        if (appUpdates.contains(packageName)) return UPDATE
+        if (inactiveApps.contains(packageName)) return INACTIVE
+        if (activeApps.contains(packageName)) return ACTIVE
+        return -1
+    }
+
+    private fun getPackageIndex(context: Context, packageName: String): Int {
+        val updates = getAppsToUpdate(context)
+        return if (context.swift.romInfo.isOverlayInstalled(packageName)) {
+            if (updates.contains(packageName)) {
+                UPDATE
+            } else {
+                ACTIVE
+            }
+        } else {
+            INACTIVE
+        }
+    }
+
+    private fun putApp(item: AppItem, index: Int) {
+        when(index) {
+            UPDATE -> {
+                appUpdates.add(getPosition(item, appUpdates), item)
+                updateSubscribers(index)
+            }
+            ACTIVE -> {
+                activeApps.add(getPosition(item, activeApps), item)
+                updateSubscribers(index)
+            }
+            INACTIVE -> {
+                inactiveApps.add(getPosition(item, inactiveApps), item)
+                updateSubscribers(index)
+            }
+        }
+    }
+
     @Synchronized
-    fun addApp(context: Context, packageName: String) {
+    fun updateApp(context: Context, packageName: String) {
         synchronized(this) {
+            val currentIndex = getPackageIndex(context, packageName)
+            if (contains(packageName) == currentIndex) {
+                return
+            }
             removeApp(context, packageName)
-            val updates = getAppsToUpdate(context)
             val pInfo = context.packageManager.getPackageInfo(packageName, 0)
             val item = AppItem(packageName,
                     pInfo.applicationInfo.loadLabel(context.packageManager) as String,
                     pInfo.getVersionCode(),
                     pInfo.versionName,
                     pInfo.applicationInfo.loadIcon(context.packageManager))
-            if (context.swift.romInfo.isOverlayInstalled(packageName)) {
-                if (updates.contains(packageName)) {
-                    appUpdates.add(getPosition(item, appUpdates), item)
-                    updateSubscribers(UPDATE)
-                } else {
-                    activeApps.add(getPosition(item, activeApps), item)
-                    updateSubscribers(ACTIVE)
-                }
-            } else {
-                inactiveApps.add(getPosition(item, inactiveApps), item)
-                updateSubscribers(INACTIVE)
-            }
+            putApp(item, currentIndex)
         }
     }
 

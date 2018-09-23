@@ -26,7 +26,6 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
 import android.os.AsyncTask
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.activities.OverlaysActivity
@@ -42,21 +41,19 @@ class UpdateChecker(context: Context, private val callback: Callback?) :
         var installedCount = 0
         val updates = SynchronizedArrayList<String>()
         val context = mConRef.get()
-        val pm = mConRef.get()!!.packageManager
 
         clearAppsToUpdate(context!!)
         val overlays = context.assets.list("overlays") ?: emptyArray()
         for (packageName in overlays) {
             if (context.swift.romInfo.isOverlayInstalled(packageName)
-                    && Utils.isAppInstalled(context, packageName)
-                    && pm.getApplicationEnabledSetting(
-                            packageName) != COMPONENT_ENABLED_STATE_DISABLED_USER) {
+                    && context.pm.isAppInstalled(packageName)
+                    && context.pm.isAppEnabled(packageName)) {
                 installedCount++
                 if (OverlayUtils.checkOverlayVersion(context, packageName)
                         || OverlayUtils.checkAppVersion(context, packageName)) {
                     updates.add(packageName)
                     addAppToUpdate(context, packageName)
-                    AppList.addApp(context, packageName)
+                    AppList.updateApp(context, packageName)
                 } else {
                     removeAppToUpdate(context, packageName)
                 }

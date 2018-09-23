@@ -39,7 +39,7 @@ class UninstallFinishedActivity : ThemeActivity() {
         InstallActivity().finish()
 
         if (Utils.isSamsungOreo()) {
-            AppList.initLists(this)
+            AppList.updateList(this)
         }
 
         val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)

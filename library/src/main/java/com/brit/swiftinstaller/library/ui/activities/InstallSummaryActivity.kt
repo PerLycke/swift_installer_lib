@@ -190,7 +190,7 @@ class InstallSummaryActivity : ThemeActivity() {
                     }
                     if (Utils.isSamsungOreo()) {
                         uiThread {
-                            AppList.addApp(this@InstallSummaryActivity, pn)
+                            AppList.updateApp(this@InstallSummaryActivity, pn)
                         }
                     }
                 }

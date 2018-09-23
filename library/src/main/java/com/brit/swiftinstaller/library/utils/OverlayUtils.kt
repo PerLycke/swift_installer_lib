@@ -29,6 +29,14 @@ import androidx.collection.ArrayMap
 
 object OverlayUtils {
 
+    fun getTargetPackage(packageName: String): String {
+        return if (packageName.endsWith(".swiftinstaller.overlay")) {
+            packageName.substring(0, packageName.lastIndexOf(".swiftinstaller.overlay"))
+        } else {
+            packageName
+        }
+    }
+
     fun getOverlayVersion(context: Context, targetPackage: String): Long {
         return try {
             Integer.parseInt(ShellUtils.inputStreamToString(context.assets.open(
@@ -40,7 +48,7 @@ object OverlayUtils {
 
     fun wasUpdateSuccessful(context: Context, packageName: String): Boolean {
         if (!context.swift.romInfo.isOverlayInstalled(packageName)) return false
-        if (!Utils.isAppInstalled(context, packageName)) return false
+        if (!context.pm.isAppInstalled(packageName)) return false
         val appVersion = context.packageManager.getPackageInfo(packageName, 0).getVersionCode()
         val overlayAppVersion = context.swift.romInfo.getOverlayInfo(
                 context.packageManager, packageName).applicationInfo.metaData

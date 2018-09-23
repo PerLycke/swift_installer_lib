@@ -23,6 +23,7 @@ package com.brit.swiftinstaller.library.utils
 
 import android.content.Context
 import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.content.res.AssetManager
 import android.os.Build
 import android.view.View
@@ -44,6 +45,20 @@ fun PackageInfo.getVersionCode(): Long {
     }
 }
 
+fun PackageManager.isAppInstalled(packageName: String): Boolean {
+    return try {
+        val ai = getApplicationInfo(packageName, 0)
+        ai.enabled
+    } catch (e: PackageManager.NameNotFoundException) {
+        false
+    }
+}
+
+fun PackageManager.isAppEnabled(packageName: String): Boolean {
+    return getApplicationEnabledSetting(
+            packageName) != PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
+}
+
 fun <T>synchronizedArrayListOf(vararg items: T): SynchronizedArrayList<T> {
     val array = SynchronizedArrayList<T>()
     for (item in items) {
@@ -57,6 +72,9 @@ fun Context.alert(init: SwiftAlertBuilder.() -> Unit): SwiftAlertBuilder =
 
 val Context.swift: SwiftApplication
     get() = applicationContext as SwiftApplication
+
+val Context.pm: PackageManager
+    get() = packageManager
 
 fun View.setVisible(visible: Boolean) {
     visibility = if (visible) {

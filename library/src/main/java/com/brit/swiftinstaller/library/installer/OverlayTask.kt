@@ -24,11 +24,12 @@ package com.brit.swiftinstaller.library.installer
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
-import android.graphics.Color
 import android.os.Environment
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
 import com.brit.swiftinstaller.library.utils.ColorUtils
+import com.brit.swiftinstaller.library.utils.ColorUtils.getAlphaDimen
+import com.brit.swiftinstaller.library.utils.ColorUtils.toHexString
 import com.brit.swiftinstaller.library.utils.MaterialPalette
 import com.brit.swiftinstaller.library.utils.NO_PERMISSION_PACKAGES
 import com.brit.swiftinstaller.library.utils.OverlayUtils
@@ -226,21 +227,6 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
                 e.printStackTrace()
             }
         }
-    }
-
-    fun toHexString(color: Int): String {
-        return Integer.toHexString(removeAlpha(color))
-    }
-
-    fun getAlphaDimen(i: Int): Float {
-        return (100 - i.toFloat()) / 100
-    }
-
-    fun removeAlpha(color: Int): Int {
-        val r = Color.red(color)
-        val g = Color.green(color)
-        val b = Color.blue(color)
-        return Color.rgb(r, g, b)
     }
 
     private fun generateManifest(path: String, targetPackage: String,

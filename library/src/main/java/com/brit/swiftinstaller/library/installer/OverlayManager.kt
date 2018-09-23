@@ -26,7 +26,8 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import com.brit.swiftinstaller.library.ui.applist.AppList
-import com.brit.swiftinstaller.library.utils.Utils
+import com.brit.swiftinstaller.library.utils.isAppInstalled
+import com.brit.swiftinstaller.library.utils.pm
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.ThreadPoolExecutor
@@ -79,7 +80,7 @@ class OverlayManager(private val context: Context) {
                     }
 
                     OVERLAY_INSTALLED -> {
-                        AppList.addApp(context, overlayTask.packageName)
+                        AppList.updateApp(context, overlayTask.packageName)
                         Notifier.broadcastOverlayInstalled(context, overlayTask.packageName,
                                 overlayTask.index, msg.arg2)
                         if (msg.arg1 == (msg.arg2 - 1)) {
@@ -91,7 +92,7 @@ class OverlayManager(private val context: Context) {
                     }
 
                     OVERLAY_UNINSTALLED -> {
-                        AppList.addApp(context, overlayTask.packageName)
+                        AppList.updateApp(context, overlayTask.packageName)
                         Notifier.broadcastOverlayUninstalled(context, overlayTask.packageName,
                                 overlayTask.index, msg.arg2)
                         if (msg.arg1 == (msg.arg2 - 1)) {
@@ -119,7 +120,6 @@ class OverlayManager(private val context: Context) {
 
     fun uninstallOverlays(apps: Array<String>) {
         max = apps.size
-        //mNotifier.broadcastInstallStarted(max)
         apps.forEach { pn ->
             uninstallOverlay(pn, apps.indexOf(pn))
         }
@@ -131,7 +131,7 @@ class OverlayManager(private val context: Context) {
             task = OverlayTask(this)
         }
 
-        if (Utils.isAppInstalled(context, packageName)) {
+        if (context.pm.isAppInstalled(packageName)) {
             task.initializeOverlayTask(context, packageName, index, false)
         }
 

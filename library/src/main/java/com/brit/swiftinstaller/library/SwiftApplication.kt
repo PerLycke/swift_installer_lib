@@ -68,7 +68,7 @@ open class SwiftApplication : ContainerApp() {
         startReceivers()
 
         doAsync {
-            AppList.initLists(this@SwiftApplication)
+            AppList.updateList(this@SwiftApplication)
         }
 
         Shell.Config.verboseLogging(BuildConfig.DEBUG)

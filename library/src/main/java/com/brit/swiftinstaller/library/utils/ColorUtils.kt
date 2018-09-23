@@ -24,19 +24,16 @@ package com.brit.swiftinstaller.library.utils
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.util.Log
 import androidx.core.content.ContextCompat
 
-@Suppress("unused")
 object ColorUtils {
 
-    private const val TAG = "ColorUtils"
+    fun toHexString(color: Int): String {
+        return Integer.toHexString(removeAlpha(color))
+    }
 
-    fun isDarkColor(color: Int): Boolean {
-        val darkness = 1 - (0.299 * Color.red(color)
-                + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255
-
-        return darkness > 0.5
+    fun getAlphaDimen(i: Int): Float {
+        return (100 - i.toFloat()) / 100
     }
 
     fun checkBackgroundColor(color: Int): Boolean {
@@ -70,7 +67,7 @@ object ColorUtils {
         return Color.argb(Math.round(a), r, g, b)
     }
 
-    fun removeAlpha(color: Int): Int {
+    private fun removeAlpha(color: Int): Int {
         val r = Color.red(color)
         val g = Color.green(color)
         val b = Color.blue(color)
@@ -88,64 +85,6 @@ object ColorUtils {
 
         return Color.rgb(Math.min(Math.max(r, 1), 255), Math.min(Math.max(g, 1), 255),
                 Math.min(Math.max(b, 1), 255))
-    }
-
-    fun changeColor(color: Int, factor: Float): Int {
-        val a = Color.alpha(color)
-        val r = Color.red(color)
-        val g = Color.green(color)
-        val b = Color.blue(color)
-
-        return Color.argb(a,
-                Math.max((r * factor).toInt(), 0),
-                Math.max((g * factor).toInt(), 0),
-                Math.max((b * factor).toInt(), 0) - 1)
-    }
-
-    fun changeColor(color: Int, rf: Float, bf: Float, gf: Float): Int {
-        val a = Color.alpha(color)
-        val r = Color.red(color)
-        val g = Color.green(color)
-        val b = Color.blue(color)
-
-        return Color.argb(a,
-                Math.max((r * rf).toInt(), 0),
-                Math.max((g * bf).toInt(), 0),
-                Math.max((b * gf).toInt(), 0))
-    }
-
-    fun lightenColor(color: Int): Int {
-        val factor = 1.2f
-        val a = Color.alpha(color)
-        val r = Color.red(color)
-        val g = Color.green(color)
-        val b = Color.blue(color)
-
-        return Color.argb(a,
-                Math.max((r * factor).toInt(), 0),
-                Math.max((g * factor).toInt(), 0),
-                Math.max((b * factor).toInt(), 0))
-    }
-
-    fun getFactor(originalColor: Int, newColor: Int) {
-        val or = Math.max(Color.red(originalColor), 1)
-        val og = Math.max(Color.green(originalColor), 1)
-        val ob = Math.max(Color.blue(originalColor), 1)
-
-        val nr = Color.red(newColor)
-        val ng = Color.green(newColor)
-        val nb = Color.blue(newColor)
-
-        Log.d(TAG, "red factor ${(nr.toDouble() / or)}")
-        Log.d(TAG, "green factor ${ng.toDouble() / og}")
-        Log.d(TAG, "blue factor ${nb.toDouble() / ob}")
-    }
-
-    fun printRGB(color: Int) {
-        val r = Color.red(color)
-        val g = Color.green(color)
-        val b = Color.blue(color)
-        Log.d(TAG, "r: $r | g: $g | b: $b")
     }
 
     fun convertToColorInt(color: String): Int {
