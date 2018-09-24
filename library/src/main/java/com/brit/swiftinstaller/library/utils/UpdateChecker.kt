@@ -64,6 +64,7 @@ class UpdateChecker(context: Context, private val callback: Callback?) :
 
     override fun onPostExecute(result: Output?) {
         super.onPostExecute(result)
+        AppList.update(mConRef.get()!!)
         callback?.finished(result!!.installedCount, result.updates)
         if (result!!.updates.isNotEmpty() && callback == null) {
             postNotification()

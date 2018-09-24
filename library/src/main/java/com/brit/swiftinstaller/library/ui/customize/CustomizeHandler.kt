@@ -27,6 +27,7 @@ import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.utils.ColorUtils.convertToColorInt
 import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
 import com.brit.swiftinstaller.library.utils.swift
+import com.brit.swiftinstaller.library.utils.synchronizedArrayListOf
 
 abstract class CustomizeHandler(val context: Context) {
 
@@ -127,7 +128,6 @@ abstract class CustomizeHandler(val context: Context) {
     }
 
     open fun populateCustomizeOptions(categories: CategoryMap) {
-        val requiredApps = SynchronizedArrayList<String>()
 
         val notifBackgroundOptions = OptionsMap()
         notifBackgroundOptions.add(Option(context.getString(R.string.white), "white"))
@@ -139,10 +139,8 @@ abstract class CustomizeHandler(val context: Context) {
         senderNameOptions.add(Option(context.getString(R.string.enable_shadow_title), "shadow"))
         notifBackgroundOptions["dark"]!!.subOptions.putAll(senderNameOptions)
         notifBackgroundOptions["dark"]!!.subOptionKey = "sender_name_fix"
-        requiredApps.add("android")
         categories.add(CustomizeCategory(context.getString(R.string.notification_tweaks),
-                "notif_background", "white", notifBackgroundOptions, requiredApps))
-        requiredApps.clear()
+                "notif_background", "white", notifBackgroundOptions, synchronizedArrayListOf("android")))
     }
 
     fun getCustomizeOptions(): CategoryMap {

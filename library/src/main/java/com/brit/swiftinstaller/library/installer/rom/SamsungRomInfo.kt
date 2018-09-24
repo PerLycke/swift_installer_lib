@@ -23,7 +23,6 @@ package com.brit.swiftinstaller.library.installer.rom
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.PorterDuff
 import android.net.Uri
 import android.os.Build
@@ -289,7 +288,6 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
     }
 
     private fun populateOreoCustomizeOptions(categories: CategoryMap) {
-        val requiredApps = SynchronizedArrayList<String>()
         val iconOptions = OptionsMap()
         iconOptions.add(Option(context.getString(R.string.aosp_icons), "aosp", "aosp", true))
         iconOptions.add(
@@ -298,26 +296,23 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
                 Option(context.getString(R.string.stock_icons_multi), "stock_multi", "stock",
                         false))
         iconOptions.add(Option(context.getString(R.string.android_p), "p", "p", false))
-        requiredApps.add("com.android.systemui")
-        requiredApps.add("com.samsung.android.lool")
-        requiredApps.add("com.samsung.android.themestore")
-        requiredApps.add("com.android.settings")
-        requiredApps.add("com.samsung.android.app.aodservice")
-        requiredApps.add("android")
         categories.add(
                 CustomizeCategory(context.getString(R.string.category_icons), "samsung_oreo_icons",
-                        "stock_accent", iconOptions, requiredApps))
-        requiredApps.clear()
+                        "stock_accent", iconOptions,
+                        synchronizedArrayListOf("com.android.systemui",
+                                "com.samsung.android.lool",
+                                "com.samsung.android.themestore",
+                                "com.android.settings",
+                                "com.samsung.android.app.aodservice",
+                                "android")))
 
         val clockOptions = OptionsMap()
         clockOptions.add(Option(context.getString(R.string.right), "right"))
         clockOptions.add(Option(context.getString(R.string.left), "left"))
         clockOptions.add(Option(context.getString(R.string.centered), "centered"))
-        requiredApps.add("com.android.systemui")
         categories.add(
                 CustomizeCategory(context.getString(R.string.clock), "samsung_oreo_clock", "right",
-                        clockOptions, requiredApps))
-        requiredApps.clear()
+                        clockOptions, synchronizedArrayListOf("com.android.systemui")))
 
         val notifOptions = OptionsMap()
         notifOptions.add(Option(context.getString(R.string.default_style), "default"))
@@ -328,10 +323,8 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
         notifOptions.add(trans)
         notifOptions["p"]!!.infoDialogTitle = context.getString(R.string.rounded_dialog_title)
         notifOptions["p"]!!.infoDialogText = context.getString(R.string.rounded_dialog_info)
-        requiredApps.add("com.android.systemui")
-        requiredApps.add("android")
         categories.add(CustomizeCategory(context.getString(R.string.notification_style),
-                "samsung_oreo_notif_style", "default", notifOptions, requiredApps))
-        requiredApps.clear()
+                "samsung_oreo_notif_style", "default", notifOptions,
+                synchronizedArrayListOf("com.android.systemui", "android")))
     }
 }

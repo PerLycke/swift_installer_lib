@@ -3,6 +3,7 @@ package com.brit.swiftinstaller.library.ui.applist
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import com.brit.swiftinstaller.library.utils.OverlayUtils
 import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
 import com.brit.swiftinstaller.library.utils.getAppsToUpdate
 import com.brit.swiftinstaller.library.utils.getHiddenApps
@@ -20,9 +21,11 @@ object AppList {
     val inactiveApps = AppItemArrayList()
 
     private val subscribers = SynchronizedArrayList<(Int) -> Unit>()
+    private var updates: Set<String> = setOf()
 
     @Synchronized
     fun updateList(context: Context) {
+        update(context)
         val disabledOverlays = context.swift.romInfo.getDisabledOverlays()
         val hiddenOverlays = getHiddenApps(context)
         val pm = context.packageManager
@@ -84,7 +87,6 @@ object AppList {
     }
 
     private fun getPackageIndex(context: Context, packageName: String): Int {
-        val updates = getAppsToUpdate(context)
         return if (context.swift.romInfo.isOverlayInstalled(packageName)) {
             if (updates.contains(packageName)) {
                 UPDATE
@@ -94,6 +96,10 @@ object AppList {
         } else {
             INACTIVE
         }
+    }
+
+    fun update(context: Context) {
+        updates = getAppsToUpdate(context)
     }
 
     private fun putApp(item: AppItem, index: Int) {
@@ -122,11 +128,17 @@ object AppList {
             }
             removeApp(context, packageName)
             val pInfo = context.packageManager.getPackageInfo(packageName, 0)
-            val item = AppItem(packageName,
-                    pInfo.applicationInfo.loadLabel(context.packageManager) as String,
-                    pInfo.getVersionCode(),
-                    pInfo.versionName,
-                    pInfo.applicationInfo.loadIcon(context.packageManager))
+            val item = AppItem(packageName = packageName,
+                    title = pInfo.applicationInfo.loadLabel(context.packageManager) as String,
+                    versionCode = pInfo.getVersionCode(),
+                    versionName = pInfo.versionName,
+                    icon = pInfo.applicationInfo.loadIcon(context.packageManager),
+                    hasUpdate = updates.contains(packageName),
+                    incompatible = !OverlayUtils.checkVersionCompatible(context, packageName),
+                    hasVersions = OverlayUtils.overlayHasVersion(context, packageName),
+                    installed = context.swift.romInfo.isOverlayInstalled(packageName),
+                    isRequired = context.swift.romInfo.getRequiredApps().contains(packageName),
+                    appOptions = OverlayUtils.getOverlayOptions(context, packageName))
             putApp(item, currentIndex)
         }
     }

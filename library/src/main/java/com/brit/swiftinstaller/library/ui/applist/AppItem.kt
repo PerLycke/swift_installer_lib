@@ -23,9 +23,16 @@ package com.brit.swiftinstaller.library.ui.applist
 
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import androidx.collection.ArrayMap
 
 class AppItem(val packageName: String = "",
               val title: String = "",
               val versionCode: Long = 0,
               val versionName: String = "",
-              var icon: Drawable = ColorDrawable())
+              val incompatible: Boolean = false,
+              val installed: Boolean = false,
+              val hasVersions: Boolean = false,
+              val hasUpdate: Boolean = false,
+              val isRequired: Boolean = false,
+              var icon: Drawable = ColorDrawable(),
+              var appOptions: ArrayMap<String, Array<String>>? = null)

@@ -157,11 +157,11 @@ class InstallSummaryActivity : ThemeActivity() {
                     return@forEach
                 }
                 if (info != null) {
-                    val item = AppItem(pn,
-                            info.loadLabel(pm) as String,
-                            pInfo.getVersionCode(),
-                            pInfo.versionName,
-                            info.loadIcon(pm))
+                    val item = AppItem(packageName = pn,
+                            title = info.loadLabel(pm) as String,
+                            versionCode = pInfo.getVersionCode(),
+                            versionName = pInfo.versionName,
+                            icon = info.loadIcon(pm))
                     if (errorMap.keys.contains(pn)) {
                         uiThread {
                             pagerAdapter.addApp(FAILED_TAB, item)

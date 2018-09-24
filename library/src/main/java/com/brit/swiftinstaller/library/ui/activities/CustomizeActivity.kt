@@ -32,6 +32,7 @@ import android.os.Handler
 import android.preference.PreferenceManager
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -90,6 +91,7 @@ class CustomizeActivity : ThemeActivity() {
         selection = customizeHandler.getSelection()
         parentActivity = intent.getStringExtra("parentActivity")
         usePalette = useBackgroundPalette(this)
+        materialPalette = MaterialPalette.createPalette(selection.backgroundColor, usePalette)
 
         setupPreview()
         setupAccentSheet()
@@ -387,17 +389,15 @@ class CustomizeActivity : ThemeActivity() {
             oldSelection.keys.forEach { key ->
                 if (oldSelection[key] != selection[key]) {
                     val cat = customizeHandler.getCustomizeOptions()[key]
-                    if (cat != null) {
-                        cat.requiredApps.forEach { app ->
-                            if (app == "android") {
-                                if (swift.romInfo.useHotSwap()) {
-                                    hotSwapPrefOn()
-                                } else {
-                                    hotSwapPrefOff()
-                                }
+                    cat?.requiredApps?.forEach { app ->
+                        if (app == "android") {
+                            if (swift.romInfo.useHotSwap()) {
+                                hotSwapPrefOn()
+                            } else {
+                                hotSwapPrefOff()
                             }
-                            checkAndAddApp(apps, app)
                         }
+                        checkAndAddApp(apps, app)
                     }
                 }
             }

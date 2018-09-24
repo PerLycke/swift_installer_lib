@@ -275,15 +275,14 @@ open class PRomInfo(context: Context) : RomInfo(context) {
     }
 
     private fun populatePieCustomizeOptions(categories: CategoryMap) {
-        val requiredApps = SynchronizedArrayList<String>()
         val pieIconOptions = OptionsMap()
         pieIconOptions.add(Option(context.getString(R.string.stock_icons), "stock_accented"))
         pieIconOptions.add(Option(context.getString(R.string.stock_icons_multi), "default_icons"))
-        requiredApps.add("com.android.settings")
-        requiredApps.add("com.google.android.apps.wellbeing")
-        requiredApps.add("com.google.android.gms")
         categories.add(
                 CustomizeCategory(context.getString(R.string.category_icons), "stock_pie_icons",
-                        "default_icons", pieIconOptions, requiredApps))
+                        "default_icons", pieIconOptions,
+                        synchronizedArrayListOf("com.android.settings",
+                                "com.google.android.apps.wellbeing",
+                                "com.google.android.gms")))
     }
 }
