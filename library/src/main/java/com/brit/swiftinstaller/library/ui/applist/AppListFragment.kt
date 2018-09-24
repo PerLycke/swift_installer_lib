@@ -126,12 +126,26 @@ class AppListFragment : Fragment() {
         }
     }
 
+    inner class CachingLayoutManager: LinearLayoutManager(context) {
+        override fun supportsPredictiveItemAnimations(): Boolean {
+            return false
+        }
+
+        override fun getExtraLayoutSpace(state: RecyclerView.State?): Int {
+            return 400
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         app_list_view.adapter = AppAdapter()
-        app_list_view.layoutManager = LinearLayoutManager(activity)
-        app_list_view.recycledViewPool.setMaxRecycledViews(0, apps.size)
+        app_list_view.layoutManager = CachingLayoutManager().apply {
+            isItemPrefetchEnabled = true
+        }
+        app_list_view.setHasFixedSize(true)
+        app_list_view.setItemViewCacheSize(apps.size)
+        app_list_view.isNestedScrollingEnabled = false
     }
 
     fun getCheckedItems(): SynchronizedArrayList<AppItem> {
