@@ -22,10 +22,12 @@
 package com.brit.swiftinstaller.library.utils
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.res.AssetManager
 import android.os.Build
+import android.preference.PreferenceManager
 import android.view.View
 import com.brit.swiftinstaller.library.SwiftApplication
 import java.io.File
@@ -75,6 +77,9 @@ val Context.swift: SwiftApplication
 
 val Context.pm: PackageManager
     get() = packageManager
+
+val Context.prefs: SharedPreferences
+    get() = PreferenceManager.getDefaultSharedPreferences(this)
 
 fun View.setVisible(visible: Boolean) {
     visibility = if (visible) {

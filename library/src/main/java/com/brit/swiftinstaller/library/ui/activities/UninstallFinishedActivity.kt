@@ -37,7 +37,6 @@ class UninstallFinishedActivity : ThemeActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        InstallActivity().finish()
 
         if (Utils.isSamsungOreo()) {
             AppList.updateList(this)

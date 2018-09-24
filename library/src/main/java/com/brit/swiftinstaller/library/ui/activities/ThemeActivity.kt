@@ -28,7 +28,6 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.StateListDrawable
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -38,6 +37,7 @@ import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.utils.IdLists
 import com.brit.swiftinstaller.library.utils.KEY_BACKGROUND_PALETTE
 import com.brit.swiftinstaller.library.utils.MaterialPalette
+import com.brit.swiftinstaller.library.utils.prefs
 import com.brit.swiftinstaller.library.utils.swift
 import com.brit.swiftinstaller.library.utils.useBackgroundPalette
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -47,8 +47,7 @@ open class ThemeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .registerOnSharedPreferenceChangeListener { _, key ->
+        prefs.registerOnSharedPreferenceChangeListener { _, key ->
                     if (key == "customize_options" || key == KEY_BACKGROUND_PALETTE) {
                         updateColors(swift.selection.backgroundColor, useBackgroundPalette(this))
                     }
@@ -83,14 +82,14 @@ open class ThemeActivity : AppCompatActivity() {
             val v = findViewById<View>(id)
             if (v != null) {
                 if (v.background != null) {
-                    v.background.setTint(palette.cardBackgroud)
+                    v.background.setTint(palette.cardBackground)
                 } else if (v is ImageView && v.drawable != null) {
                     if (v.drawable is StateListDrawable) {
                         val draw = v.drawable as StateListDrawable
-                        draw.current.setTint(palette.cardBackgroud)
+                        draw.current.setTint(palette.cardBackground)
                     } else if (v.drawable is LayerDrawable) {
                         val draw = v.drawable as LayerDrawable
-                        draw.findDrawableByLayerId(R.id.background).setTint(palette.cardBackgroud)
+                        draw.findDrawableByLayerId(R.id.background).setTint(palette.cardBackground)
                     }
                 }
             }

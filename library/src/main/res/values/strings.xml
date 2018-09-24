@@ -80,6 +80,7 @@
     <string name="progress_installing_title">Installing overlays…</string>
     <string name="progress_uninstalling_title">Uninstalling overlays…</string>
     <string name="reboot">Reboot</string>
+    <string name="restart_sysui">Restart SystemUI</string>
     <string name="reboot_delay_msg">Installing an overlay, or any APK, on Samsung right after a reboot will take a lot of time. The device needs around 4 mins to finish all the startup processes. If you just rebooted, we recommend waiting a moment before installing overlays or change background and accents.\n\nHave fun theming :)</string>
     <string name="reboot_delay_title">After rebooting</string>
     <string name="reboot_later">Reboot later</string>
@@ -154,6 +155,7 @@
     <string name="reboot_notif_msg">New overlays were enabled at boot. The last step is to make a quick reboot in order for all apps to reload with the new colors. Tap this notification to proceed</string>
     <string name="reboot_dialog_title">Reboot</string>
     <string name="reboot_dialog_msg">Reboot now to reload resources.</string>
+    <string name="restart_sysui_msg">Restart SystemUI now to reload resources.</string>
     <string name="info_card_reboot_msg">New overlays were enabled at boot. The last step is to make a quick reboot in order for all apps to reload with the new colors. <b>Tap here to proceed.</b></string>
     <string name="wait">Please wait…</string>
     <string name="reboot_now">Reboot now</string>

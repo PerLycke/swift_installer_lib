@@ -176,7 +176,7 @@ class MainActivity : ThemeActivity() {
 
         val b = popupView.background as LayerDrawable
         b.findDrawableByLayerId(R.id.background_popup)
-                .setTint(MaterialPalette.get(this).cardBackgroud)
+                .setTint(MaterialPalette.get(this).cardBackground)
 
         popupView.popup_menu_about.setOnClickListener { _ ->
             popup.dismiss()

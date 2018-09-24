@@ -149,7 +149,7 @@ abstract class PreviewHandler(val context: Context) {
                 settingsBackground.findDrawableByLayerId(R.id.preview_background)
                         .setTint(palette.backgroundColor)
             }
-            it.searchbar_bg.setColorFilter(palette.cardBackgroud)
+            it.searchbar_bg.setColorFilter(palette.cardBackground)
 
         }
         systemUiPreview?.let {

@@ -24,10 +24,10 @@ package com.brit.swiftinstaller.library.ui.activities
 import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
-import android.preference.PreferenceManager
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.utils.alert
 import com.brit.swiftinstaller.library.utils.getUseSoftReboot
+import com.brit.swiftinstaller.library.utils.prefs
 import com.brit.swiftinstaller.library.utils.quickRebootCommand
 import com.brit.swiftinstaller.library.utils.rebootCommand
 import com.brit.swiftinstaller.library.utils.restartSysUi
@@ -39,21 +39,26 @@ class RebootActivity : ThemeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("reboot_card", false)
-                .apply()
+        prefs.edit().putBoolean("reboot_card", false).apply()
+
+        val hotswap = prefs.getBoolean("hotswap", false)
 
         alert {
-            title = getString(R.string.reboot_dialog_title)
-            message = getString(R.string.reboot_dialog_msg)
-            positiveButton(R.string.reboot) {
+            if (hotswap) {
+                title = getString(R.string.restart_sysui)
+                message = getString(R.string.restart_sysui_msg)
+            } else {
+                title = getString(R.string.reboot_dialog_title)
+                message = getString(R.string.reboot_dialog_msg)
+            }
+            positiveButton(if (hotswap) { R.string.restart_sysui } else { R.string.reboot }) {
                 val rebootingDialog = Dialog(ctx, R.style.AppTheme_Translucent)
                 rebootingDialog.setContentView(R.layout.reboot)
                 rebootingDialog.show()
                 handler.post {
-                    if (PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean("hotswap", false)) {
+                    if (hotswap) {
                         restartSysUi(ctx)
-                        PreferenceManager.getDefaultSharedPreferences(ctx).edit()
-                                .putBoolean("hotswap", false).apply()
+                        prefs.edit().putBoolean("hotswap", false).apply()
                         finish()
                     } else {
                         if (getUseSoftReboot(ctx)) {

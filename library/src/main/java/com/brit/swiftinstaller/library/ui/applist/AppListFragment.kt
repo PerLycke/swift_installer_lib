@@ -417,7 +417,7 @@ class AppListFragment : Fragment() {
                                 opts)
                 val popupBg = context.getDrawable(R.drawable.popup_bg_options) as LayerDrawable
                 popupBg.findDrawableByLayerId(R.id.background_popup)
-                        .setTint(MaterialPalette.get(context).cardBackgroud)
+                        .setTint(MaterialPalette.get(context).cardBackground)
                 view.spinner.setPopupBackgroundDrawable(popupBg)
                 view.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {

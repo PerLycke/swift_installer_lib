@@ -70,13 +70,8 @@ class OverlaysActivity : ThemeActivity() {
         }
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        AppList.addSubscriber(subscription)
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
+    override fun onPause() {
+        super.onPause()
         AppList.removeSubscriber(subscription)
     }
 
@@ -198,8 +193,6 @@ class OverlaysActivity : ThemeActivity() {
         if (intent.hasExtra("tab")) {
             container.currentItem = intent.getIntExtra("tab", 0)
         }
-
-        AppList.addSubscriber(subscription)
     }
 
     private fun setBackgroundImage() {
@@ -248,6 +241,7 @@ class OverlaysActivity : ThemeActivity() {
 
     override fun onResume() {
         super.onResume()
+        AppList.addSubscriber(subscription)
         toolbar_subtitle_current_accent.setTextColor(swift.selection.accentColor)
         toolbar_subtitle_current_accent.text = getString(R.string.hex_string,
                 String.format("%06x", swift.selection.accentColor).substring(2))
@@ -406,7 +400,6 @@ class OverlaysActivity : ThemeActivity() {
         checked.mapTo(apps) { it.packageName }
         intent.putStringArrayListExtra("apps", apps)
         startActivity(intent)
-        finish()
     }
 
     private fun uninstallAction() {
@@ -441,7 +434,6 @@ class OverlaysActivity : ThemeActivity() {
         intent.putExtra("uninstall", true)
         pagerAdapter.clearCheckedItems(container.currentItem)
         startActivity(intent)
-        finish()
     }
 
     private fun updateAction() {
@@ -460,7 +452,6 @@ class OverlaysActivity : ThemeActivity() {
         intent.putStringArrayListExtra("apps", apps)
         intent.putExtra("update", true)
         startActivity(intent)
-        finish()
     }
 
     fun overlaysBackClick(@Suppress("UNUSED_PARAMETER") view: View) {

@@ -22,10 +22,10 @@
 package com.brit.swiftinstaller.library.ui.customize
 
 import android.content.Context
-import android.preference.PreferenceManager
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.utils.ColorUtils.convertToColorInt
 import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
+import com.brit.swiftinstaller.library.utils.prefs
 import com.brit.swiftinstaller.library.utils.swift
 import com.brit.swiftinstaller.library.utils.synchronizedArrayListOf
 
@@ -101,9 +101,8 @@ abstract class CustomizeHandler(val context: Context) {
     }
 
     fun getSelection(): CustomizeSelection {
-        val selection = CustomizeSelection.fromString(PreferenceManager
-                .getDefaultSharedPreferences(context).getString("customize_selection",
-                        getDefaultSelection().toString())!!)
+        val selection = CustomizeSelection.fromString(context.prefs
+                .getString("customize_selection", getDefaultSelection().toString())!!)
         val def = getDefaultSelection()
         for (key in def.keys) {
             if (!selection.containsKey(key)) {
@@ -114,7 +113,7 @@ abstract class CustomizeHandler(val context: Context) {
     }
 
     fun setSelection(selection: CustomizeSelection) {
-        PreferenceManager.getDefaultSharedPreferences(context).edit()
+        context.prefs.edit()
                 .putString("customize_selection", selection.toString()).apply()
     }
 
