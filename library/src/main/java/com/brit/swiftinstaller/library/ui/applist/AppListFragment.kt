@@ -271,6 +271,7 @@ class AppListFragment : Fragment() {
                 app_item_checkbox.visibility = View.VISIBLE
                 app_item_checkbox.isChecked = checked.get(visible[adapterPosition], false)
                 app_item_checkbox.alpha = 1.0f
+                alert_icon.setImageDrawable(context!!.getDrawable(R.drawable.ic_info))
                 alert_icon.setVisible(item.hasVersions)
                 required.visibility = View.GONE
                 download_icon.visibility = View.GONE
@@ -331,7 +332,7 @@ class AppListFragment : Fragment() {
                         alert_icon.setImageDrawable(context!!.getDrawable(R.drawable.ic_alert))
                     }
                 } else {
-                    if (item.isRequired) {
+                    if (item.isRequired && !item.installed) {
                         app_item_checkbox.isChecked = true
                         app_item_checkbox.isClickable = false
                         app_item_checkbox.alpha = 0.3f

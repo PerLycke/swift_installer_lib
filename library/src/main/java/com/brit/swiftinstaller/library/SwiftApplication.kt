@@ -37,8 +37,14 @@ import javax.crypto.Cipher
 
 open class SwiftApplication : ContainerApp() {
 
-    lateinit var romInfo: RomInfo
-    lateinit var extrasHandler: AppExtrasHandler
+    val romInfo: RomInfo by lazy {
+        RomInfo.createRomInfo(this)
+    }
+    val extrasHandler: AppExtrasHandler by lazy {
+        val v = createExtrasHandler()
+        v.initialize()
+        v
+    }
 
     private var currentSelection: CustomizeSelection = CustomizeSelection()
 
@@ -54,18 +60,14 @@ open class SwiftApplication : ContainerApp() {
             currentSelection = value
         }
 
-    var cipher: Cipher? = null
+    val cipher: Cipher? by lazy {
+        createCipher()
+    }
 
     override fun onCreate() {
         super.onCreate()
 
         doAsync {
-            romInfo = RomInfo.createRomInfo(this@SwiftApplication)
-            extrasHandler = createExtrasHandler()
-            extrasHandler.initialize()
-
-            cipher = createCipher()
-
             startReceivers()
 
             AppList.updateList(this@SwiftApplication)
