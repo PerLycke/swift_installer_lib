@@ -28,12 +28,12 @@
     <string name="basic_usage">Basic usage</string>
     <string name="bg_nature">Nature</string>
     <string name="bg_ocean">Ocean</string>
-    <string name="big_tile_install_msg">Install separate or all overlays here</string>
-    <string name="big_tile_install_title">Install / Uninstall overlays</string>
-    <string name="big_tile_install_updates">Install updates</string>
-    <string name="big_tile_personalize_msg">Change background and accent color</string>
+    <string name="big_tile_install_msg">Manage all your overlays</string>
+    <string name="big_tile_install_title">Install / uninstall</string>
+    <string name="big_tile_install_updates">Updates available</string>
+    <string name="big_tile_personalize_msg">Pick your colors and style</string>
     <string name="big_tile_personalize_title">Personalize</string>
-    <string name="big_tile_update_msg">Some overlays were updated. Install them.</string>
+    <string name="big_tile_update_msg">Tap here to select and install them</string>
     <string name="cancel">Cancel</string>
     <string name="category_accent">Accent</string>
     <string name="category_background">Background</string>
