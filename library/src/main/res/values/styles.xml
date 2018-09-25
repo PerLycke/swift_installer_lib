@@ -30,7 +30,6 @@
             @android:style/Widget.DeviceDefault.Light.CompoundButton.CheckBox
         </item>
         <item name="android:colorControlHighlight">@color/ripple</item>
-        <item name="android:windowDisablePreview">true</item>
         <item name="alertDialogTheme">@style/AppTheme.AlertDialog</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>

@@ -27,28 +27,32 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
-import android.os.Build
-import android.os.Bundle
-import android.preference.PreferenceManager
+import android.os.*
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.animation.AlphaAnimation
 import android.widget.PopupWindow
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
+import com.brit.swiftinstaller.library.ui.CardItem
 import com.brit.swiftinstaller.library.ui.changelog.ChangelogHandler
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.enableAllOverlays
-import kotlinx.android.synthetic.main.card_compatibility_info.*
 import kotlinx.android.synthetic.main.card_install.*
+import kotlinx.android.synthetic.main.card_item.view.*
 import kotlinx.android.synthetic.main.card_update.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.popup_menu.view.*
 import org.jetbrains.anko.doAsync
 
+
 class MainActivity : ThemeActivity() {
+
+    val handler = Handler()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,27 +68,7 @@ class MainActivity : ThemeActivity() {
             enableAllOverlays()
         }
 
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("not_closed", true)) {
-            card_compatibility.visibility = View.VISIBLE
-            card_compatibility_close.setOnClickListener {
-                PreferenceManager.getDefaultSharedPreferences(this).edit()
-                        .putBoolean("not_closed", false).apply()
-                card_compatibility.visibility = View.GONE
-            }
-        }
-
-        if (ShellUtils.isRootAccessAvailable &&
-                PreferenceManager.getDefaultSharedPreferences(this).getBoolean("reboot_card",
-                        false)) {
-            card_reboot.visibility = View.VISIBLE
-            PreferenceManager.getDefaultSharedPreferences(this).edit()
-                    .putBoolean("reboot_card", false).apply()
-            card_reboot.setOnClickListener {
-                card_reboot.visibility = View.GONE
-                val intent = Intent(this, RebootActivity::class.java)
-                startActivity(intent)
-            }
-        }
+        setupCards()
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -120,6 +104,55 @@ class MainActivity : ThemeActivity() {
             startActivity(intent)
             card_personalize.isEnabled = false
         }
+    }
+
+    private fun setupCards() {
+        val idleHandler = MessageQueue.IdleHandler {
+            val cardsList = arrayListOf<CardItem>()
+            val cardView = cards_list
+
+            cardsList.let {
+                if (prefs.getBoolean("not_closed", true)) {
+                    it.add(CardItem(
+                            getString(R.string.info_card_compatibility_msg),
+                            getDrawable(R.drawable.ic_close),
+                            View.OnClickListener { view ->
+                                prefs.edit()
+                                        .putBoolean("not_closed", false).apply()
+                                val parent = view.parent as View
+                                parent.visibility = View.GONE
+                            },
+                            null
+                    ))
+                }
+                if (ShellUtils.isRootAccessAvailable && prefs.getBoolean("reboot_card", false)) {
+                    it.add(CardItem(
+                            getString(R.string.info_card_reboot_msg),
+                            getDrawable(R.drawable.ic_reboot),
+                            null,
+                            View.OnClickListener { view ->
+                                val intent = Intent(this, RebootActivity::class.java)
+                                startActivity(intent)
+                            }
+                    ))
+                    prefs.edit().putBoolean("reboot_card", false).apply()
+                }
+            }
+
+            cardsList.forEach { item ->
+                val cardItemLayout = LayoutInflater.from(this@MainActivity).inflate(R.layout.card_item, null)
+                cardItemLayout.let {
+                    it.card_item_desc.text = item.desc
+                    it.card_item_btn.setImageDrawable(item.btn)
+                    it.card_item_btn.setOnClickListener(item.btnClick)
+                    it.card_item_root.setOnClickListener(item.bgClick)
+                }
+                cardView.addView(cardItemLayout, 0)
+            }
+            false
+        }
+        Looper.myQueue().addIdleHandler(idleHandler)
+
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,

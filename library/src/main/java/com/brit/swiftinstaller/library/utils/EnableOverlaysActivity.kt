@@ -27,7 +27,6 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.preference.PreferenceManager
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.activities.RebootActivity
 import com.brit.swiftinstaller.library.utils.OverlayUtils.enableAllOverlays
@@ -43,8 +42,7 @@ class EnableOverlaysActivity : Activity() {
             return finish()
         }
 
-        PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("reboot_card", true)
-                .apply()
+        prefs.edit().putBoolean("reboot_card", true).apply()
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         sendNotification()
         finish()
