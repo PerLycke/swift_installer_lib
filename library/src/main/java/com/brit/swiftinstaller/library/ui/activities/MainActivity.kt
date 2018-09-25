@@ -31,11 +31,9 @@ import android.os.*
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.view.animation.AlphaAnimation
 import android.widget.PopupWindow
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.preference.PreferenceManager
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.CardItem
@@ -111,42 +109,38 @@ class MainActivity : ThemeActivity() {
             val cardsList = arrayListOf<CardItem>()
             val cardView = cards_list
 
-            cardsList.let {
-                if (prefs.getBoolean("not_closed", true)) {
-                    it.add(CardItem(
-                            getString(R.string.info_card_compatibility_msg),
-                            getDrawable(R.drawable.ic_close),
-                            View.OnClickListener { view ->
-                                prefs.edit()
-                                        .putBoolean("not_closed", false).apply()
-                                val parent = view.parent as View
-                                parent.visibility = View.GONE
-                            },
-                            null
-                    ))
-                }
-                if (ShellUtils.isRootAccessAvailable && prefs.getBoolean("reboot_card", false)) {
-                    it.add(CardItem(
-                            getString(R.string.info_card_reboot_msg),
-                            getDrawable(R.drawable.ic_reboot),
-                            null,
-                            View.OnClickListener { view ->
-                                val intent = Intent(this, RebootActivity::class.java)
-                                startActivity(intent)
-                            }
-                    ))
-                    prefs.edit().putBoolean("reboot_card", false).apply()
-                }
+            if (prefs.getBoolean("not_closed", true)) {
+                cardsList.add(CardItem(
+                        getString(R.string.info_card_compatibility_msg),
+                        getDrawable(R.drawable.ic_close),
+                        View.OnClickListener { view ->
+                            prefs.edit()
+                                    .putBoolean("not_closed", false).apply()
+                            val parent = view.parent as View
+                            parent.visibility = View.GONE
+                        },
+                        null
+                ))
+            }
+            if (ShellUtils.isRootAccessAvailable && prefs.getBoolean("reboot_card", false)) {
+                cardsList.add(CardItem(
+                        getString(R.string.info_card_reboot_msg),
+                        getDrawable(R.drawable.ic_reboot),
+                        null,
+                        View.OnClickListener { view ->
+                            val intent = Intent(this, RebootActivity::class.java)
+                            startActivity(intent)
+                        }
+                ))
+                prefs.edit().putBoolean("reboot_card", false).apply()
             }
 
             cardsList.forEach { item ->
                 val cardItemLayout = LayoutInflater.from(this@MainActivity).inflate(R.layout.card_item, null)
-                cardItemLayout.let {
-                    it.card_item_desc.text = item.desc
-                    it.card_item_btn.setImageDrawable(item.btn)
-                    it.card_item_btn.setOnClickListener(item.btnClick)
-                    it.card_item_root.setOnClickListener(item.bgClick)
-                }
+                cardItemLayout.card_item_desc.text = item.desc
+                cardItemLayout.card_item_btn.setImageDrawable(item.btn)
+                cardItemLayout.card_item_btn.setOnClickListener(item.btnClick)
+                cardItemLayout.card_item_root.setOnClickListener(item.bgClick)
                 cardView.addView(cardItemLayout, 0)
             }
             false
