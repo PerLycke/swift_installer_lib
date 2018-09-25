@@ -76,13 +76,6 @@ abstract class RomInfo constructor(var context: Context) {
                 .setBackgroundColor(ContextCompat.getColor(tutorial, R.color.background_main))
                 .setDrawable(R.drawable.ic_tutorial_hand) // int top drawable
                 .build(), TUTORIAL_PAGE_USAGE)
-        tutorial.addFragment(
-                Step.Builder().setTitle(tutorial.getString(R.string.tutorial_more_usage_title))
-                        .setContent(tutorial.getString(R.string.tutorial_more_usage_info))
-                        .setBackgroundColor(
-                                ContextCompat.getColor(tutorial, R.color.background_main))
-                        .setDrawable(R.drawable.ic_tutorial_clicks) // int top drawable
-                        .build(), TUTORIAL_PAGE_FIRST_INSTALL)
         tutorial.addFragment(PermissionStep.Builder().setTitle(
                 tutorial.getString(R.string.tutorial_permission_title))
                 .setContent(tutorial.getString(R.string.tutorial_permission_content))
@@ -154,9 +147,8 @@ abstract class RomInfo constructor(var context: Context) {
         const val TUTORIAL_PAGE_MAIN = 0
         const val TUTORIAL_PAGE_APPS = 1
         const val TUTORIAL_PAGE_USAGE = 2
-        const val TUTORIAL_PAGE_FIRST_INSTALL = 3
-        const val TUTORIAL_PAGE_PERMISSIONS = 4
-        const val TUTORIAL_PAGE_PERSONALIZE = 5
+        const val TUTORIAL_PAGE_PERMISSIONS = 3
+        const val TUTORIAL_PAGE_PERSONALIZE = 4
 
         @Synchronized
         @JvmStatic

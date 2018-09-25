@@ -96,7 +96,7 @@ open class PRomInfo(context: Context) : RomInfo(context) {
                 .setContent(ss)
                 .setDrawable(R.drawable.ic_magisk_logo)
                 .setBackgroundColor(tutorial.getColor(R.color.background_main)).build(),
-                TUTORIAL_PAGE_FIRST_INSTALL)
+                TUTORIAL_PAGE_PERMISSIONS)
     }
 
     override fun getRequiredApps(): Array<String> {
