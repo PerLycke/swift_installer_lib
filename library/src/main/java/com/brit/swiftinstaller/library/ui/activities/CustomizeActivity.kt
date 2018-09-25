@@ -29,6 +29,8 @@ import android.content.IntentFilter
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
+import android.os.MessageQueue
 import android.preference.PreferenceManager
 import android.text.Editable
 import android.text.TextWatcher
@@ -60,7 +62,9 @@ import kotlinx.android.synthetic.main.customize_option_item.view.*
 import kotlinx.android.synthetic.main.customize_option_layout.view.*
 import kotlinx.android.synthetic.main.fab_sheet_personalize.view.*
 import kotlinx.android.synthetic.main.palette_view.view.*
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
+import org.jetbrains.anko.uiThread
 
 class CustomizeActivity : ThemeActivity() {
 
@@ -95,7 +99,11 @@ class CustomizeActivity : ThemeActivity() {
         setupPreview()
         setupAccentSheet()
         setupHexInputs()
-        setupThemeOptions()
+        val handler = MessageQueue.IdleHandler {
+            setupThemeOptions()
+            false
+        }
+        Looper.myQueue().addIdleHandler(handler)
     }
 
     @SuppressLint("RestrictedApi")
@@ -280,36 +288,43 @@ class CustomizeActivity : ThemeActivity() {
     }
 
     private fun setupThemeOptions() {
-        customizeHandler.getCustomizeOptions().reversed().forEach { category ->
-            val categoryView = LayoutInflater.from(this)
-                    .inflate(R.layout.customize_option_layout, customize_options, false)
-            categoryView.customize_category_title.text = category.name
-            val optionGroup = RadioGroup()
-            category.options.forEachOption { option ->
-                setupOption(categoryView.options, option, category.key, optionGroup)
+        doAsync {
+            val views = arrayListOf<View>()
+            customizeHandler.getCustomizeOptions().reversed().forEach { category ->
+                val categoryView = LayoutInflater.from(this@CustomizeActivity)
+                        .inflate(R.layout.customize_option_layout, customize_options, false)
+                categoryView.customize_category_title.text = category.name
+                val optionGroup = RadioGroup()
+                category.options.forEachOption { option ->
+                    setupOption(categoryView.options, option, category.key, optionGroup)
+                }
+                views.add(categoryView)
             }
-            handler.post {
-                customize_options.addView(categoryView)
+
+            val baseThemeListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
+                if (compoundButton.id == R.id.material_theme) {
+                    material_theme.isChecked = b
+                    flat_theme.isChecked = !b
+                } else {
+                    material_theme.isChecked = !b
+                    flat_theme.isChecked = b
+                }
+                usePalette = material_theme.isChecked
+                updateColor(false)
+            }
+
+            material_theme.setOnCheckedChangeListener(baseThemeListener)
+            flat_theme.setOnCheckedChangeListener(baseThemeListener)
+
+            uiThread {
+                for (v in views) {
+                    customize_options.addView(v)
+                }
+
+                material_theme.isChecked = usePalette
+                flat_theme.isChecked = !usePalette
             }
         }
-
-        val baseThemeListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
-            if (compoundButton.id == R.id.material_theme) {
-                material_theme.isChecked = b
-                flat_theme.isChecked = !b
-            } else {
-                material_theme.isChecked = !b
-                flat_theme.isChecked = b
-            }
-            usePalette = material_theme.isChecked
-            updateColor(false)
-        }
-
-        material_theme.setOnCheckedChangeListener(baseThemeListener)
-        flat_theme.setOnCheckedChangeListener(baseThemeListener)
-
-        material_theme.isChecked = usePalette
-        flat_theme.isChecked = !usePalette
     }
 
     override fun onBackPressed() {
