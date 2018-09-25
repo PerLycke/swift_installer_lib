@@ -26,6 +26,7 @@ import android.content.Intent
 import android.graphics.PorterDuff
 import android.net.Uri
 import android.os.Build
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
@@ -33,6 +34,8 @@ import com.brit.swiftinstaller.library.ui.customize.*
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPath
+import com.hololo.tutorial.library.Step
+import com.hololo.tutorial.library.TutorialActivity
 import kotlinx.android.synthetic.main.customize_preview_settings.view.*
 import kotlinx.android.synthetic.main.customize_preview_sysui.view.*
 import java.io.File
@@ -45,6 +48,17 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
 
     override fun getChangelogTag(): String {
         return "samsung"
+    }
+
+    override fun addTutorialSteps(tutorial: TutorialActivity) {
+        super.addTutorialSteps(tutorial)
+        tutorial.addFragment(
+                Step.Builder().setTitle(tutorial.getString(R.string.tutorial_more_usage_title))
+                        .setContent(tutorial.getString(R.string.tutorial_more_usage_info))
+                        .setBackgroundColor(
+                                ContextCompat.getColor(tutorial, R.color.background_main))
+                        .setDrawable(R.drawable.ic_tutorial_clicks) // int top drawable
+                        .build(), TUTORIAL_PAGE_FIRST_INSTALL)
     }
 
     override fun getDisabledOverlays(): SynchronizedArrayList<String> {
