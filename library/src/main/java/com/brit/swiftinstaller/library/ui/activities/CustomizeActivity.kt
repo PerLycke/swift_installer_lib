@@ -453,57 +453,8 @@ class CustomizeActivity : ThemeActivity() {
 
                 finish = true
                 val intent = Intent(this, InstallActivity::class.java)
-                val launch =
-                        getSharedPreferences("launched", Context.MODE_PRIVATE).getString("launched",
-                                "first")
-                val thisLaunch = PreferenceManager.getDefaultSharedPreferences(this)
-                        .getBoolean("thisLaunched", false)
                 intent.putStringArrayListExtra("apps", apps)
-
-                if (launch == "default" && thisLaunch) {
-                    startActivity(intent)
-                } else {
-                    when (launch) {
-                        "first" -> {
-                            getSharedPreferences("launched", Context.MODE_PRIVATE).edit()
-                                    .putString("launched", "second").apply()
-                            startActivity(intent)
-                        }
-                        "second" -> {
-                            if (!Utils.isSamsungOreo()) {
-                                getSharedPreferences("launched", Context.MODE_PRIVATE).edit()
-                                        .putString("launched", "default").apply()
-                                startActivity(intent)
-                            } else {
-                                alert {
-                                    title = getString(R.string.reboot_delay_title)
-                                    message = getString(R.string.reboot_delay_msg)
-                                    positiveButton(R.string.proceed) { dialog ->
-                                        getSharedPreferences("launched",
-                                                Context.MODE_PRIVATE).edit()
-                                                .putString("launched", "default").apply()
-                                        dialog.dismiss()
-                                        startActivity(intent)
-                                    }
-                                    show()
-                                }
-                            }
-                        }
-                        else -> {
-                            alert {
-                                title = getString(R.string.installing_and_uninstalling_title)
-                                message = getString(R.string.installing_and_uninstalling_msg)
-                                positiveButton(R.string.proceed) { dialog ->
-                                    PreferenceManager.getDefaultSharedPreferences(ctx).edit()
-                                            .putBoolean("thisLaunched", true).apply()
-                                    dialog.dismiss()
-                                    startActivity(intent)
-                                }
-                                show()
-                            }
-                        }
-                    }
-                }
+                startActivity(intent)
             } else {
                 if (parentActivity == "tutorial") {
                     val intent = Intent(this, OverlaysActivity::class.java)

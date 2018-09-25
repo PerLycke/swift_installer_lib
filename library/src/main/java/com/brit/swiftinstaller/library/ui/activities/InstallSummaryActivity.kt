@@ -226,6 +226,12 @@ class InstallSummaryActivity : ThemeActivity() {
         handler.post {
             updateList()
         }
+        if (update) {
+            UpdateChecker(this, object : UpdateChecker.Callback() {
+                override fun finished(installedCount: Int, updates: SynchronizedArrayList<String>) {
+                }
+            }).execute()
+        }
     }
 
     private fun resultDialog() {

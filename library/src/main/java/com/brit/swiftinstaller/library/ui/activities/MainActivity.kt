@@ -102,6 +102,26 @@ class MainActivity : ThemeActivity() {
             startActivity(intent)
             card_personalize.isEnabled = false
         }
+
+        if (Utils.isSamsungOreo()) {
+            handler.post {
+                val bootTime = SystemClock.elapsedRealtime()
+                if (bootTime / 1000 / 60 < 4) {
+                    if (!prefs.getBoolean("delay_on_boot_dialog", false)) {
+                        prefs.edit().putBoolean("delay_on_boot_dialog", true).apply()
+                        alert {
+                            title = getString(R.string.reboot_delay_title)
+                            message = getString(R.string.reboot_delay_msg)
+                            positiveButton(R.string.proceed) { dialog ->
+                                dialog.dismiss()
+                                startActivity(intent)
+                            }
+                            show()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun setupCards() {
@@ -127,7 +147,7 @@ class MainActivity : ThemeActivity() {
                         getString(R.string.info_card_reboot_msg),
                         getDrawable(R.drawable.ic_reboot),
                         null,
-                        View.OnClickListener { view ->
+                        View.OnClickListener {
                             val intent = Intent(this, RebootActivity::class.java)
                             startActivity(intent)
                         }

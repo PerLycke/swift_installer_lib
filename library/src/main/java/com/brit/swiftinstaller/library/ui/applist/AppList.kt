@@ -21,11 +21,10 @@ object AppList {
     val inactiveApps = AppItemArrayList()
 
     private val subscribers = SynchronizedArrayList<(Int) -> Unit>()
-    private var updates: Set<String> = setOf()
+    private fun updates(context: Context): Set<String> = getAppsToUpdate(context)
 
     @Synchronized
     fun updateList(context: Context) {
-        update(context)
         val disabledOverlays = context.swift.romInfo.getDisabledOverlays()
         val hiddenOverlays = getHiddenApps(context)
         val pm = context.packageManager
@@ -88,7 +87,7 @@ object AppList {
 
     private fun getPackageIndex(context: Context, packageName: String): Int {
         return if (context.swift.romInfo.isOverlayInstalled(packageName)) {
-            if (updates.contains(packageName)) {
+            if (updates(context).contains(packageName)) {
                 UPDATE
             } else {
                 ACTIVE
@@ -96,10 +95,6 @@ object AppList {
         } else {
             INACTIVE
         }
-    }
-
-    fun update(context: Context) {
-        updates = getAppsToUpdate(context)
     }
 
     private fun putApp(item: AppItem, index: Int) {
@@ -133,7 +128,7 @@ object AppList {
                     versionCode = pInfo.getVersionCode(),
                     versionName = pInfo.versionName,
                     icon = pInfo.applicationInfo.loadIcon(context.packageManager),
-                    hasUpdate = updates.contains(packageName),
+                    hasUpdate = updates(context).contains(packageName),
                     incompatible = !OverlayUtils.checkVersionCompatible(context, packageName),
                     hasVersions = OverlayUtils.overlayHasVersion(context, packageName),
                     installed = context.swift.romInfo.isOverlayInstalled(packageName),
