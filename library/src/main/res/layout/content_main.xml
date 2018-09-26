@@ -74,32 +74,16 @@
             android:orientation="vertical">
 
             <include
-                android:id="@+id/card_update"
-                layout="@layout/card_update"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="16dp"
-                android:visibility="gone" />
-
-            <include
                 android:id="@+id/card_install"
                 layout="@layout/card_install"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="16dp" />
+                android:layout_height="wrap_content" />
 
             <include
                 android:id="@+id/card_personalize"
                 layout="@layout/card_personalize"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="16dp" />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
     </ScrollView>

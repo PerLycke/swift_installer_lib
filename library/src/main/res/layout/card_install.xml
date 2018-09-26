@@ -23,7 +23,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingStart="16dp"
+    android:paddingTop="12dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="0dp">
 
     <ImageView
         android:id="@+id/card_install_bg"
@@ -115,7 +119,7 @@
             app:layout_constraintEnd_toStartOf="@+id/active_count"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/installed_info"
             app:layout_constraintTop_toTopOf="@+id/installed_info" />
 
         <TextView
@@ -127,11 +131,11 @@
             android:textColor="@color/minimal_green"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/installed_info"
+            app:layout_constraintEnd_toEndOf="@+id/installed_info"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/active_txt"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/installed_info"
             tools:text="0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

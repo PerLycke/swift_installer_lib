@@ -23,10 +23,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingStart="16dp"
+    android:paddingTop="12dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="0dp">
 
     <ImageView
-        android:id="@+id/card_update_bg"
+        android:id="@+id/card_bg"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
@@ -39,59 +43,60 @@
         app:srcCompat="@drawable/big_tile_bg" />
 
     <ImageView
-        android:id="@+id/card_update_icon"
+        android:id="@+id/card_icon"
         android:layout_width="44dp"
         android:layout_height="44dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginBottom="32dp"
         android:contentDescription="@string/image"
-        app:layout_constraintBottom_toBottomOf="@+id/card_update_bg"
-        app:layout_constraintStart_toStartOf="@+id/card_update_bg"
-        app:layout_constraintTop_toTopOf="@+id/card_update_bg"
-        app:srcCompat="@drawable/ic_updates" />
+        app:layout_constraintBottom_toBottomOf="@+id/card_bg"
+        app:layout_constraintStart_toStartOf="@+id/card_bg"
+        app:layout_constraintTop_toTopOf="@+id/card_bg"
+        tools:srcCompat="@drawable/ic_install" />
 
     <TextView
-        android:id="@+id/card_update_title"
+        android:id="@+id/card_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="sans-serif"
-        android:text="@string/big_tile_install_updates"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/card_update_desc"
-        app:layout_constraintEnd_toEndOf="@+id/card_update_bg"
-        app:layout_constraintStart_toEndOf="@+id/card_update_icon"
-        app:layout_constraintTop_toTopOf="@+id/card_update_bg"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintBottom_toTopOf="@+id/card_desc"
+        app:layout_constraintEnd_toEndOf="@+id/card_bg"
+        app:layout_constraintStart_toEndOf="@+id/card_icon"
+        app:layout_constraintTop_toTopOf="@+id/card_bg"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="@string/big_tile_install_title" />
 
     <TextView
-        android:id="@+id/card_update_desc"
+        android:id="@+id/card_desc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/big_tile_update_msg"
+        android:layout_marginEnd="8dp"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/card_update_bg"
-        app:layout_constraintEnd_toEndOf="@+id/card_update_bg"
-        app:layout_constraintStart_toEndOf="@+id/card_update_icon"
-        app:layout_constraintTop_toBottomOf="@+id/card_update_title" />
+        app:layout_constraintBottom_toBottomOf="@+id/card_bg"
+        app:layout_constraintEnd_toEndOf="@+id/card_bg"
+        app:layout_constraintStart_toEndOf="@+id/card_icon"
+        app:layout_constraintTop_toBottomOf="@+id/card_title"
+        tools:text="@string/big_tile_install_msg" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/update_info_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/card_tip_layout"
+        android:layout_width="98dp"
+        android:layout_height="30dp"
         android:layout_marginTop="84dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/card_update_bg"
-        app:layout_constraintTop_toTopOf="@+id/card_update_bg">
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@+id/card_bg"
+        app:layout_constraintTop_toTopOf="@+id/card_bg">
 
         <ImageView
-            android:id="@+id/update_info"
+            android:id="@+id/card_tip_bg"
             android:layout_width="98dp"
             android:layout_height="30dp"
             android:contentDescription="@string/image"
@@ -102,38 +107,48 @@
             app:srcCompat="@drawable/big_tile_bg" />
 
         <TextView
-            android:id="@+id/updates_txt"
+            android:id="@+id/card_tip_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="2dp"
+            android:layout_marginEnd="4dp"
             android:fontFamily="sans-serif-condensed"
-            android:text="@string/small_info_updates"
             android:textColor="@android:color/white"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/updates_count"
+            app:layout_constraintBottom_toBottomOf="@+id/card_tip_bg"
+            app:layout_constraintEnd_toStartOf="@+id/card_tip_count"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toEndOf="@+id/update_info"
-            app:layout_constraintStart_toStartOf="@+id/update_info"
-            app:layout_constraintTop_toTopOf="@+id/update_info" />
+            app:layout_constraintStart_toEndOf="@+id/card_tip_bg"
+            app:layout_constraintStart_toStartOf="@+id/card_tip_bg"
+            app:layout_constraintTop_toTopOf="@+id/card_tip_bg"
+            tools:text="@string/small_info_updates" />
 
         <TextView
-            android:id="@+id/updates_count"
+            android:id="@+id/card_tip_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
             android:fontFamily="sans-serif-condensed"
-            android:textColor="@color/minimal_orange"
+            android:textColor="@color/minimal_green"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/update_info"
+            app:layout_constraintBottom_toBottomOf="@+id/card_tip_bg"
+            app:layout_constraintEnd_toEndOf="@+id/card_tip_bg"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/updates_txt"
-            app:layout_constraintTop_toTopOf="@+id/update_info"
-            tools:text="0" />
+            app:layout_constraintStart_toEndOf="@+id/card_tip_desc"
+            app:layout_constraintTop_toTopOf="@+id/card_tip_bg"
+            tools:text="100" />
+
+        <ProgressBar
+            android:id="@+id/card_tip_spinner"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginStart="4dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/card_tip_desc"
+            app:layout_constraintStart_toEndOf="@+id/card_tip_desc"
+            app:layout_constraintTop_toTopOf="@+id/card_tip_desc" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

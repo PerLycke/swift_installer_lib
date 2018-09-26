@@ -32,17 +32,19 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.PopupWindow
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.CardItem
+import com.brit.swiftinstaller.library.ui.MainCard
 import com.brit.swiftinstaller.library.ui.changelog.ChangelogHandler
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.enableAllOverlays
 import kotlinx.android.synthetic.main.card_install.*
 import kotlinx.android.synthetic.main.card_item.view.*
-import kotlinx.android.synthetic.main.card_update.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.popup_menu.view.*
 import org.jetbrains.anko.doAsync
@@ -50,7 +52,9 @@ import org.jetbrains.anko.doAsync
 
 class MainActivity : ThemeActivity() {
 
-    val handler = Handler()
+    private val handler = Handler()
+    private var updateCard: View? = null
+    private var updateCardShowing = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,13 +92,6 @@ class MainActivity : ThemeActivity() {
             val intent = Intent(this, OverlaysActivity::class.java)
             startActivity(intent)
             card_install.isEnabled = false
-        }
-
-        card_update.setOnClickListener {
-            val intent = Intent(this, OverlaysActivity::class.java)
-            intent.putExtra("tab", OverlaysActivity.UPDATE_TAB)
-            startActivity(intent)
-            card_update.isEnabled = false
         }
 
         card_personalize.setOnClickListener {
@@ -189,22 +186,46 @@ class MainActivity : ThemeActivity() {
     override fun onResume() {
         super.onResume()
 
+        updateCard?.let {
+            it.findViewById<TextView>(R.id.card_tip_count)?.visibility = View.INVISIBLE
+            it.findViewById<ProgressBar?>(R.id.card_tip_spinner)?.visibility = View.VISIBLE
+        }
+
         UpdateChecker(this, object : UpdateChecker.Callback() {
             override fun finished(installedCount: Int, updates: SynchronizedArrayList<String>) {
                 active_count.text = String.format("%d", installedCount)
                 update_checker_spinner.visibility = View.GONE
+                updateCard?.let {
+                    it.findViewById<TextView>(R.id.card_tip_count)?.visibility = View.VISIBLE
+                    it.findViewById<ProgressBar?>(R.id.card_tip_spinner)?.visibility = View.INVISIBLE
+                }
                 if (updates.isEmpty()) {
-                    card_update.visibility = View.GONE
+                    updateCard.let {
+                        cards_list.removeView(it)
+                    }
+                } else if (!updateCardShowing) {
+                    updateCard = MainCard(
+                            title = getString(R.string.big_tile_install_updates),
+                            desc = getString(R.string.big_tile_update_msg),
+                            icon = getDrawable(R.drawable.ic_updates),
+                            countTxt = getString(R.string.small_info_updates),
+                            count = String.format("%d", updates.size),
+                            onClick = {
+                                startActivity(Intent(this@MainActivity, OverlaysActivity::class.java)
+                                        .putExtra("tab", OverlaysActivity.UPDATE_TAB))
+                                updateCard?.isEnabled = false
+                            }
+                    ).build(this@MainActivity)
+                    cards_list.addView(updateCard, 0)
+                    updateCardShowing = true
                 } else {
-                    updates_count.text = String.format("%d", updates.size)
-                    card_update.visibility = View.VISIBLE
+                    updateCard?.findViewById<TextView>(R.id.card_tip_count)?.text = String.format("%d", updates.size)
                 }
             }
-
         }).execute()
 
+        updateCard?.isEnabled = true
         card_install.isEnabled = true
-        card_update.isEnabled = true
         card_personalize.isEnabled = true
     }
 

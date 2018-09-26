@@ -28,7 +28,7 @@ object IdLists {
     val radioButtons = listOf(
             R.id.material_theme,
             R.id.flat_theme
-                             )
+    )
 
     val bgIds = arrayListOf(
             R.id.customize_root,
@@ -44,18 +44,17 @@ object IdLists {
             R.id.tabs_overlays_root,
             R.id.toolbar_install_summary_root,
             R.id.toolbar_overlays_root
-
-                           )
+    )
 
     val cardIds = arrayListOf(
             R.id.failed_info_card_layout,
             R.id.send_email_layout,
-            R.id.card_update_bg,
             R.id.card_install_bg,
             R.id.card_personalize_bg,
             R.id.card_compatibility_bg,
             R.id.card_reboot_bg,
-            R.id.update_info,
-            R.id.installed_info
-                             )
+            R.id.installed_info,
+            R.id.card_bg,
+            R.id.card_tip_bg
+    )
 }
