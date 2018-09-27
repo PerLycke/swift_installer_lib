@@ -105,9 +105,10 @@ open class OreoRomInfo(context: Context) : RomInfo(context) {
             if (packageName != "com.android.systemui" && packageName != "android") {
                 Log.d("TEST", "killing $packageName")
                 runCommand("pkill $packageName")
+            } else {
+                PreferenceManager.getDefaultSharedPreferences(context)
+                        .edit().putBoolean("hotswap", true).apply()
             }
-            PreferenceManager.getDefaultSharedPreferences(context)
-                    .edit().putBoolean("hotswap", true).apply()
         }
     }
 
