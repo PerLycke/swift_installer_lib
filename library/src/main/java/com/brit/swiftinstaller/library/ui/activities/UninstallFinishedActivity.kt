@@ -51,6 +51,9 @@ class UninstallFinishedActivity : ThemeActivity() {
             PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("hotswap", false).apply()
             finish()
             return
+        } else if (swift.romInfo.neverReboot()) {
+            finish()
+            return
         }
         if (!ShellUtils.isRootAvailable) {
             builder.setPositiveButton(R.string.reboot_later) { dialogInterface, _ ->

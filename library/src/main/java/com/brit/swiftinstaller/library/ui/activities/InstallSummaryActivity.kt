@@ -31,7 +31,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
-import android.preference.PreferenceManager
 import android.view.View
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.brit.swiftinstaller.library.R
@@ -65,6 +64,7 @@ class InstallSummaryActivity : ThemeActivity() {
     private var apps = arrayListOf<String>()
     private var success = false
     private var failed = false
+    private var killSysUI = false
 
     var update = false
 
@@ -152,6 +152,9 @@ class InstallSummaryActivity : ThemeActivity() {
             val failedList = arrayListOf<AppItem>()
             val successList = arrayListOf<AppItem>()
             apps.plus(errorMap.keys).forEach { pn ->
+                if (pn == "android" || pn == "com.android.systemui") {
+                    killSysUI = true
+                }
                 val info: ApplicationInfo?
                 val pInfo: PackageInfo
                 try {
@@ -202,28 +205,32 @@ class InstallSummaryActivity : ThemeActivity() {
                 success = failedList.isEmpty()
                 failed = successList.isEmpty()
 
-                if (!ShellUtils.isRootAvailable && errorMap.isNotEmpty()) {
-                    send_email_layout.visibility = View.VISIBLE
-                    send_email_btn.setOnClickListener { _ ->
-                        sendErrorLog()
+                val hotSwap = prefs.getBoolean("hotswap", false)
+
+                if (failedList.isNotEmpty()) {
+                    if (!ShellUtils.isRootAvailable || this@InstallSummaryActivity.swift.romInfo.neverReboot()) {
+                        send_email_layout.visibility = View.VISIBLE
+                        send_email_btn.setOnClickListener { _ ->
+                            sendErrorLog()
+                        }
                     }
                 }
 
-                val hotSwap =
-                        PreferenceManager.getDefaultSharedPreferences(this@InstallSummaryActivity).
-                                getBoolean("hotswap", false)
-
-                if (ShellUtils.isRootAvailable && !hotSwap) {
-                    fab_install_finished.show()
+                if (!this@InstallSummaryActivity.swift.romInfo.neverReboot() && !hotSwap) {
+                    if (ShellUtils.isRootAvailable) {
+                        fab_install_finished.show()
+                    }
                 }
-                if (!hotSwap || !isOverlayEnabled("android")) {
+
+                if (killSysUI) {
+                    killSysUI = false
+                    restartSysUi(this@InstallSummaryActivity)
+                } else if (this@InstallSummaryActivity.swift.romInfo.neverReboot() && success) {
+                    prefs.edit().putBoolean("hotswap", false).apply()
+                } else if (!hotSwap || !isOverlayEnabled("android") || failedList.isNotEmpty()) {
                     handler.post {
                         resultDialog()
                     }
-                } else {
-                    restartSysUi(this@InstallSummaryActivity)
-                    PreferenceManager.getDefaultSharedPreferences(this@InstallSummaryActivity).
-                            edit().putBoolean("hotswap", false).apply()
                 }
 
                 if (failed) {
@@ -254,15 +261,17 @@ class InstallSummaryActivity : ThemeActivity() {
             title = when {
                 failed -> getString(R.string.installation_failed)
                 !ShellUtils.isRootAvailable -> getString(R.string.reboot_to_finish)
+                this@InstallSummaryActivity.swift.romInfo.neverReboot() -> getString(R.string.something_failed)
                 else -> getString(R.string.reboot_now_title)
             }
 
             message = when {
                 success -> getString(R.string.examined_result_msg_noerror)
                 failed -> getString(R.string.examined_result_msg_error)
+                this@InstallSummaryActivity.swift.romInfo.neverReboot() -> getString(R.string.something_failed_msg)
                 else -> getString(R.string.examined_result_msg)
             }
-            if (ShellUtils.isRootAvailable && !failed) {
+            if (ShellUtils.isRootAvailable && !failed && !this@InstallSummaryActivity.swift.romInfo.neverReboot()) {
                 negativeButton(R.string.reboot_later) { dialog ->
                     dialog.dismiss()
                 }

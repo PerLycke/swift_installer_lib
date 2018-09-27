@@ -30,6 +30,8 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Handler
+import android.os.Looper
+import android.os.MessageQueue
 import android.system.Os
 import android.util.Log
 import com.android.apksig.ApkSigner
@@ -332,14 +334,18 @@ fun quickRebootCommand() {
 }
 
 fun restartSysUi(context: Context) {
-    context.toast("SystemUI restarting & loading colors")
-    Handler().postDelayed({
-        val intent = Intent(Intent.ACTION_MAIN)
-        intent.addCategory(Intent.CATEGORY_HOME)
-        val launcherPackage = context.pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY).activityInfo.packageName
-        runCommand("killall com.android.systemui", true)
-        if (launcherPackage.isNotEmpty()) {
-            runCommand("pkill $launcherPackage")
-        }
-    }, 2000)
+    val handler = MessageQueue.IdleHandler {
+        context.toast("SystemUI restarting & loading colors")
+        Handler().postDelayed({
+            val intent = Intent(Intent.ACTION_MAIN)
+            intent.addCategory(Intent.CATEGORY_HOME)
+            val launcherPackage = context.pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY).activityInfo.packageName
+            runCommand("killall com.android.systemui", true)
+            if (launcherPackage.isNotEmpty()) {
+                runCommand("pkill $launcherPackage")
+            }
+        }, 2000)
+        false
+    }
+    Looper.myQueue().addIdleHandler(handler)
 }

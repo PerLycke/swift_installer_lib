@@ -372,7 +372,7 @@ class OverlaysActivity : ThemeActivity() {
         val apps = SynchronizedArrayList<String>()
         checked.mapTo(apps) { it.packageName }
         intent.putStringArrayListExtra("apps", apps)
-        pagerAdapter.clearCheckedItems(container.currentItem)
+        pagerAdapter.clearCheckedItems()
         startActivity(intent)
     }
 
@@ -406,7 +406,7 @@ class OverlaysActivity : ThemeActivity() {
         checked.mapTo(apps) { it.packageName }
         intent.putStringArrayListExtra("apps", apps)
         intent.putExtra("uninstall", true)
-        pagerAdapter.clearCheckedItems(container.currentItem)
+        pagerAdapter.clearCheckedItems()
         startActivity(intent)
     }
 
@@ -425,7 +425,7 @@ class OverlaysActivity : ThemeActivity() {
         checked.mapTo(apps) { it.packageName }
         intent.putStringArrayListExtra("apps", apps)
         intent.putExtra("update", true)
-        pagerAdapter.clearCheckedItems(container.currentItem)
+        pagerAdapter.clearCheckedItems()
         startActivity(intent)
     }
 

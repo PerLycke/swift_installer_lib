@@ -190,4 +190,6 @@ You can find it: </string>
     <string name="changelog">Changelog</string>
     <string name="magisk_module">Magisk module for Pie: %s</string>
     <string name="rescue_zip_pie">TWRP flashable rescue zip: %s</string>
+    <string name="something_failed">Something failed</string>
+    <string name="something_failed_msg">An overlay failed to install. Examine the result and optionally send an error log.</string>
 </resources>

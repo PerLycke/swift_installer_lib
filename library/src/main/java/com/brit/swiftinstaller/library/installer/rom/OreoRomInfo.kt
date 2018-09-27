@@ -28,10 +28,8 @@ import android.util.Log
 import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
 import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
 import com.brit.swiftinstaller.library.ui.customize.PreviewHandler
+import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
-import com.brit.swiftinstaller.library.utils.ShellUtils
-import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
-import com.brit.swiftinstaller.library.utils.runCommand
 
 open class OreoRomInfo(context: Context) : RomInfo(context) {
 
@@ -40,10 +38,8 @@ open class OreoRomInfo(context: Context) : RomInfo(context) {
             runCommand("pm install -r $overlayPath", true)
             if (runCommand("cmd overlay list", true).output?.contains(getOverlayPackageName(targetPackage)) == true) {
                 runCommand("cmd overlay enable ${getOverlayPackageName(targetPackage)}", true)
-                if (targetPackage == "android" || targetPackage == "com.android.systemui") {
-                    PreferenceManager.getDefaultSharedPreferences(
+                PreferenceManager.getDefaultSharedPreferences(
                             context).edit().putBoolean("hotswap", true).apply()
-                }
             }
         }
     }
@@ -74,7 +70,6 @@ open class OreoRomInfo(context: Context) : RomInfo(context) {
                 "com.Slack",
                 "com.twitter.android",
                 "com.google.android.gms",
-                "com.google.android.apps.nexuslauncher",
                 "com.lastpass.lpandroid",
                 "com.weather.Weather"
         )
@@ -106,8 +101,7 @@ open class OreoRomInfo(context: Context) : RomInfo(context) {
                 Log.d("TEST", "killing $packageName")
                 runCommand("pkill $packageName")
             } else {
-                PreferenceManager.getDefaultSharedPreferences(context)
-                        .edit().putBoolean("hotswap", true).apply()
+                context.swift.prefs.edit().putBoolean("hotswap", true).apply()
             }
         }
     }
@@ -117,6 +111,10 @@ open class OreoRomInfo(context: Context) : RomInfo(context) {
     }
 
     override fun useHotSwap(): Boolean {
+        return true
+    }
+
+    override fun neverReboot(): Boolean {
         return true
     }
 

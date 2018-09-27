@@ -122,6 +122,10 @@ abstract class RomInfo constructor(var context: Context) {
         return false
     }
 
+    open fun neverReboot(): Boolean {
+        return false
+    }
+
     abstract fun installOverlay(context: Context, targetPackage: String, overlayPath: String)
     abstract fun postInstall(uninstall: Boolean = false,
                              apps: SynchronizedArrayList<String> = synchronizedArrayListOf(),
