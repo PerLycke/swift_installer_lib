@@ -63,6 +63,8 @@ class InstallSummaryActivity : ThemeActivity() {
 
     private var errorMap: HashMap<String, String> = HashMap()
     private var apps = arrayListOf<String>()
+    private var success = false
+    private var failed = false
 
     var update = false
 
@@ -147,6 +149,8 @@ class InstallSummaryActivity : ThemeActivity() {
 
         doAsync {
             val pm = this@InstallSummaryActivity.packageManager
+            val failedList = arrayListOf<AppItem>()
+            val successList = arrayListOf<AppItem>()
             apps.plus(errorMap.keys).forEach { pn ->
                 val info: ApplicationInfo?
                 val pInfo: PackageInfo
@@ -163,61 +167,71 @@ class InstallSummaryActivity : ThemeActivity() {
                             versionName = pInfo.versionName,
                             icon = info.loadIcon(pm))
                     if (errorMap.keys.contains(pn)) {
-                        uiThread {
-                            pagerAdapter.addApp(FAILED_TAB, item)
-                        }
+                        failedList.add(item)
                     } else if (swift.romInfo.isOverlayInstalled(pn)) {
                         if (update && !OverlayUtils.wasUpdateSuccessful(this@InstallSummaryActivity,
                                         item.packageName)) {
-                            uiThread {
-                                errorMap[pn] = "Update Failed"
-                                pagerAdapter.addApp(FAILED_TAB, item)
-                            }
+                            errorMap[pn] = "Update Failed"
+                            failedList.add(item)
                         } else {
-                            uiThread {
-                                pagerAdapter.addApp(SUCCESS_TAB, item)
-                            }
+                            successList.add(item)
                             removeAppToUpdate(this@InstallSummaryActivity, item.packageName)
                         }
                     } else {
-                        uiThread {
-                            errorMap[pn] = "Install Cancelled"
-                            LocalBroadcastManager.getInstance(
-                                    this@InstallSummaryActivity.applicationContext)
-                                    .sendBroadcast(Intent(ACTION_INSTALL_CANCELLED))
-                            pagerAdapter.addApp(FAILED_TAB, item)
-                        }
+                        errorMap[pn] = "Install Cancelled"
+                        LocalBroadcastManager.getInstance(
+                                this@InstallSummaryActivity.applicationContext)
+                                .sendBroadcast(Intent(ACTION_INSTALL_CANCELLED))
+                        failedList.add(item)
                     }
                     if (Utils.isSamsungOreo()) {
-                        uiThread {
-                            AppList.updateApp(this@InstallSummaryActivity, pn)
-                        }
+                        AppList.updateApp(this@InstallSummaryActivity, pn)
                     }
                 }
             }
-        }
 
-        if (!ShellUtils.isRootAvailable && errorMap.isNotEmpty()) {
-            send_email_layout.visibility = View.VISIBLE
-            send_email_btn.setOnClickListener {
-                sendErrorLog()
+            uiThread {
+
+                successList.forEach { item ->
+                    pagerAdapter.addApp(SUCCESS_TAB, item)
+                }
+                failedList.forEach { item ->
+                    pagerAdapter.addApp(FAILED_TAB, item)
+                }
+
+                success = failedList.isEmpty()
+                failed = successList.isEmpty()
+
+                if (!ShellUtils.isRootAvailable && errorMap.isNotEmpty()) {
+                    send_email_layout.visibility = View.VISIBLE
+                    send_email_btn.setOnClickListener { _ ->
+                        sendErrorLog()
+                    }
+                }
+
+                val hotSwap =
+                        PreferenceManager.getDefaultSharedPreferences(this@InstallSummaryActivity).
+                                getBoolean("hotswap", false)
+
+                if (ShellUtils.isRootAvailable && !hotSwap) {
+                    fab_install_finished.show()
+                }
+                if (!hotSwap || !isOverlayEnabled("android")) {
+                    handler.post {
+                        resultDialog()
+                    }
+                } else {
+                    restartSysUi(this@InstallSummaryActivity)
+                    PreferenceManager.getDefaultSharedPreferences(this@InstallSummaryActivity).
+                            edit().putBoolean("hotswap", false).apply()
+                }
+
+                if (failed) {
+                    container.currentItem = 1
+                } else {
+                    container.currentItem = 0
+                }
             }
-        }
-
-        val hotSwap =
-                PreferenceManager.getDefaultSharedPreferences(this).getBoolean("hotswap", false)
-
-        if (ShellUtils.isRootAvailable && !hotSwap) {
-            fab_install_finished.show()
-        }
-        if (!hotSwap || !isOverlayEnabled("android")) {
-            handler.post {
-                resultDialog()
-            }
-        } else {
-            restartSysUi(this)
-            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("hotswap", false)
-                    .apply()
         }
     }
 
@@ -235,7 +249,6 @@ class InstallSummaryActivity : ThemeActivity() {
     }
 
     private fun resultDialog() {
-        val failed = apps.size == errorMap.size
 
         alert {
             title = when {
@@ -245,9 +258,9 @@ class InstallSummaryActivity : ThemeActivity() {
             }
 
             message = when {
+                success -> getString(R.string.examined_result_msg_noerror)
                 failed -> getString(R.string.examined_result_msg_error)
-                errorMap.isNotEmpty() -> getString(R.string.examined_result_msg)
-                else -> getString(R.string.examined_result_msg_noerror)
+                else -> getString(R.string.examined_result_msg)
             }
             if (ShellUtils.isRootAvailable && !failed) {
                 negativeButton(R.string.reboot_later) { dialog ->
@@ -263,12 +276,6 @@ class InstallSummaryActivity : ThemeActivity() {
                 }
             }
             show()
-        }
-
-        if (!failed) {
-            container.currentItem = 0
-        } else {
-            container.currentItem = 1
         }
     }
 
