@@ -85,6 +85,12 @@ class UninstallFinishedActivity : ThemeActivity() {
         if (hasFocus) {
             themeDialog()
             dialog.show()
+            dialog.getButton(
+                    android.app.AlertDialog.BUTTON_POSITIVE)
+                    .setTextColor(swift.selection.accentColor)
+            dialog.getButton(
+                    android.app.AlertDialog.BUTTON_NEGATIVE)
+                    .setTextColor(swift.selection.accentColor)
         }
     }
 
