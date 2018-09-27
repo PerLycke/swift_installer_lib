@@ -40,8 +40,10 @@ open class OreoRomInfo(context: Context) : RomInfo(context) {
             runCommand("pm install -r $overlayPath", true)
             if (runCommand("cmd overlay list", true).output?.contains(getOverlayPackageName(targetPackage)) == true) {
                 runCommand("cmd overlay enable ${getOverlayPackageName(targetPackage)}", true)
-                PreferenceManager.getDefaultSharedPreferences(
-                        context).edit().putBoolean("hotswap", true).apply()
+                if (targetPackage == "android" || targetPackage == "com.android.systemui") {
+                    PreferenceManager.getDefaultSharedPreferences(
+                            context).edit().putBoolean("hotswap", true).apply()
+                }
             }
         }
     }
