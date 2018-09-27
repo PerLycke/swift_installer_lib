@@ -411,8 +411,8 @@ class CustomizeActivity : ThemeActivity() {
             oldSelection.keys.forEach { key ->
                 if (oldSelection[key] != selection[key]) {
                     val cat = customizeHandler.getCustomizeOptions()[key]
+                    hotSwapPrefOff()
                     cat?.requiredApps?.forEach { app ->
-                        hotSwapPrefOff()
                         checkAndAddApp(apps, app)
                     }
                 }
