@@ -25,7 +25,9 @@ package com.brit.swiftinstaller.library.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Handler
 import android.system.Os
@@ -332,6 +334,12 @@ fun quickRebootCommand() {
 fun restartSysUi(context: Context) {
     context.toast("SystemUI restarting & loading colors")
     Handler().postDelayed({
+        val intent = Intent(Intent.ACTION_MAIN)
+        intent.addCategory(Intent.CATEGORY_HOME)
+        val launcherPackage = context.pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY).activityInfo.packageName
         runCommand("killall com.android.systemui", true)
+        if (launcherPackage.isNotEmpty()) {
+            runCommand("pkill $launcherPackage")
+        }
     }, 2000)
 }
