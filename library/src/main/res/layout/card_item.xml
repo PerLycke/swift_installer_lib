@@ -30,7 +30,7 @@
     android:id="@+id/card_item_root">
 
     <ImageView
-        android:id="@+id/card_item_bg"
+        android:id="@+id/card_bg"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
@@ -53,9 +53,9 @@
         android:foreground="@drawable/item_background_rounded"
         android:padding="8dp"
         android:tint="@color/minimal_red"
-        app:layout_constraintBottom_toBottomOf="@+id/card_item_bg"
-        app:layout_constraintEnd_toEndOf="@+id/card_item_bg"
-        app:layout_constraintTop_toTopOf="@+id/card_item_bg"
+        app:layout_constraintBottom_toBottomOf="@+id/card_bg"
+        app:layout_constraintEnd_toEndOf="@+id/card_bg"
+        app:layout_constraintTop_toTopOf="@+id/card_bg"
         app:srcCompat="@drawable/ic_close" />
 
     <TextView
@@ -66,9 +66,9 @@
         android:layout_marginBottom="2dp"
         android:text="@string/info_card_compatibility_msg"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/card_item_bg"
+        app:layout_constraintBottom_toBottomOf="@+id/card_bg"
         app:layout_constraintEnd_toStartOf="@+id/card_item_btn"
-        app:layout_constraintStart_toStartOf="@+id/card_item_bg"
-        app:layout_constraintTop_toTopOf="@+id/card_item_bg" />
+        app:layout_constraintStart_toStartOf="@+id/card_bg"
+        app:layout_constraintTop_toTopOf="@+id/card_bg" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
