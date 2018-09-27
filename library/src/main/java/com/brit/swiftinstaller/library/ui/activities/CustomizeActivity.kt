@@ -400,27 +400,25 @@ class CustomizeActivity : ThemeActivity() {
             fun hotSwapPrefOff() = PreferenceManager.getDefaultSharedPreferences(
                     this).edit().putBoolean("hotswap", false).apply()
 
+            if (selection.accentColor != oldSelection.accentColor) {
+                if (swift.romInfo.useHotSwap()) {
+                    hotSwapPrefOn()
+                }
+                checkAndAddApp(apps, "android")
+            }
+
             oldSelection.keys.forEach { key ->
                 if (oldSelection[key] != selection[key]) {
                     val cat = customizeHandler.getCustomizeOptions()[key]
                     cat?.requiredApps?.forEach { app ->
-                        if (app == "android") {
-                            if (swift.romInfo.useHotSwap()) {
-                                hotSwapPrefOn()
-                            } else {
-                                hotSwapPrefOff()
-                            }
-                        }
+                        hotSwapPrefOff()
                         checkAndAddApp(apps, app)
                     }
                 }
             }
 
-
-            if (selection.accentColor != oldSelection.accentColor) {
-                checkAndAddApp(apps, "android")
-            }
             if (selection.backgroundColor != oldSelection.backgroundColor) {
+                hotSwapPrefOff()
                 checkAndAddApp(apps, "android")
             }
 

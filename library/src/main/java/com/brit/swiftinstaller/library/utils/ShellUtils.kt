@@ -330,7 +330,7 @@ fun quickRebootCommand() {
 }
 
 fun restartSysUi(context: Context) {
-    context.toast("SystemUI is about to restart.")
+    context.toast("SystemUI restarting & loading colors")
     Handler().postDelayed({
         runCommand("killall com.android.systemui", true)
     }, 2000)
