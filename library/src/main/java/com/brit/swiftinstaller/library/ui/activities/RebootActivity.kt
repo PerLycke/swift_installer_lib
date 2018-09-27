@@ -23,18 +23,12 @@ package com.brit.swiftinstaller.library.ui.activities
 
 import android.app.Dialog
 import android.os.Bundle
-import android.os.Handler
+import android.os.Looper
+import android.os.MessageQueue
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.library.utils.alert
-import com.brit.swiftinstaller.library.utils.getUseSoftReboot
-import com.brit.swiftinstaller.library.utils.prefs
-import com.brit.swiftinstaller.library.utils.quickRebootCommand
-import com.brit.swiftinstaller.library.utils.rebootCommand
-import com.brit.swiftinstaller.library.utils.restartSysUi
+import com.brit.swiftinstaller.library.utils.*
 
 class RebootActivity : ThemeActivity() {
-
-    private val handler = Handler()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +49,7 @@ class RebootActivity : ThemeActivity() {
                 val rebootingDialog = Dialog(ctx, R.style.AppTheme_Translucent)
                 rebootingDialog.setContentView(R.layout.reboot)
                 rebootingDialog.show()
-                handler.post {
+                val handler = MessageQueue.IdleHandler {
                     if (hotswap) {
                         restartSysUi(ctx)
                         prefs.edit().putBoolean("hotswap", false).apply()
@@ -67,7 +61,9 @@ class RebootActivity : ThemeActivity() {
                             rebootCommand()
                         }
                     }
+                    false
                 }
+                Looper.myQueue().addIdleHandler(handler)
             }
             negativeButton(R.string.cancel) { dialog ->
                 dialog.dismiss()
