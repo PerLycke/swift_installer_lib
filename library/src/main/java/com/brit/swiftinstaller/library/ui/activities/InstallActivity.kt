@@ -101,8 +101,26 @@ class InstallActivity : ThemeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         uninstall = intent.getBooleanExtra("uninstall", false)
-        update = intent.getBooleanExtra("update", false)
         apps = SynchronizedArrayList(intent.getStringArrayListExtra("apps"))
+
+        if (!uninstall && apps.contains("android") && !prefs.getBoolean("android_install_dialog", false)) {
+            prefs.edit().putBoolean("android_install_dialog", true).apply()
+            alert {
+                title = getString(R.string.installing_and_uninstalling_title)
+                message = getString(R.string.installing_and_uninstalling_msg)
+                positiveButton(R.string.proceed) { dialog ->
+                    dialog.dismiss()
+                    installStart()
+                }
+                show()
+            }
+        } else {
+            installStart()
+        }
+    }
+
+    private fun installStart() {
+        update = intent.getBooleanExtra("update", false)
 
         if (apps.contains("android")) {
             apps.remove("android")
@@ -190,18 +208,6 @@ class InstallActivity : ThemeActivity() {
 
         themeDialog()
         dialog?.show()
-
-        if (!uninstall && apps.contains("android") && !prefs.getBoolean("android_install_dialog", false)) {
-            prefs.edit().putBoolean("android_install_dialog", true).apply()
-            alert {
-                title = getString(R.string.installing_and_uninstalling_title)
-                message = getString(R.string.installing_and_uninstalling_msg)
-                positiveButton(R.string.proceed) { dialog ->
-                    dialog.dismiss()
-                }
-                show()
-            }
-        }
     }
 
     override fun recreate() {

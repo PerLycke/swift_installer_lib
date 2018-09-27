@@ -21,7 +21,6 @@
 
 package com.brit.swiftinstaller.library.ui.activities
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.PorterDuff
 import android.os.Bundle
@@ -319,34 +318,8 @@ class OverlaysActivity : ThemeActivity() {
         val sheetListener = View.OnClickListener {
             when (it) {
                 install -> {
-                    val launch = getSharedPreferences("launched", Context.MODE_PRIVATE).getString(
-                            "launched", "first")
                     bottomSheetDialog.dismiss()
-
-                    when (launch) {
-                        "default" -> installAction()
-                        "first" -> {
-                            getSharedPreferences("launched", Context.MODE_PRIVATE).edit()
-                                    .putString("launched", "second").apply()
-                            installAction()
-                        }
-                        "second" -> {
-                            alert {
-                                title = getString(R.string.reboot_delay_title)
-                                message = getString(R.string.reboot_delay_msg)
-                                positiveButton(R.string.proceed) { dialog ->
-                                    getSharedPreferences("launched", Context.MODE_PRIVATE)
-                                            .edit().putString("launched", "default").apply()
-                                    dialog.dismiss()
-                                    installAction()
-                                }
-                                negativeButton(R.string.cancel) { dialog ->
-                                    dialog.dismiss()
-                                }
-                                show()
-                            }
-                        }
-                    }
+                    installAction()
                 }
                 uninstall -> {
                     bottomSheetDialog.dismiss()

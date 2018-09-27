@@ -109,9 +109,8 @@ class MainActivity : ThemeActivity() {
                         alert {
                             title = getString(R.string.reboot_delay_title)
                             message = getString(R.string.reboot_delay_msg)
-                            positiveButton(R.string.proceed) { dialog ->
+                            positiveButton(R.string.got_it) { dialog ->
                                 dialog.dismiss()
-                                startActivity(intent)
                             }
                             show()
                         }
