@@ -34,6 +34,7 @@ import android.os.MessageQueue
 import android.preference.PreferenceManager
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -431,7 +432,6 @@ class CustomizeActivity : ThemeActivity() {
             }
 
             if (recompile && apps.isNotEmpty()) {
-
                 val receiver = object : BroadcastReceiver() {
                     override fun onReceive(context: Context, intent: Intent) {
                         if (intent.action == InstallSummaryActivity.ACTION_INSTALL_CANCELLED) {

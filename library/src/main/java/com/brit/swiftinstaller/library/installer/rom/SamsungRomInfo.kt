@@ -213,7 +213,7 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
                 selection["samsung_oreo_icons"] = "stock_accent"
                 selection["samsung_oreo_clock"] = "right"
                 selection["samsung_oreo_notif_style"] = "default"
-                selection["samsung_oreo_qs_alpha"] = "0"
+                selection["qs_alpha"] = "0"
                 return selection
             }
 
@@ -243,8 +243,8 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
             }
 
             systemUiPreview?.let {
-                if (selection.containsKey("samsung_oreo_qs_alpha")) {
-                    val qsAlpha = selection.getInt("samsung_oreo_qs_alpha")
+                if (selection.containsKey("qs_alpha")) {
+                    val qsAlpha = selection.getInt("qs_alpha")
                     it.preview_wallpaper.setColorFilter(
                             ColorUtils.addAlphaColor(palette.backgroundColor,
                                     qsAlpha), PorterDuff.Mode.SRC_OVER)
@@ -332,7 +332,7 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
         notifOptions.add(Option(context.getString(R.string.default_style), "default"))
         notifOptions.add(Option(context.getString(R.string.android_p_rounded_style), "p"))
         val trans =
-                SliderOption(context.getString(R.string.qs_transparency), "samsung_oreo_qs_alpha")
+                SliderOption(context.getString(R.string.qs_transparency), "qs_alpha")
         trans.current = 0
         notifOptions.add(trans)
         notifOptions["p"]!!.infoDialogTitle = context.getString(R.string.rounded_dialog_title)

@@ -18,4 +18,21 @@ class CategoryMap : HashMap<String, CustomizeCategory>(), Iterable<CustomizeCate
     fun add(category: CustomizeCategory) {
         put(category.key, category)
     }
+
+    override fun get(key: String): CustomizeCategory? {
+        if (containsKey(key)) {
+            return super.get(key)
+        }
+        for (cat in this) {
+            for (option in cat.options) {
+                if (option.isSliderOption) {
+                    return cat
+                }
+                if (option.subOptionKey.isNotEmpty()) {
+                    return cat
+                }
+            }
+        }
+        return null
+    }
 }

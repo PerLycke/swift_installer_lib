@@ -58,7 +58,7 @@ class InstallerUpdateReceiver : BroadcastReceiver() {
         if (prefs.contains(KEY_ALPHA)) {
             val alpha = prefs.getInt(KEY_ALPHA, -1)
             if (alpha != -1) {
-                selection["samsung_oreo_qs_alpha"] = alpha.toString()
+                selection["qs_alpha"] = alpha.toString()
             }
             edit.remove(KEY_ALPHA)
         }
