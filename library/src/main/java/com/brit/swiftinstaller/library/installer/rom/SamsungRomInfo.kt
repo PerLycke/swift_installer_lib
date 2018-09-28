@@ -85,6 +85,7 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
                 "com.google.android.apps.messaging",
                 "com.google.android.gm",
                 "com.google.android.talk",
+                "com.google.android.packageinstaller",
                 "com.mxtech.videoplayer.ad",
                 "com.mxtech.videoplayer.pro",
                 "com.pandora.android",
