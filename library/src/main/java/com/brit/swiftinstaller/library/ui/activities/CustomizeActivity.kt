@@ -34,11 +34,11 @@ import android.os.MessageQueue
 import android.preference.PreferenceManager
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -78,6 +78,7 @@ class CustomizeActivity : ThemeActivity() {
 
     private var finish = false
     private var usePalette = false
+    private var updateOnResume = false
 
     private lateinit var materialPalette: MaterialPalette
     private val handler = Handler()
@@ -96,6 +97,11 @@ class CustomizeActivity : ThemeActivity() {
         parentActivity = intent.getStringExtra("parentActivity")
         usePalette = useBackgroundPalette(this)
         materialPalette = MaterialPalette.createPalette(selection.backgroundColor, usePalette)
+
+        personalize_fab.background.setTint(selection.accentColor)
+        category_update_progress.indeterminateDrawable.setColorFilter(selection.accentColor,
+                PorterDuff.Mode.SRC_ATOP)
+        customizations_scrollview.isVerticalScrollBarEnabled = false
 
         setupPreview()
         setupAccentSheet()
@@ -324,6 +330,9 @@ class CustomizeActivity : ThemeActivity() {
 
                 material_theme.isChecked = usePalette
                 flat_theme.isChecked = !usePalette
+
+                updateColor(true)
+                updateOnResume = true
             }
         }
     }
@@ -338,7 +347,7 @@ class CustomizeActivity : ThemeActivity() {
 
     override fun onResume() {
         super.onResume()
-        handler.post {
+        if (updateOnResume) {
             updateColor(true)
         }
         if (finish) finish()
@@ -540,6 +549,15 @@ class CustomizeActivity : ThemeActivity() {
                     TextView.BufferType.EDITABLE)
 
         previewHandler.updateView(materialPalette, selection)
+
+        if (main_layout.visibility == View.INVISIBLE) {
+            category_update_progress.visibility = View.INVISIBLE
+            val anim = AlphaAnimation(0.0f, 1.0f)
+            anim.duration = 500
+            main_layout.visibility = View.VISIBLE
+            main_layout.startAnimation(anim)
+            customizations_scrollview.isVerticalScrollBarEnabled = true
+        }
     }
 
     class BackgroundIndicatorHandler {

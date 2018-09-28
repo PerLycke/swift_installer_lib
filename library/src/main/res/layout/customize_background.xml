@@ -19,7 +19,7 @@
   ~  */
   -->
 
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/customize_bg_root"
@@ -62,7 +62,7 @@
         android:layout_width="0dp"
         android:layout_height="2dp"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="16dp"
         android:background="@color/divider"
         android:contentDescription="@string/image"
         android:visibility="visible"
@@ -196,4 +196,4 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintTop_toBottomOf="@+id/background_palette" />
 
-</merge>
+</androidx.constraintlayout.widget.ConstraintLayout>
