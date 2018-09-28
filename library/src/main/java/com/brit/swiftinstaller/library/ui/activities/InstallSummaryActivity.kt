@@ -222,7 +222,7 @@ class InstallSummaryActivity : ThemeActivity() {
                     }
                 }
 
-                if (killSysUI) {
+                if (hotSwap && killSysUI) {
                     killSysUI = false
                     restartSysUi(this@InstallSummaryActivity)
                 } else if (this@InstallSummaryActivity.swift.romInfo.neverReboot() && success) {
