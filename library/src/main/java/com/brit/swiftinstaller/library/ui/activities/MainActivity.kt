@@ -215,7 +215,7 @@ class MainActivity : ThemeActivity() {
                                 updateCard?.isEnabled = false
                             }
                     ).build(this@MainActivity)
-                    cards_list.addView(updateCard, 0)
+                    cards_list.addView(updateCard, cards_list.indexOfChild(card_install))
                     updateCardShowing = true
                 } else {
                     updateCard?.findViewById<TextView>(R.id.card_tip_count)?.text = String.format("%d", updates.size)
