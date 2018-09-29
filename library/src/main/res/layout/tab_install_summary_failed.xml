@@ -31,7 +31,7 @@
         android:fontFamily="sans-serif"
         android:text="@string/tab_failed"
         android:textAllCaps="true"
-        android:textColor="@color/minimal_red"
+        android:textColor="@color/disabled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"

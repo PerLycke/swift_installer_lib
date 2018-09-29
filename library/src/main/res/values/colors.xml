@@ -38,6 +38,7 @@
     <color name="reboot_bg">#BF000000</color>
     <color name="sysui_icons_tint">#de000000</color>
     <color name="notification_bg_light">#f5f5f5</color>
+    <color name="disabled">#4Dffffff</color>
 
     <!-- Minimal palette -->
     <color name="minimal_blue">#4A7CA5</color>

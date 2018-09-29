@@ -26,9 +26,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     app:tabIndicatorColor="@android:color/white"
-    app:tabIndicatorHeight="1dp"
-    app:tabSelectedTextColor="#ffffffff"
-    app:tabTextColor="@color/light_grey">
+    app:tabIndicatorHeight="1dp">
 
     <com.google.android.material.tabs.TabItem
         android:id="@+id/tabItem"

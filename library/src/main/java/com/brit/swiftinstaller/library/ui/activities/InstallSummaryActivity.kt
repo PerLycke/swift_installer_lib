@@ -43,6 +43,8 @@ import com.brit.swiftinstaller.library.utils.OverlayUtils.isOverlayEnabled
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_install_summary.*
+import kotlinx.android.synthetic.main.tab_install_summary_failed.*
+import kotlinx.android.synthetic.main.tab_install_summary_success.*
 import kotlinx.android.synthetic.main.tab_layout_install_summary.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
@@ -214,6 +216,15 @@ class InstallSummaryActivity : ThemeActivity() {
                             sendErrorLog()
                         }
                     }
+                    result_failed_tab_txt.setTextColor(getColor(R.color.minimal_red))
+                } else {
+                    result_failed_tab_txt.setTextColor(getColor(R.color.disabled))
+                }
+
+                if (successList.isNotEmpty()) {
+                    result_successful_tab_txt.setTextColor(getColor(R.color.minimal_green))
+                } else {
+                    result_successful_tab_txt.setTextColor(getColor(R.color.disabled))
                 }
 
                 if (!this@InstallSummaryActivity.swift.romInfo.neverReboot() && !hotSwap) {
@@ -238,6 +249,8 @@ class InstallSummaryActivity : ThemeActivity() {
                 } else {
                     container.currentItem = 0
                 }
+
+                summary_loading_progress.visibility = View.GONE
             }
         }
     }
