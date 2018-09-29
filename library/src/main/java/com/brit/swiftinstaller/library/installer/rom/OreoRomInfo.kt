@@ -70,6 +70,7 @@ open class OreoRomInfo(context: Context) : RomInfo(context) {
                 "com.Slack",
                 "com.twitter.android",
                 "com.google.android.gms",
+                "com.google.android.apps.nexuslauncher",
                 "com.lastpass.lpandroid",
                 "com.weather.Weather"
         )
