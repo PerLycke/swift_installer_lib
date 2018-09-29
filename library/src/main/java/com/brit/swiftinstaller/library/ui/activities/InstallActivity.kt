@@ -140,7 +140,7 @@ class InstallActivity : ThemeActivity() {
                         uninstallComplete()
                     }
                 }
-            }, 60000)
+            }, 120000)
         }
 
         builder.setView(inflate)
