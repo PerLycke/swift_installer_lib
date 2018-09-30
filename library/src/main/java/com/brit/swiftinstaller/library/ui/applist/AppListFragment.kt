@@ -27,7 +27,6 @@ import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
-import android.os.Handler
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
@@ -283,9 +282,7 @@ class AppListFragment : Fragment() {
                         val optionsSelection = SynchronizedArrayList<String>()
                         val selected = getSelectedOverlayOptions(context!!, item.packageName)
                         for (i in appOptions.keys.indices) {
-                            if (selected.containsKey(appOptions.keyAt(i))) {
-                                optionsSelection.add(i, selected[appOptions.keyAt(i)] ?: "")
-                            }
+                            optionsSelection.add(i, selected[appOptions.keyAt(i)] ?: "")
                         }
                         options_icon.visibility = View.VISIBLE
                         options_icon.setColorFilter(
@@ -386,8 +383,6 @@ class AppListFragment : Fragment() {
                          val selection: SynchronizedArrayList<String>) :
             ArrayAdapter<String>(context, R.layout.app_option_item) {
 
-        private val mHandler = Handler()
-
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.app_option_item,
                     parent, false)
@@ -396,18 +391,14 @@ class AppListFragment : Fragment() {
             val opts = options[options.keyAt(position)]
             if (opts!!.contains("on")) {
                 view.checkbox.visibility = View.VISIBLE
+                view.checkbox.isChecked = (selection.elementAtOrNull(position) ?: "off") == "on"
                 view.checkbox.setOnCheckedChangeListener { _, b ->
-                    if (selection.elementAtOrNull(position) != null)
-                        selection.removeAt(position)
-                    mHandler.post {
-                        selection.add(position, if (b) {
-                            "on"
-                        } else {
-                            "off"
-                        })
+                    selection[position] = if (b) {
+                        "on"
+                    } else {
+                        "off"
                     }
                 }
-                view.checkbox.isChecked = (selection.elementAtOrNull(position) ?: "off") == "on"
                 view.spinner.visibility = View.GONE
             } else {
                 view.spinner.visibility = View.VISIBLE
@@ -421,9 +412,7 @@ class AppListFragment : Fragment() {
                 view.spinner.setPopupBackgroundDrawable(popupBg)
                 view.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                        if (selection.elementAtOrNull(position) != null)
-                            selection.removeAt(position)
-                        selection.add(position, opts[p2])
+                        selection[position] = opts[p2]
                     }
 
                     override fun onNothingSelected(p0: AdapterView<*>?) {
