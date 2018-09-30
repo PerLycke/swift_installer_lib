@@ -148,7 +148,6 @@ class SwiftAlertBuilder(override val ctx: Context) : AlertBuilder<AlertDialog> {
                     LinkMovementMethod.getInstance()
 
         }
-        dialog.setCanceledOnTouchOutside(false)
         return dialog
     }
 

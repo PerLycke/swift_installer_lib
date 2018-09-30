@@ -302,6 +302,7 @@ class InstallSummaryActivity : ThemeActivity() {
                     dialog.dismiss()
                 }
             }
+            isCancelable = false
             show()
         }
     }
