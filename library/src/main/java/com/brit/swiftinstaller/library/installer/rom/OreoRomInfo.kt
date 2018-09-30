@@ -24,7 +24,6 @@ package com.brit.swiftinstaller.library.installer.rom
 import android.content.Context
 import android.content.Intent
 import android.preference.PreferenceManager
-import android.util.Log
 import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
 import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
 import com.brit.swiftinstaller.library.ui.customize.PreviewHandler
@@ -99,7 +98,6 @@ open class OreoRomInfo(context: Context) : RomInfo(context) {
         if (ShellUtils.isRootAvailable) {
             runCommand("pm uninstall " + getOverlayPackageName(packageName), true)
             if (packageName != "com.android.systemui" && packageName != "android") {
-                Log.d("TEST", "killing $packageName")
                 runCommand("pkill $packageName")
             } else {
                 context.swift.prefs.edit().putBoolean("hotswap", true).apply()

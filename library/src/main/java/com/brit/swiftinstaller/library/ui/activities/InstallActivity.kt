@@ -29,7 +29,6 @@ import android.content.IntentFilter
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -182,7 +181,6 @@ class InstallActivity : ThemeActivity() {
                             var count = apps.size
                             override fun onReceive(context: Context?, intent: Intent?) {
                                 count--
-                                Log.d("TEST", "total - ${apps.size} : current - $count")
                                 if (count == 0) {
                                     uninstallComplete()
                                     context!!.unregisterReceiver(this)

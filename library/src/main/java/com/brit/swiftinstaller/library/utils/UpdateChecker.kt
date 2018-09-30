@@ -39,6 +39,7 @@ class UpdateChecker(context: Context, private val callback: Callback?) :
 
     override fun doInBackground(vararg params: Void?): Output {
         var installedCount = 0
+        var hasOption = false
         val updates = SynchronizedArrayList<String>()
         val context = mConRef.get()
 
@@ -57,14 +58,17 @@ class UpdateChecker(context: Context, private val callback: Callback?) :
                     removeAppToUpdate(context, packageName)
                 }
                 AppList.updateApp(context, packageName)
+                if (OverlayUtils.getOverlayOptions(context, packageName).isNotEmpty()) {
+                    hasOption = true
+                }
             }
         }
-        return Output(installedCount, updates)
+        return Output(installedCount, hasOption, updates)
     }
 
     override fun onPostExecute(result: Output?) {
         super.onPostExecute(result)
-        callback?.finished(result!!.installedCount, result.updates)
+        callback?.finished(result!!.installedCount, result.hasOption, result.updates)
         if (result!!.updates.isNotEmpty() && callback == null) {
             postNotification()
         }
@@ -98,8 +102,8 @@ class UpdateChecker(context: Context, private val callback: Callback?) :
     }
 
     abstract class Callback {
-        abstract fun finished(installedCount: Int, updates: SynchronizedArrayList<String>)
+        abstract fun finished(installedCount: Int, hasOption: Boolean, updates: SynchronizedArrayList<String>)
     }
 
-    inner class Output(var installedCount: Int, var updates: SynchronizedArrayList<String>)
+    inner class Output(var installedCount: Int, var hasOption: Boolean, var updates: SynchronizedArrayList<String>)
 }

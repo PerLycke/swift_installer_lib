@@ -3,12 +3,7 @@ package com.brit.swiftinstaller.library.ui.applist
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import com.brit.swiftinstaller.library.utils.OverlayUtils
-import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
-import com.brit.swiftinstaller.library.utils.getAppsToUpdate
-import com.brit.swiftinstaller.library.utils.getHiddenApps
-import com.brit.swiftinstaller.library.utils.getVersionCode
-import com.brit.swiftinstaller.library.utils.swift
+import com.brit.swiftinstaller.library.utils.*
 
 object AppList {
 

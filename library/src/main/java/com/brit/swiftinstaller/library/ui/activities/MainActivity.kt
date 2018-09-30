@@ -31,6 +31,7 @@ import android.os.*
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -42,6 +43,7 @@ import com.brit.swiftinstaller.library.ui.CardItem
 import com.brit.swiftinstaller.library.ui.MainCard
 import com.brit.swiftinstaller.library.ui.changelog.ChangelogHandler
 import com.brit.swiftinstaller.library.utils.*
+import com.brit.swiftinstaller.library.utils.OverlayUtils.countAvailableExtras
 import com.brit.swiftinstaller.library.utils.OverlayUtils.enableAllOverlays
 import kotlinx.android.synthetic.main.card_install.*
 import kotlinx.android.synthetic.main.card_item.view.*
@@ -54,12 +56,15 @@ class MainActivity : ThemeActivity() {
 
     private val handler = Handler()
     private var updateCard: View? = null
+    private var extrasCard: View? = null
+    private var extrasCardShowing = false
     private var updateCardShowing = false
+    private var extraApps: Set<String>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(main_toolbar)
+        extraApps = swift.extrasHandler.appExtras.keys
 
         ChangelogHandler.showChangelog(this, true)
 
@@ -121,6 +126,7 @@ class MainActivity : ThemeActivity() {
     }
 
     private fun setupCards() {
+
         val idleHandler = MessageQueue.IdleHandler {
             val cardsList = arrayListOf<CardItem>()
             val cardView = cards_list
@@ -159,10 +165,32 @@ class MainActivity : ThemeActivity() {
                 cardItemLayout.card_item_root.setOnClickListener(item.bgClick)
                 cardView.addView(cardItemLayout)
             }
+
+            if (extraApps != null) {
+                if (OverlayUtils.countAvailableExtras(this, extraApps!!) != 0) {
+                    showExtraCard()
+                }
+            }
             false
         }
         Looper.myQueue().addIdleHandler(idleHandler)
 
+    }
+
+    private fun showExtraCard() {
+        extrasCard = MainCard(
+                title = getString(R.string.overlay_extras_title),
+                desc = getString(R.string.extras_card_desc),
+                icon = getDrawable(R.drawable.ic_extras),
+                onClick = {
+                    extrasCard?.isEnabled = false
+                    extrasCard?.findViewById<ImageView>(R.id.card_new_indicator)?.setVisible(false)
+                    prefs.edit().putBoolean("extras_indicator", false).apply()
+                    startActivity(Intent(this, ExtrasActivity::class.java))
+                }
+        ).build(this@MainActivity)
+        cards_list.addView(extrasCard)
+        extrasCardShowing = true
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,
@@ -191,13 +219,14 @@ class MainActivity : ThemeActivity() {
         }
 
         UpdateChecker(this, object : UpdateChecker.Callback() {
-            override fun finished(installedCount: Int, updates: SynchronizedArrayList<String>) {
+            override fun finished(installedCount: Int, hasOption: Boolean, updates: SynchronizedArrayList<String>) {
                 active_count.text = String.format("%d", installedCount)
-                update_checker_spinner.visibility = View.GONE
+
                 updateCard?.let {
                     it.findViewById<TextView>(R.id.card_tip_count)?.visibility = View.VISIBLE
                     it.findViewById<ProgressBar?>(R.id.card_tip_spinner)?.visibility = View.INVISIBLE
                 }
+
                 if (updates.isEmpty()) {
                     updateCard.let {
                         cards_list.removeView(it)
@@ -220,9 +249,40 @@ class MainActivity : ThemeActivity() {
                 } else {
                     updateCard?.findViewById<TextView>(R.id.card_tip_count)?.text = String.format("%d", updates.size)
                 }
+
+                if (!extrasCardShowing) {
+                    if (hasOption) {
+                        showExtraCard()
+                    }
+                } else {
+                    if (extraApps != null) {
+                        val count = countAvailableExtras(this@MainActivity, extraApps!!)
+                        if (count == 0 && !hasOption) {
+                            if (extrasCard != null) {
+                                cards_list.removeView(extrasCard)
+                                extrasCardShowing = false
+                            }
+                        }
+                    } else {
+                        if (!hasOption) {
+                            cards_list.removeView(extrasCard)
+                            extrasCardShowing = false
+                        }
+                    }
+                }
+
+                extrasCard?.let {
+                    if (prefs.getBoolean("extras_indicator", false)) {
+                        it.findViewById<ImageView>(R.id.card_new_indicator)?.setVisible(true)
+                    } else {
+                        it.findViewById<ImageView>(R.id.card_new_indicator)?.setVisible(false)
+                    }
+                }
+                update_checker_spinner.visibility = View.GONE
             }
         }).execute()
 
+        extrasCard?.isEnabled = true
         updateCard?.isEnabled = true
         card_install.isEnabled = true
         card_personalize.isEnabled = true

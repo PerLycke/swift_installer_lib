@@ -302,4 +302,14 @@ object OverlayUtils {
             // ignore
         }
     }
+
+    fun countAvailableExtras(context: Context, extras: Set<String>) : Int {
+        var count = 0
+        for (i in extras) {
+            if (context.swift.romInfo.isOverlayInstalled(i)) {
+                count++
+            }
+        }
+        return count
+    }
 }

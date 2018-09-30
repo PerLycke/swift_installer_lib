@@ -21,18 +21,19 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar_extras_root"
     android:layout_width="match_parent"
     android:layout_height="64dp">
 
     <TextView
-        android:id="@+id/result_toolbar_title"
+        android:id="@+id/extras_toolbar_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="8dp"
         android:fontFamily="sans-serif-condensed"
         android:paddingTop="4dp"
-        android:text="@string/toolbar_title_installation_summary"
+        android:text="@string/overlay_extras_title"
         android:textAppearance="@style/ToolbarTitle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

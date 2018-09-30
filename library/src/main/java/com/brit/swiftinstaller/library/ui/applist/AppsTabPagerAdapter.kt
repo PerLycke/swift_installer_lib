@@ -31,7 +31,7 @@ import com.brit.swiftinstaller.library.utils.OverlayUtils.checkVersionCompatible
 import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
 import com.brit.swiftinstaller.library.utils.swift
 
-class AppsTabPagerAdapter(fm: FragmentManager, summary: Boolean, vararg tabs: Int) :
+class AppsTabPagerAdapter(fm: FragmentManager, summary: Boolean, extras: Boolean, vararg tabs: Int) :
         FragmentPagerAdapter(fm) {
 
     private var fragments: SynchronizedArrayList<AppListFragment> = SynchronizedArrayList()
@@ -39,7 +39,7 @@ class AppsTabPagerAdapter(fm: FragmentManager, summary: Boolean, vararg tabs: In
 
     init {
         for (index in tabs) {
-            fragments.add(AppListFragment.instance(summary,
+            fragments.add(AppListFragment.instance(summary, extras,
                     (index == InstallSummaryActivity.FAILED_TAB)))
         }
     }

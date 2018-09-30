@@ -80,7 +80,7 @@ class OverlaysActivity : ThemeActivity() {
 
 
         pagerAdapter = AppsTabPagerAdapter(supportFragmentManager,
-                false, INSTALL_TAB, ACTIVE_TAB, UPDATE_TAB)
+                false, false, INSTALL_TAB, ACTIVE_TAB, UPDATE_TAB)
         pagerAdapter.setAlertIconClickListener(object : AppListFragment.AlertIconClickListener {
             override fun onAlertIconClick(appItem: AppItem) {
                 val packageInfo = packageManager.getPackageInfo(appItem.packageName, 0)
@@ -417,7 +417,7 @@ class OverlaysActivity : ThemeActivity() {
             return
         }
         UpdateChecker(this, object : UpdateChecker.Callback() {
-            override fun finished(installedCount: Int, updates: SynchronizedArrayList<String>) {
+            override fun finished(installedCount: Int, hasOption: Boolean, updates: SynchronizedArrayList<String>) {
             }
         }).execute()
         val intent = Intent(this, InstallActivity::class.java)

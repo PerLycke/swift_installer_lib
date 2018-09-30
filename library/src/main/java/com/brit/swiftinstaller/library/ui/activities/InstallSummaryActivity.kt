@@ -46,6 +46,7 @@ import kotlinx.android.synthetic.main.activity_install_summary.*
 import kotlinx.android.synthetic.main.tab_install_summary_failed.*
 import kotlinx.android.synthetic.main.tab_install_summary_success.*
 import kotlinx.android.synthetic.main.tab_layout_install_summary.*
+import kotlinx.android.synthetic.main.toolbar_install_summary.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import java.io.File
@@ -77,7 +78,7 @@ class InstallSummaryActivity : ThemeActivity() {
 
         update = intent.getBooleanExtra("update", false)
 
-        pagerAdapter = AppsTabPagerAdapter(supportFragmentManager, true, SUCCESS_TAB, FAILED_TAB)
+        pagerAdapter = AppsTabPagerAdapter(supportFragmentManager, true, false, SUCCESS_TAB, FAILED_TAB)
         pagerAdapter.setAlertIconClickListener(object : AppListFragment.AlertIconClickListener {
             override fun onAlertIconClick(appItem: AppItem) {
                 alert {
@@ -180,6 +181,10 @@ class InstallSummaryActivity : ThemeActivity() {
                             failedList.add(item)
                         } else {
                             successList.add(item)
+                            if (swift.extrasHandler.appExtras.containsKey(item.packageName) ||
+                                    OverlayUtils.getOverlayOptions(this@InstallSummaryActivity, item.packageName).isNotEmpty()) {
+                                prefs.edit().putBoolean("extras_indicator", true).apply()
+                            }
                             removeAppToUpdate(this@InstallSummaryActivity, item.packageName)
                         }
                     } else {
@@ -250,7 +255,7 @@ class InstallSummaryActivity : ThemeActivity() {
                     container.currentItem = 0
                 }
 
-                summary_loading_progress.visibility = View.GONE
+                summary_loading_progress.setVisible(false)
             }
         }
     }
@@ -262,7 +267,7 @@ class InstallSummaryActivity : ThemeActivity() {
         }
         if (update) {
             UpdateChecker(this, object : UpdateChecker.Callback() {
-                override fun finished(installedCount: Int, updates: SynchronizedArrayList<String>) {
+                override fun finished(installedCount: Int, hasOption: Boolean, updates: SynchronizedArrayList<String>) {
                 }
             }).execute()
         }

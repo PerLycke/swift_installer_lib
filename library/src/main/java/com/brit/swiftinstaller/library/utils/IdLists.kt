@@ -31,19 +31,18 @@ object IdLists {
     )
 
     val bgIds = arrayListOf(
+            R.id.content_main_root,
+            R.id.main_toolbar,
             R.id.customize_root,
             R.id.installation_summary_root,
             R.id.overlays_root,
-            R.id.main_toolbar,
-            R.id.content_main_root,
             R.id.customize_bg_root,
             R.id.customize_accent_root,
             R.id.customize_preview_root,
             R.id.palette_view_root,
             R.id.tab_install_summary_root,
             R.id.tabs_overlays_root,
-            R.id.toolbar_install_summary_root,
-            R.id.toolbar_overlays_root
+            R.id.activity_extras_root
     )
 
     val cardIds = arrayListOf(

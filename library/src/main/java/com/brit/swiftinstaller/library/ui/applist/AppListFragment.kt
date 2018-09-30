@@ -75,13 +75,15 @@ class AppListFragment : Fragment() {
     var viewClickListener: ViewClickListener? = null
 
     private var summary = false
+    private var extras = false
     private var failedTab = false
 
     companion object {
-        fun instance(summary: Boolean, failedTab: Boolean): AppListFragment {
+        fun instance(summary: Boolean, extras: Boolean, failedTab: Boolean): AppListFragment {
             val fragment = AppListFragment()
             val args = Bundle()
             args.putBoolean("summary", summary)
+            args.putBoolean("extras", extras)
             args.putBoolean("failed_tab", failedTab)
             fragment.arguments = args
             return fragment
@@ -94,6 +96,7 @@ class AppListFragment : Fragment() {
         val view = inflater.inflate(R.layout.activity_app_list, container, false)
         if (arguments != null) {
             summary = arguments!!.getBoolean("summary", false)
+            extras = arguments!!.getBoolean("extras", false)
             failedTab = arguments!!.getBoolean("failed_tab", false)
         }
         if (summary && failedTab && !getHideFailedInfoCard(context!!)) {
@@ -318,6 +321,12 @@ class AppListFragment : Fragment() {
                             }
                         }
                     }
+                    if (extras) {
+                        app_item_checkbox.isClickable = false
+                        app_item_checkbox.setVisible(false)
+                        alert_icon.setVisible(false)
+                        containerView.isClickable = false
+                    }
                 }
 
                 if (summary) {
@@ -354,14 +363,6 @@ class AppListFragment : Fragment() {
                     if (item.hasUpdate && item.installed) {
                         app_item_name.setTextColor(context!!.getColor(R.color.minimal_orange))
                     }
-                    if (appExtrasHandler.appExtras.containsKey(item.packageName)) {
-                        download_icon.visibility = View.VISIBLE
-                        download_icon.setColorFilter(context!!.swift.selection.accentColor)
-                        download_icon.setOnClickListener {
-                            appExtrasHandler.appExtras[item.packageName]?.invoke(
-                                    activity!! as AppCompatActivity)
-                        }
-                    }
                     if (app_item_name.text.contains("Samsung Music") || app_item_name.text.contains(
                                     "Voice Recorder")) {
                         blocked_packages_alert.visibility = View.VISIBLE
@@ -369,10 +370,25 @@ class AppListFragment : Fragment() {
                     }
                 }
 
-                if (context!!.swift.extrasHandler.appExtras.containsKey(item.packageName)
-                        && getHiddenApps(context!!).contains(item.packageName)) {
-                    app_item_checkbox.isClickable = false
-                    app_item_checkbox.setVisible(false)
+                if (appExtrasHandler.appExtras.containsKey(item.packageName)) {
+                    if (getHiddenApps(context!!).contains(item.packageName)) {
+                        app_item_checkbox.isClickable = false
+                        app_item_checkbox.setVisible(false)
+                    } else if (summary) {
+                        required.visibility = View.VISIBLE
+                        required.text = getString(R.string.needs_extras)
+                    } else {
+                        if (extras) {
+                            app_item_checkbox.isClickable = false
+                            app_item_checkbox.setVisible(false)
+                        }
+                        download_icon.visibility = View.VISIBLE
+                        download_icon.setColorFilter(context!!.swift.selection.accentColor)
+                        download_icon.setOnClickListener {
+                            appExtrasHandler.appExtras[item.packageName]?.invoke(
+                                    activity!! as AppCompatActivity)
+                        }
+                    }
                 }
             }
         }
