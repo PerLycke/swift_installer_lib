@@ -34,8 +34,17 @@ import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.browser.customtabs.CustomTabsIntent
+import java.io.BufferedInputStream
+import java.io.BufferedOutputStream
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 
 object Utils {
+
+    private const val BUFFER = 80000
 
     fun isSamsungOreo(): Boolean {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
@@ -73,5 +82,19 @@ object Utils {
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         ss.setSpan(color, m.indexOf(l), m.indexOf(l) + l.length, Spanned.SPAN_EXCLUSIVE_INCLUSIVE)
         return ss
+    }
+
+    fun zip(files: Array<File>, zipFileName: String) {
+        ZipOutputStream(BufferedOutputStream(FileOutputStream(zipFileName))).use { out ->
+            for (file in files) {
+                FileInputStream(file).use { fi ->
+                    BufferedInputStream(fi).use { origin ->
+                        val entry = ZipEntry(file.name)
+                        out.putNextEntry(entry)
+                        origin.copyTo(out, 1024)
+                    }
+                }
+            }
+        }
     }
 }

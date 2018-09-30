@@ -135,4 +135,12 @@ object ColorUtils {
                           )
                              )
     }
+
+    fun rgbToRgba(rgb: Int): String {
+        return rgbToRgba(Integer.toHexString(rgb))
+    }
+
+    fun rgbToRgba(rgb: String): String {
+        return "$rgb${rgb.substring(0, 2)}".removeRange(0, 2)
+    }
 }
