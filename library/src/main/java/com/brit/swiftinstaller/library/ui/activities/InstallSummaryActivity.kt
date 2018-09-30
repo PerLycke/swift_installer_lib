@@ -181,7 +181,8 @@ class InstallSummaryActivity : ThemeActivity() {
                             failedList.add(item)
                         } else {
                             successList.add(item)
-                            if (swift.extrasHandler.appExtras.containsKey(item.packageName) ||
+                            if (!update)
+                                if (swift.extrasHandler.appExtras.containsKey(item.packageName) ||
                                     OverlayUtils.getOverlayOptions(this@InstallSummaryActivity, item.packageName).isNotEmpty()) {
                                 prefs.edit().putBoolean("extras_indicator", true).apply()
                             }

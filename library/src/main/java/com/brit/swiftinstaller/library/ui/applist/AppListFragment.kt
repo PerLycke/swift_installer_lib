@@ -324,6 +324,7 @@ class AppListFragment : Fragment() {
                     if (extras) {
                         app_item_checkbox.isClickable = false
                         app_item_checkbox.setVisible(false)
+                        app_name.setVisible(false)
                         alert_icon.setVisible(false)
                         containerView.isClickable = false
                     }
@@ -381,6 +382,7 @@ class AppListFragment : Fragment() {
                         if (extras) {
                             app_item_checkbox.isClickable = false
                             app_item_checkbox.setVisible(false)
+                            app_name.setVisible(false)
                         }
                         download_icon.visibility = View.VISIBLE
                         download_icon.setColorFilter(context!!.swift.selection.accentColor)
