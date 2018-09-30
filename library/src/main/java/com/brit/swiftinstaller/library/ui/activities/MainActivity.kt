@@ -157,7 +157,7 @@ class MainActivity : ThemeActivity() {
                 cardItemLayout.card_item_btn.setImageDrawable(item.btn)
                 cardItemLayout.card_item_btn.setOnClickListener(item.btnClick)
                 cardItemLayout.card_item_root.setOnClickListener(item.bgClick)
-                cardView.addView(cardItemLayout, 0)
+                cardView.addView(cardItemLayout)
             }
             false
         }
@@ -215,7 +215,7 @@ class MainActivity : ThemeActivity() {
                                 updateCard?.isEnabled = false
                             }
                     ).build(this@MainActivity)
-                    cards_list.addView(updateCard, cards_list.indexOfChild(card_install))
+                    cards_list.addView(updateCard)
                     updateCardShowing = true
                 } else {
                     updateCard?.findViewById<TextView>(R.id.card_tip_count)?.text = String.format("%d", updates.size)
