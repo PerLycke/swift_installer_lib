@@ -31,9 +31,11 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
+import android.view.LayoutInflater
 import android.view.View
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.brit.swiftinstaller.library.R
+import com.brit.swiftinstaller.library.ui.InfoCard
 import com.brit.swiftinstaller.library.ui.applist.AppItem
 import com.brit.swiftinstaller.library.ui.applist.AppList
 import com.brit.swiftinstaller.library.ui.applist.AppListFragment
@@ -42,7 +44,9 @@ import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.isOverlayEnabled
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
+import kotlinx.android.synthetic.main.activity_app_list.*
 import kotlinx.android.synthetic.main.activity_install_summary.*
+import kotlinx.android.synthetic.main.card_info.view.*
 import kotlinx.android.synthetic.main.tab_install_summary_failed.*
 import kotlinx.android.synthetic.main.tab_install_summary_success.*
 import kotlinx.android.synthetic.main.tab_layout_install_summary.*
@@ -247,6 +251,19 @@ class InstallSummaryActivity : ThemeActivity() {
                     handler.post {
                         resultDialog()
                     }
+                }
+
+                if (!prefs.getBoolean("hide_failed_info", false)) {
+                    val failedInfoCard = InfoCard(
+                            desc = getString(R.string.info_card_failed_msg),
+                            icon = getDrawable(R.drawable.ic_close),
+                            btnClick = View.OnClickListener { view ->
+                                prefs.edit().putBoolean("hide_failed_info", true).apply()
+                                val parent = view.parent as View
+                                parent.visibility = View.GONE
+                            }
+                    ).build(this@InstallSummaryActivity, app_list_root)
+                    pagerAdapter.showFailedCard(FAILED_TAB, failedInfoCard)
                 }
 
                 if (failed) {

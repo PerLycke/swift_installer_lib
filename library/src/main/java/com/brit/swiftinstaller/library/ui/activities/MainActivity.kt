@@ -27,7 +27,10 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
-import android.os.*
+import android.os.Build
+import android.os.Bundle
+import android.os.Handler
+import android.os.SystemClock
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -40,14 +43,13 @@ import androidx.core.content.ContextCompat
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.installer.rom.RomHandler
-import com.brit.swiftinstaller.library.ui.CardItem
+import com.brit.swiftinstaller.library.ui.InfoCard
 import com.brit.swiftinstaller.library.ui.MainCard
 import com.brit.swiftinstaller.library.ui.changelog.ChangelogHandler
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.countAvailableExtras
 import com.brit.swiftinstaller.library.utils.OverlayUtils.enableAllOverlays
 import kotlinx.android.synthetic.main.card_install.*
-import kotlinx.android.synthetic.main.card_item.view.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.popup_menu.view.*
 import org.jetbrains.anko.doAsync
@@ -76,8 +78,6 @@ class MainActivity : ThemeActivity() {
             enableAllOverlays()
         }
 
-        setupCards()
-
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -93,6 +93,8 @@ class MainActivity : ThemeActivity() {
                         101)
             }
         }
+
+        setupCards()
 
         card_install.setOnClickListener {
             val intent = Intent(this, OverlaysActivity::class.java)
@@ -127,55 +129,29 @@ class MainActivity : ThemeActivity() {
     }
 
     private fun setupCards() {
-
-        val idleHandler = MessageQueue.IdleHandler {
-            val cardsList = arrayListOf<CardItem>()
-            val cardView = cards_list
-
             if (prefs.getBoolean("not_closed", true)) {
-                cardsList.add(CardItem(
-                        getString(R.string.info_card_compatibility_msg),
-                        getDrawable(R.drawable.ic_close),
-                        View.OnClickListener { view ->
+                cards_list.addView(InfoCard(
+                        desc = getString(R.string.info_card_compatibility_msg),
+                        icon = getDrawable(R.drawable.ic_close),
+                        btnClick = View.OnClickListener { view ->
                             prefs.edit()
                                     .putBoolean("not_closed", false).apply()
                             val parent = view.parent as View
                             parent.visibility = View.GONE
-                        },
-                        null
-                ))
+                        }
+                ).build(this, cards_list), 0)
             }
             if (ShellUtils.isRootAccessAvailable && prefs.getBoolean("reboot_card", false)) {
-                cardsList.add(CardItem(
-                        getString(R.string.info_card_reboot_msg),
-                        getDrawable(R.drawable.ic_reboot),
-                        null,
-                        View.OnClickListener {
+                cards_list.addView(InfoCard(
+                        desc = getString(R.string.info_card_reboot_msg),
+                        icon = getDrawable(R.drawable.ic_reboot),
+                        bgClick = View.OnClickListener {
                             val intent = Intent(this, RebootActivity::class.java)
                             startActivity(intent)
                         }
-                ))
+                ).build(this, cards_list), 0)
                 prefs.edit().putBoolean("reboot_card", false).apply()
             }
-
-            cardsList.forEach { item ->
-                val cardItemLayout = View.inflate(this@MainActivity, R.layout.card_item, null)
-                cardItemLayout.card_item_desc.text = item.desc
-                cardItemLayout.card_item_btn.setImageDrawable(item.btn)
-                cardItemLayout.card_item_btn.setOnClickListener(item.btnClick)
-                cardItemLayout.card_item_root.setOnClickListener(item.bgClick)
-                cardView.addView(cardItemLayout)
-            }
-
-            if (extraApps != null) {
-                if (OverlayUtils.countAvailableExtras(this, extraApps!!) != 0) {
-                    showExtraCard()
-                }
-            }
-            false
-        }
-        Looper.myQueue().addIdleHandler(idleHandler)
-
     }
 
     private fun showExtraCard() {
@@ -189,7 +165,7 @@ class MainActivity : ThemeActivity() {
                     prefs.edit().putBoolean("extras_indicator", false).apply()
                     startActivity(Intent(this, ExtrasActivity::class.java))
                 }
-        ).build(this@MainActivity)
+        ).build(this@MainActivity, cards_list)
         cards_list.addView(extrasCard)
         extrasCardShowing = true
     }
@@ -244,7 +220,7 @@ class MainActivity : ThemeActivity() {
                                         .putExtra("tab", OverlaysActivity.UPDATE_TAB))
                                 updateCard?.isEnabled = false
                             }
-                    ).build(this@MainActivity)
+                    ).build(this@MainActivity, cards_list)
                     cards_list.addView(updateCard)
                     updateCardShowing = true
                 } else {
@@ -252,7 +228,8 @@ class MainActivity : ThemeActivity() {
                 }
 
                 if (!extrasCardShowing) {
-                    if (hasOption) {
+                    if (hasOption ||
+                            (extraApps != null && OverlayUtils.countAvailableExtras(this@MainActivity, extraApps!!) != 0)) {
                         showExtraCard()
                     }
                 } else {

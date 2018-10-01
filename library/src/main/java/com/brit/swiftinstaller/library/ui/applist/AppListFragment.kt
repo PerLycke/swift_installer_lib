@@ -34,6 +34,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.CompoundButton
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.ArrayMap
 import androidx.fragment.app.Fragment
@@ -47,9 +48,7 @@ import com.brit.swiftinstaller.library.utils.OverlayUtils.checkVersionCompatible
 import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
 import com.brit.swiftinstaller.library.utils.alert
 import com.brit.swiftinstaller.library.utils.getHiddenApps
-import com.brit.swiftinstaller.library.utils.getHideFailedInfoCard
 import com.brit.swiftinstaller.library.utils.getSelectedOverlayOptions
-import com.brit.swiftinstaller.library.utils.setHideFailedInfoCard
 import com.brit.swiftinstaller.library.utils.setOverlayOption
 import com.brit.swiftinstaller.library.utils.setVisible
 import com.brit.swiftinstaller.library.utils.swift
@@ -99,17 +98,12 @@ class AppListFragment : Fragment() {
             extras = arguments!!.getBoolean("extras", false)
             failedTab = arguments!!.getBoolean("failed_tab", false)
         }
-        if (summary && failedTab && !getHideFailedInfoCard(context!!)) {
-            view.failed_info_card.visibility = View.VISIBLE
-        } else {
-            view.failed_info_card.visibility = View.GONE
-        }
         selectAll(false)
-        view.failed_info_card.failed_info_card_close.setOnClickListener {
-            view.failed_info_card.visibility = View.GONE
-            setHideFailedInfoCard(context!!, true)
-        }
         return view
+    }
+
+    fun addCard(card: View) {
+        view?.findViewById<LinearLayout>(R.id.app_list_root)?.addView(card, 0)
     }
 
     fun querySearch(query: String) {

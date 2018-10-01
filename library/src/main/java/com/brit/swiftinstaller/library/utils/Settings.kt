@@ -41,7 +41,6 @@ const val KEY_USE_RIGHT_CLOCK = "use_right_clock"
 const val KEY_USE_LEFT_CLOCK = "use_left_clock"
 const val KEY_USE_CENTERED_CLOCK = "use_centered_clock"
 const val KEY_USE_P_STYLE = "use_p_style"
-const val KEY_HIDE_INFO_CARD = "hide_failed_info"
 const val KEY_USER_ACCENTS = "user_accents"
 const val KEY_OVERLAY_UPDATES = "overlays_to_update"
 const val KEY_OVERLAYS_TO_INSTALL = "overlays_to_install"
@@ -65,16 +64,6 @@ fun useBackgroundPalette(context: Context): Boolean {
 fun setUseBackgroundPalette(context: Context, use: Boolean) {
     PreferenceManager.getDefaultSharedPreferences(context).edit()
             .putBoolean(KEY_BACKGROUND_PALETTE, use).apply()
-}
-
-fun setHideFailedInfoCard(context: Context, hide: Boolean) {
-    PreferenceManager.getDefaultSharedPreferences(context).edit()
-            .putBoolean(KEY_HIDE_INFO_CARD, hide).apply()
-}
-
-fun getHideFailedInfoCard(context: Context): Boolean {
-    return PreferenceManager.getDefaultSharedPreferences(context)
-            .getBoolean(KEY_HIDE_INFO_CARD, false)
 }
 
 fun getUserAccents(context: Context): IntArray {

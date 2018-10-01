@@ -156,7 +156,7 @@
     <string name="reboot_dialog_title">Reboot</string>
     <string name="reboot_dialog_msg">Reboot now to reload resources.</string>
     <string name="restart_sysui_msg">Restart SystemUI now to reload resources.</string>
-    <string name="info_card_reboot_msg">New overlays were enabled at boot. The last step is to make a quick reboot in order for all apps to reload with the new colors. <b>Tap here to proceed.</b></string>
+    <string name="info_card_reboot_msg">New overlays enabled at boot. The last step is to make a quick reboot in order for all apps to reload with the new colors. <b>Tap to proceed.</b></string>
     <string name="wait">Please wait…</string>
     <string name="reboot_now">Reboot now</string>
     <string name="installation_failed">Installation failed</string>

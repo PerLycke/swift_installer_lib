@@ -23,6 +23,7 @@ package com.brit.swiftinstaller.library.ui.applist
 
 import android.content.Context
 import android.os.Handler
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -41,6 +42,12 @@ class AppsTabPagerAdapter(fm: FragmentManager, summary: Boolean, extras: Boolean
         for (index in tabs) {
             fragments.add(AppListFragment.instance(summary, extras,
                     (index == InstallSummaryActivity.FAILED_TAB)))
+        }
+    }
+
+    fun showFailedCard(tab: Int, card: View) {
+        handler.post {
+            fragments[tab].addCard(card)
         }
     }
 

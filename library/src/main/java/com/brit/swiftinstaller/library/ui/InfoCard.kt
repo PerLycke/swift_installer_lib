@@ -30,40 +30,30 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.utils.MaterialPalette
-import kotlinx.android.synthetic.main.card_main.view.*
+import kotlinx.android.synthetic.main.card_info.view.*
 
-class MainCard(var title: String,
-               var desc: String,
-               var icon: Drawable?,
-               var countTxt: String = "",
-               var count: String = "",
-               var onClick: () -> Unit) {
+class InfoCard(val desc: String,
+               val icon: Drawable?,
+               val btnClick: View.OnClickListener? = null,
+               val bgClick: View.OnClickListener? = null) {
 
     fun build(context: Context, root: ViewGroup) : View {
-        val cardLayout = LayoutInflater.from(context).inflate(R.layout.card_main, root, false)
+        val cardView = LayoutInflater.from(context).inflate(R.layout.card_info, root, false)
 
-        val bgIds = listOf(
-                cardLayout.findViewById<ImageView>(R.id.card_bg).drawable as LayerDrawable,
-                cardLayout.findViewById<ImageView>(R.id.card_tip_bg).drawable as LayerDrawable
-        )
-        bgIds.forEach {
-            it.findDrawableByLayerId(R.id.background).setTint(MaterialPalette.get(context).cardBackground)
+        val bg = cardView.findViewById<ImageView>(R.id.card_bg).drawable as LayerDrawable
+        bg.findDrawableByLayerId(R.id.background).setTint(MaterialPalette.get(context).cardBackground)
+
+        cardView.card_item_desc.text = desc
+        cardView.card_item_btn.setImageDrawable(icon)
+
+        if (btnClick != null) {
+            cardView.card_item_btn.setOnClickListener(btnClick)
         }
 
-        cardLayout.card_title.text = title
-        cardLayout.card_desc.text = desc
-        cardLayout.card_icon.setImageDrawable(icon)
-        cardLayout.card_tip_desc.text = countTxt
-        cardLayout.card_tip_count.text = count
-
-        cardLayout.setOnClickListener {
-            onClick()
+        if (bgClick != null) {
+            cardView.card_item_root.setOnClickListener(bgClick)
         }
 
-        if (countTxt != "") {
-            cardLayout.card_tip_layout.visibility = View.VISIBLE
-        }
-
-        return cardLayout
+        return cardView
     }
 }
