@@ -25,19 +25,26 @@
     android:id="@+id/progress_dialog_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="24dp"
-    android:paddingBottom="24dp"
-    android:paddingStart="24dp"
-    android:paddingEnd="24dp">
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/progress_dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/progress_installing_title"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/force_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="8dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="20dp"
-        android:paddingBottom="8dp"
+        android:padding="8dp"
         android:text="@string/force_close"
         android:textAllCaps="true"
         android:textColor="@color/minimal_red"
@@ -49,35 +56,39 @@
 
     <ImageView
         android:id="@+id/app_icon"
-        android:layout_width="@android:dimen/app_icon_size"
-        android:layout_height="@android:dimen/app_icon_size"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/install_progress_txt"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="8dp"
+        android:contentDescription="@null"
         app:layout_constraintBottom_toBottomOf="@+id/install_progress_txt"
-        android:contentDescription="@null" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/install_progress_txt" />
 
     <TextView
         android:id="@+id/install_progress_txt"
         android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="8dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="8dp"
         android:fontFamily="sans-serif"
         android:gravity="center_vertical"
-        android:text="@string/progress_installing_title"
+        android:maxLines="1"
         android:textColor="@android:color/white"
         android:textSize="18sp"
-        android:paddingStart="10dp"
-        android:paddingEnd="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/app_icon"
-        app:layout_constraintTop_toBottomOf="@id/force_close" />
+        app:layout_constraintTop_toBottomOf="@+id/progress_dialog_title"
+        tools:text="Android System" />
 
     <ProgressBar
         android:id="@+id/install_progress_bar"
         style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="12dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="8dp"
         android:indeterminate="true"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
@@ -89,6 +100,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="4dp"
         android:fontFamily="sans-serif"
         android:textColor="@android:color/white"
         android:textSize="16sp"

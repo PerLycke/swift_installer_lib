@@ -77,8 +77,8 @@
     <string name="overlays_toolbar_accent">Accent:</string>
     <string name="preview_time_string">22:20 | Sun 19 April</string>
     <string name="proceed">Proceed</string>
-    <string name="progress_installing_title">Installing overlays…</string>
-    <string name="progress_uninstalling_title">Uninstalling overlays…</string>
+    <string name="progress_installing_title">Installing…</string>
+    <string name="progress_uninstalling_title">Uninstalling…</string>
     <string name="reboot">Reboot</string>
     <string name="restart_sysui">Restart SystemUI</string>
     <string name="reboot_delay_msg">Installing an overlay, or any APK, on Samsung right after a reboot will take a lot of time. The device needs around 4 mins to finish all the startup processes. If you just rebooted, we recommend waiting a moment before installing overlays or change background and accents.\n\nHave fun theming :)</string>

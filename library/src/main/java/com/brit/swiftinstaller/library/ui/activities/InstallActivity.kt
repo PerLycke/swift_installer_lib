@@ -161,7 +161,7 @@ class InstallActivity : ThemeActivity() {
         val fc = inflate.findViewById<TextView>(R.id.force_close)
 
         if (uninstall) {
-            inflate.install_progress_txt.setText(R.string.progress_uninstalling_title)
+            inflate.progress_dialog_title.setText(R.string.progress_uninstalling_title)
             handler.postDelayed({
                 if (dialog != null && dialog?.isShowing!!) {
                     fc.visibility = View.VISIBLE
