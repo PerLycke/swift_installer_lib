@@ -33,7 +33,7 @@ import com.brit.swiftinstaller.library.ui.applist.AppList
 import java.lang.ref.WeakReference
 
 class UpdateChecker(context: Context, private val callback: Callback?) :
-        AsyncTask<Void, Void, UpdateChecker.Output>() {
+        AsyncTask<Void, Int, UpdateChecker.Output>() {
 
     private val mConRef: WeakReference<Context> = WeakReference(context)
 
@@ -54,16 +54,26 @@ class UpdateChecker(context: Context, private val callback: Callback?) :
                         || OverlayUtils.checkAppVersion(context, packageName)) {
                     updates.add(packageName)
                     addAppToUpdate(context, packageName)
+                    publishProgress(1)
                 } else {
                     removeAppToUpdate(context, packageName)
                 }
                 AppList.updateApp(context, packageName)
-                if (OverlayUtils.getOverlayOptions(context, packageName).isNotEmpty()) {
+                if (OverlayUtils.getOverlayOptions(context, packageName).isNotEmpty() ||
+                        context.swift.extrasHandler.appExtras.containsKey(packageName)) {
                     hasOption = true
                 }
             }
         }
         return Output(installedCount, hasOption, updates)
+    }
+
+    override fun onProgressUpdate(vararg values: Int?) {
+        super.onProgressUpdate(*values)
+        if (values[0] == 1) {
+            callback?.updateFound()
+        }
+
     }
 
     override fun onPostExecute(result: Output?) {
@@ -103,6 +113,8 @@ class UpdateChecker(context: Context, private val callback: Callback?) :
 
     abstract class Callback {
         abstract fun finished(installedCount: Int, hasOption: Boolean, updates: SynchronizedArrayList<String>)
+        open fun updateFound() {
+        }
     }
 
     inner class Output(var installedCount: Int, var hasOption: Boolean, var updates: SynchronizedArrayList<String>)

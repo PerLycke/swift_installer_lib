@@ -186,9 +186,10 @@ class InstallSummaryActivity : ThemeActivity() {
                             successList.add(item)
                             if (!update)
                                 if (swift.extrasHandler.appExtras.containsKey(item.packageName) ||
-                                    OverlayUtils.getOverlayOptions(this@InstallSummaryActivity, item.packageName).isNotEmpty()) {
-                                prefs.edit().putBoolean("extras_indicator", true).apply()
-                            }
+                                        OverlayUtils.getOverlayOptions(this@InstallSummaryActivity, item.packageName).isNotEmpty()) {
+                                    prefs.edit().putBoolean("foundExtra", true).apply()
+                                    prefs.edit().putBoolean("extras_indicator", true).apply()
+                                }
                             removeAppToUpdate(this@InstallSummaryActivity, item.packageName)
                         }
                     } else {

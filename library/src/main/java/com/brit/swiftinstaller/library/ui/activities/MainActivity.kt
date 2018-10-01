@@ -126,46 +126,49 @@ class MainActivity : ThemeActivity() {
         }
     }
 
-    private fun setupCards() {
-            if (prefs.getBoolean("not_closed", true)) {
-                cards_list.addView(InfoCard(
-                        desc = getString(R.string.info_card_compatibility_msg),
-                        icon = getDrawable(R.drawable.ic_close),
-                        btnClick = View.OnClickListener { view ->
-                            prefs.edit()
-                                    .putBoolean("not_closed", false).apply()
-                            val parent = view.parent as View
-                            parent.visibility = View.GONE
-                        }
-                ).build(this, cards_list), 0)
-            }
-            if (ShellUtils.isRootAccessAvailable && prefs.getBoolean("reboot_card", false)) {
-                cards_list.addView(InfoCard(
-                        desc = getString(R.string.info_card_reboot_msg),
-                        icon = getDrawable(R.drawable.ic_reboot),
-                        bgClick = View.OnClickListener {
-                            val intent = Intent(this, RebootActivity::class.java)
-                            startActivity(intent)
-                        }
-                ).build(this, cards_list), 0)
-                prefs.edit().putBoolean("reboot_card", false).apply()
-            }
+    private fun setupExtraCard() {
+        if (prefs.getBoolean("foundExtra", false)) {
+            extrasCard = MainCard(
+                    title = getString(R.string.overlay_extras_title),
+                    desc = getString(R.string.extras_card_desc),
+                    icon = getDrawable(R.drawable.ic_extras),
+                    onClick = {
+                        extrasCard?.isEnabled = false
+                        extrasCard?.findViewById<ImageView>(R.id.card_new_indicator)?.setVisible(false)
+                        prefs.edit().putBoolean("extras_indicator", false).apply()
+                        startActivity(Intent(this, ExtrasActivity::class.java))
+                    }
+            ).build(this, cards_list)
+            cards_list.addView(extrasCard)
+            extrasCardShowing = true
+        }
     }
 
-    private fun showExtraCard() {
-        extrasCard = MainCard(
-                title = getString(R.string.overlay_extras_title),
-                desc = getString(R.string.extras_card_desc),
-                icon = getDrawable(R.drawable.ic_extras),
-                onClick = {
-                    extrasCard?.isEnabled = false
-                    extrasCard?.findViewById<ImageView>(R.id.card_new_indicator)?.setVisible(false)
-                    prefs.edit().putBoolean("extras_indicator", false).apply()
-                    startActivity(Intent(this, ExtrasActivity::class.java))
-                }
-        ).build(this@MainActivity, cards_list)
-        cards_list.addView(extrasCard)
-        extrasCardShowing = true
+    private fun setupCards() {
+        setupExtraCard()
+        if (prefs.getBoolean("not_closed", true)) {
+            cards_list.addView(InfoCard(
+                    desc = getString(R.string.info_card_compatibility_msg),
+                    icon = getDrawable(R.drawable.ic_close),
+                    btnClick = View.OnClickListener { view ->
+                        prefs.edit()
+                                .putBoolean("not_closed", false).apply()
+                        val parent = view.parent as View
+                        parent.visibility = View.GONE
+                    }
+            ).build(this, cards_list), 0)
+        }
+        if (ShellUtils.isRootAccessAvailable && prefs.getBoolean("reboot_card", false)) {
+            cards_list.addView(InfoCard(
+                    desc = getString(R.string.info_card_reboot_msg),
+                    icon = getDrawable(R.drawable.ic_reboot),
+                    bgClick = View.OnClickListener {
+                        val intent = Intent(this, RebootActivity::class.java)
+                        startActivity(intent)
+                    }
+            ).build(this, cards_list), 0)
+            prefs.edit().putBoolean("reboot_card", false).apply()
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,
@@ -194,57 +197,48 @@ class MainActivity : ThemeActivity() {
         }
 
         UpdateChecker(this, object : UpdateChecker.Callback() {
-            override fun finished(installedCount: Int, hasOption: Boolean, updates: SynchronizedArrayList<String>) {
-                active_count.text = String.format("%d", installedCount)
-
-                updateCard?.let {
-                    it.findViewById<TextView>(R.id.card_tip_count)?.visibility = View.VISIBLE
-                    it.findViewById<ProgressBar?>(R.id.card_tip_spinner)?.visibility = View.INVISIBLE
-                }
-
-                if (updates.isEmpty()) {
-                    updateCard.let {
-                        cards_list.removeView(it)
-                    }
-                } else if (!updateCardShowing) {
+            override fun updateFound() {
+                if (!updateCardShowing) {
                     updateCard = MainCard(
                             title = getString(R.string.big_tile_install_updates),
                             desc = getString(R.string.big_tile_update_msg),
                             icon = getDrawable(R.drawable.ic_updates),
                             countTxt = getString(R.string.small_info_updates),
-                            count = String.format("%d", updates.size),
+                            count = "...",
                             onClick = {
                                 startActivity(Intent(this@MainActivity, OverlaysActivity::class.java)
                                         .putExtra("tab", OverlaysActivity.UPDATE_TAB))
                                 updateCard?.isEnabled = false
                             }
                     ).build(this@MainActivity, cards_list)
-                    cards_list.addView(updateCard)
+                    cards_list.addView(updateCard, cards_list.indexOfChild(card_install))
                     updateCardShowing = true
+                }
+            }
+            override fun finished(installedCount: Int, hasOption: Boolean, updates: SynchronizedArrayList<String>) {
+                active_count.text = String.format("%d", installedCount)
+
+                if (updates.isEmpty()) {
+                    updateCard.let {
+                        cards_list.removeView(it)
+                    }
                 } else {
-                    updateCard?.findViewById<TextView>(R.id.card_tip_count)?.text = String.format("%d", updates.size)
+                    updateCard?.let {
+                        it.findViewById<TextView>(R.id.card_tip_count)?.text = String.format("%d", updates.size)
+                        it.findViewById<ProgressBar?>(R.id.card_tip_spinner)?.visibility = View.INVISIBLE
+                        it.findViewById<TextView>(R.id.card_tip_count)?.visibility = View.VISIBLE
+                    }
                 }
 
-                if (!extrasCardShowing) {
-                    if (hasOption ||
-                            (extraApps != null && OverlayUtils.countAvailableExtras(this@MainActivity, extraApps!!) != 0)) {
-                        showExtraCard()
+                if (!hasOption) {
+                    if (extrasCardShowing) {
+                        cards_list.removeView(extrasCard)
+                        extrasCardShowing = false
+                        prefs.edit().putBoolean("foundExtra", false).apply()
                     }
-                } else {
-                    if (extraApps != null) {
-                        val count = countAvailableExtras(this@MainActivity, extraApps!!)
-                        if (count == 0 && !hasOption) {
-                            if (extrasCard != null) {
-                                cards_list.removeView(extrasCard)
-                                extrasCardShowing = false
-                            }
-                        }
-                    } else {
-                        if (!hasOption) {
-                            cards_list.removeView(extrasCard)
-                            extrasCardShowing = false
-                        }
-                    }
+                } else if (!extrasCardShowing) {
+                    prefs.edit().putBoolean("foundExtra", true).apply()
+                    setupExtraCard()
                 }
 
                 extrasCard?.let {
@@ -319,8 +313,8 @@ class MainActivity : ThemeActivity() {
                             ""
                         } +
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                             "${getString(R.string.rescue_zip_pie,
-                                            getString(R.string.link_rescue_zip))} "
+                            "${getString(R.string.rescue_zip_pie,
+                                    getString(R.string.link_rescue_zip))} "
                         } else {
                             ""
                         }
