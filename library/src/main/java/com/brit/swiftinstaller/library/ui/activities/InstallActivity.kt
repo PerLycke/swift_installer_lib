@@ -26,6 +26,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -129,10 +130,13 @@ class InstallActivity : ThemeActivity() {
         if (dialog?.isShowing != true) {
             dialog?.show()
             dialog?.onRestoreInstanceState(dialogState)
-            val ai = pm.getApplicationInfo(dialogState.getString("package_name"), 0)
-            updateProgress(ai.loadLabel(pm) as String, ai.loadIcon(pm),
-                    dialogState.getInt("progress"), dialogState.getInt("max"),
-                    uninstall)
+            try {
+                val ai = pm.getApplicationInfo(dialogState.getString("package_name"), 0)
+                updateProgress(ai.loadLabel(pm) as String, ai.loadIcon(pm),
+                        dialogState.getInt("progress"), dialogState.getInt("max"),
+                        uninstall)
+            } catch (e: PackageManager.NameNotFoundException) {
+            }
         }
     }
 
