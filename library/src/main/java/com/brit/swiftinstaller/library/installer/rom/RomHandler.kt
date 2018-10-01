@@ -198,7 +198,7 @@ abstract class RomHandler constructor(var context: Context) {
 
         @Synchronized
         @JvmStatic
-        fun createRomInfo(context: Context): RomHandler {
+        fun createRomHandler(context: Context): RomHandler {
             return when {
                 getProperty("ro.oxygen.version", "def") != "def"
                         && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P -> OOSPRomHandler(context)

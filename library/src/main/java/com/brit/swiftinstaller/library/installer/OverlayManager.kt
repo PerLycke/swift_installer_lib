@@ -28,7 +28,6 @@ import android.os.Message
 import com.brit.swiftinstaller.library.ui.applist.AppList
 import com.brit.swiftinstaller.library.utils.isAppInstalled
 import com.brit.swiftinstaller.library.utils.pm
-import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
@@ -50,7 +49,7 @@ class OverlayManager(private val context: Context) {
     }
 
     private val compileQueue = LinkedBlockingQueue<Runnable>()
-    private val overlayQueue: Queue<OverlayTask>
+    private val overlayQueue = LinkedBlockingQueue<OverlayTask>()
 
     private var callback: Callback? = null
 
@@ -61,8 +60,6 @@ class OverlayManager(private val context: Context) {
     private val handler: Handler
 
     init {
-
-        overlayQueue = LinkedBlockingQueue<OverlayTask>()
 
         threadPool = ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_SIZE,
                 KEEP_ALIVE_TIME, TimeUnit.SECONDS, compileQueue)

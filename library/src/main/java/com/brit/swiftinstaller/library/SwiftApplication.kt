@@ -38,7 +38,7 @@ import javax.crypto.Cipher
 open class SwiftApplication : ContainerApp() {
 
     val romHandler: RomHandler by lazy {
-        RomHandler.createRomInfo(this)
+        RomHandler.createRomHandler(this)
     }
     val extrasHandler: AppExtrasHandler by lazy {
         val v = createExtrasHandler()

@@ -3,7 +3,6 @@ package com.brit.swiftinstaller.library.ui
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import com.brit.swiftinstaller.library.R
@@ -18,7 +17,7 @@ class MainCard(var title: String,
                var onClick: () -> Unit) {
 
     fun build(context: Context) : View {
-        val cardLayout = LayoutInflater.from(context).inflate(R.layout.main_card, null)
+        val cardLayout = View.inflate(context, R.layout.main_card, null)
 
         val bgIds = listOf(
                 cardLayout.findViewById<ImageView>(R.id.card_bg).drawable as LayerDrawable,
