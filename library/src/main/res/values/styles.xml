@@ -81,13 +81,6 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AlertDialog.Error" parent="Theme.AppCompat.Dialog.Alert">
-        <item name="android:windowBackground">@drawable/dialog_bg</item>
-        <item name="android:colorAccent">@color/minimal_green</item>
-        <item name="android:windowTitleStyle">@style/AppTheme.AlertDialog.Title</item>
-        <item name="android:lineSpacingExtra">4dp</item>
-    </style>
-
     <style name="AppTheme.AlertDialog.ButtonBar" parent="Widget.AppCompat.ButtonBar.AlertDialog">
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>

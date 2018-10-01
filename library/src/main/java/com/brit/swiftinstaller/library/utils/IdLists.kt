@@ -46,12 +46,9 @@ object IdLists {
     )
 
     val cardIds = arrayListOf(
-            R.id.failed_info_card_layout,
             R.id.send_email_layout,
             R.id.card_install_bg,
             R.id.card_personalize_bg,
-            R.id.card_compatibility_bg,
-            R.id.card_reboot_bg,
             R.id.installed_info,
             R.id.card_bg,
             R.id.card_tip_bg
