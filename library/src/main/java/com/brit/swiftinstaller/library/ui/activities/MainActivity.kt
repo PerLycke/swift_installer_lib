@@ -30,6 +30,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.SystemClock
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
@@ -75,6 +76,18 @@ class MainActivity : ThemeActivity() {
         doAsync {
             enableAllOverlays()
         }
+
+        prefs.registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
+            Log.d("TEST", "$key updated")
+            if (key == KEY_OVERLAY_UPDATES) {
+                handleUpdateCard()
+            } else if (key == KEY_HAS_EXTRAS) {
+                handleExtrasCard()
+            } else if (key == "installed_count") {
+                active_count.text = String.format("%d", prefs.getInt("installed_count", 0))
+            }
+        }
+        update_checker_spinner.visibility = View.GONE
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -185,78 +198,74 @@ class MainActivity : ThemeActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+    private fun handleUpdateCard() {
+        val updates = getAppsToUpdate(this)
+        if (updates.isEmpty()) {
+            updateCard?.let {
+                cards_list.removeView(it)
+                updateCard = null
+            }
+        } else if (updateCard == null) {
+            updateCard = MainCard(
+                    title = getString(R.string.big_tile_install_updates),
+                    desc = getString(R.string.big_tile_update_msg),
+                    icon = getDrawable(R.drawable.ic_updates),
+                    countTxt = getString(R.string.small_info_updates),
+                    count = String.format("%d", updates.size),
+                    onClick = {
+                        startActivity(Intent(this@MainActivity, OverlaysActivity::class.java)
+                                .putExtra("tab", OverlaysActivity.UPDATE_TAB))
+                        updateCard?.isEnabled = false
+                    }
+                                 ).build(this@MainActivity, cards_list)
+            if (extrasCard == null) {
+                cards_list.addView(updateCard)
+            } else {
+                cards_list.addView(updateCard, cards_list.indexOfChild(extrasCard))
+            }
+        } else {
+            updateCard?.findViewById<TextView>(R.id.card_tip_count)?.text = String.format("%d", updates.size)
+        }
+    }
 
-        updateCard?.let {
-            it.findViewById<TextView>(R.id.card_tip_count)?.visibility = View.INVISIBLE
-            it.findViewById<ProgressBar?>(R.id.card_tip_spinner)?.visibility = View.VISIBLE
+    private fun handleExtrasCard() {
+        if (!extrasCardShowing) {
+            if (hasOverlayExtras(this) ||
+                    (extraApps != null && OverlayUtils.countAvailableExtras(this, extraApps!!) != 0)) {
+                showExtraCard()
+            }
+        } else {
+            if (extraApps != null) {
+                val count = countAvailableExtras(this, extraApps!!)
+                if (count == 0 && !hasOverlayExtras(this)) {
+                    if (extrasCard != null) {
+                        cards_list.removeView(extrasCard)
+                        extrasCardShowing = false
+                    }
+                }
+            } else {
+                if (!hasOverlayExtras(this)) {
+                    cards_list.removeView(extrasCard)
+                    extrasCardShowing = false
+                }
+            }
         }
 
-        UpdateChecker(this, object : UpdateChecker.Callback() {
-            override fun finished(installedCount: Int, hasOption: Boolean, updates: SynchronizedArrayList<String>) {
-                active_count.text = String.format("%d", installedCount)
+        extrasCard?.let {
+            it.findViewById<ImageView>(R.id.card_new_indicator)?.setVisible(prefs.getBoolean("extras_indicator", false))
+        }
+    }
 
-                updateCard?.let {
-                    it.findViewById<TextView>(R.id.card_tip_count)?.visibility = View.VISIBLE
-                    it.findViewById<ProgressBar?>(R.id.card_tip_spinner)?.visibility = View.INVISIBLE
-                }
+    override fun onResume() {
+        super.onResume()
+        handleUpdateCard()
+        handleExtrasCard()
+        active_count.text = String.format("%d", prefs.getInt("installed_count", 0))
 
-                if (updates.isEmpty()) {
-                    updateCard.let {
-                        cards_list.removeView(it)
-                    }
-                } else if (!updateCardShowing) {
-                    updateCard = MainCard(
-                            title = getString(R.string.big_tile_install_updates),
-                            desc = getString(R.string.big_tile_update_msg),
-                            icon = getDrawable(R.drawable.ic_updates),
-                            countTxt = getString(R.string.small_info_updates),
-                            count = String.format("%d", updates.size),
-                            onClick = {
-                                startActivity(Intent(this@MainActivity, OverlaysActivity::class.java)
-                                        .putExtra("tab", OverlaysActivity.UPDATE_TAB))
-                                updateCard?.isEnabled = false
-                            }
-                    ).build(this@MainActivity, cards_list)
-                    cards_list.addView(updateCard)
-                    updateCardShowing = true
-                } else {
-                    updateCard?.findViewById<TextView>(R.id.card_tip_count)?.text = String.format("%d", updates.size)
-                }
-
-                if (!extrasCardShowing) {
-                    if (hasOption ||
-                            (extraApps != null && OverlayUtils.countAvailableExtras(this@MainActivity, extraApps!!) != 0)) {
-                        showExtraCard()
-                    }
-                } else {
-                    if (extraApps != null) {
-                        val count = countAvailableExtras(this@MainActivity, extraApps!!)
-                        if (count == 0 && !hasOption) {
-                            if (extrasCard != null) {
-                                cards_list.removeView(extrasCard)
-                                extrasCardShowing = false
-                            }
-                        }
-                    } else {
-                        if (!hasOption) {
-                            cards_list.removeView(extrasCard)
-                            extrasCardShowing = false
-                        }
-                    }
-                }
-
-                extrasCard?.let {
-                    if (prefs.getBoolean("extras_indicator", false)) {
-                        it.findViewById<ImageView>(R.id.card_new_indicator)?.setVisible(true)
-                    } else {
-                        it.findViewById<ImageView>(R.id.card_new_indicator)?.setVisible(false)
-                    }
-                }
-                update_checker_spinner.visibility = View.GONE
-            }
-        }).execute()
+        updateCard?.let {
+            //it.findViewById<TextView>(R.id.card_tip_count)?.visibility = View.INVISIBLE
+            //it.findViewById<ProgressBar?>(R.id.card_tip_spinner)?.visibility = View.VISIBLE
+        }
 
         extrasCard?.isEnabled = true
         updateCard?.isEnabled = true

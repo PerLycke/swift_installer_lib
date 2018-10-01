@@ -40,10 +40,9 @@ class UpdateChecker(context: Context, private val callback: Callback?) :
     override fun doInBackground(vararg params: Void?): Output {
         var installedCount = 0
         var hasOption = false
-        val updates = SynchronizedArrayList<String>()
         val context = mConRef.get()
 
-        clearAppsToUpdate(context!!)
+        val updates = SynchronizedArrayList(getAppsToUpdate(context!!))
         val overlays = context.assets.list("overlays") ?: emptyArray()
         for (packageName in overlays) {
             if (context.swift.romHandler.isOverlayInstalled(packageName)
@@ -52,17 +51,20 @@ class UpdateChecker(context: Context, private val callback: Callback?) :
                 installedCount++
                 if (OverlayUtils.checkOverlayVersion(context, packageName)
                         || OverlayUtils.checkAppVersion(context, packageName)) {
-                    updates.add(packageName)
-                    addAppToUpdate(context, packageName)
+                    if (!updates.contains(packageName)) {
+                        updates.add(packageName)
+                    }
                 } else {
-                    removeAppToUpdate(context, packageName)
+                    if (updates.contains(packageName)) {
+                        updates.remove(packageName)
+                    }
                 }
                 AppList.updateApp(context, packageName)
-                if (OverlayUtils.getOverlayOptions(context, packageName).isNotEmpty()) {
-                    hasOption = true
-                }
+                setHasOverlayExtras(context, OverlayUtils.getOverlayOptions(context, packageName).isNotEmpty())
             }
         }
+        setAppsToUpdate(context, updates)
+        context.prefs.edit().putInt("installed_count", installedCount).apply()
         return Output(installedCount, hasOption, updates)
     }
 
