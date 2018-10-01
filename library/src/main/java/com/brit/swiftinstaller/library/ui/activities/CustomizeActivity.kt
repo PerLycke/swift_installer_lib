@@ -412,6 +412,7 @@ class CustomizeActivity : ThemeActivity() {
                     hotSwapPrefOn()
                 }
                 checkAndAddApp(apps, "android")
+                checkAndAddApp(apps, "com.touchtype.swiftkey")
             }
 
             oldSelection.keys.forEach { key ->
@@ -427,6 +428,7 @@ class CustomizeActivity : ThemeActivity() {
             if (selection.backgroundColor != oldSelection.backgroundColor) {
                 hotSwapPrefOff()
                 checkAndAddApp(apps, "android")
+                checkAndAddApp(apps, "com.touchtype.swiftkey")
             }
 
             swift.selection = selection
