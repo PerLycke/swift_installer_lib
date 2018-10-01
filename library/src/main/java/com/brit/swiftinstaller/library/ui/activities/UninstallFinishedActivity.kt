@@ -66,7 +66,7 @@ class UninstallFinishedActivity : ThemeActivity() {
                 dialog.setContentView(R.layout.reboot)
                 dialog.show()
                 handler.post {
-                    if (!swift.romInfo.magiskEnabled() && getUseSoftReboot(this)) {
+                    if (!swift.romInfo.magiskEnabled && getUseSoftReboot(this)) {
                         quickRebootCommand()
                     } else {
                         rebootCommand()

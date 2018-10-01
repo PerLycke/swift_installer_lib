@@ -1,3 +1,4 @@
+
 /*
  *
  *  * Copyright (C) 2018 Griffin Millender
@@ -27,11 +28,18 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ClickableSpan
+import android.view.View
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
+import com.brit.swiftinstaller.library.utils.ShellUtils
 import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
 import com.brit.swiftinstaller.library.utils.getProperty
 import com.brit.swiftinstaller.library.utils.isAppInstalled
@@ -40,9 +48,18 @@ import com.brit.swiftinstaller.library.utils.synchronizedArrayListOf
 import com.hololo.tutorial.library.PermissionStep
 import com.hololo.tutorial.library.Step
 import com.hololo.tutorial.library.TutorialActivity
+import com.topjohnwu.superuser.io.SuFile
 
 @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
 abstract class RomInfo constructor(var context: Context) {
+
+    val moduleDisabled: Boolean by lazy {
+        SuFile(magiskPath, "disable").exists()
+    }
+
+    val magiskEnabled: Boolean by lazy {
+        !moduleDisabled && SuFile(magiskPath).exists()
+    }
 
     private var customizeHandler: CustomizeHandler? = null
 
@@ -76,6 +93,30 @@ abstract class RomInfo constructor(var context: Context) {
                 .setBackgroundColor(ContextCompat.getColor(tutorial, R.color.background_main))
                 .setDrawable(R.drawable.ic_tutorial_hand) // int top drawable
                 .build(), TUTORIAL_PAGE_USAGE)
+
+        if (supportsMagisk) {
+            val content = tutorial.getString(R.string.magisk_module_description)
+            val link = tutorial.getString(R.string.magisk_module_link_text)
+
+            val click = object : ClickableSpan() {
+                override fun onClick(p0: View) {
+                    val url = context.getString(R.string.magisk_module_link)
+                    val builder = CustomTabsIntent.Builder()
+                    val intent = builder.build()
+                    intent.intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    intent.launchUrl(context, Uri.parse(url))
+                }
+            }
+            val ss = SpannableString("$content $link")
+            ss.setSpan(click, content.length + 1, content.length + 1 + link.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            tutorial.addFragment(Step.Builder().setTitle("Magisk Module")
+                    .setContent(ss)
+                    .setDrawable(R.drawable.ic_magisk_logo)
+                    .setBackgroundColor(tutorial.getColor(R.color.background_main)).build(),
+                    TUTORIAL_PAGE_MAGISK)
+        }
+
         tutorial.addFragment(PermissionStep.Builder().setTitle(
                 tutorial.getString(R.string.tutorial_permission_title))
                 .setContent(tutorial.getString(R.string.tutorial_permission_content))
@@ -139,20 +180,21 @@ abstract class RomInfo constructor(var context: Context) {
         return pm.getPackageInfo(getOverlayPackageName(packageName), PackageManager.GET_META_DATA)
     }
 
-    open fun magiskEnabled(): Boolean {
-        return false
-    }
-
     open fun onBootCompleted(context: Context) {
     }
 
     companion object {
 
+        const val magiskPath = "/sbin/.core/img/swift_installer"
+
+        val supportsMagisk = ShellUtils.isRootAccessAvailable
+
         const val TUTORIAL_PAGE_MAIN = 0
         const val TUTORIAL_PAGE_APPS = 1
         const val TUTORIAL_PAGE_USAGE = 2
-        const val TUTORIAL_PAGE_PERMISSIONS = 3
-        const val TUTORIAL_PAGE_PERSONALIZE = 4
+        const val TUTORIAL_PAGE_MAGISK = 3
+        const val TUTORIAL_PAGE_PERMISSIONS = 4
+        const val TUTORIAL_PAGE_PERSONALIZE = 5
 
         @Synchronized
         @JvmStatic

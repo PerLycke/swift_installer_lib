@@ -44,10 +44,7 @@ import kotlinx.android.synthetic.main.customize_preview_sysui.view.*
 open class PRomInfo(context: Context) : RomInfo(context) {
 
     private val systemApp = "/system/app"
-    private val magiskPath = "/sbin/.core/img/swift_installer"
 
-    private val moduleDisabled = SuFile(magiskPath, "disable").exists()
-    private var useMagisk = false
     private val appPath: String
 
     init {
@@ -56,10 +53,8 @@ open class PRomInfo(context: Context) : RomInfo(context) {
             if (!f.exists()) {
                 f.mkdirs()
             }
-            useMagisk = true
             f.absolutePath
         } else {
-            useMagisk = false
             systemApp
         }
     }
@@ -67,36 +62,12 @@ open class PRomInfo(context: Context) : RomInfo(context) {
     override fun installOverlay(context: Context, targetPackage: String, overlayPath: String) {
         val overlayPackage = getOverlayPackageName(targetPackage)
         if (ShellUtils.isRootAvailable) {
-            if (!useMagisk) remountRW("/system")
+            if (!magiskEnabled) remountRW("/system")
             ShellUtils.mkdir("$appPath/$overlayPackage")
             ShellUtils.copyFile(overlayPath, "$appPath/$overlayPackage/$overlayPackage.apk")
             ShellUtils.setPermissions(644, "$appPath/$overlayPackage/$overlayPackage.apk")
-            if (!useMagisk) remountRO("/system")
+            if (!magiskEnabled) remountRO("/system")
         }
-    }
-
-    override fun addTutorialSteps(tutorial: TutorialActivity) {
-        super.addTutorialSteps(tutorial)
-        val content = tutorial.getString(R.string.magisk_module_description)
-        val link = tutorial.getString(R.string.magisk_module_link_text)
-
-        val click = object : ClickableSpan() {
-            override fun onClick(p0: View) {
-                val url = context.getString(R.string.magisk_module_link)
-                val builder = CustomTabsIntent.Builder()
-                val intent = builder.build()
-                intent.intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                intent.launchUrl(context, Uri.parse(url))
-            }
-        }
-        val ss = SpannableString("$content $link")
-        ss.setSpan(click, content.length + 1, content.length + 1 + link.length,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        tutorial.addFragment(Step.Builder().setTitle("Magisk Module")
-                .setContent(ss)
-                .setDrawable(R.drawable.ic_magisk_logo)
-                .setBackgroundColor(tutorial.getColor(R.color.background_main)).build(),
-                TUTORIAL_PAGE_PERMISSIONS)
     }
 
     override fun getRequiredApps(): Array<String> {
@@ -145,9 +116,9 @@ open class PRomInfo(context: Context) : RomInfo(context) {
     override fun uninstallOverlay(context: Context, packageName: String) {
         val overlayPackage = getOverlayPackageName(packageName)
         if (ShellUtils.isRootAvailable) {
-            if (!useMagisk) remountRW("/system")
+            if (!magiskEnabled) remountRW("/system")
             deleteFileRoot("$appPath/$overlayPackage/")
-            if (!useMagisk) remountRO("/system")
+            if (!magiskEnabled) remountRO("/system")
         }
     }
 
@@ -162,10 +133,6 @@ open class PRomInfo(context: Context) : RomInfo(context) {
                 PackageManager.GET_META_DATA)
     }
 
-    override fun magiskEnabled(): Boolean {
-        return useMagisk && !moduleDisabled
-    }
-
     override fun useHotSwap(): Boolean {
         return true
     }
@@ -175,7 +142,7 @@ open class PRomInfo(context: Context) : RomInfo(context) {
     }
 
     override fun onBootCompleted(context: Context) {
-        if (useMagisk && !moduleDisabled) {
+        if (magiskEnabled && !moduleDisabled) {
             val overlays = context.assets.list("overlays") ?: emptyArray()
             remountRW("/system")
             overlays.forEach { packageName ->

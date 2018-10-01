@@ -39,6 +39,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
+import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.ui.CardItem
 import com.brit.swiftinstaller.library.ui.MainCard
 import com.brit.swiftinstaller.library.ui.changelog.ChangelogHandler
@@ -337,10 +338,14 @@ class MainActivity : ThemeActivity() {
                 val m = "${getString(R.string.help_msg)} \n\n" +
                         "${getString(R.string.faq, getString(R.string.link_faq))} \n\n" +
                         getString(R.string.telegram_support, getString(R.string.link_telegram)) +
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        if (RomInfo.supportsMagisk) {
                             "\n\n${getString(R.string.magisk_module,
-                                    getString(R.string.link_magisk))} \n\n" +
-                                    "${getString(R.string.rescue_zip_pie,
+                                    getString(R.string.link_magisk))} \n\n"
+                        } else {
+                            ""
+                        } +
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                             "${getString(R.string.rescue_zip_pie,
                                             getString(R.string.link_rescue_zip))} "
                         } else {
                             ""

@@ -46,7 +46,6 @@ import kotlinx.android.synthetic.main.activity_install_summary.*
 import kotlinx.android.synthetic.main.tab_install_summary_failed.*
 import kotlinx.android.synthetic.main.tab_install_summary_success.*
 import kotlinx.android.synthetic.main.tab_layout_install_summary.*
-import kotlinx.android.synthetic.main.toolbar_install_summary.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import java.io.File
@@ -135,7 +134,7 @@ class InstallSummaryActivity : ThemeActivity() {
         rebootDialog.setContentView(R.layout.reboot)
         rebootDialog.show()
         handler.post {
-            if (!swift.romInfo.magiskEnabled() && getUseSoftReboot(this)) {
+            if (!swift.romInfo.magiskEnabled && getUseSoftReboot(this)) {
                 quickRebootCommand()
             } else {
                 rebootCommand()
