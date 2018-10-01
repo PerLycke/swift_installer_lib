@@ -96,7 +96,9 @@ object AppList {
         when(index) {
             UPDATE -> {
                 appUpdates.add(getPosition(item, appUpdates), item)
+                activeApps.add(getPosition(item, activeApps), item)
                 updateSubscribers(index)
+                updateSubscribers(ACTIVE)
             }
             ACTIVE -> {
                 activeApps.add(getPosition(item, activeApps), item)
