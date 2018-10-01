@@ -66,12 +66,13 @@ class InstallActivity : ThemeActivity() {
     private val errorMap: HashMap<String, String> = HashMap()
 
     @Suppress("UNUSED_PARAMETER")
-    fun updateProgress(label: String?, icon: Drawable?, progress: Int, max: Int, uninstall: Boolean) {
+    fun updateProgress(label: String?, icon: Drawable?, prog: Int, max: Int, uninstall: Boolean) {
+        var progress = prog
         if (!Utils.isSamsungOreo()) {
             appIcon.setImageDrawable(icon)
             appTitle.text = label
         } else {
-            val progress = progress + 1
+            progress = prog + 1
         }
         if (progressBar.progress < progress) {
             progressBar.isIndeterminate = false
