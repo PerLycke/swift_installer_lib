@@ -31,7 +31,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
-import android.view.LayoutInflater
 import android.view.View
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.brit.swiftinstaller.library.R
@@ -46,7 +45,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_app_list.*
 import kotlinx.android.synthetic.main.activity_install_summary.*
-import kotlinx.android.synthetic.main.card_info.view.*
 import kotlinx.android.synthetic.main.tab_install_summary_failed.*
 import kotlinx.android.synthetic.main.tab_install_summary_success.*
 import kotlinx.android.synthetic.main.tab_layout_install_summary.*

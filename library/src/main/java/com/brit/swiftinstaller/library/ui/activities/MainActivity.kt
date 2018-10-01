@@ -45,7 +45,6 @@ import com.brit.swiftinstaller.library.ui.InfoCard
 import com.brit.swiftinstaller.library.ui.MainCard
 import com.brit.swiftinstaller.library.ui.changelog.ChangelogHandler
 import com.brit.swiftinstaller.library.utils.*
-import com.brit.swiftinstaller.library.utils.OverlayUtils.countAvailableExtras
 import com.brit.swiftinstaller.library.utils.OverlayUtils.enableAllOverlays
 import kotlinx.android.synthetic.main.card_install.*
 import kotlinx.android.synthetic.main.content_main.*

@@ -42,21 +42,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.activities.InstallActivity
-import com.brit.swiftinstaller.library.utils.AppExtrasHandler
-import com.brit.swiftinstaller.library.utils.MaterialPalette
+import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.checkVersionCompatible
-import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
-import com.brit.swiftinstaller.library.utils.alert
-import com.brit.swiftinstaller.library.utils.getHiddenApps
-import com.brit.swiftinstaller.library.utils.getSelectedOverlayOptions
-import com.brit.swiftinstaller.library.utils.setOverlayOption
-import com.brit.swiftinstaller.library.utils.setVisible
-import com.brit.swiftinstaller.library.utils.swift
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.activity_app_list.*
 import kotlinx.android.synthetic.main.app_item.*
 import kotlinx.android.synthetic.main.app_option_item.view.*
-import kotlinx.android.synthetic.main.failed_info_card.view.*
 
 class AppListFragment : Fragment() {
 
@@ -366,23 +357,27 @@ class AppListFragment : Fragment() {
                 }
 
                 if (appExtrasHandler.appExtras.containsKey(item.packageName)) {
-                    if (getHiddenApps(context!!).contains(item.packageName)) {
-                        app_item_checkbox.isClickable = false
-                        app_item_checkbox.setVisible(false)
-                    } else if (summary) {
-                        required.visibility = View.VISIBLE
-                        required.text = getString(R.string.needs_extras)
-                    } else {
-                        if (extras) {
+                    when {
+                        getHiddenApps(context!!).contains(item.packageName) -> {
                             app_item_checkbox.isClickable = false
                             app_item_checkbox.setVisible(false)
-                            app_name.setVisible(false)
                         }
-                        download_icon.visibility = View.VISIBLE
-                        download_icon.setColorFilter(context!!.swift.selection.accentColor)
-                        download_icon.setOnClickListener {
-                            appExtrasHandler.appExtras[item.packageName]?.invoke(
-                                    activity!! as AppCompatActivity)
+                        summary -> {
+                            required.visibility = View.VISIBLE
+                            required.text = getString(R.string.needs_extras)
+                        }
+                        else -> {
+                            if (extras) {
+                                app_item_checkbox.isClickable = false
+                                app_item_checkbox.setVisible(false)
+                                app_name.setVisible(false)
+                            }
+                            download_icon.visibility = View.VISIBLE
+                            download_icon.setColorFilter(context!!.swift.selection.accentColor)
+                            download_icon.setOnClickListener {
+                                appExtrasHandler.appExtras[item.packageName]?.invoke(
+                                        activity!! as AppCompatActivity)
+                            }
                         }
                     }
                 }

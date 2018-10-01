@@ -1,8 +1,6 @@
 package com.brit.swiftinstaller.library.ui.changelog
 
 import android.app.Dialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.view.View

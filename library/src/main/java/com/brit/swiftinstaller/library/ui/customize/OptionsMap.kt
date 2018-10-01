@@ -1,7 +1,5 @@
 package com.brit.swiftinstaller.library.ui.customize
 
-import java.util.function.Consumer
-
 class OptionsMap : HashMap<String, Option>(), Iterable<Option> {
     override fun iterator(): Iterator<Option> {
         return object : Iterator<Option> {
