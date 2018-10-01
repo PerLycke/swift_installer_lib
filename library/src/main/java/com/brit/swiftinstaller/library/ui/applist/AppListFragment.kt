@@ -179,7 +179,7 @@ class AppListFragment : Fragment() {
         for (index in apps.indices) {
             if (context != null) {
                 if (checkVersionCompatible(context!!, apps[index].packageName) ||
-                        context!!.swift.romInfo.isOverlayInstalled(apps[index].packageName)) {
+                        context!!.swift.romHandler.isOverlayInstalled(apps[index].packageName)) {
                     checked.put(index, check)
                 }
             } else {
@@ -289,7 +289,7 @@ class AppListFragment : Fragment() {
                         }
                         options_icon.visibility = View.VISIBLE
                         options_icon.setColorFilter(
-                                activity!!.swift.romInfo.getCustomizeHandler().getSelection().accentColor)
+                                activity!!.swift.romHandler.getCustomizeHandler().getSelection().accentColor)
 
                         options_icon.setOnClickListener {
                             context!!.alert {

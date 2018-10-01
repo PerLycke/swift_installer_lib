@@ -20,7 +20,7 @@ object AppList {
 
     @Synchronized
     fun updateList(context: Context) {
-        val disabledOverlays = context.swift.romInfo.getDisabledOverlays()
+        val disabledOverlays = context.swift.romHandler.getDisabledOverlays()
         val hiddenOverlays = getHiddenApps(context)
         val pm = context.packageManager
         val overlays = context.assets.list("overlays") ?: emptyArray()
@@ -81,7 +81,7 @@ object AppList {
     }
 
     private fun getPackageIndex(context: Context, packageName: String): Int {
-        return if (context.swift.romInfo.isOverlayInstalled(packageName)) {
+        return if (context.swift.romHandler.isOverlayInstalled(packageName)) {
             if (updates(context).contains(packageName)) {
                 UPDATE
             } else {
@@ -126,8 +126,8 @@ object AppList {
                     hasUpdate = updates(context).contains(packageName),
                     incompatible = !OverlayUtils.checkVersionCompatible(context, packageName),
                     hasVersions = OverlayUtils.overlayHasVersion(context, packageName),
-                    installed = context.swift.romInfo.isOverlayInstalled(packageName),
-                    isRequired = context.swift.romInfo.getRequiredApps().contains(packageName),
+                    installed = context.swift.romHandler.isOverlayInstalled(packageName),
+                    isRequired = context.swift.romHandler.getRequiredApps().contains(packageName),
                     appOptions = OverlayUtils.getOverlayOptions(context, packageName))
             putApp(item, currentIndex)
         }

@@ -26,22 +26,14 @@ import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.LayerDrawable
-import android.net.Uri
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.style.ClickableSpan
-import android.view.View
-import androidx.browser.customtabs.CustomTabsIntent
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.customize.*
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
-import com.hololo.tutorial.library.Step
-import com.hololo.tutorial.library.TutorialActivity
 import com.topjohnwu.superuser.io.SuFile
 import kotlinx.android.synthetic.main.customize_preview_sysui.view.*
 
-open class PRomInfo(context: Context) : RomInfo(context) {
+open class PRomHandler(context: Context) : RomHandler(context) {
 
     private val systemApp = "/system/app"
 

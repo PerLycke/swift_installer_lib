@@ -30,7 +30,7 @@ import com.brit.swiftinstaller.library.ui.customize.PreviewHandler
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
 
-open class OreoRomInfo(context: Context) : RomInfo(context) {
+open class OreoRomHandler(context: Context) : RomHandler(context) {
 
     override fun installOverlay(context: Context, targetPackage: String, overlayPath: String) {
         if (ShellUtils.isRootAvailable) {

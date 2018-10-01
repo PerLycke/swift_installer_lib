@@ -28,7 +28,7 @@ object ChangelogHandler {
 
         val builder = ChangelogBuilder()
                 .withUseBulletList(true)
-                .withFilter(SwiftChangelogFilter(activity.swift.romInfo.getChangelogTag()))
+                .withFilter(SwiftChangelogFilter(activity.swift.romHandler.getChangelogTag()))
 
         if (managedShow) {
             builder.withMinVersionToShow(BuildConfig.VERSION_CODE)

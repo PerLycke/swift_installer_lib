@@ -84,7 +84,7 @@ class AppsTabPagerAdapter(fm: FragmentManager, summary: Boolean, extras: Boolean
         val checkableList = arrayListOf<AppItem>()
         for (item in fragments[tab].apps) {
             if (checkVersionCompatible(context, item.packageName) ||
-                    context.swift.romInfo.isOverlayInstalled(item.packageName)) {
+                    context.swift.romHandler.isOverlayInstalled(item.packageName)) {
                 checkableList.add(item)
             }
         }

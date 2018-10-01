@@ -91,7 +91,7 @@ class CustomizeActivity : ThemeActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customize)
 
-        customizeHandler = swift.romInfo.getCustomizeHandler()
+        customizeHandler = swift.romHandler.getCustomizeHandler()
         previewHandler = customizeHandler.createPreviewHandler(this)
         selection = customizeHandler.getSelection()
         parentActivity = intent.getStringExtra("parentActivity")
@@ -354,7 +354,7 @@ class CustomizeActivity : ThemeActivity() {
     }
 
     private fun checkAndAddApp(apps: SynchronizedArrayList<String>, app: String) {
-        if (!apps.contains(app) && swift.romInfo.isOverlayInstalled("android")) {
+        if (!apps.contains(app) && swift.romHandler.isOverlayInstalled("android")) {
             apps.add(app)
             recompile = true
         }
@@ -411,7 +411,7 @@ class CustomizeActivity : ThemeActivity() {
                     this).edit().putBoolean("hotswap", false).apply()
 
             if (selection.accentColor != oldSelection.accentColor) {
-                if (swift.romInfo.useHotSwap()) {
+                if (swift.romHandler.useHotSwap()) {
                     hotSwapPrefOn()
                 }
                 checkAndAddApp(apps, "android")

@@ -46,7 +46,7 @@ class UpdateChecker(context: Context, private val callback: Callback?) :
         clearAppsToUpdate(context!!)
         val overlays = context.assets.list("overlays") ?: emptyArray()
         for (packageName in overlays) {
-            if (context.swift.romInfo.isOverlayInstalled(packageName)
+            if (context.swift.romHandler.isOverlayInstalled(packageName)
                     && context.pm.isAppInstalled(packageName)
                     && context.pm.isAppEnabled(packageName)) {
                 installedCount++

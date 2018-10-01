@@ -217,7 +217,7 @@ fun setOverlayOption(context: Context, packageName: String, option: String, valu
 
 @Suppress("unused")
 fun addAccentColor(context: Context, color: Int) {
-    val presets = context.swift.romInfo.getCustomizeHandler().getAccentColors()
+    val presets = context.swift.romHandler.getCustomizeHandler().getAccentColors()
     for (col in presets) {
         if (col.accentColor == color)
             return

@@ -47,33 +47,33 @@ object OverlayUtils {
     }
 
     fun wasUpdateSuccessful(context: Context, packageName: String): Boolean {
-        if (!context.swift.romInfo.isOverlayInstalled(packageName)) return false
+        if (!context.swift.romHandler.isOverlayInstalled(packageName)) return false
         if (!context.pm.isAppInstalled(packageName)) return false
         val appVersion = context.packageManager.getPackageInfo(packageName, 0).getVersionCode()
-        val overlayAppVersion = context.swift.romInfo.getOverlayInfo(
+        val overlayAppVersion = context.swift.romHandler.getOverlayInfo(
                 context.packageManager, packageName).applicationInfo.metaData
                 .getInt("app_version_code").toLong()
         val overlayVersion = getOverlayVersion(context, packageName)
         val curOverlayVersion =
-                context.swift.romInfo.getOverlayInfo(context.packageManager, packageName)
+                context.swift.romHandler.getOverlayInfo(context.packageManager, packageName)
                         .getVersionCode()
         return (appVersion == overlayAppVersion) && (overlayVersion == curOverlayVersion)
     }
 
     fun checkAppVersion(context: Context, packageName: String): Boolean {
-        if (!context.swift.romInfo.isOverlayInstalled(packageName)) return false
+        if (!context.swift.romHandler.isOverlayInstalled(packageName)) return false
         val appVersionCode = context.packageManager.getPackageInfo(packageName, 0).getVersionCode()
         val curVersionCode =
-                context.swift.romInfo.getOverlayInfo(context.packageManager, packageName)
+                context.swift.romHandler.getOverlayInfo(context.packageManager, packageName)
                         .applicationInfo.metaData.getInt("app_version_code")
         return appVersionCode > curVersionCode
     }
 
     fun checkOverlayVersion(context: Context, packageName: String): Boolean {
-        if (!context.swift.romInfo.isOverlayInstalled(packageName)) return false
+        if (!context.swift.romHandler.isOverlayInstalled(packageName)) return false
         val overlayVersion = getOverlayVersion(context, packageName)
         val currentVersion =
-                context.swift.romInfo.getOverlayInfo(context.packageManager, packageName)
+                context.swift.romHandler.getOverlayInfo(context.packageManager, packageName)
                         .getVersionCode()
         return overlayVersion > currentVersion
     }
@@ -230,7 +230,7 @@ object OverlayUtils {
             }
         }
         if (variants.contains("customize")) {
-            val cHandler = context.swift.romInfo.getCustomizeHandler()
+            val cHandler = context.swift.romHandler.getCustomizeHandler()
             val list = context.assets.list("$path/customize") ?: emptyArray()
             for (cust in list) {
                 if (cHandler.getCustomizeOptions().containsKey(cust)) {
@@ -306,7 +306,7 @@ object OverlayUtils {
     fun countAvailableExtras(context: Context, extras: Set<String>) : Int {
         var count = 0
         for (i in extras) {
-            if (context.swift.romInfo.isOverlayInstalled(i)) {
+            if (context.swift.romHandler.isOverlayInstalled(i)) {
                 count++
             }
         }

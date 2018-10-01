@@ -35,7 +35,7 @@ class SettingsActivity : AppCompatActivity() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.preferences)
 
-            if (!activity!!.swift.romInfo.useHotSwap()) {
+            if (!activity!!.swift.romHandler.useHotSwap()) {
                 preferenceScreen.removePreference(
                         preferenceScreen.findPreference(KEY_USE_SOFT_REBOOT))
             }

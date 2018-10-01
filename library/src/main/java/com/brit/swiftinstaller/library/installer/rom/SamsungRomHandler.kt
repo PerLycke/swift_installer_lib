@@ -40,7 +40,7 @@ import kotlinx.android.synthetic.main.customize_preview_settings.view.*
 import kotlinx.android.synthetic.main.customize_preview_sysui.view.*
 import java.io.File
 
-class SamsungRomInfo(context: Context) : RomInfo(context) {
+class SamsungRomHandler(context: Context) : RomHandler(context) {
 
     override fun requiresRoot(): Boolean {
         return false
@@ -271,7 +271,7 @@ class SamsungRomInfo(context: Context) : RomInfo(context) {
 
         override fun updateIcons(selection: CustomizeSelection) {
 
-            val option = context.swift.romInfo.getCustomizeHandler()
+            val option = context.swift.romHandler.getCustomizeHandler()
                     .getCustomizeOptions()["samsung_oreo_icons"]!!.options[selection["samsung_oreo_icons"]]!!
 
             settingsIcons.forEach { icon ->

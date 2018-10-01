@@ -51,7 +51,7 @@ import com.hololo.tutorial.library.TutorialActivity
 import com.topjohnwu.superuser.io.SuFile
 
 @Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
-abstract class RomInfo constructor(var context: Context) {
+abstract class RomHandler constructor(var context: Context) {
 
     val moduleDisabled: Boolean by lazy {
         SuFile(magiskPath, "disable").exists()
@@ -198,15 +198,15 @@ abstract class RomInfo constructor(var context: Context) {
 
         @Synchronized
         @JvmStatic
-        fun createRomInfo(context: Context): RomInfo {
+        fun createRomInfo(context: Context): RomHandler {
             return when {
                 getProperty("ro.oxygen.version", "def") != "def"
-                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P -> OOSPRomInfo(context)
+                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P -> OOSPRomHandler(context)
                 getProperty("ro.oxygen.version", "def") != "def"
-                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> OOSOreoRomInfo(context)
-                getProperty("ro.config.knox", "def") != "def" -> SamsungRomInfo(context)
-                Build.VERSION_CODES.P == Build.VERSION.SDK_INT -> PRomInfo(context)
-                else -> OreoRomInfo(context)
+                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> OOSOreoRomHandler(context)
+                getProperty("ro.config.knox", "def") != "def" -> SamsungRomHandler(context)
+                Build.VERSION_CODES.P == Build.VERSION.SDK_INT -> PRomHandler(context)
+                else -> OreoRomHandler(context)
             }
         }
 

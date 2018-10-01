@@ -1,24 +1,3 @@
-/*
- *
- *  * Copyright (C) 2018 Griffin Millender
- *  * Copyright (C) 2018 Per Lycke
- *  * Copyright (C) 2018 Davide Lilli & Nishith Khanna
- *  *
- *  * This program is free software: you can redistribute it and/or modify
- *  * it under the terms of the GNU General Public License as published by
- *  * the Free Software Foundation, either version 3 of the License, or
- *  * (at your option) any later version.
- *  *
- *  * This program is distributed in the hope that it will be useful,
- *  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  * GNU General Public License for more details.
- *  *
- *  * You should have received a copy of the GNU General Public License
- *  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.brit.swiftinstaller.library.installer.rom
 
 import android.content.Context
@@ -27,7 +6,7 @@ import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
 import com.brit.swiftinstaller.library.utils.runCommand
 import com.brit.swiftinstaller.library.utils.swift
 
-class OOSOreoRomInfo(context: Context) : OreoRomInfo(context) {
+class OOSPRomHandler(context: Context) : PRomHandler(context) {
 
     override fun postInstall(uninstall: Boolean, apps: SynchronizedArrayList<String>,
                              oppositeApps: SynchronizedArrayList<String>, intent: Intent?) {
@@ -40,7 +19,7 @@ class OOSOreoRomInfo(context: Context) : OreoRomInfo(context) {
     }
 
     override fun getChangelogTag(): String {
-        return "oos-oreo"
+        return "oos-p"
     }
 
     override fun getRequiredApps(): Array<String> {
@@ -68,6 +47,8 @@ class OOSOreoRomInfo(context: Context) : OreoRomInfo(context) {
                 "com.google.android.apps.nexuslauncher",
                 "com.oneplus.deskclock",
                 "com.lastpass.lpandroid",
-                "com.weather.Weather")
-        }
+                "com.weather.Weather",
+                "com.google.android.settings.intelligence"
+        )
     }
+}

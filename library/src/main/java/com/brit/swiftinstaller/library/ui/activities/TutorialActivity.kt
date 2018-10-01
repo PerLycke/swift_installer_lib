@@ -66,7 +66,7 @@ open class TutorialActivity : TutorialActivity() {
             startActivity(intent)
             finish()
         } else {
-            if (swift.romInfo.requiresRoot() && !ShellUtils.isRootAccessAvailable) {
+            if (swift.romHandler.requiresRoot() && !ShellUtils.isRootAccessAvailable) {
                 val dialog = Dialog(this, R.style.AppTheme)
                 val layout = View.inflate(this, R.layout.no_root, null)
                 dialog.setContentView(layout)
@@ -82,7 +82,7 @@ open class TutorialActivity : TutorialActivity() {
 
             setIndicator(R.drawable.tutorial_indicator)
             setIndicatorSelected(R.drawable.tutorial_indicator_selected)
-            swift.romInfo.addTutorialSteps(this)
+            swift.romHandler.addTutorialSteps(this)
         }
     }
 

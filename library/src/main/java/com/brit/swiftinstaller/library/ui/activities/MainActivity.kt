@@ -39,7 +39,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
+import com.brit.swiftinstaller.library.installer.rom.RomHandler
 import com.brit.swiftinstaller.library.ui.CardItem
 import com.brit.swiftinstaller.library.ui.MainCard
 import com.brit.swiftinstaller.library.ui.changelog.ChangelogHandler
@@ -159,7 +159,7 @@ class MainActivity : ThemeActivity() {
             }
 
             cardsList.forEach { item ->
-                val cardItemLayout = LayoutInflater.from(this@MainActivity).inflate(R.layout.card_item, null)
+                val cardItemLayout = View.inflate(this@MainActivity, R.layout.card_item, null)
                 cardItemLayout.card_item_desc.text = item.desc
                 cardItemLayout.card_item_btn.setImageDrawable(item.btn)
                 cardItemLayout.card_item_btn.setOnClickListener(item.btnClick)
@@ -338,7 +338,7 @@ class MainActivity : ThemeActivity() {
                 val m = "${getString(R.string.help_msg)} \n\n" +
                         "${getString(R.string.faq, getString(R.string.link_faq))} \n\n" +
                         getString(R.string.telegram_support, getString(R.string.link_telegram)) +
-                        if (RomInfo.supportsMagisk) {
+                        if (RomHandler.supportsMagisk) {
                             "\n\n${getString(R.string.magisk_module,
                                     getString(R.string.link_magisk))} \n\n"
                         } else {
@@ -371,7 +371,7 @@ class MainActivity : ThemeActivity() {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
 
-        if (swift.romInfo.useHotSwap()) {
+        if (swift.romHandler.useHotSwap()) {
             popupView.popup_menu_soft_reboot.setOnClickListener {
                 popup.dismiss()
                 val intent = Intent(this, RebootActivity::class.java)

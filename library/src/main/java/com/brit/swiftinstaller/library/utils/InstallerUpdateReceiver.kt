@@ -38,7 +38,7 @@ class InstallerUpdateReceiver : BroadcastReceiver() {
     }
 
     private fun convertSettings(context: Context) {
-        val selection = context.swift.romInfo.getCustomizeHandler().getSelection()
+        val selection = context.swift.romHandler.getCustomizeHandler().getSelection()
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         val edit = prefs.edit()
         if (prefs.contains(KEY_ACCENT_COLOR)) {

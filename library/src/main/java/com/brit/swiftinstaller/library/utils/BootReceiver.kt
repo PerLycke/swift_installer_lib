@@ -37,7 +37,7 @@ class BootReceiver : BroadcastReceiver() {
             context!!.applicationContext.startActivity(enable)
 
             doAsync {
-                context.swift.romInfo.onBootCompleted(context)
+                context.swift.romHandler.onBootCompleted(context)
             }
         }
     }

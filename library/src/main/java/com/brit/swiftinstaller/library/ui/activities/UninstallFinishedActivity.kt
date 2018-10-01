@@ -51,7 +51,7 @@ class UninstallFinishedActivity : ThemeActivity() {
             PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("hotswap", false).apply()
             finish()
             return
-        } else if (swift.romInfo.neverReboot()) {
+        } else if (swift.romHandler.neverReboot()) {
             finish()
             return
         }
@@ -66,7 +66,7 @@ class UninstallFinishedActivity : ThemeActivity() {
                 dialog.setContentView(R.layout.reboot)
                 dialog.show()
                 handler.post {
-                    if (!swift.romInfo.magiskEnabled && getUseSoftReboot(this)) {
+                    if (!swift.romHandler.magiskEnabled && getUseSoftReboot(this)) {
                         quickRebootCommand()
                     } else {
                         rebootCommand()

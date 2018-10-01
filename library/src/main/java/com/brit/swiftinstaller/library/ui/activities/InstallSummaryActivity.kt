@@ -134,7 +134,7 @@ class InstallSummaryActivity : ThemeActivity() {
         rebootDialog.setContentView(R.layout.reboot)
         rebootDialog.show()
         handler.post {
-            if (!swift.romInfo.magiskEnabled && getUseSoftReboot(this)) {
+            if (!swift.romHandler.magiskEnabled && getUseSoftReboot(this)) {
                 quickRebootCommand()
             } else {
                 rebootCommand()
@@ -173,7 +173,7 @@ class InstallSummaryActivity : ThemeActivity() {
                             icon = info.loadIcon(pm))
                     if (errorMap.keys.contains(pn)) {
                         failedList.add(item)
-                    } else if (swift.romInfo.isOverlayInstalled(pn)) {
+                    } else if (swift.romHandler.isOverlayInstalled(pn)) {
                         if (update && !OverlayUtils.wasUpdateSuccessful(this@InstallSummaryActivity,
                                         item.packageName)) {
                             errorMap[pn] = "Update Failed"
@@ -215,7 +215,7 @@ class InstallSummaryActivity : ThemeActivity() {
                 val hotSwap = prefs.getBoolean("hotswap", false)
 
                 if (failedList.isNotEmpty()) {
-                    if (!ShellUtils.isRootAvailable || this@InstallSummaryActivity.swift.romInfo.neverReboot()) {
+                    if (!ShellUtils.isRootAvailable || this@InstallSummaryActivity.swift.romHandler.neverReboot()) {
                         send_email_layout.visibility = View.VISIBLE
                         send_email_btn.setOnClickListener { _ ->
                             sendErrorLog()
@@ -232,7 +232,7 @@ class InstallSummaryActivity : ThemeActivity() {
                     result_successful_tab_txt.setTextColor(getColor(R.color.disabled))
                 }
 
-                if (!this@InstallSummaryActivity.swift.romInfo.neverReboot() && !hotSwap) {
+                if (!this@InstallSummaryActivity.swift.romHandler.neverReboot() && !hotSwap) {
                     if (ShellUtils.isRootAvailable) {
                         fab_install_finished.show()
                     }
@@ -241,7 +241,7 @@ class InstallSummaryActivity : ThemeActivity() {
                 if (hotSwap && killSysUI) {
                     killSysUI = false
                     restartSysUi(this@InstallSummaryActivity)
-                } else if (this@InstallSummaryActivity.swift.romInfo.neverReboot() && success) {
+                } else if (this@InstallSummaryActivity.swift.romHandler.neverReboot() && success) {
                     prefs.edit().putBoolean("hotswap", false).apply()
                 } else if (!hotSwap || !isOverlayEnabled("android") || failedList.isNotEmpty()) {
                     handler.post {
@@ -279,17 +279,17 @@ class InstallSummaryActivity : ThemeActivity() {
             title = when {
                 failed -> getString(R.string.installation_failed)
                 !ShellUtils.isRootAvailable -> getString(R.string.reboot_to_finish)
-                this@InstallSummaryActivity.swift.romInfo.neverReboot() -> getString(R.string.something_failed)
+                this@InstallSummaryActivity.swift.romHandler.neverReboot() -> getString(R.string.something_failed)
                 else -> getString(R.string.reboot_now_title)
             }
 
             message = when {
                 success -> getString(R.string.examined_result_msg_noerror)
                 failed -> getString(R.string.examined_result_msg_error)
-                this@InstallSummaryActivity.swift.romInfo.neverReboot() -> getString(R.string.something_failed_msg)
+                this@InstallSummaryActivity.swift.romHandler.neverReboot() -> getString(R.string.something_failed_msg)
                 else -> getString(R.string.examined_result_msg)
             }
-            if (ShellUtils.isRootAvailable && !failed && !this@InstallSummaryActivity.swift.romInfo.neverReboot()) {
+            if (ShellUtils.isRootAvailable && !failed && !this@InstallSummaryActivity.swift.romHandler.neverReboot()) {
                 negativeButton(R.string.reboot_later) { dialog ->
                     dialog.dismiss()
                 }

@@ -86,7 +86,7 @@ class InstallActivity : ThemeActivity() {
         Holder.installApps.addAll(apps)
         Holder.errorMap.clear()
         Holder.errorMap.putAll(errorMap)
-        swift.romInfo.postInstall(false, apps, updateAppsToUninstall, intent)
+        swift.romHandler.postInstall(false, apps, updateAppsToUninstall, intent)
         finish()
     }
 
@@ -149,9 +149,9 @@ class InstallActivity : ThemeActivity() {
 
         progressBar = inflate.install_progress_bar
         progressBar.indeterminateTintList = ColorStateList.valueOf(
-                swift.romInfo.getCustomizeHandler().getSelection().accentColor)
+                swift.romHandler.getCustomizeHandler().getSelection().accentColor)
         progressBar.progressTintList = ColorStateList.valueOf(
-                swift.romInfo.getCustomizeHandler().getSelection().accentColor)
+                swift.romHandler.getCustomizeHandler().getSelection().accentColor)
         progressCount = inflate.install_progress_count
         progressPercent = inflate.install_progress_percent
 
@@ -188,7 +188,7 @@ class InstallActivity : ThemeActivity() {
                             }
                         }, intentfilter)
                         uiThread { _ ->
-                            swift.romInfo.postInstall(uninstall = true, apps = apps)
+                            swift.romHandler.postInstall(uninstall = true, apps = apps)
                         }
                     } else {
                         uiThread { _ ->

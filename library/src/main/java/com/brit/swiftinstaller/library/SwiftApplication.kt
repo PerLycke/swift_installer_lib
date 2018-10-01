@@ -23,7 +23,7 @@ package com.brit.swiftinstaller.library
 
 import android.content.Intent
 import android.content.IntentFilter
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
+import com.brit.swiftinstaller.library.installer.rom.RomHandler
 import com.brit.swiftinstaller.library.ui.applist.AppList
 import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
 import com.brit.swiftinstaller.library.utils.AppExtrasHandler
@@ -37,8 +37,8 @@ import javax.crypto.Cipher
 
 open class SwiftApplication : ContainerApp() {
 
-    val romInfo: RomInfo by lazy {
-        RomInfo.createRomInfo(this)
+    val romHandler: RomHandler by lazy {
+        RomHandler.createRomInfo(this)
     }
     val extrasHandler: AppExtrasHandler by lazy {
         val v = createExtrasHandler()
@@ -51,12 +51,12 @@ open class SwiftApplication : ContainerApp() {
     var selection: CustomizeSelection
         get() {
             if (currentSelection.isEmpty) {
-                currentSelection = romInfo.getCustomizeHandler().getSelection()
+                currentSelection = romHandler.getCustomizeHandler().getSelection()
             }
             return currentSelection
         }
         set(value) {
-            romInfo.getCustomizeHandler().setSelection(value)
+            romHandler.getCustomizeHandler().setSelection(value)
             currentSelection = value
         }
 

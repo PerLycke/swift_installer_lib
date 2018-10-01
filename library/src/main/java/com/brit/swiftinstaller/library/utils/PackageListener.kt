@@ -43,8 +43,8 @@ class PackageListener : BroadcastReceiver() {
         val packageName = intent.data?.schemeSpecificPart ?: ""
         when (intent.action) {
             Intent.ACTION_PACKAGE_FULLY_REMOVED -> {
-                if (context.swift.romInfo.isOverlayInstalled(getOverlayPackageName(packageName))) {
-                    context.swift.romInfo.uninstallOverlay(context, packageName)
+                if (context.swift.romHandler.isOverlayInstalled(getOverlayPackageName(packageName))) {
+                    context.swift.romHandler.uninstallOverlay(context, packageName)
                 }
                 AppList.updateApp(context, OverlayUtils.getTargetPackage(packageName))
             }
@@ -52,8 +52,8 @@ class PackageListener : BroadcastReceiver() {
             Intent.ACTION_PACKAGE_ADDED -> {
                 val replacing = intent.getBooleanExtra(Intent.EXTRA_REPLACING, false)
                 if (replacing) {
-                    if (context.swift.romInfo.isOverlayInstalled(packageName)) {
-                        context.swift.romInfo.disableOverlay(packageName)
+                    if (context.swift.romHandler.isOverlayInstalled(packageName)) {
+                        context.swift.romHandler.disableOverlay(packageName)
                         doAsync {
                             UpdateChecker(context, null).execute()
                         }

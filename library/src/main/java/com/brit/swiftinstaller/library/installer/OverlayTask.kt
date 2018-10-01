@@ -69,7 +69,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     fun initializeOverlayTask(context: Context, packageName: String, index: Int,
                               uninstall: Boolean) {
         this.context = context
-        this.selection = context.swift.romInfo.getCustomizeHandler().getSelection()
+        this.selection = context.swift.romHandler.getCustomizeHandler().getSelection()
         this.packageName = packageName
         this.packageInfo = context.packageManager.getPackageInfo(packageName, 0)
         this.appInfo = context.packageManager.getApplicationInfo(packageName, 0)
@@ -98,7 +98,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
 
     override fun run() {
         if (uninstall) {
-            context.swift.romInfo.uninstallOverlay(context, packageName)
+            context.swift.romHandler.uninstallOverlay(context, packageName)
             mOm.handleState(this, OverlayManager.OVERLAY_UNINSTALLED)
         } else {
             if (!checkVersionCompatible(context, packageName)) {
@@ -152,7 +152,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
                         overlayDir.absolutePath + "/AndroidManifest.xml",
                         overlayPath, assets, appInfo)
         if (output.exitCode == 0) {
-            context.swift.romInfo.installOverlay(context, packageName, overlayPath)
+            context.swift.romHandler.installOverlay(context, packageName, overlayPath)
         } else {
             errorLog = output.output ?: ""
             mOm.handleState(this, OverlayManager.OVERLAY_FAILED)
