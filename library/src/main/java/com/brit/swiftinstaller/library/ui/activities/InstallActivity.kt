@@ -27,9 +27,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.res.ColorStateList
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -43,6 +45,8 @@ import kotlin.collections.set
 
 class InstallActivity : ThemeActivity() {
 
+    private lateinit var appIcon: ImageView
+    private lateinit var appTitle: TextView
     private lateinit var progressBar: ProgressBar
     private lateinit var progressCount: TextView
     private lateinit var progressPercent: TextView
@@ -53,6 +57,7 @@ class InstallActivity : ThemeActivity() {
     private var update = false
 
     private var dialog: AlertDialog? = null
+    private val dialogState = Bundle()
 
     private lateinit var apps: SynchronizedArrayList<String>
     private val updateAppsToUninstall = SynchronizedArrayList<String>()
@@ -60,8 +65,9 @@ class InstallActivity : ThemeActivity() {
     private val errorMap: HashMap<String, String> = HashMap()
 
     @Suppress("UNUSED_PARAMETER")
-    fun updateProgress(label: String?, prog: Int, max: Int, uninstall: Boolean) {
-        val progress = prog + 1
+    fun updateProgress(label: String?, icon: Drawable?, progress: Int, max: Int, uninstall: Boolean) {
+        appIcon.setImageDrawable(icon)
+        appTitle.text = label
         if (progressBar.progress < progress) {
             progressBar.isIndeterminate = false
             progressBar.progress = progress
@@ -118,6 +124,26 @@ class InstallActivity : ThemeActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (dialog?.isShowing != true) {
+            dialog?.show()
+            dialog?.onRestoreInstanceState(dialogState)
+            val ai = pm.getApplicationInfo(dialogState.getString("package_name"), 0)
+            updateProgress(ai.loadLabel(pm) as String, ai.loadIcon(pm),
+                    dialogState.getInt("progress"), dialogState.getInt("max"),
+                    uninstall)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (dialog?.isShowing == true) {
+            dialogState.putAll(dialog?.onSaveInstanceState())
+            dialog?.dismiss()
+        }
+    }
+
     private fun installStart() {
         update = intent.getBooleanExtra("update", false)
 
@@ -147,6 +173,8 @@ class InstallActivity : ThemeActivity() {
         dialog?.setCanceledOnTouchOutside(false)
         dialog?.setCancelable(false)
 
+        appIcon = inflate.app_icon
+        appTitle = inflate.install_progress_txt
         progressBar = inflate.install_progress_bar
         progressBar.indeterminateTintList = ColorStateList.valueOf(
                 swift.romHandler.getCustomizeHandler().getSelection().accentColor)
@@ -156,7 +184,11 @@ class InstallActivity : ThemeActivity() {
         progressPercent = inflate.install_progress_percent
 
         if (!uninstall) {
-            updateProgress("", -1, apps.size, uninstall)
+            val ai = pm.getApplicationInfo(apps[0], 0)
+            dialogState.putString("package_name", apps[0])
+            dialogState.putInt("progress", 1)
+            dialogState.putInt("max", apps.size)
+            updateProgress(ai.loadLabel(pm) as String, ai.loadIcon(pm), 1, apps.size, uninstall)
         } else {
             progressCount.visibility = View.INVISIBLE
             progressPercent.visibility = View.INVISIBLE
@@ -228,9 +260,13 @@ class InstallActivity : ThemeActivity() {
                 intent.action == Notifier.ACTION_INSTALLED || intent.action == Notifier.ACTION_UNINSTALLED -> {
                     val pn = intent.getStringExtra(Notifier.EXTRA_PACKAGE_NAME)
                     val label = packageManager.getApplicationInfo(pn, 0).loadLabel(packageManager)
+                    val icon = packageManager.getApplicationInfo(pn, 0).loadIcon(packageManager)
                     val max = intent.getIntExtra(Notifier.EXTRA_MAX, 0)
-                    val progress = intent.getIntExtra(Notifier.EXTRA_PROGRESS, 0)
-                    updateProgress(label as String, progress, max, uninstall)
+                    val progress = intent.getIntExtra(Notifier.EXTRA_PROGRESS, 0) + 1
+                    dialogState.putString("package_name", pn)
+                    dialogState.putInt("progress", progress)
+                    dialogState.putInt("max", max)
+                    updateProgress(label as String, icon, progress, max, uninstall)
                 }
                 intent.action == Notifier.ACTION_FAILED -> {
                     errorMap[intent.getStringExtra(Notifier.EXTRA_PACKAGE_NAME)] =
