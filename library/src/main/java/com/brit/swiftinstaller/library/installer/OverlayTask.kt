@@ -130,6 +130,9 @@ class OverlayTask(private val om: OverlayManager) : Runnable {
         assetPaths.forEach { path ->
             am.extractAsset(path, assetDir.absolutePath, context.swift.cipher)
         }
+        if (context.swift.extrasHandler.resourceExtras.contains(packageName)) {
+            context.swift.extrasHandler.resourceExtras[packageName]?.invoke(context, resDir.absolutePath, assetDir.absolutePath)
+        }
         if (packageName == "android") {
             applyAccent()
             applyBackground()
