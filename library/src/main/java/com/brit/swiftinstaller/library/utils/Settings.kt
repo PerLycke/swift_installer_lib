@@ -50,7 +50,6 @@ const val KEY_ALPHA = "alpha"
 const val KEY_USE_SOFT_REBOOT = "use_soft_reboot"
 const val KEY_UPDATE_NOTIFICATION_ENABLED = "update_notification_enabled"
 const val KEY_NEW_APP_NOTIFICATION_ENABLED = "new_app_notification_enabled"
-const val KEY_HAS_EXTRAS = "has_extras"
 
 const val KEY_HIDDEN_APPS = "hidden_apps"
 
@@ -107,13 +106,6 @@ fun addAppToUpdate(context: Context, packageName: String) {
     val apps = getAppsToUpdate(context)
     PreferenceManager.getDefaultSharedPreferences(context).edit()
             .putStringSet(KEY_OVERLAY_UPDATES, apps.plus(packageName)).apply()
-}
-
-fun setAppsToUpdate(context: Context, updates: ArrayList<String>) {
-    clearAppsToUpdate(context)
-    updates.forEach {
-        addAppToUpdate(context, it)
-    }
 }
 
 fun removeAppToUpdate(context: Context, packageName: String) {
@@ -198,14 +190,6 @@ fun setOverlayOption(context: Context, packageName: String, option: String, valu
     json.put(option, value)
     prefs.edit().remove(packageName).apply()
     prefs.edit().putString(packageName, json.toString()).apply()
-}
-
-fun hasOverlayExtras(context: Context): Boolean {
-    return context.prefs.getBoolean(KEY_HAS_EXTRAS, false)
-}
-
-fun setHasOverlayExtras(context: Context, extras: Boolean) {
-    context.prefs.edit().putBoolean(KEY_HAS_EXTRAS, extras).apply()
 }
 
 @Suppress("unused")

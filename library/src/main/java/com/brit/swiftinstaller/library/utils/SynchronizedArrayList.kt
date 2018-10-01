@@ -14,12 +14,6 @@ open class SynchronizedArrayList<T>(): ArrayList<T>() {
         arrayList.clear()
     }
 
-    constructor(set: Set<T>): this() {
-        set.forEach {
-            add(it)
-        }
-    }
-
     override val size: Int
         @Synchronized
         get() = super.size
