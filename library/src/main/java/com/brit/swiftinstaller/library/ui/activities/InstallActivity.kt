@@ -67,8 +67,12 @@ class InstallActivity : ThemeActivity() {
 
     @Suppress("UNUSED_PARAMETER")
     fun updateProgress(label: String?, icon: Drawable?, progress: Int, max: Int, uninstall: Boolean) {
-        appIcon.setImageDrawable(icon)
-        appTitle.text = label
+        if (!Utils.isSamsungOreo()) {
+            appIcon.setImageDrawable(icon)
+            appTitle.text = label
+        } else {
+            val progress = progress + 1
+        }
         if (progressBar.progress < progress) {
             progressBar.isIndeterminate = false
             progressBar.progress = progress
@@ -127,24 +131,28 @@ class InstallActivity : ThemeActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (dialog?.isShowing != true) {
-            dialog?.show()
-            dialog?.onRestoreInstanceState(dialogState)
-            try {
-                val ai = pm.getApplicationInfo(dialogState.getString("package_name"), 0)
-                updateProgress(ai.loadLabel(pm) as String, ai.loadIcon(pm),
-                        dialogState.getInt("progress"), dialogState.getInt("max"),
-                        uninstall)
-            } catch (e: PackageManager.NameNotFoundException) {
+        if (!Utils.isSamsungOreo()) {
+            if (dialog?.isShowing != true) {
+                dialog?.show()
+                dialog?.onRestoreInstanceState(dialogState)
+                try {
+                    val ai = pm.getApplicationInfo(dialogState.getString("package_name"), 0)
+                    updateProgress(ai.loadLabel(pm) as String, ai.loadIcon(pm),
+                            dialogState.getInt("progress"), dialogState.getInt("max"),
+                            uninstall)
+                } catch (e: PackageManager.NameNotFoundException) {
+                }
             }
         }
     }
 
     override fun onPause() {
         super.onPause()
-        if (dialog?.isShowing == true) {
-            dialogState.putAll(dialog?.onSaveInstanceState())
-            dialog?.dismiss()
+        if (!Utils.isSamsungOreo()) {
+            if (dialog?.isShowing == true) {
+                dialogState.putAll(dialog?.onSaveInstanceState())
+                dialog?.dismiss()
+            }
         }
     }
 
@@ -177,8 +185,13 @@ class InstallActivity : ThemeActivity() {
         dialog?.setCanceledOnTouchOutside(false)
         dialog?.setCancelable(false)
 
-        appIcon = inflate.app_icon
-        appTitle = inflate.install_progress_txt
+        if (!Utils.isSamsungOreo()) {
+            appIcon = inflate.app_icon
+            appTitle = inflate.app_name
+        } else {
+            inflate.app_icon.setVisible(false)
+            inflate.app_name.setVisible(false)
+        }
         progressBar = inflate.install_progress_bar
         progressBar.indeterminateTintList = ColorStateList.valueOf(
                 swift.romHandler.getCustomizeHandler().getSelection().accentColor)
@@ -188,11 +201,15 @@ class InstallActivity : ThemeActivity() {
         progressPercent = inflate.install_progress_percent
 
         if (!uninstall) {
-            val ai = pm.getApplicationInfo(apps[0], 0)
-            dialogState.putString("package_name", apps[0])
-            dialogState.putInt("progress", 1)
-            dialogState.putInt("max", apps.size)
-            updateProgress(ai.loadLabel(pm) as String, ai.loadIcon(pm), 1, apps.size, uninstall)
+            if (!Utils.isSamsungOreo()) {
+                val ai = pm.getApplicationInfo(apps[0], 0)
+                dialogState.putString("package_name", apps[0])
+                dialogState.putInt("progress", 1)
+                dialogState.putInt("max", apps.size)
+                updateProgress(ai.loadLabel(pm) as String, ai.loadIcon(pm), 1, apps.size, uninstall)
+            } else {
+                updateProgress("", null, -1, apps.size, uninstall)
+            }
         } else {
             progressCount.visibility = View.INVISIBLE
             progressPercent.visibility = View.INVISIBLE
@@ -264,13 +281,18 @@ class InstallActivity : ThemeActivity() {
                 intent.action == Notifier.ACTION_INSTALLED || intent.action == Notifier.ACTION_UNINSTALLED -> {
                     val pn = intent.getStringExtra(Notifier.EXTRA_PACKAGE_NAME)
                     val label = packageManager.getApplicationInfo(pn, 0).loadLabel(packageManager)
-                    val icon = packageManager.getApplicationInfo(pn, 0).loadIcon(packageManager)
                     val max = intent.getIntExtra(Notifier.EXTRA_MAX, 0)
-                    val progress = intent.getIntExtra(Notifier.EXTRA_PROGRESS, 0) + 1
-                    dialogState.putString("package_name", pn)
-                    dialogState.putInt("progress", progress)
-                    dialogState.putInt("max", max)
-                    updateProgress(label as String, icon, progress, max, uninstall)
+                    if (!Utils.isSamsungOreo()) {
+                        val icon = packageManager.getApplicationInfo(pn, 0).loadIcon(packageManager)
+                        val progress = intent.getIntExtra(Notifier.EXTRA_PROGRESS, 0) + 1
+                        dialogState.putString("package_name", pn)
+                        dialogState.putInt("progress", progress)
+                        dialogState.putInt("max", max)
+                        updateProgress(label as String, icon, progress, max, uninstall)
+                    } else {
+                        val progress = intent.getIntExtra(Notifier.EXTRA_PROGRESS, 0)
+                        updateProgress(label as String, null, progress, max, uninstall)
+                    }
                 }
                 intent.action == Notifier.ACTION_FAILED -> {
                     errorMap[intent.getStringExtra(Notifier.EXTRA_PACKAGE_NAME)] =

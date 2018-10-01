@@ -25,7 +25,7 @@
     android:id="@+id/progress_dialog_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="20dp">
+    android:padding="16dp">
 
     <TextView
         android:id="@+id/progress_dialog_title"
@@ -36,7 +36,7 @@
         android:text="@string/progress_installing_title"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,7 +44,10 @@
         android:id="@+id/force_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="8dp"
+        android:paddingStart="8dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="8dp"
         android:text="@string/force_close"
         android:textAllCaps="true"
         android:textColor="@color/minimal_red"
@@ -60,12 +63,12 @@
         android:layout_height="24dp"
         android:layout_marginStart="8dp"
         android:contentDescription="@null"
-        app:layout_constraintBottom_toBottomOf="@+id/install_progress_txt"
+        app:layout_constraintBottom_toBottomOf="@+id/app_name"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/install_progress_txt" />
+        app:layout_constraintTop_toTopOf="@+id/app_name" />
 
     <TextView
-        android:id="@+id/install_progress_txt"
+        android:id="@+id/app_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -93,14 +96,14 @@
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/install_progress_txt" />
+        app:layout_constraintTop_toBottomOf="@+id/app_name" />
 
     <TextView
         android:id="@+id/install_progress_percent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="8dp"
         android:fontFamily="sans-serif"
         android:textColor="@android:color/white"
         android:textSize="16sp"
