@@ -116,7 +116,7 @@ object AppList {
             if (contains(packageName) == currentIndex) {
                 return
             }
-            removeApp(context, packageName)
+            removeApp(packageName)
             val pInfo = context.packageManager.getPackageInfo(packageName, 0)
             val item = AppItem(packageName = packageName,
                     title = pInfo.applicationInfo.loadLabel(context.packageManager) as String,
@@ -134,7 +134,7 @@ object AppList {
     }
 
     @Synchronized
-    fun removeApp(@Suppress("UNUSED_PARAMETER") context: Context, packageName: String) {
+    fun removeApp(packageName: String) {
         synchronized(this) {
             if (appUpdates.contains(packageName)) {
                 appUpdates.remove(packageName)

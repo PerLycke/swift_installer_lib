@@ -23,7 +23,6 @@
 package com.brit.swiftinstaller.library.installer.rom
 
 import android.Manifest
-import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
@@ -50,7 +49,6 @@ import com.hololo.tutorial.library.Step
 import com.hololo.tutorial.library.TutorialActivity
 import com.topjohnwu.superuser.io.SuFile
 
-@Suppress("NON_FINAL_MEMBER_IN_FINAL_CLASS")
 abstract class RomHandler constructor(var context: Context) {
 
     val moduleDisabled: Boolean by lazy {
@@ -208,18 +206,6 @@ abstract class RomHandler constructor(var context: Context) {
                 Build.VERSION_CODES.P == Build.VERSION.SDK_INT -> PRomHandler(context)
                 else -> OreoRomHandler(context)
             }
-        }
-
-        @Suppress("DEPRECATION", "unused")
-        private fun isOMS(context: Context): Boolean {
-            val am = context.getSystemService(ActivityManager::class.java)!!
-            val services = am.getRunningServices(Integer.MAX_VALUE)
-            for (info in services) {
-                if (info.service.className.contains("IOverlayManager")) {
-                    return true
-                }
-            }
-            return false
         }
     }
 }

@@ -22,7 +22,6 @@
 package com.brit.swiftinstaller.library.ui.activities
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.PorterDuff
@@ -32,7 +31,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.SystemClock
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.PopupWindow
@@ -271,10 +269,9 @@ class MainActivity : ThemeActivity() {
         finishAffinity()
     }
 
-    @SuppressLint("RtlHardcoded", "InflateParams")
     fun overflowClick(view: View) {
         val popup = PopupWindow(this, null, 0, R.style.PopupWindow)
-        val popupView = LayoutInflater.from(this).inflate(R.layout.popup_menu, null)
+        val popupView = View.inflate(this, R.layout.popup_menu, null)
         if (!getUseSoftReboot(this)) {
             popupView.popup_menu_soft_reboot.text = getString(R.string.reboot)
         }
@@ -363,6 +360,6 @@ class MainActivity : ThemeActivity() {
             popup.dismiss()
         }
 
-        popup.showAtLocation(view, Gravity.TOP or Gravity.RIGHT, 0, 0)
+        popup.showAtLocation(view, Gravity.TOP or Gravity.END, 0, 0)
     }
 }

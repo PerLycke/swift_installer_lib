@@ -21,7 +21,6 @@
 
 package com.brit.swiftinstaller.library.ui.activities
 
-import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -113,11 +112,10 @@ class CustomizeActivity : ThemeActivity() {
         Looper.myQueue().addIdleHandler(handler)
     }
 
-    @SuppressLint("RestrictedApi")
     private fun showFab() {
         handler.postDelayed({
             if (personalize_fab.visibility == View.GONE) {
-                personalize_fab.visibility = View.VISIBLE
+                personalize_fab.setVisible(true)
                 personalize_fab.startAnimation(AnimationUtils.loadAnimation(this@CustomizeActivity,
                         android.R.anim.fade_in))
             }
@@ -131,10 +129,9 @@ class CustomizeActivity : ThemeActivity() {
         }, 300)
     }
 
-    @SuppressLint("RestrictedApi")
     private fun hideFab() {
         if (personalize_fab.visibility == View.VISIBLE) {
-            personalize_fab.visibility = View.GONE
+            personalize_fab.setVisible(false)
         }
     }
 

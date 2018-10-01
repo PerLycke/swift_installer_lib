@@ -41,7 +41,6 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import kotlin.collections.set
 
-@Suppress("UNUSED_PARAMETER")
 class InstallActivity : ThemeActivity() {
 
     private lateinit var progressBar: ProgressBar
@@ -60,6 +59,7 @@ class InstallActivity : ThemeActivity() {
 
     private val errorMap: HashMap<String, String> = HashMap()
 
+    @Suppress("UNUSED_PARAMETER")
     fun updateProgress(label: String?, prog: Int, max: Int, uninstall: Boolean) {
         val progress = prog + 1
         if (progressBar.progress < progress) {

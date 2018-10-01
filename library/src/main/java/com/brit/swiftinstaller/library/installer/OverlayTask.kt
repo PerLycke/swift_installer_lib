@@ -48,20 +48,19 @@ import java.io.File
 import java.io.FileWriter
 import java.io.IOException
 
-@Suppress("MemberVisibilityCanBePrivate")
-class OverlayTask(val mOm: OverlayManager) : Runnable {
+class OverlayTask(private val om: OverlayManager) : Runnable {
 
     lateinit var context: Context
 
     lateinit var selection: CustomizeSelection
 
     lateinit var packageName: String
-    lateinit var packageInfo: PackageInfo
-    lateinit var appInfo: ApplicationInfo
-    lateinit var resDir: File
-    lateinit var assetDir: File
-    lateinit var overlayDir: File
-    lateinit var overlayPath: String
+    private lateinit var packageInfo: PackageInfo
+    private lateinit var appInfo: ApplicationInfo
+    private lateinit var resDir: File
+    private lateinit var assetDir: File
+    private lateinit var overlayDir: File
+    private lateinit var overlayPath: String
     var errorLog = ""
     var uninstall: Boolean = false
     var index = 0
@@ -99,17 +98,17 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
     override fun run() {
         if (uninstall) {
             context.swift.romHandler.uninstallOverlay(context, packageName)
-            mOm.handleState(this, OverlayManager.OVERLAY_UNINSTALLED)
+            om.handleState(this, OverlayManager.OVERLAY_UNINSTALLED)
         } else {
             if (!checkVersionCompatible(context, packageName)) {
                 errorLog = "Version Incompatible"
-                mOm.handleState(this, OverlayManager.OVERLAY_FAILED)
+                om.handleState(this, OverlayManager.OVERLAY_FAILED)
             } else {
                 extractResources()
                 compileOverlay()
                 deleteFileShell(overlayDir.absolutePath)
             }
-            mOm.handleState(this, OverlayManager.OVERLAY_INSTALLED)
+            om.handleState(this, OverlayManager.OVERLAY_INSTALLED)
         }
     }
 
@@ -155,7 +154,7 @@ class OverlayTask(val mOm: OverlayManager) : Runnable {
             context.swift.romHandler.installOverlay(context, packageName, overlayPath)
         } else {
             errorLog = output.output ?: ""
-            mOm.handleState(this, OverlayManager.OVERLAY_FAILED)
+            om.handleState(this, OverlayManager.OVERLAY_FAILED)
         }
     }
 

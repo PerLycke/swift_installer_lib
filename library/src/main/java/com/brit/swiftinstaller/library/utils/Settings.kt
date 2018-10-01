@@ -119,18 +119,6 @@ fun clearAppsToUpdate(context: Context) {
             .putStringSet(KEY_OVERLAY_UPDATES, ArraySet<String>()).apply()
 }
 
-fun getAppsToInstall(context: Context): Set<String> {
-    return PreferenceManager.getDefaultSharedPreferences(context).getStringSet(
-            KEY_OVERLAYS_TO_INSTALL, ArraySet<String>()) ?: emptySet()
-}
-
-@Suppress("unused")
-fun addAppToInstall(context: Context, packageName: String) {
-    val apps = getAppsToInstall(context)
-    PreferenceManager.getDefaultSharedPreferences(context).edit()
-            .putStringSet(KEY_OVERLAYS_TO_INSTALL, apps.plus(packageName)).apply()
-}
-
 fun clearAppsToInstall(context: Context) {
     PreferenceManager.getDefaultSharedPreferences(context).edit()
             .putStringSet(KEY_OVERLAYS_TO_INSTALL, ArraySet<String>()).apply()

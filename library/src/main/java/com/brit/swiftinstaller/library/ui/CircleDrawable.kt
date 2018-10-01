@@ -39,8 +39,7 @@ class CircleDrawable(color: Int) : Drawable() {
     private var mRadius = 0
 
     init {
-        mInnerPaint.color = color
-        mOuterPaint.color = shiftColorDown(color)
+        updateColor(color)
     }
 
     override fun draw(canvas: Canvas) {
@@ -61,8 +60,7 @@ class CircleDrawable(color: Int) : Drawable() {
         mOuterPaint.alpha = alpha
     }
 
-    @Suppress("unused")
-    fun setColor(color: Int) {
+    private fun updateColor(color: Int) {
         if (color != mInnerPaint.color) {
             mInnerPaint.color = color
             mOuterPaint.color = shiftColorDown(color)
@@ -78,7 +76,6 @@ class CircleDrawable(color: Int) : Drawable() {
 
     companion object {
 
-        @Suppress("MemberVisibilityCanBePrivate")
         @ColorInt
         fun shiftColor(@ColorInt color: Int,
                        @FloatRange(from = 0.0, to = 2.0) by: Float): Int {

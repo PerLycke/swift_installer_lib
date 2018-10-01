@@ -21,7 +21,6 @@
 
 package com.brit.swiftinstaller.library.ui.activities
 
-import android.annotation.SuppressLint
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -42,7 +41,6 @@ import com.brit.swiftinstaller.library.utils.swift
 import com.brit.swiftinstaller.library.utils.useBackgroundPalette
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-@SuppressLint("Registered")
 open class ThemeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
