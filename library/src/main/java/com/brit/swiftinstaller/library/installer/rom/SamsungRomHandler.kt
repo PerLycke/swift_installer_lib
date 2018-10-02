@@ -58,7 +58,7 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
                         .setBackgroundColor(
                                 ContextCompat.getColor(tutorial, R.color.background_main))
                         .setDrawable(R.drawable.ic_tutorial_clicks) // int top drawable
-                        .build(), TUTORIAL_PAGE_PERMISSIONS)
+                        .build(), TUTORIAL_PAGE_PERMISSIONS + addToIndex())
     }
 
     override fun getDisabledOverlays(): SynchronizedArrayList<String> {

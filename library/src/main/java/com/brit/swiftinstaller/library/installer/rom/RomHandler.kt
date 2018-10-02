@@ -73,6 +73,10 @@ abstract class RomHandler constructor(var context: Context) {
         return emptyArray()
     }
 
+    fun addToIndex() : Int {
+        return if (supportsMagisk) { 1 } else { 0 }
+    }
+
     open fun addTutorialSteps(tutorial: TutorialActivity) {
         tutorial.addFragment(Step.Builder().setTitle(tutorial.getString(R.string.swift_app_name))
                 .setContent(tutorial.getString(R.string.tutorial_guide))
@@ -112,7 +116,7 @@ abstract class RomHandler constructor(var context: Context) {
                     .setContent(ss)
                     .setDrawable(R.drawable.ic_magisk_logo)
                     .setBackgroundColor(tutorial.getColor(R.color.background_main)).build(),
-                    TUTORIAL_PAGE_MAGISK)
+                    3)
         }
 
         tutorial.addFragment(PermissionStep.Builder().setTitle(
@@ -123,14 +127,14 @@ abstract class RomHandler constructor(var context: Context) {
                 .setDrawable(R.drawable.ic_tutorial_permission)
                 .setPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE))
-                .build(), TUTORIAL_PAGE_PERMISSIONS)
+                .build(), TUTORIAL_PAGE_PERMISSIONS + addToIndex())
         tutorial.addFragment(
                 Step.Builder().setTitle(tutorial.getString(R.string.tutorial_customize_title))
                         .setContent(tutorial.getString(R.string.tutorial_customize_content))
                         .setBackgroundColor(
                                 ContextCompat.getColor(tutorial, R.color.background_main))
                         .setDrawable(R.drawable.ic_tutorial_customize) // int top drawable
-                        .build(), TUTORIAL_PAGE_PERSONALIZE)
+                        .build(), TUTORIAL_PAGE_PERSONALIZE + addToIndex())
     }
 
     open fun isOverlayInstalled(targetPackage: String): Boolean {
@@ -190,9 +194,8 @@ abstract class RomHandler constructor(var context: Context) {
         const val TUTORIAL_PAGE_MAIN = 0
         const val TUTORIAL_PAGE_APPS = 1
         const val TUTORIAL_PAGE_USAGE = 2
-        const val TUTORIAL_PAGE_MAGISK = 3
-        const val TUTORIAL_PAGE_PERMISSIONS = 4
-        const val TUTORIAL_PAGE_PERSONALIZE = 5
+        const val TUTORIAL_PAGE_PERMISSIONS = 3
+        const val TUTORIAL_PAGE_PERSONALIZE = 4
 
         @Synchronized
         @JvmStatic
