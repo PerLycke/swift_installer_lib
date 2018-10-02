@@ -401,11 +401,9 @@ class CustomizeActivity : ThemeActivity() {
             val oldPalette = useBackgroundPalette(this)
             val oldSelection = customizeHandler.getSelection()
 
-            fun hotSwapPrefOn() = PreferenceManager.getDefaultSharedPreferences(
-                    this).edit().putBoolean("hotswap", true).apply()
+            fun hotSwapPrefOn() = prefs.edit().putBoolean("hotswap", true).apply()
 
-            fun hotSwapPrefOff() = PreferenceManager.getDefaultSharedPreferences(
-                    this).edit().putBoolean("hotswap", false).apply()
+            fun hotSwapPrefOff() = prefs.edit().putBoolean("hotswap", false).apply()
 
             if (selection.accentColor != oldSelection.accentColor) {
                 if (swift.romHandler.useHotSwap()) {

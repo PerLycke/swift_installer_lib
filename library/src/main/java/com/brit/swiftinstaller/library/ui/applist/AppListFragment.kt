@@ -188,7 +188,9 @@ class AppListFragment : Fragment() {
     }
     
     fun notifyDataSetChanged() {
-        app_list_view.adapter?.notifyDataSetChanged()
+        if (app_list_view != null && !app_list_view.isComputingLayout) {
+            app_list_view.adapter?.notifyDataSetChanged()
+        }
     }
 
     inner class AppAdapter : RecyclerView.Adapter<AppAdapter.ViewHolder>() {

@@ -24,7 +24,6 @@ package com.brit.swiftinstaller.library.ui.activities
 import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
-import android.preference.PreferenceManager
 import androidx.appcompat.app.AlertDialog
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.applist.AppList
@@ -45,10 +44,9 @@ class UninstallFinishedActivity : ThemeActivity() {
         val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
                 .setTitle(R.string.reboot)
                 .setMessage(R.string.reboot_manually)
-        if (PreferenceManager.getDefaultSharedPreferences(this)
-                        .getBoolean("hotswap", false)) {
+        if (prefs.getBoolean("hotswap", false)) {
             restartSysUi(this)
-            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("hotswap", false).apply()
+            prefs.edit().putBoolean("hotswap", false).apply()
             finish()
             return
         } else if (swift.romHandler.neverReboot()) {

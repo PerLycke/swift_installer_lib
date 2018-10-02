@@ -23,7 +23,6 @@ package com.brit.swiftinstaller.library.installer.rom
 
 import android.content.Context
 import android.content.Intent
-import android.preference.PreferenceManager
 import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
 import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
 import com.brit.swiftinstaller.library.ui.customize.PreviewHandler
@@ -34,11 +33,10 @@ open class OreoRomHandler(context: Context) : RomHandler(context) {
 
     override fun installOverlay(context: Context, targetPackage: String, overlayPath: String) {
         if (ShellUtils.isRootAvailable) {
+            runCommand("cmd overlay disable ${getOverlayPackageName(targetPackage)}", true)
             runCommand("pm install -r $overlayPath", true)
             if (runCommand("cmd overlay list", true).output?.contains(getOverlayPackageName(targetPackage)) == true) {
-                runCommand("cmd overlay enable ${getOverlayPackageName(targetPackage)}", true)
-                PreferenceManager.getDefaultSharedPreferences(
-                            context).edit().putBoolean("hotswap", true).apply()
+                context.swift.prefs.edit().putBoolean("hotswap", true).apply()
             }
         }
     }
@@ -49,29 +47,6 @@ open class OreoRomHandler(context: Context) : RomHandler(context) {
 
     override fun getRequiredApps(): Array<String> {
         return arrayOf(
-                "android",
-                "com.android.systemui",
-                "com.amazon.clouddrive.photos",
-                "com.android.settings",
-                "com.anydo",
-                "com.apple.android.music",
-                "com.ebay.mobile",
-                "com.embermitre.pixolor.app",
-                "com.google.android.apps.genie.geniewidget",
-                "com.google.android.apps.inbox",
-                "com.google.android.apps.messaging",
-                "com.google.android.gm",
-                "com.google.android.talk",
-                "com.mxtech.videoplayer.ad",
-                "com.mxtech.videoplayer.pro",
-                "com.pandora.android",
-                "com.simplecity.amp.pro",
-                "com.Slack",
-                "com.twitter.android",
-                "com.google.android.gms",
-                "com.google.android.apps.nexuslauncher",
-                "com.lastpass.lpandroid",
-                "com.weather.Weather"
         )
     }
 
@@ -96,6 +71,7 @@ open class OreoRomHandler(context: Context) : RomHandler(context) {
 
     override fun uninstallOverlay(context: Context, packageName: String) {
         if (ShellUtils.isRootAvailable) {
+            runCommand("cmd overlay disable ${getOverlayPackageName(packageName)}", true)
             runCommand("pm uninstall " + getOverlayPackageName(packageName), true)
             if (packageName != "com.android.systemui" && packageName != "android") {
                 runCommand("pkill $packageName")

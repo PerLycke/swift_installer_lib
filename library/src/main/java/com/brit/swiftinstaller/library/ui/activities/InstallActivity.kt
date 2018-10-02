@@ -203,11 +203,13 @@ class InstallActivity : ThemeActivity() {
 
         if (!uninstall) {
             if (!Utils.isSamsungOreo()) {
-                val ai = pm.getApplicationInfo(apps[0], 0)
-                dialogState.putString("package_name", apps[0])
-                dialogState.putInt("progress", 1)
-                dialogState.putInt("max", apps.size)
-                updateProgress(ai.loadLabel(pm) as String, ai.loadIcon(pm), 1, apps.size, uninstall)
+                if (!apps.isEmpty()) {
+                    val ai = pm.getApplicationInfo(apps[0], 0)
+                    dialogState.putString("package_name", apps[0])
+                    dialogState.putInt("progress", 1)
+                    dialogState.putInt("max", apps.size)
+                    updateProgress(ai.loadLabel(pm) as String, ai.loadIcon(pm), 1, apps.size, uninstall)
+                }
             } else {
                 updateProgress("", null, -1, apps.size, uninstall)
             }

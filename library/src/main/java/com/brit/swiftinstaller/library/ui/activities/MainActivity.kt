@@ -265,9 +265,11 @@ class MainActivity : ThemeActivity() {
     fun overflowClick(view: View) {
         val popup = PopupWindow(this, null, 0, R.style.PopupWindow)
         val popupView = View.inflate(this, R.layout.popup_menu, null)
-        if (!getUseSoftReboot(this)) {
-            popupView.popup_menu_soft_reboot.text = getString(R.string.reboot)
-        }
+        if (swift.romHandler.neverReboot()) {
+            popupView.popup_menu_soft_reboot.text = getString(R.string.restart_sysui)
+        } else if (!getUseSoftReboot(this)) {
+                popupView.popup_menu_soft_reboot.text = getString(R.string.reboot)
+            }
         popup.animationStyle = R.style.PopupWindowAnimation
         popup.contentView = popupView
         popup.isFocusable = true
