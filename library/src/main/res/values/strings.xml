@@ -189,4 +189,5 @@ You can find it: </string>
     <string name="needs_extras">Needs action from the "Overlay extras"</string>
     <string name="overlay_extras_title">Overlay extras</string>
     <string name="extras_card_desc">Additional options for overlays</string>
+    <string name="pie_category_setting_icon">Setting Icons</string>
 </resources>

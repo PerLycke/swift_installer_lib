@@ -235,10 +235,10 @@ open class PRomHandler(context: Context) : RomHandler(context) {
 
     private fun populatePieCustomizeOptions(categories: CategoryMap) {
         val pieIconOptions = OptionsMap()
-        pieIconOptions.add(Option(context.getString(R.string.stock_icons), "stock_accented"))
         pieIconOptions.add(Option(context.getString(R.string.stock_icons_multi), "default_icons"))
+        pieIconOptions.add(Option(context.getString(R.string.stock_icons), "stock_accented"))
         categories.add(
-                CustomizeCategory(context.getString(R.string.category_icons), "stock_pie_icons",
+                CustomizeCategory(context.getString(R.string.pie_category_setting_icon), "stock_pie_icons",
                         "default_icons", pieIconOptions,
                         synchronizedArrayListOf("com.android.settings",
                                 "com.google.android.apps.wellbeing",
