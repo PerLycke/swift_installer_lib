@@ -25,6 +25,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.customize.*
@@ -168,6 +169,7 @@ open class PRomHandler(context: Context) : RomHandler(context) {
                 val selection = super.getDefaultSelection()
                 selection["stock_pie_icons"] = "default_icons"
                 selection["notif_background"] = "dark"
+                selection["qs_alpha"] = "0"
                 return selection
             }
 
@@ -220,6 +222,12 @@ open class PRomHandler(context: Context) : RomHandler(context) {
                                         context.getColor(R.color.notification_bg_light))
 
                             }
+                            if (selection.containsKey("qs_alpha")) {
+                                val qsAlpha = selection.getInt("qs_alpha")
+                                it.preview_wallpaper.setColorFilter(
+                                        ColorUtils.addAlphaColor(palette.backgroundColor,
+                                                qsAlpha), PorterDuff.Mode.SRC_OVER)
+                            }
                         }
                     }
                 }
@@ -243,5 +251,13 @@ open class PRomHandler(context: Context) : RomHandler(context) {
                         synchronizedArrayListOf("com.android.settings",
                                 "com.google.android.apps.wellbeing",
                                 "com.google.android.gms")))
+        val qsOptions = OptionsMap()
+        val trans =
+                SliderOption(context.getString(R.string.qs_transparency), "qs_alpha")
+        trans.current = 0
+        qsOptions.add(trans)
+        categories.add(CustomizeCategory(context.getString(R.string.quick_settings_style),
+                "qs_alpha", "0", qsOptions,
+                synchronizedArrayListOf("android")))
     }
 }
