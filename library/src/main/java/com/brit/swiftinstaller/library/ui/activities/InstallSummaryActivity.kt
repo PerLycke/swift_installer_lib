@@ -237,13 +237,38 @@ class InstallSummaryActivity : ThemeActivity() {
 
                 if (!this@InstallSummaryActivity.swift.romHandler.neverReboot() && !hotSwap) {
                     if (ShellUtils.isRootAvailable) {
-                        fab_install_finished.show()
+                        fab.show()
                     }
                 }
 
                 if (hotSwap && killSysUI) {
                     killSysUI = false
                     restartSysUi(this@InstallSummaryActivity)
+                    prefs.edit().putBoolean("hotswap", false).apply()
+                    if (OverlayUtils.isOverlayEnabled("com.touchtype.swiftkey")) {
+                        runCommand("pkill com.touchtype.swiftkey")
+                    } else if (swift.romHandler.isOverlayInstalled("com.touchtype.swiftkey")) {
+                        alert {
+                            title = getString(R.string.reboot)
+                            message = getString(R.string.swiftkey_reboot_needed)
+                            if (ShellUtils.isRootAvailable) {
+                                negativeButton(R.string.reboot_later) { dialog ->
+                                    dialog.dismiss()
+                                }
+                                positiveButton(R.string.reboot_now) { dialog ->
+                                    dialog.dismiss()
+                                    reboot()
+                                }
+                            } else {
+                                positiveButton(R.string.got_it) { dialog ->
+                                    dialog.dismiss()
+                                }
+                            }
+                            isCancelable = false
+                            show()
+                        }
+                        fab.show()
+                    }
                 } else if (this@InstallSummaryActivity.swift.romHandler.neverReboot() && success) {
                     prefs.edit().putBoolean("hotswap", false).apply()
                 } else if (!hotSwap || !isOverlayEnabled("android") || failedList.isNotEmpty()) {

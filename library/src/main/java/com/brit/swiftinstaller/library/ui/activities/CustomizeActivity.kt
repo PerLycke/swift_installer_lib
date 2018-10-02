@@ -401,24 +401,11 @@ class CustomizeActivity : ThemeActivity() {
             val oldPalette = useBackgroundPalette(this)
             val oldSelection = customizeHandler.getSelection()
 
-            fun hotSwapPrefOn() = prefs.edit().putBoolean("hotswap", true).apply()
-
-            fun hotSwapPrefOff() = prefs.edit().putBoolean("hotswap", false).apply()
-
-            if (selection.accentColor != oldSelection.accentColor) {
-                if (swift.romHandler.useHotSwap()) {
-                    hotSwapPrefOn()
-                }
-                checkAndAddApp(apps, "android")
-                if (swift.romHandler.isOverlayInstalled("com.touchtype.swiftkey")) {
-                    checkAndAddApp(apps, "com.touchtype.swiftkey")
-                }
-            }
+            val hotSwapPrefOn = { prefs.edit().putBoolean("hotswap", true).apply() }
 
             oldSelection.keys.forEach { key ->
                 if (oldSelection[key] != selection[key]) {
                     val cat = customizeHandler.getCustomizeOptions()[key]
-                    hotSwapPrefOff()
                     cat?.requiredApps?.forEach { app ->
                         checkAndAddApp(apps, app)
                     }
@@ -426,7 +413,6 @@ class CustomizeActivity : ThemeActivity() {
             }
 
             if (selection.backgroundColor != oldSelection.backgroundColor) {
-                hotSwapPrefOff()
                 checkAndAddApp(apps, "android")
                 if (swift.romHandler.isOverlayInstalled("com.touchtype.swiftkey")) {
                     checkAndAddApp(apps, "com.touchtype.swiftkey")
@@ -437,8 +423,17 @@ class CustomizeActivity : ThemeActivity() {
 
             if (usePalette != oldPalette) {
                 setUseBackgroundPalette(this, usePalette)
-                hotSwapPrefOff()
                 checkAndAddApp(apps, "android")
+            }
+
+            if (selection.accentColor != oldSelection.accentColor) {
+                if (swift.romHandler.useHotSwap()) {
+                    hotSwapPrefOn()
+                }
+                checkAndAddApp(apps, "android")
+                if (swift.romHandler.isOverlayInstalled("com.touchtype.swiftkey")) {
+                    checkAndAddApp(apps, "com.touchtype.swiftkey")
+                }
             }
 
             if (recompile && apps.isNotEmpty()) {

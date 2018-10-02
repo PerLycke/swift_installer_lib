@@ -191,4 +191,5 @@ You can find it: </string>
     <string name="extras_card_desc">Additional options for overlays</string>
     <string name="pie_category_setting_icon">Setting Icons</string>
     <string name="quick_settings_style">Quick Settings Style</string>
+    <string name="swiftkey_reboot_needed">You need to reboot for SwiftKey to reload all colors</string>
 </resources>
