@@ -135,7 +135,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/alert_icon"
         app:layout_constraintEnd_toStartOf="@+id/alert_icon"
         app:layout_constraintTop_toTopOf="@+id/alert_icon"
-        app:srcCompat="@drawable/ic_alert" />
+        app:srcCompat="@drawable/ic_info" />
 
     <ImageView
         android:id="@+id/imageView"
