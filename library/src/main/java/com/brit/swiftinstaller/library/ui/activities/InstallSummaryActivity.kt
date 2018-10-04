@@ -132,11 +132,15 @@ class InstallSummaryActivity : ThemeActivity() {
         val rebootDialog = Dialog(this, R.style.AppTheme_Translucent)
         rebootDialog.setContentView(R.layout.reboot)
         rebootDialog.show()
-        if (!swift.romHandler.magiskEnabled && getUseSoftReboot(this)) {
-            quickRebootCommand()
-        } else {
-            rebootCommand()
+        val idleHandler = MessageQueue.IdleHandler {
+            if (!swift.romHandler.magiskEnabled && getUseSoftReboot(this)) {
+                quickRebootCommand()
+            } else {
+                rebootCommand()
+            }
+            false
         }
+        Looper.myQueue().addIdleHandler(idleHandler)
     }
 
     private fun updateList() {
