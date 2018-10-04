@@ -264,6 +264,14 @@ class CustomizeActivity : ThemeActivity() {
                 }
             }
             group.addRadioButton(optionView.option_button)
+            if (selection.containsKey(categoryKey)) {
+                if (selection[categoryKey] == option.value) {
+                    group.setCurrentButton(optionView.option_button)
+                    if (option.subOptions.isNotEmpty()) {
+                        optionView.sub_options.setVisible(true)
+                    }
+                }
+            }
             optionView.option_button.text = option.name
             optionView.option_info.setOnClickListener {
                 alert {
@@ -281,6 +289,7 @@ class CustomizeActivity : ThemeActivity() {
                 if (option.infoText.isNotEmpty()) {
                     optionView.option_info_text.text = option.infoText
                 }
+                optionView.option_info_text.setVisible(option.infoText.isNotEmpty())
                 val subGroup = RadioGroup()
                 option.subOptions.reversed().forEach { subOption ->
                     setupOption(optionView.sub_options_container, subOption, option.subOptionKey,
