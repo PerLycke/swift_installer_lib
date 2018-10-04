@@ -325,7 +325,7 @@ fun restartSysUi(context: Context) {
             val intent = Intent(Intent.ACTION_MAIN)
             intent.addCategory(Intent.CATEGORY_HOME)
             val launcherPackage = context.pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY).activityInfo.packageName
-//            runCommand("pkill com.android.systemui")
+            runCommand("pkill com.android.systemui")
             if (launcherPackage.isNotEmpty()) {
                 runCommand("pkill $launcherPackage")
             }
@@ -333,4 +333,9 @@ fun restartSysUi(context: Context) {
         false
     }
     Looper.myQueue().addIdleHandler(handler)
+}
+
+fun disableOverlayCommand(packageName: String) : Boolean {
+    runCommand("cmd overlay disable $packageName", true)
+    return true
 }

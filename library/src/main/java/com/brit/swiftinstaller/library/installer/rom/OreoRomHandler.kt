@@ -33,7 +33,13 @@ open class OreoRomHandler(context: Context) : RomHandler(context) {
 
     override fun installOverlay(context: Context, targetPackage: String, overlayPath: String) {
         if (ShellUtils.isRootAvailable) {
-            runCommand("pm install -r $overlayPath", true)
+            if (targetPackage == "android") {
+                if (disableOverlayCommand(targetPackage)) {
+                    runCommand("pm install -r $overlayPath", true)
+                }
+            } else {
+                runCommand("pm install -r $overlayPath", true)
+            }
             if (runCommand("cmd overlay list", true).output?.contains(getOverlayPackageName(targetPackage)) == true) {
                 context.swift.prefs.edit().putBoolean("noSecondReboot", true).apply()
             }
