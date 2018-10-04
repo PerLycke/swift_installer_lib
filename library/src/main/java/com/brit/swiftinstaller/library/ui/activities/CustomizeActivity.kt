@@ -30,7 +30,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.MessageQueue
-import android.preference.PreferenceManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
@@ -406,17 +405,18 @@ class CustomizeActivity : ThemeActivity() {
         sheetView.personalization_confirm.setOnClickListener {
             bottomSheetDialog.dismiss()
             val apps = SynchronizedArrayList<String>()
-
             val oldPalette = useBackgroundPalette(this)
             val oldSelection = customizeHandler.getSelection()
-
-            val hotSwapPrefOn = { prefs.edit().putBoolean("hotswap", true).apply() }
+            var blockHotSwap = false
 
             oldSelection.keys.forEach { key ->
                 if (oldSelection[key] != selection[key]) {
                     val cat = customizeHandler.getCustomizeOptions()[key]
                     cat?.requiredApps?.forEach { app ->
                         checkAndAddApp(apps, app)
+                    }
+                    if (key != "accent") {
+                        blockHotSwap = true
                     }
                 }
             }
@@ -426,6 +426,7 @@ class CustomizeActivity : ThemeActivity() {
                 if (swift.romHandler.isOverlayInstalled("com.touchtype.swiftkey")) {
                     checkAndAddApp(apps, "com.touchtype.swiftkey")
                 }
+                blockHotSwap = true
             }
 
             swift.selection = selection
@@ -433,11 +434,12 @@ class CustomizeActivity : ThemeActivity() {
             if (usePalette != oldPalette) {
                 setUseBackgroundPalette(this, usePalette)
                 checkAndAddApp(apps, "android")
+                blockHotSwap = true
             }
 
             if (selection.accentColor != oldSelection.accentColor) {
-                if (swift.romHandler.useHotSwap()) {
-                    hotSwapPrefOn()
+                if (swift.romHandler.useHotSwap() && !blockHotSwap) {
+                    prefs.edit().putBoolean("hotswap", true).apply()
                 }
                 checkAndAddApp(apps, "android")
                 if (swift.romHandler.isOverlayInstalled("com.touchtype.swiftkey")) {

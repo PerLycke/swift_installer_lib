@@ -28,7 +28,6 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.*
-import android.util.Log
 import android.view.View
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.brit.swiftinstaller.library.R
