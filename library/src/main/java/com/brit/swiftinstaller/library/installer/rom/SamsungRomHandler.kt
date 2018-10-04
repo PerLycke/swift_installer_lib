@@ -212,9 +212,6 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
             override fun getDefaultSelection(): CustomizeSelection {
                 val selection = super.getDefaultSelection()
                 selection["samsung_oreo_icons"] = "stock_accent"
-                selection["samsung_oreo_qs_icons"] = "qs_accent"
-                selection["samsung_oreo_nav_icons"] = "nav_stock"
-                selection["samsung_oreo_nav_color_icons"] = "nav_color_white"
                 selection["samsung_oreo_clock"] = "right"
                 selection["samsung_oreo_notif_style"] = "default"
                 return selection
@@ -315,37 +312,6 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
                                 "com.android.settings",
                                 "com.samsung.android.app.aodservice",
                                 "android")))
-
-        val qsIconOptions = OptionsMap()
-        qsIconOptions.add(Option(context.getString(R.string.aosp_icons), "qs_aosp", "qs_aosp", true))
-        qsIconOptions.add(
-                Option(context.getString(R.string.stock_icons), "qs_accent", "qs_stock", true))
-        qsIconOptions.add(
-                Option("White", "qs_white", "qs_white", true))
-        categories.add(
-                CustomizeCategory("QS Icons", "samsung_oreo_qs_icons",
-                        "qs_stock", qsIconOptions,
-                        synchronizedArrayListOf("com.android.systemui" )))
-
-        val navIconOptions = OptionsMap()
-        navIconOptions.add(Option("Stock", "nav_stock"))
-        navIconOptions.add(Option("AOSP", "nav_aosp"))
-        navIconOptions.add(Option("Oreo Pixel", "nav_oreo"))
-
-        val navIconColorOptions = OptionsMap()
-        navIconColorOptions.add(Option("White", "nav_color_white"))
-        navIconColorOptions.add(Option("Accent", "nav_color_accent"))
-        navIconOptions["nav_stock"]!!.subOptions.putAll(navIconColorOptions)
-        navIconOptions["nav_stock"]!!.subOptionKey = "samsung_oreo_nav_color_icons"
-        navIconOptions["nav_aosp"]!!.subOptions.putAll(navIconColorOptions)
-        navIconOptions["nav_aosp"]!!.subOptionKey = "samsung_oreo_nav_color_icons"
-        navIconOptions["nav_oreo"]!!.subOptions.putAll(navIconColorOptions)
-        navIconOptions["nav_oreo"]!!.subOptionKey = "samsung_oreo_nav_color_icons"
-
-
-        categories.add(
-                CustomizeCategory("Navigation Icons", "samsung_oreo_nav_icons", "nav_stock",
-                        navIconOptions, synchronizedArrayListOf("com.android.systemui")))
 
         val clockOptions = OptionsMap()
         clockOptions.add(Option(context.getString(R.string.right), "right"))
