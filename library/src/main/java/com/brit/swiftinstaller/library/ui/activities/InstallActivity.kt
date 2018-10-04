@@ -31,6 +31,8 @@ import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
+import android.os.MessageQueue
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
@@ -217,7 +219,10 @@ class InstallActivity : ThemeActivity() {
             progressPercent.visibility = View.INVISIBLE
         }
 
-        dialog?.setOnShowListener {
+        themeDialog()
+        dialog?.show()
+
+        val idleHandler = MessageQueue.IdleHandler {
             val filter = IntentFilter(Notifier.ACTION_FAILED)
             filter.addAction(Notifier.ACTION_INSTALLED)
             filter.addAction(Notifier.ACTION_INSTALL_COMPLETE)
@@ -247,10 +252,9 @@ class InstallActivity : ThemeActivity() {
             } else {
                 InstallerServiceHelper.install(this, apps)
             }
+            false
         }
-
-        themeDialog()
-        dialog?.show()
+        Looper.myQueue().addIdleHandler(idleHandler)
     }
 
     override fun recreate() {
