@@ -250,7 +250,8 @@ open class PRomHandler(context: Context) : RomHandler(context) {
                         "default_icons", pieIconOptions,
                         synchronizedArrayListOf("com.android.settings",
                                 "com.google.android.apps.wellbeing",
-                                "com.google.android.gms")))
+                                "com.google.android.gms",
+                                "com.cyanogenmod.settings.device")))
         val qsOptions = OptionsMap()
         val trans =
                 SliderOption(context.getString(R.string.qs_transparency), "qs_alpha")
