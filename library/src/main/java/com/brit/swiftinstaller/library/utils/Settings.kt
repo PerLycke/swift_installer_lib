@@ -142,7 +142,7 @@ fun clearAppsToUninstall(context: Context) {
 
 fun getUseSoftReboot(context: Context): Boolean {
     return PreferenceManager.getDefaultSharedPreferences(context)
-            .getBoolean(KEY_USE_SOFT_REBOOT, true)
+            .getBoolean(KEY_USE_SOFT_REBOOT, context.swift.romHandler.useHotSwap())
 }
 
 fun updateNotificationEnabled(context: Context): Boolean {

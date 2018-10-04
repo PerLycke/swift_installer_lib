@@ -48,6 +48,7 @@ import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.enableAllOverlays
 import kotlinx.android.synthetic.main.card_install.*
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.popup_menu.*
 import kotlinx.android.synthetic.main.popup_menu.view.*
 import org.jetbrains.anko.doAsync
 
@@ -155,7 +156,7 @@ class MainActivity : ThemeActivity() {
                         val parent = view.parent as View
                         parent.visibility = View.GONE
                     }
-            ).build(this, cards_list), 0)
+            ).build(this), 0)
         }
         if (ShellUtils.isRootAccessAvailable && prefs.getBoolean("reboot_card", false)) {
             cards_list.addView(InfoCard(
@@ -165,7 +166,7 @@ class MainActivity : ThemeActivity() {
                         val intent = Intent(this, RebootActivity::class.java)
                         startActivity(intent)
                     }
-            ).build(this, cards_list), 0)
+            ).build(this), 0)
             prefs.edit().putBoolean("reboot_card", false).apply()
         }
     }
@@ -265,11 +266,9 @@ class MainActivity : ThemeActivity() {
     fun overflowClick(view: View) {
         val popup = PopupWindow(this, null, 0, R.style.PopupWindow)
         val popupView = View.inflate(this, R.layout.popup_menu, null)
-        if (swift.romHandler.neverReboot()) {
-            popupView.popup_menu_soft_reboot.text = getString(R.string.restart_sysui)
-        } else if (!getUseSoftReboot(this)) {
-                popupView.popup_menu_soft_reboot.text = getString(R.string.reboot)
-            }
+        if (!getUseSoftReboot(this)) {
+            popupView.popup_menu_soft_reboot.text = getString(R.string.reboot)
+        }
         popup.animationStyle = R.style.PopupWindowAnimation
         popup.contentView = popupView
         popup.isFocusable = true
@@ -340,11 +339,14 @@ class MainActivity : ThemeActivity() {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
 
-        if (swift.romHandler.useHotSwap()) {
+        if (ShellUtils.isRootAvailable) {
             popupView.popup_menu_soft_reboot.setOnClickListener {
                 popup.dismiss()
                 val intent = Intent(this, RebootActivity::class.java)
                 startActivity(intent)
+            }
+            if (getUseSoftReboot(this)) {
+                popupView.popup_menu_soft_reboot.text = getString(R.string.soft_reboot)
             }
         } else {
             popupView.popup_menu_soft_reboot.visibility = View.GONE

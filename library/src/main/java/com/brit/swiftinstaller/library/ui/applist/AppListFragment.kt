@@ -201,7 +201,9 @@ class AppListFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.bindAppItem(apps[visible[position]])
+            if (apps.isNotEmpty()) {
+                holder.bindAppItem(apps[visible[position]])
+            }
 
             if (position + 1 == itemCount) {
                 setBottomMargin(holder.itemView,

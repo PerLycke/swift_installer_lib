@@ -38,7 +38,8 @@ class EnableOverlaysActivity : Activity() {
     override fun onResume() {
         super.onResume()
 
-        if (!enableAllOverlays()) {
+        if (!enableAllOverlays() || swift.prefs.getBoolean("noSecondReboot", false)) {
+            swift.prefs.edit().putBoolean("noSecondReboot", false).apply()
             return finish()
         }
 

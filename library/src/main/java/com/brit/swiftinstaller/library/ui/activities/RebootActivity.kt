@@ -36,28 +36,17 @@ class RebootActivity : ThemeActivity() {
         prefs.edit().putBoolean("reboot_card", false).apply()
 
         alert {
-            if (swift.romHandler.neverReboot()) {
-                title = getString(R.string.restart_sysui)
-                message = getString(R.string.restart_sysui_msg)
-            } else {
-                title = getString(R.string.reboot_dialog_title)
-                message = getString(R.string.reboot_dialog_msg)
-            }
-            positiveButton(if (swift.romHandler.neverReboot()) { R.string.restart_sysui } else { R.string.reboot }) {
+            title = getString(R.string.reboot_dialog_title)
+            message = getString(R.string.reboot_dialog_msg)
+            positiveButton(R.string.reboot) {
                 val rebootingDialog = Dialog(ctx, R.style.AppTheme_Translucent)
                 rebootingDialog.setContentView(R.layout.reboot)
                 rebootingDialog.show()
                 val handler = MessageQueue.IdleHandler {
-                    if (swift.romHandler.neverReboot()) {
-                        restartSysUi(ctx)
-                        prefs.edit().putBoolean("hotswap", false).apply()
-                        finish()
+                    if (getUseSoftReboot(ctx)) {
+                        quickRebootCommand()
                     } else {
-                        if (getUseSoftReboot(ctx)) {
-                            quickRebootCommand()
-                        } else {
-                            rebootCommand()
-                        }
+                        rebootCommand()
                     }
                     false
                 }

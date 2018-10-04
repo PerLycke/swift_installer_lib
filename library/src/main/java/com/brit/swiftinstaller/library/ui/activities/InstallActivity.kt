@@ -40,8 +40,6 @@ import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.installer.Notifier
 import com.brit.swiftinstaller.library.utils.*
 import kotlinx.android.synthetic.main.progress_dialog_install.view.*
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
 import kotlin.collections.set
 
 class InstallActivity : ThemeActivity() {
@@ -123,6 +121,7 @@ class InstallActivity : ThemeActivity() {
                     dialog.dismiss()
                     installStart()
                 }
+                isCancelable = false
                 show()
             }
         } else {
@@ -219,45 +218,35 @@ class InstallActivity : ThemeActivity() {
         }
 
         dialog?.setOnShowListener {
-            doAsync {
+            val filter = IntentFilter(Notifier.ACTION_FAILED)
+            filter.addAction(Notifier.ACTION_INSTALLED)
+            filter.addAction(Notifier.ACTION_INSTALL_COMPLETE)
+            filter.addAction(Notifier.ACTION_UNINSTALLED)
+            filter.addAction(Notifier.ACTION_UNINSTALL_COMPLETE)
+            LocalBroadcastManager.getInstance(applicationContext)
+                    .registerReceiver(installListener, filter)
 
-                val filter = IntentFilter(Notifier.ACTION_FAILED)
-                filter.addAction(Notifier.ACTION_INSTALLED)
-                filter.addAction(Notifier.ACTION_INSTALL_COMPLETE)
-                filter.addAction(Notifier.ACTION_UNINSTALLED)
-                filter.addAction(Notifier.ACTION_UNINSTALL_COMPLETE)
-                LocalBroadcastManager.getInstance(applicationContext)
-                        .registerReceiver(installListener, filter)
-
-                if (uninstall) {
-                    if (!ShellUtils.isRootAvailable) {
-                        val intentfilter = IntentFilter(Intent.ACTION_PACKAGE_FULLY_REMOVED)
-                        intentfilter.addDataScheme("package")
-                        registerReceiver(object : BroadcastReceiver() {
-                            var count = apps.size
-                            override fun onReceive(context: Context?, intent: Intent?) {
-                                count--
-                                if (count == 0) {
-                                    uninstallComplete()
-                                    context!!.unregisterReceiver(this)
-                                }
+            if (uninstall) {
+                if (!ShellUtils.isRootAvailable) {
+                    val intentfilter = IntentFilter(Intent.ACTION_PACKAGE_FULLY_REMOVED)
+                    intentfilter.addDataScheme("package")
+                    registerReceiver(object : BroadcastReceiver() {
+                        var count = apps.size
+                        override fun onReceive(context: Context?, intent: Intent?) {
+                            count--
+                            if (count == 0) {
+                                uninstallComplete()
+                                context!!.unregisterReceiver(this)
                             }
-                        }, intentfilter)
-                        uiThread { _ ->
-                            swift.romHandler.postInstall(uninstall = true, apps = apps)
                         }
-                    } else {
-                        uiThread { _ ->
-                            InstallerServiceHelper.uninstall(this@InstallActivity, apps)
-                        }
-                    }
+                    }, intentfilter)
+                    swift.romHandler.postInstall(uninstall = true, apps = apps)
                 } else {
-                    uiThread { _ ->
-                        InstallerServiceHelper.install(this@InstallActivity, apps)
-                    }
+                    InstallerServiceHelper.uninstall(this, apps)
                 }
+            } else {
+                InstallerServiceHelper.install(this, apps)
             }
-
         }
 
         themeDialog()

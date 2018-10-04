@@ -325,7 +325,7 @@ fun restartSysUi(context: Context) {
             val intent = Intent(Intent.ACTION_MAIN)
             intent.addCategory(Intent.CATEGORY_HOME)
             val launcherPackage = context.pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY).activityInfo.packageName
-            runCommand("killall com.android.systemui", true)
+//            runCommand("pkill com.android.systemui")
             if (launcherPackage.isNotEmpty()) {
                 runCommand("pkill $launcherPackage")
             }

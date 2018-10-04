@@ -27,10 +27,8 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import android.os.Environment
-import android.os.Handler
+import android.os.*
+import android.util.Log
 import android.view.View
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.brit.swiftinstaller.library.R
@@ -43,7 +41,6 @@ import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.isOverlayEnabled
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.activity_app_list.*
 import kotlinx.android.synthetic.main.activity_install_summary.*
 import kotlinx.android.synthetic.main.tab_install_summary_failed.*
 import kotlinx.android.synthetic.main.tab_install_summary_success.*
@@ -80,6 +77,7 @@ class InstallSummaryActivity : ThemeActivity() {
         update = intent.getBooleanExtra("update", false)
 
         pagerAdapter = AppsTabPagerAdapter(supportFragmentManager, true, false, SUCCESS_TAB, FAILED_TAB)
+        pagerAdapter.retainInstance()
         pagerAdapter.setAlertIconClickListener(object : AppListFragment.AlertIconClickListener {
             override fun onAlertIconClick(appItem: AppItem) {
                 alert {
@@ -115,14 +113,14 @@ class InstallSummaryActivity : ThemeActivity() {
         val sendLog = sheetView.findViewById<View>(R.id.send_email_layout)
         val reboot = sheetView.findViewById<View>(R.id.reboot_layout)
 
-        if (errorMap.isNotEmpty()) {
+        if (Holder.errorMap.isNotEmpty()) {
             sendLog.visibility = View.VISIBLE
             sendLog.setOnClickListener {
                 sendErrorLog()
             }
         }
 
-        if (pagerAdapter.getAppsCount(0) > 0) {
+        if (Holder.installApps.isNotEmpty()) {
             reboot.visibility = View.VISIBLE
             reboot.setOnClickListener {
                 bottomSheetDialog.dismiss()
@@ -135,12 +133,10 @@ class InstallSummaryActivity : ThemeActivity() {
         val rebootDialog = Dialog(this, R.style.AppTheme_Translucent)
         rebootDialog.setContentView(R.layout.reboot)
         rebootDialog.show()
-        handler.post {
-            if (!swift.romHandler.magiskEnabled && getUseSoftReboot(this)) {
-                quickRebootCommand()
-            } else {
-                rebootCommand()
-            }
+        if (!swift.romHandler.magiskEnabled && getUseSoftReboot(this)) {
+            quickRebootCommand()
+        } else {
+            rebootCommand()
         }
     }
 
@@ -155,6 +151,7 @@ class InstallSummaryActivity : ThemeActivity() {
             val pm = this@InstallSummaryActivity.packageManager
             val failedList = arrayListOf<AppItem>()
             val successList = arrayListOf<AppItem>()
+
             apps.plus(errorMap.keys).forEach { pn ->
                 if (pn == "android" || pn == "com.android.systemui") {
                     killSysUI = true
@@ -218,7 +215,7 @@ class InstallSummaryActivity : ThemeActivity() {
                 val hotSwap = prefs.getBoolean("hotswap", false)
 
                 if (failedList.isNotEmpty()) {
-                    if (!ShellUtils.isRootAvailable || this@InstallSummaryActivity.swift.romHandler.neverReboot()) {
+                    if (!ShellUtils.isRootAvailable) {
                         send_email_layout.visibility = View.VISIBLE
                         send_email_btn.setOnClickListener { _ ->
                             sendErrorLog()
@@ -235,10 +232,8 @@ class InstallSummaryActivity : ThemeActivity() {
                     result_successful_tab_txt.setTextColor(getColor(R.color.disabled))
                 }
 
-                if (!this@InstallSummaryActivity.swift.romHandler.neverReboot() && !hotSwap) {
-                    if (ShellUtils.isRootAvailable) {
-                        fab.show()
-                    }
+                if (ShellUtils.isRootAvailable) {
+                    fab.show()
                 }
 
                 if (hotSwap && killSysUI) {
@@ -269,8 +264,6 @@ class InstallSummaryActivity : ThemeActivity() {
                         }
                         fab.show()
                     }
-                } else if (this@InstallSummaryActivity.swift.romHandler.neverReboot() && success) {
-                    prefs.edit().putBoolean("hotswap", false).apply()
                 } else if (!hotSwap || !isOverlayEnabled("android") || failedList.isNotEmpty()) {
                     handler.post {
                         resultDialog()
@@ -286,7 +279,7 @@ class InstallSummaryActivity : ThemeActivity() {
                                 val parent = view.parent as View
                                 parent.visibility = View.GONE
                             }
-                    ).build(this@InstallSummaryActivity, app_list_root)
+                    ).build(this@InstallSummaryActivity)
                     pagerAdapter.showFailedCard(FAILED_TAB, failedInfoCard)
                 }
 
@@ -303,9 +296,11 @@ class InstallSummaryActivity : ThemeActivity() {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        handler.post {
+        val idleHandler = MessageQueue.IdleHandler {
             updateList()
+            false
         }
+        Looper.myQueue().addIdleHandler(idleHandler)
         if (update) {
             UpdateChecker(this, object : UpdateChecker.Callback() {
                 override fun finished(installedCount: Int, hasOption: Boolean, updates: SynchronizedArrayList<String>) {
@@ -320,17 +315,15 @@ class InstallSummaryActivity : ThemeActivity() {
             title = when {
                 failed -> getString(R.string.installation_failed)
                 !ShellUtils.isRootAvailable -> getString(R.string.reboot_to_finish)
-                this@InstallSummaryActivity.swift.romHandler.neverReboot() -> getString(R.string.something_failed)
                 else -> getString(R.string.reboot_now_title)
             }
 
             message = when {
                 success -> getString(R.string.examined_result_msg_noerror)
                 failed -> getString(R.string.examined_result_msg_error)
-                this@InstallSummaryActivity.swift.romHandler.neverReboot() -> getString(R.string.something_failed_msg)
                 else -> getString(R.string.examined_result_msg)
             }
-            if (ShellUtils.isRootAvailable && !failed && !this@InstallSummaryActivity.swift.romHandler.neverReboot()) {
+            if (ShellUtils.isRootAvailable && !failed) {
                 negativeButton(R.string.reboot_later) { dialog ->
                     dialog.dismiss()
                 }

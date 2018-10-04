@@ -37,8 +37,8 @@ class InfoCard(val desc: String,
                val btnClick: View.OnClickListener? = null,
                val bgClick: View.OnClickListener? = null) {
 
-    fun build(context: Context, root: ViewGroup) : View {
-        val cardView = LayoutInflater.from(context).inflate(R.layout.card_info, root, false)
+    fun build(context: Context) : View {
+        val cardView = LayoutInflater.from(context).inflate(R.layout.card_info, null)
 
         val bg = cardView.findViewById<ImageView>(R.id.card_bg).drawable as LayerDrawable
         bg.findDrawableByLayerId(R.id.background).setTint(MaterialPalette.get(context).cardBackground)

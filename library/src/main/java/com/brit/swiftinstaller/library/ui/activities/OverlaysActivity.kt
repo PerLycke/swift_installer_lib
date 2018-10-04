@@ -78,7 +78,6 @@ class OverlaysActivity : ThemeActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_overlays)
 
-
         pagerAdapter = AppsTabPagerAdapter(supportFragmentManager,
                 false, false, INSTALL_TAB, ACTIVE_TAB, UPDATE_TAB)
         pagerAdapter.setAlertIconClickListener(object : AppListFragment.AlertIconClickListener {
@@ -252,6 +251,11 @@ class OverlaysActivity : ThemeActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        finish()
+    }
+
     private fun updateAdapter() {
         select_all_btn.visibility = View.INVISIBLE
         select_all_btn.isClickable = false
@@ -280,6 +284,7 @@ class OverlaysActivity : ThemeActivity() {
                     } else if (update_tab_indicator.visibility == View.VISIBLE) {
                         update_tab_indicator.visibility = View.GONE
                     }
+                    pagerAdapter.notifyFragmentDataSetChanged(container.currentItem)
                 }
             }
         }

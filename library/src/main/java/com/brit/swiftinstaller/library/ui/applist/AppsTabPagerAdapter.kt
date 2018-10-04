@@ -27,13 +27,14 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentStatePagerAdapter
 import com.brit.swiftinstaller.library.ui.activities.InstallSummaryActivity
 import com.brit.swiftinstaller.library.utils.OverlayUtils.checkVersionCompatible
 import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
 import com.brit.swiftinstaller.library.utils.swift
 
 class AppsTabPagerAdapter(fm: FragmentManager, summary: Boolean, extras: Boolean, vararg tabs: Int) :
-        FragmentPagerAdapter(fm) {
+        FragmentStatePagerAdapter(fm) {
 
     private var fragments: SynchronizedArrayList<AppListFragment> = SynchronizedArrayList()
     private val handler = Handler()
@@ -42,6 +43,14 @@ class AppsTabPagerAdapter(fm: FragmentManager, summary: Boolean, extras: Boolean
         for (index in tabs) {
             fragments.add(AppListFragment.instance(summary, extras,
                     (index == InstallSummaryActivity.FAILED_TAB)))
+        }
+    }
+
+    fun retainInstance() {
+        fragments.forEach {
+            handler.post {
+                it.retainInstance = true
+            }
         }
     }
 
