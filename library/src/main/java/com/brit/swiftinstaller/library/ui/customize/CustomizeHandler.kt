@@ -123,6 +123,7 @@ abstract class CustomizeHandler(val context: Context) {
         selection["notif_background"] = "white"
         selection.accentColor = context.swift.romHandler.getDefaultAccent()
         selection.backgroundColor = convertToColorInt("16161c")
+        selection["qs_alpha"] = "0"
         return selection
     }
 
@@ -140,6 +141,15 @@ abstract class CustomizeHandler(val context: Context) {
         notifBackgroundOptions["dark"]!!.subOptionKey = "sender_name_fix"
         categories.add(CustomizeCategory(context.getString(R.string.notification_tweaks),
                 "notif_background", "white", notifBackgroundOptions, synchronizedArrayListOf("android")))
+
+        val qsOptions = OptionsMap()
+        val trans =
+                SliderOption(context.getString(R.string.qs_transparency), "qs_alpha")
+        trans.current = 0
+        qsOptions.add(trans)
+        categories.add(CustomizeCategory(context.getString(R.string.quick_settings_style),
+                "qs_alpha", "0", qsOptions,
+                synchronizedArrayListOf("android")))
     }
 
     fun getCustomizeOptions(): CategoryMap {

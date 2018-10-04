@@ -132,6 +132,12 @@ abstract class PreviewHandler(val context: Context) {
                 it.preview_sysui_sender.setTextColor(Color.BLACK)
                 it.preview_sysui_msg.setTextColor(Color.parseColor("#8a000000"))
             }
+            if (selection.containsKey("qs_alpha")) {
+                val qsAlpha = selection.getInt("qs_alpha")
+                it.preview_wallpaper.setColorFilter(
+                        ColorUtils.addAlphaColor(palette.backgroundColor,
+                                qsAlpha), PorterDuff.Mode.SRC_OVER)
+            }
         }
     }
 

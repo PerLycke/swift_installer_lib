@@ -212,9 +212,11 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
             override fun getDefaultSelection(): CustomizeSelection {
                 val selection = super.getDefaultSelection()
                 selection["samsung_oreo_icons"] = "stock_accent"
+                selection["samsung_oreo_qs_icons"] = "qs_accent"
+                selection["samsung_oreo_nav_icons"] = "nav_stock"
+                selection["samsung_oreo_nav_color_icons"] = "nav_color_white"
                 selection["samsung_oreo_clock"] = "right"
                 selection["samsung_oreo_notif_style"] = "default"
-                selection["qs_alpha"] = "0"
                 return selection
             }
 
@@ -244,13 +246,6 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
             }
 
             systemUiPreview?.let {
-                if (selection.containsKey("qs_alpha")) {
-                    val qsAlpha = selection.getInt("qs_alpha")
-                    it.preview_wallpaper.setColorFilter(
-                            ColorUtils.addAlphaColor(palette.backgroundColor,
-                                    qsAlpha), PorterDuff.Mode.SRC_OVER)
-                }
-
                 if (selection.containsKey("samsung_oreo_notif_style")) {
                     val darkNotif = (selection["notif_background"]) == "dark"
                     if (selection["samsung_oreo_notif_style"] == "p") {
@@ -321,6 +316,37 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
                                 "com.samsung.android.app.aodservice",
                                 "android")))
 
+        val qsIconOptions = OptionsMap()
+        qsIconOptions.add(Option(context.getString(R.string.aosp_icons), "qs_aosp", "qs_aosp", true))
+        qsIconOptions.add(
+                Option(context.getString(R.string.stock_icons), "qs_accent", "qs_stock", true))
+        qsIconOptions.add(
+                Option("White", "qs_white", "qs_white", true))
+        categories.add(
+                CustomizeCategory("QS Icons", "samsung_oreo_qs_icons",
+                        "qs_stock", qsIconOptions,
+                        synchronizedArrayListOf("com.android.systemui" )))
+
+        val navIconOptions = OptionsMap()
+        navIconOptions.add(Option("Stock", "nav_stock"))
+        navIconOptions.add(Option("AOSP", "nav_aosp"))
+        navIconOptions.add(Option("Oreo Pixel", "nav_oreo"))
+
+        val navIconColorOptions = OptionsMap()
+        navIconColorOptions.add(Option("White", "nav_color_white"))
+        navIconColorOptions.add(Option("Accent", "nav_color_accent"))
+        navIconOptions["nav_stock"]!!.subOptions.putAll(navIconColorOptions)
+        navIconOptions["nav_stock"]!!.subOptionKey = "samsung_oreo_nav_color_icons"
+        navIconOptions["nav_aosp"]!!.subOptions.putAll(navIconColorOptions)
+        navIconOptions["nav_aosp"]!!.subOptionKey = "samsung_oreo_nav_color_icons"
+        navIconOptions["nav_oreo"]!!.subOptions.putAll(navIconColorOptions)
+        navIconOptions["nav_oreo"]!!.subOptionKey = "samsung_oreo_nav_color_icons"
+
+
+        categories.add(
+                CustomizeCategory("Navigation Icons", "samsung_oreo_nav_icons", "nav_stock",
+                        navIconOptions, synchronizedArrayListOf("com.android.systemui")))
+
         val clockOptions = OptionsMap()
         clockOptions.add(Option(context.getString(R.string.right), "right"))
         clockOptions.add(Option(context.getString(R.string.left), "left"))
@@ -332,10 +358,6 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
         val notifOptions = OptionsMap()
         notifOptions.add(Option(context.getString(R.string.default_style), "default"))
         notifOptions.add(Option(context.getString(R.string.android_p_rounded_style), "p"))
-        val trans =
-                SliderOption(context.getString(R.string.qs_transparency), "qs_alpha")
-        trans.current = 0
-        notifOptions.add(trans)
         notifOptions["p"]!!.infoDialogTitle = context.getString(R.string.rounded_dialog_title)
         notifOptions["p"]!!.infoDialogText = context.getString(R.string.rounded_dialog_info)
         categories.add(CustomizeCategory(context.getString(R.string.notification_style),
