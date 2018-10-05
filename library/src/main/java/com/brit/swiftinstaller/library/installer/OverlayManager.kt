@@ -26,8 +26,10 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import com.brit.swiftinstaller.library.ui.applist.AppList
+import com.brit.swiftinstaller.library.ui.views.InstallerView
 import com.brit.swiftinstaller.library.utils.isAppInstalled
 import com.brit.swiftinstaller.library.utils.pm
+import com.brit.swiftinstaller.library.utils.swift
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
@@ -59,6 +61,8 @@ class OverlayManager(private val context: Context) {
 
     private val handler: Handler
 
+    private val installerView = InstallerView(context)
+
     init {
 
         threadPool = ThreadPoolExecutor(CORE_POOL_SIZE, MAX_POOL_SIZE,
@@ -74,17 +78,20 @@ class OverlayManager(private val context: Context) {
                     OVERLAY_FAILED -> {
                         Notifier.broadcastOverlayFailed(context,
                                 overlayTask.packageName, overlayTask.errorLog)
+                       installerView.overlayFailed(overlayTask.packageName, overlayTask.errorLog)
                     }
 
                     OVERLAY_INSTALLED -> {
                         AppList.updateApp(context, overlayTask.packageName)
                         Notifier.broadcastOverlayInstalled(context, overlayTask.packageName,
                                 overlayTask.index, msg.arg2)
+                        installerView.overlayInstalled(overlayTask.packageName, msg.arg2, overlayTask.index)
                         if (msg.arg1 == (msg.arg2 - 1)) {
                             if (callback != null) {
                                 callback!!.installFinished()
                                 Notifier.broadcastInstallFinished(context)
                             }
+                            installerView.installComplete()
                         }
                     }
 
@@ -92,10 +99,12 @@ class OverlayManager(private val context: Context) {
                         AppList.updateApp(context, overlayTask.packageName)
                         Notifier.broadcastOverlayUninstalled(context, overlayTask.packageName,
                                 overlayTask.index, msg.arg2)
+                        installerView.overlayInstalled(overlayTask.packageName, msg.arg2, overlayTask.index)
                         if (msg.arg1 == (msg.arg2 - 1)) {
                             if (callback != null) {
                                 callback!!.installFinished()
                             }
+                            installerView.uninstallComplete()
                             Notifier.broadcastUninstallFinished(context)
                         }
                     }
@@ -109,14 +118,18 @@ class OverlayManager(private val context: Context) {
     }
 
     fun installOverlays(apps: Array<String>) {
+        installerView.installStart()
         max = apps.size
+        context.swift.romHandler.preInstall()
         apps.forEach { pn ->
             installOverlay(pn, apps.indexOf(pn))
         }
     }
 
     fun uninstallOverlays(apps: Array<String>) {
+        installerView.installStart()
         max = apps.size
+        context.swift.romHandler.preInstall()
         apps.forEach { pn ->
             uninstallOverlay(pn, apps.indexOf(pn))
         }

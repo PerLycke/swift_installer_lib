@@ -23,23 +23,20 @@ package com.brit.swiftinstaller.library.installer.rom
 
 import android.content.Context
 import android.content.Intent
+import android.os.Handler
 import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
 import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
 import com.brit.swiftinstaller.library.ui.customize.PreviewHandler
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
+import org.jetbrains.anko.doAsync
 
 open class OreoRomHandler(context: Context) : RomHandler(context) {
 
     override fun installOverlay(context: Context, targetPackage: String, overlayPath: String) {
         if (ShellUtils.isRootAvailable) {
-            if (targetPackage == "android") {
-                if (disableOverlayCommand(targetPackage)) {
-                    runCommand("pm install -r $overlayPath", true)
-                }
-            } else {
-                runCommand("pm install -r $overlayPath", true)
-            }
+            runCommand("pm install -r $overlayPath", true)
+            runCommand("cmd overlay enable ${getOverlayPackageName(targetPackage)}")
             if (runCommand("cmd overlay list", true).output?.contains(getOverlayPackageName(targetPackage)) == true) {
                 context.swift.prefs.edit().putBoolean("noSecondReboot", true).apply()
             }
@@ -78,6 +75,10 @@ open class OreoRomHandler(context: Context) : RomHandler(context) {
         )
     }
 
+    override fun preInstall() {
+        runCommand("pm disable com.android.vending", true)
+    }
+
     override fun postInstall(uninstall: Boolean, apps: SynchronizedArrayList<String>,
                              oppositeApps: SynchronizedArrayList<String>, intent: Intent?) {
 
@@ -87,6 +88,9 @@ open class OreoRomHandler(context: Context) : RomHandler(context) {
             }
         }
 
+        Handler().postDelayed({
+            runCommand("pm enable com.android.vending", true)
+        }, 500)
         if (intent != null) {
             context.applicationContext.startActivity(intent)
         }

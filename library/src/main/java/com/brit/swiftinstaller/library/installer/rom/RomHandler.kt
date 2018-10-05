@@ -165,6 +165,8 @@ abstract class RomHandler constructor(var context: Context) {
         return false
     }
 
+    open fun preInstall() {}
+
     abstract fun installOverlay(context: Context, targetPackage: String, overlayPath: String)
     abstract fun postInstall(uninstall: Boolean = false,
                              apps: SynchronizedArrayList<String> = synchronizedArrayListOf(),
