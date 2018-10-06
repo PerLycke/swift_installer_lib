@@ -359,9 +359,11 @@ class CustomizeActivity : ThemeActivity() {
     }
 
     private fun checkAndAddApp(apps: SynchronizedArrayList<String>, app: String) {
-        if (!apps.contains(app) && swift.romHandler.isOverlayInstalled("android") && swift.pm.isAppInstalled(app)) {
-            apps.add(app)
-            recompile = true
+        if (!apps.contains(app) && swift.romHandler.isOverlayInstalled("android")) {
+            if (swift.pm.isAppInstalled(app) && swift.pm.isAppEnabled(app)) {
+                apps.add(app)
+                recompile = true
+            }
         }
     }
 
