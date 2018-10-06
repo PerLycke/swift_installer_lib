@@ -321,8 +321,10 @@ class MainActivity : ThemeActivity() {
 
                 var mes = Utils.createLinkedString(ctx, m, getString(R.string.link_faq))
                 mes = Utils.createLinkedString(ctx, mes, getString(R.string.link_telegram))
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                if (RomHandler.supportsMagisk) {
                     mes = Utils.createLinkedString(ctx, mes, getString(R.string.link_magisk))
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                     mes = Utils.createLinkedString(ctx, mes, getString(R.string.link_rescue_zip))
                 }
 
