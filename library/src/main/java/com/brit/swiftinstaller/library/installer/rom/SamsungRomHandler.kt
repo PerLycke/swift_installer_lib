@@ -298,9 +298,9 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
         val iconOptions = OptionsMap()
         iconOptions.add(Option(context.getString(R.string.aosp_icons), "aosp", "aosp", true))
         iconOptions.add(
-                Option(context.getString(R.string.stock_icons), "stock_accent", "stock", true))
+                Option(context.getString(R.string.stock_icons), "stock_accent", "stock_accent", true))
         iconOptions.add(
-                Option(context.getString(R.string.stock_icons_multi), "stock_multi", "stock",
+                Option(context.getString(R.string.stock_icons_multi), "stock_multi", "stock_multi",
                         false))
         iconOptions.add(Option(context.getString(R.string.android_p), "p", "p", false))
         categories.add(
