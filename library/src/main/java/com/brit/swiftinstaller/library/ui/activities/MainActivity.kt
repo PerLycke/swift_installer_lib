@@ -339,7 +339,7 @@ class MainActivity : ThemeActivity() {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
 
-        if (ShellUtils.isRootAvailable) {
+        if (ShellUtils.isRootAvailable && swift.romHandler.moduleDisabled) {
             popupView.popup_menu_soft_reboot.setOnClickListener {
                 popup.dismiss()
                 val intent = Intent(this, RebootActivity::class.java)
