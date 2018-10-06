@@ -48,7 +48,6 @@ import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.enableAllOverlays
 import kotlinx.android.synthetic.main.card_install.*
 import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.popup_menu.*
 import kotlinx.android.synthetic.main.popup_menu.view.*
 import org.jetbrains.anko.doAsync
 
@@ -341,7 +340,7 @@ class MainActivity : ThemeActivity() {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
 
-        if (ShellUtils.isRootAvailable && swift.romHandler.moduleDisabled) {
+        if (ShellUtils.isRootAvailable && !swift.romHandler.magiskEnabled) {
             popupView.popup_menu_soft_reboot.setOnClickListener {
                 popup.dismiss()
                 val intent = Intent(this, RebootActivity::class.java)
