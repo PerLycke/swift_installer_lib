@@ -2,13 +2,16 @@ package com.brit.swiftinstaller.library.ui.activities
 
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreference
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.utils.KEY_USE_SOFT_REBOOT
 import com.brit.swiftinstaller.library.utils.MaterialPalette
+import com.brit.swiftinstaller.library.utils.getUseSoftReboot
 import com.brit.swiftinstaller.library.utils.swift
 
 class SettingsActivity : AppCompatActivity() {
@@ -38,6 +41,9 @@ class SettingsActivity : AppCompatActivity() {
             if (!activity!!.swift.romHandler.useHotSwap()) {
                 preferenceScreen.removePreference(
                         preferenceScreen.findPreference(KEY_USE_SOFT_REBOOT))
+            } else {
+                val softReboot = preferenceScreen.findPreference(KEY_USE_SOFT_REBOOT) as SwitchPreference
+                softReboot.isChecked = getUseSoftReboot(activity!!)
             }
         }
 

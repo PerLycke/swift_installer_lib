@@ -97,7 +97,11 @@ abstract class RomHandler constructor(var context: Context) {
                 .build(), TUTORIAL_PAGE_USAGE)
 
         if (supportsMagisk) {
-            val content = tutorial.getString(R.string.magisk_module_description)
+            val content = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                tutorial.getString(R.string.magisk_module_description)
+            } else {
+                tutorial.getString(R.string.magisk_module_description_oreo)
+            }
             val link = tutorial.getString(R.string.magisk_module_link_text)
 
             val click = object : ClickableSpan() {

@@ -2,7 +2,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <com.brit.swiftinstaller.library.ui.preference.SwiftSwitchPreference
-        android:defaultValue="true"
         android:key="use_soft_reboot"
         android:summary="@string/soft_reboot_summary"
         android:title="@string/soft_reboot_title" />
