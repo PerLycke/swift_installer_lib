@@ -37,7 +37,6 @@ import com.android.apksig.ApkSigner
 import com.topjohnwu.superuser.Shell
 import com.topjohnwu.superuser.io.SuFile
 import org.jetbrains.anko.toast
-import java.io.DataOutputStream
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
@@ -57,26 +56,18 @@ object ShellUtils {
         }
     val isRootAccessAvailable: Boolean
         get() {
-            var os: DataOutputStream? = null
             var process: Process? = null
-            try {
-                process = Runtime.getRuntime().exec("sh")
-                os = DataOutputStream(process!!.outputStream)
-                os.writeBytes("su\n")
-                os.flush()
-                os.writeBytes("exit\n")
-                os.writeBytes("exit\n")
-                os.flush()
+            return try {
+                process = Runtime.getRuntime().exec("su -c id")
                 process.waitFor()
                 val exit = process.exitValue()
-                return exit == 0
+                exit == 0
             } catch (e: IOException) {
-                return false
+                false
             } catch (e: InterruptedException) {
-                return false
+                false
             } finally {
                 try {
-                    os?.close()
                     process?.destroy()
                 } catch (ignored: IOException) {
                 }
