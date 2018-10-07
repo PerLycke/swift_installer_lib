@@ -120,7 +120,9 @@ abstract class CustomizeHandler(val context: Context) {
 
     open fun getDefaultSelection(): CustomizeSelection {
         val selection = CustomizeSelection()
-        selection["sender_name_fix"] = "default"
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            selection["sender_name_fix"] = "default"
+        }
         selection["notif_background"] = "white"
         selection.accentColor = context.swift.romHandler.getDefaultAccent()
         selection.backgroundColor = convertToColorInt("16161c")
