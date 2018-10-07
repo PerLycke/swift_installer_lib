@@ -104,11 +104,7 @@ class CustomizeActivity : ThemeActivity() {
         setupPreview()
         setupAccentSheet()
         setupHexInputs()
-        val handler = MessageQueue.IdleHandler {
-            setupThemeOptions()
-            false
-        }
-        Looper.myQueue().addIdleHandler(handler)
+        setupThemeOptions()
     }
 
     private fun showFab() {
