@@ -97,16 +97,12 @@ abstract class PreviewHandler(val context: Context) {
             if (notifShadow) {
                 it.preview_sysui_msg.text =
                         context.getString(R.string.dark_notifications_preview_shadow)
-                it.preview_sysui_app_title.setShadowLayer(2.0f, -1.0f, -1.0f,
-                        Color.WHITE)
                 it.preview_sysui_sender.setTextColor(Color.BLACK)
                 it.preview_sysui_sender.setShadowLayer(2.0f, -1.0f, -1.0f,
                         Color.WHITE)
             } else {
                 it.preview_sysui_msg.text =
                         context.getString(R.string.dark_notifications_preview_normal)
-                it.preview_sysui_app_title.setShadowLayer(0.0f, 0.0f, 0.0f,
-                        Color.TRANSPARENT)
                 it.preview_sysui_sender.setTextColor(Color.WHITE)
                 it.preview_sysui_sender.setShadowLayer(0.0f, 0.0f, 0.0f,
                         Color.TRANSPARENT)

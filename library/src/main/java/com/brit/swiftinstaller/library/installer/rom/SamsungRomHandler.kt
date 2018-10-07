@@ -23,7 +23,7 @@ package com.brit.swiftinstaller.library.installer.rom
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.PorterDuff
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import androidx.core.content.ContextCompat
@@ -242,8 +242,17 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
                 }
             }
 
-            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O) {
-                systemUiPreview?.let {
+            val notifShadow = (selection["sender_name_fix"]) == "shadow"
+            systemUiPreview?.let {
+                if (notifShadow) {
+                    it.preview_sysui_app_title.setShadowLayer(2.0f, -1.0f, -1.0f,
+                            Color.WHITE)
+                } else {
+                    it.preview_sysui_app_title.setShadowLayer(0.0f, 0.0f, 0.0f,
+                            Color.TRANSPARENT)
+                }
+
+                if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O) {
                     if (selection.containsKey("samsung_oreo_notif_style")) {
                         val darkNotif = (selection["notif_background"]) == "dark"
                         if (selection["samsung_oreo_notif_style"] == "p") {
