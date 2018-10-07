@@ -133,9 +133,9 @@ abstract class CustomizeHandler(val context: Context) {
         val notifBackgroundOptions = OptionsMap()
         notifBackgroundOptions.add(Option(context.getString(R.string.white), "white"))
         notifBackgroundOptions.add(Option(context.getString(R.string.dark), "dark"))
-        notifBackgroundOptions["dark"]!!.infoText =
-                context.getString(R.string.notif_fix_desc_summary)
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            notifBackgroundOptions["dark"]!!.infoText =
+                    context.getString(R.string.notif_fix_desc_summary)
             val senderNameOptions = OptionsMap()
             senderNameOptions.add(Option(context.getString(R.string.disable), "default"))
             senderNameOptions.add(Option(context.getString(R.string.enable_shadow_title), "shadow"))
