@@ -213,14 +213,14 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
                 val selection = super.getDefaultSelection()
                 selection["samsung_oreo_icons"] = "stock_accent"
                 selection["samsung_oreo_clock"] = "right"
-                selection["samsung_oreo_notif_style"] = "default"
+                if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O) {
+                    selection["samsung_oreo_notif_style"] = "default"
+                }
                 return selection
             }
 
             override fun populateCustomizeOptions(categories: CategoryMap) {
-                if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O) {
-                    populateOreoCustomizeOptions(categories)
-                }
+                populateOreoCustomizeOptions(categories)
                 super.populateCustomizeOptions(categories)
             }
 
@@ -242,19 +242,21 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
                 }
             }
 
-            systemUiPreview?.let {
-                if (selection.containsKey("samsung_oreo_notif_style")) {
-                    val darkNotif = (selection["notif_background"]) == "dark"
-                    if (selection["samsung_oreo_notif_style"] == "p") {
-                        it.notif_bg_layout.setImageResource(
-                                R.drawable.notif_bg_rounded)
-                        if (darkNotif) {
-                            it.notif_bg_layout.drawable.setTint(
-                                    ColorUtils.handleColor(palette.backgroundColor, 8))
-                        } else {
-                            it.notif_bg_layout.drawable.setTint(
-                                    context.getColor(R.color.notification_bg_light))
+            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O) {
+                systemUiPreview?.let {
+                    if (selection.containsKey("samsung_oreo_notif_style")) {
+                        val darkNotif = (selection["notif_background"]) == "dark"
+                        if (selection["samsung_oreo_notif_style"] == "p") {
+                            it.notif_bg_layout.setImageResource(
+                                    R.drawable.notif_bg_rounded)
+                            if (darkNotif) {
+                                it.notif_bg_layout.drawable.setTint(
+                                        ColorUtils.handleColor(palette.backgroundColor, 8))
+                            } else {
+                                it.notif_bg_layout.drawable.setTint(
+                                        context.getColor(R.color.notification_bg_light))
 
+                            }
                         }
                     }
                 }
@@ -321,13 +323,15 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
                 CustomizeCategory(context.getString(R.string.clock), "samsung_oreo_clock", "right",
                         clockOptions, synchronizedArrayListOf("com.android.systemui")))
 
-        val notifOptions = OptionsMap()
-        notifOptions.add(Option(context.getString(R.string.default_style), "default"))
-        notifOptions.add(Option(context.getString(R.string.android_p_rounded_style), "p"))
-        notifOptions["p"]!!.infoDialogTitle = context.getString(R.string.rounded_dialog_title)
-        notifOptions["p"]!!.infoDialogText = context.getString(R.string.rounded_dialog_info)
-        categories.add(CustomizeCategory(context.getString(R.string.notification_style),
-                "samsung_oreo_notif_style", "default", notifOptions,
-                synchronizedArrayListOf("com.android.systemui", "android")))
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O) {
+            val notifOptions = OptionsMap()
+            notifOptions.add(Option(context.getString(R.string.default_style), "default"))
+            notifOptions.add(Option(context.getString(R.string.android_p_rounded_style), "p"))
+            notifOptions["p"]!!.infoDialogTitle = context.getString(R.string.rounded_dialog_title)
+            notifOptions["p"]!!.infoDialogText = context.getString(R.string.rounded_dialog_info)
+            categories.add(CustomizeCategory(context.getString(R.string.notification_style),
+                    "samsung_oreo_notif_style", "default", notifOptions,
+                    synchronizedArrayListOf("com.android.systemui", "android")))
+        }
     }
 }
