@@ -20,19 +20,42 @@ class CategoryMap : HashMap<String, CustomizeCategory>(), Iterable<CustomizeCate
     }
 
     override fun get(key: String): CustomizeCategory? {
-        if (containsKey(key)) {
+        if (super.containsKey(key)) {
             return super.get(key)
         }
         for (cat in this) {
             for (option in cat.options) {
                 if (option.isSliderOption) {
-                    return cat
+                    if (option.value == key) {
+                        return cat
+                    }
                 }
                 if (option.subOptionKey.isNotEmpty()) {
-                    return cat
+                    if (option.subOptionKey == key) {
+                        return cat
+                    }
                 }
             }
         }
         return null
+    }
+
+    override fun containsKey(key: String): Boolean {
+        if (super.containsKey(key)) {
+            return true
+        }
+        for (cat in this) {
+            for (option in cat.options) {
+                if (option.isSliderOption) {
+                    if (option.value == key) {
+                        return true
+                    }
+                }
+                if (option.subOptionKey == key) {
+                    return true
+                }
+            }
+        }
+        return false
     }
 }

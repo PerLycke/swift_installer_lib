@@ -28,8 +28,6 @@ import android.content.IntentFilter
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
-import android.os.MessageQueue
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
