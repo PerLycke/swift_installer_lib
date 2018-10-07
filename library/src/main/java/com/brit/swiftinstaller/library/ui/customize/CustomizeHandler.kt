@@ -22,6 +22,7 @@
 package com.brit.swiftinstaller.library.ui.customize
 
 import android.content.Context
+import android.os.Build
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.utils.ColorUtils.convertToColorInt
 import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
@@ -134,11 +135,13 @@ abstract class CustomizeHandler(val context: Context) {
         notifBackgroundOptions.add(Option(context.getString(R.string.dark), "dark"))
         notifBackgroundOptions["dark"]!!.infoText =
                 context.getString(R.string.notif_fix_desc_summary)
-        val senderNameOptions = OptionsMap()
-        senderNameOptions.add(Option(context.getString(R.string.disable), "default"))
-        senderNameOptions.add(Option(context.getString(R.string.enable_shadow_title), "shadow"))
-        notifBackgroundOptions["dark"]!!.subOptions.putAll(senderNameOptions)
-        notifBackgroundOptions["dark"]!!.subOptionKey = "sender_name_fix"
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            val senderNameOptions = OptionsMap()
+            senderNameOptions.add(Option(context.getString(R.string.disable), "default"))
+            senderNameOptions.add(Option(context.getString(R.string.enable_shadow_title), "shadow"))
+            notifBackgroundOptions["dark"]!!.subOptions.putAll(senderNameOptions)
+            notifBackgroundOptions["dark"]!!.subOptionKey = "sender_name_fix"
+        }
         categories.add(CustomizeCategory(context.getString(R.string.notification_tweaks),
                 "notif_background", "white", notifBackgroundOptions, synchronizedArrayListOf("android")))
 
