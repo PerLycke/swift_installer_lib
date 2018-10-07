@@ -28,6 +28,8 @@ import android.content.IntentFilter
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
+import android.os.MessageQueue
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
@@ -59,9 +61,7 @@ import kotlinx.android.synthetic.main.customize_option_item.view.*
 import kotlinx.android.synthetic.main.customize_option_layout.view.*
 import kotlinx.android.synthetic.main.fab_sheet_personalize.view.*
 import kotlinx.android.synthetic.main.palette_view.view.*
-import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
-import org.jetbrains.anko.uiThread
 
 class CustomizeActivity : ThemeActivity() {
 
@@ -102,7 +102,11 @@ class CustomizeActivity : ThemeActivity() {
         setupPreview()
         setupAccentSheet()
         setupHexInputs()
-        setupThemeOptions()
+        val idleHandler = MessageQueue.IdleHandler {
+            setupThemeOptions()
+            false
+        }
+        Looper.myQueue().addIdleHandler(idleHandler)
     }
 
     private fun showFab() {
@@ -294,46 +298,44 @@ class CustomizeActivity : ThemeActivity() {
     }
 
     private fun setupThemeOptions() {
-        doAsync {
-            val views = arrayListOf<View>()
-            customizeHandler.getCustomizeOptions().reversed().forEach { category ->
-                val categoryView = LayoutInflater.from(this@CustomizeActivity)
-                        .inflate(R.layout.customize_option_layout, customize_options, false)
-                categoryView.customize_category_title.text = category.name
-                val optionGroup = RadioGroup()
-                category.options.forEachOption { option ->
-                    setupOption(categoryView.options, option, category.key, optionGroup)
-                }
-                views.add(categoryView)
+        customizeHandler.getCustomizeOptions().reversed().forEach { category ->
+            val categoryView = LayoutInflater.from(this@CustomizeActivity)
+                    .inflate(R.layout.customize_option_layout, customize_options, false)
+            categoryView.customize_category_title.text = category.name
+            val optionGroup = RadioGroup()
+            category.options.forEachOption { option ->
+                setupOption(categoryView.options, option, category.key, optionGroup)
             }
-
-            val baseThemeListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
-                if (compoundButton.id == R.id.material_theme) {
-                    material_theme.isChecked = b
-                    flat_theme.isChecked = !b
-                } else {
-                    material_theme.isChecked = !b
-                    flat_theme.isChecked = b
-                }
-                usePalette = material_theme.isChecked
-                updateColor(false)
-            }
-
-            material_theme.setOnCheckedChangeListener(baseThemeListener)
-            flat_theme.setOnCheckedChangeListener(baseThemeListener)
-
-            uiThread {
-                for (v in views) {
-                    customize_options.addView(v)
-                }
-
-                material_theme.isChecked = usePalette
-                flat_theme.isChecked = !usePalette
-
-                updateColor(true)
-                updateOnResume = true
-            }
+            customize_options.addView(categoryView)
         }
+
+        val baseThemeListener = CompoundButton.OnCheckedChangeListener { compoundButton, b ->
+            if (compoundButton.id == R.id.material_theme) {
+                material_theme.isChecked = b
+                flat_theme.isChecked = !b
+            } else {
+                material_theme.isChecked = !b
+                flat_theme.isChecked = b
+            }
+            usePalette = material_theme.isChecked
+            updateColor(false)
+        }
+
+        material_theme.setOnCheckedChangeListener(baseThemeListener)
+        flat_theme.setOnCheckedChangeListener(baseThemeListener)
+
+        material_theme.isChecked = usePalette
+        flat_theme.isChecked = !usePalette
+
+        if (updateColor(true)) {
+            category_update_progress.visibility = View.INVISIBLE
+            val anim = AlphaAnimation(0.0f, 1.0f)
+            anim.duration = 500
+            main_layout.visibility = View.VISIBLE
+            main_layout.startAnimation(anim)
+            customizations_scrollview.isVerticalScrollBarEnabled = true
+        }
+        updateOnResume = true
     }
 
     override fun onBackPressed() {
@@ -492,7 +494,7 @@ class CustomizeActivity : ThemeActivity() {
         background_palette.adapter = PaletteAdapter(customizeHandler.getBackgroundColors(), false)
     }
 
-    fun updateColor(updateHex: Boolean) {
+    fun updateColor(updateHex: Boolean): Boolean {
         updateColors(selection.backgroundColor, usePalette)
         IdLists.radioButtons.forEach { id ->
             val b = findViewById<RadioButton>(id)
@@ -553,14 +555,7 @@ class CustomizeActivity : ThemeActivity() {
 
         previewHandler.updateView(materialPalette, selection)
 
-        if (main_layout.visibility == View.INVISIBLE) {
-            category_update_progress.visibility = View.INVISIBLE
-            val anim = AlphaAnimation(0.0f, 1.0f)
-            anim.duration = 500
-            main_layout.visibility = View.VISIBLE
-            main_layout.startAnimation(anim)
-            customizations_scrollview.isVerticalScrollBarEnabled = true
-        }
+        return true
     }
 
     class BackgroundIndicatorHandler {
