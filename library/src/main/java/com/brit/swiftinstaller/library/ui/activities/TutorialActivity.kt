@@ -60,26 +60,26 @@ open class TutorialActivity : TutorialActivity() {
             OverlayUtils.checkAndHideOverlays(this@TutorialActivity)
         }
 
+        if (swift.romHandler.requiresRoot() && !ShellUtils.isRootAccessAvailable) {
+            val dialog = Dialog(this, R.style.AppTheme)
+            val layout = View.inflate(this, R.layout.no_root, null)
+            dialog.setContentView(layout)
+            dialog.setCancelable(false)
+            layout.no_root_msg.text = getString(R.string.no_root_msg)
+            layout.no_root_exit.visibility = View.VISIBLE
+            layout.no_root_exit.setOnClickListener {
+                finishAffinity()
+            }
+            dialog.show()
+            return
+        }
+
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("appHasRunBefore",
                         false)) {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
         } else {
-            if (swift.romHandler.requiresRoot() && !ShellUtils.isRootAccessAvailable) {
-                val dialog = Dialog(this, R.style.AppTheme)
-                val layout = View.inflate(this, R.layout.no_root, null)
-                dialog.setContentView(layout)
-                dialog.setCancelable(false)
-                layout.no_root_msg.text = getString(R.string.no_root_msg)
-                layout.no_root_exit.visibility = View.VISIBLE
-                layout.no_root_exit.setOnClickListener {
-                    finishAffinity()
-                }
-                dialog.show()
-                return
-            }
-
             setIndicator(R.drawable.tutorial_indicator)
             setIndicatorSelected(R.drawable.tutorial_indicator_selected)
             swift.romHandler.addTutorialSteps(this)

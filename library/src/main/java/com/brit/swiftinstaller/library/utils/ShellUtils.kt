@@ -61,7 +61,7 @@ object ShellUtils {
                 process = Runtime.getRuntime().exec("su -c id")
                 process.waitFor()
                 val exit = process.exitValue()
-                exit == 0
+                (exit == 0 && inputStreamToString(process.inputStream).contains("uid=0"))
             } catch (e: IOException) {
                 false
             } catch (e: InterruptedException) {
