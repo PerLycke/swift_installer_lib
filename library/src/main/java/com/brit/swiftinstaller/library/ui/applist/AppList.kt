@@ -119,6 +119,12 @@ object AppList {
                 return
             }
             removeApp(packageName)
+            if (context.assets.list("overlays")?.contains(packageName) == false) {
+                return
+            }
+            if (getHiddenApps(context).contains(packageName)) {
+                return
+            }
             val pInfo =  try {
                 context.packageManager.getPackageInfo(packageName, 0)
             } catch (e: PackageManager.NameNotFoundException) {
