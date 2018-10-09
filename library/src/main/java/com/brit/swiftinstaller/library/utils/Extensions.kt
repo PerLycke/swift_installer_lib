@@ -57,8 +57,12 @@ fun PackageManager.isAppInstalled(packageName: String): Boolean {
 }
 
 fun PackageManager.isAppEnabled(packageName: String): Boolean {
-    return getApplicationEnabledSetting(
-            packageName) != PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
+    return try {
+        getApplicationEnabledSetting(
+                packageName) != PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
+    } catch (e: Exception) {
+        return false
+    }
 }
 
 fun <T>synchronizedArrayListOf(vararg items: T): SynchronizedArrayList<T> {

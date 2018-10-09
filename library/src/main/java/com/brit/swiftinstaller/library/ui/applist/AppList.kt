@@ -119,7 +119,11 @@ object AppList {
                 return
             }
             removeApp(packageName)
-            val pInfo = context.packageManager.getPackageInfo(packageName, 0)
+            val pInfo =  try {
+                context.packageManager.getPackageInfo(packageName, 0)
+            } catch (e: PackageManager.NameNotFoundException) {
+                return
+            }
             val item = AppItem(packageName = packageName,
                     title = pInfo.applicationInfo.loadLabel(context.packageManager) as String,
                     versionCode = pInfo.getVersionCode(),

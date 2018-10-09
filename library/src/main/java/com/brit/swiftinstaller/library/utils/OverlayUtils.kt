@@ -105,7 +105,11 @@ object OverlayUtils {
     }
 
     fun checkVersionCompatible(context: Context, packageName: String): Boolean {
-        val packageInfo = context.packageManager.getPackageInfo(packageName, 0)
+        val packageInfo = try {
+            context.packageManager.getPackageInfo(packageName, 0)
+        } catch (e: java.lang.Exception) {
+            return false
+        }
         val array = context.assets.list("overlays/$packageName") ?: emptyArray()
         if (array.contains("versions")) {
             val vers = context.assets.list("overlays/$packageName/versions") ?: emptyArray()
