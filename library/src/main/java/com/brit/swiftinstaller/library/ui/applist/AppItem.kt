@@ -21,45 +21,18 @@
 
 package com.brit.swiftinstaller.library.ui.applist
 
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.os.Parcel
-import android.os.Parcelable
+import androidx.collection.ArrayMap
 
-class AppItem() : Parcelable {
-    var packageName: String = ""
-    var title: String = ""
-    private var required: String = ""
-    var versionCode: Long = 0
-    var versionName: String = ""
-    var icon: Drawable? = null
-
-    constructor(parcel: Parcel) : this() {
-        packageName = parcel.readString()!!
-        title = parcel.readString()!!
-        required = parcel.readString()!!
-        versionCode = parcel.readLong()
-        versionName = parcel.readString()!!
-    }
-
-    override fun describeContents(): Int {
-        return describeContents()
-    }
-
-    override fun writeToParcel(dest: Parcel?, flags: Int) {
-        dest?.writeString(packageName)
-        dest?.writeString(title)
-        dest?.writeString(required)
-        dest?.writeLong(versionCode)
-        dest?.writeString(versionName)
-    }
-
-    companion object CREATOR : Parcelable.Creator<AppItem> {
-        override fun createFromParcel(parcel: Parcel): AppItem {
-            return AppItem(parcel)
-        }
-
-        override fun newArray(size: Int): Array<AppItem?> {
-            return arrayOfNulls(size)
-        }
-    }
-}
+class AppItem(val packageName: String = "",
+              val title: String = "",
+              val versionCode: Long = 0,
+              val versionName: String = "",
+              val incompatible: Boolean = false,
+              val installed: Boolean = false,
+              val hasVersions: Boolean = false,
+              val hasUpdate: Boolean = false,
+              val isRequired: Boolean = false,
+              var icon: Drawable = ColorDrawable(),
+              var appOptions: ArrayMap<String, Array<String>>? = null)

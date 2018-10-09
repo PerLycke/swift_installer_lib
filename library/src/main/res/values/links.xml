@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="magisk_module_link">https://www.dropbox.com/s/x7q7ljltomnqzrw/swift_magisk_module.zip?raw=1</string>
+    <string name="magisk_module_link" translatable="false">https://www.dropbox.com/s/x7q7ljltomnqzrw/swift_magisk_module.zip?raw=1</string>
+    <string name="link_faq" translatable="false">https://goo.gl/F4V5j1</string>
+    <string name="link_telegram" translatable="false">https://goo.gl/tpPji0</string>
+    <string name="link_magisk" translatable="false">https://goo.gl/6NHTHd</string>
+    <string name="link_rescue_zip" translatable="false">https://goo.gl/NgQxe3</string>
 </resources>

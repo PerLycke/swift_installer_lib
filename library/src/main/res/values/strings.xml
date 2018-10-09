@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!--
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
   ~ /*
   ~  * Copyright (C) 2018 Griffin Millender
   ~  * Copyright (C) 2018 Per Lycke
@@ -23,7 +22,6 @@
 <resources>
     <string name="swift_app_name">Swift Installer</string>
     <string name="aosp_icons">AOSP</string>
-    <string name="apply">Apply</string>
     <string name="base_theme">Base theme</string>
     <string name="basic_usage">Basic usage</string>
     <string name="bg_nature">Nature</string>
@@ -76,12 +74,12 @@
     <string name="overlays_action_uninstall">Uninstall</string>
     <string name="overlays_action_update">Update</string>
     <string name="overlays_toolbar_accent">Accent:</string>
-    <string name="overlays_toolbar_bg">Bg:</string>
     <string name="preview_time_string">22:20 | Sun 19 April</string>
     <string name="proceed">Proceed</string>
-    <string name="progress_installing_title">Installing overlays…</string>
-    <string name="progress_uninstalling_title">Uninstalling overlays…</string>
+    <string name="progress_installing_title">Installing…</string>
+    <string name="progress_uninstalling_title">Uninstalling…</string>
     <string name="reboot">Reboot</string>
+    <string name="restart_sysui">Restart SystemUI</string>
     <string name="reboot_delay_msg">Installing an overlay, or any APK, on Samsung right after a reboot will take a lot of time. The device needs around 4 mins to finish all the startup processes. If you just rebooted, we recommend waiting a moment before installing overlays or change background and accents.\n\nHave fun theming :)</string>
     <string name="reboot_delay_title">After rebooting</string>
     <string name="reboot_later">Reboot later</string>
@@ -137,11 +135,6 @@
     <string name="rounded_dialog_title">Rounded style info</string>
     <string name="white">White</string>
     <string name="alpha_value">%1$d %%</string>
-    <string name="gboard_bg_info">To make the Gboard overlay work, you need to set up and activate a theme with a custom picture background from Gboard\'s theme settings. Download an image with your selected background by clicking save, and use the image in Gboard.\n\nImage will be saved as swift_bg.png in sdcard/Download/</string>
-    <string name="gboard_dialog_title">Gboard background</string>
-    <string name="save">Save</string>
-    <string name="saved">Saved!</string>
-    <string name="save_error">Error saving image</string>
     <string name="unsupported">Unsupported, please uninstall</string>
     <string name="qs_transparency">Quick settings transparency:</string>
     <string name="whats_this">What\'s this?</string>
@@ -151,26 +144,27 @@
     <string name="empty_list_active">No active overlays</string>
     <string name="empty_list_updates">No updates available</string>
     <string name="help_msg">Here are some useful links if you need help:</string>
-    <string name="link_telegram">Telegram chat support: https://goo.gl/tpPji0</string>
+    <string name="telegram_support">Telegram chat support: %s</string>
     <string name="reboot_notif_title">System almost themed!…</string>
     <string name="reboot_notif_msg">New overlays were enabled at boot. The last step is to make a quick reboot in order for all apps to reload with the new colors. Tap this notification to proceed</string>
     <string name="reboot_dialog_title">Reboot</string>
     <string name="reboot_dialog_msg">Reboot now to reload resources.</string>
-    <string name="info_card_reboot_msg">New overlays were enabled at boot. The last step is to make a quick reboot in order for all apps to reload with the new colors. <b>Tap here to proceed.</b></string>
+    <string name="restart_sysui_msg">Restart SystemUI now to reload resources.</string>
+    <string name="info_card_reboot_msg">New overlays enabled at boot. The last step is to make a quick reboot in order for all apps to reload with the new colors. <b>Tap to proceed.</b></string>
     <string name="wait">Please wait…</string>
     <string name="reboot_now">Reboot now</string>
     <string name="installation_failed">Installation failed</string>
     <string name="reboot_now_title">Reboot now?</string>
     <string name="info_card_compatibility_msg">Note that we cannot guarantee a stable experience if you use Swift Installer in combination with other themes or mods.</string>
-    <string name="link_faq">FAQ: https://goo.gl/F4V5j1</string>
+    <string name="faq">FAQ: %s</string>
     <string name="link_apps">Supported apps: https://goo.gl/gS84kK</string>
     <string name="no_root_msg">Root access is required for the Installer to work. We inform about this in the Play Store description. You can request a refund from the Play Store, or email us with your GPA code for a manual refund. Email is swiftuserhelp@gmail.com</string>
     <string name="exit">Exit</string>
-    <string name="transparency">Transparency</string>
     <string name="requesting_root_access">Requesting root access…</string>
     <string name="search_in_settings">Search in Settings</string>
     <string name="help">Help</string>
-    <string name="installer_version">Installer library version:</string>
+    <string name="installer_version" formatted="false">Swift Installer version: %s (%d)</string>
+    <string name="installer_library_version" formatted="false">Installer library version: %s (%d)</string>
     <string name="installer_source_link">https://github.com/PerLycke/swift_installer_lib</string>
     <string name="settings_title">Settings</string>
     <string name="soft_reboot_title">Use soft reboot</string>
@@ -184,10 +178,18 @@
     <string name="new_app_notif_setting_title">Notifications for new apps</string>
     <string name="new_app_notif_setting_summary">When a new app is installed, show a notification if an overlay is available</string>
     <string name="soft_reboot">Soft reboot</string>
-    <string name="magisk_module_description">To make sure you can use our overlays on Pie along other Magisk modules, we developed our own module to systemlessly install overlays - this way, you are no longer required to disable modules to use Swift Installer on Pie!
-You can find it: </string>
+    <string name="magisk_module_description">Our Swift Installer module allows you to: \n\n• Install overlays systemlessly, so they don\'t conflict with other modules \n\n• Disable all overlays by just turning off the module \n\n• Theme Gboard easier and better, with a custom generated system theme\n\n You can find it: </string>
+    <string name="magisk_module_description_oreo">Our Swift Installer module allows you to theme Gboard easier and better, with a custom generated system theme.\n\n You can find it: </string>
     <string name="magisk_module_link_text">HERE</string>
     <string name="changelog">Changelog</string>
-    <string name="link_magisk">Magisk module for Pie: https://goo.gl/6NHTHd</string>
-    <string name="link_rescue_pie">TWRP flashable rescue zip: https://goo.gl/NgQxe3</string>
+    <string name="magisk_module">Magisk module: %s</string>
+    <string name="rescue_zip_pie">TWRP flashable rescue zip: %s</string>
+    <string name="something_failed">Something failed</string>
+    <string name="something_failed_msg">An overlay failed to install. Examine the result and optionally send an error log.</string>
+    <string name="needs_extras">Needs action from the "Overlay extras"</string>
+    <string name="overlay_extras_title">Overlay extras</string>
+    <string name="extras_card_desc">Additional options for overlays</string>
+    <string name="pie_category_setting_icon">Setting Icons</string>
+    <string name="quick_settings_style">Quick Settings Style</string>
+    <string name="swiftkey_reboot_needed">You need to reboot for SwiftKey to reload all colors</string>
 </resources>

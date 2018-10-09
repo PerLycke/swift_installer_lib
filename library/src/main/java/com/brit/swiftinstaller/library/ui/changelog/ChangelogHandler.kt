@@ -1,18 +1,17 @@
 package com.brit.swiftinstaller.library.ui.changelog
 
 import android.content.Context
-import android.os.Parcel
-import android.os.Parcelable
 import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
 import com.brit.swiftinstaller.library.BuildConfig
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
+import com.brit.swiftinstaller.library.utils.swift
 import com.michaelflisar.changelog.ChangelogBuilder
 import com.michaelflisar.changelog.ChangelogSetup
 import com.michaelflisar.changelog.classes.IChangelogFilter
 import com.michaelflisar.changelog.classes.IRecyclerViewItem
 import com.michaelflisar.changelog.classes.Row
 import com.michaelflisar.changelog.internal.ChangelogRecyclerViewAdapter
+import kotlinx.android.parcel.Parcelize
 
 object ChangelogHandler {
 
@@ -29,7 +28,7 @@ object ChangelogHandler {
 
         val builder = ChangelogBuilder()
                 .withUseBulletList(true)
-                .withFilter(SwiftChangelogFilter(RomInfo.getRomInfo(activity).getChangelogTag()))
+                .withFilter(SwiftChangelogFilter(activity.swift.romHandler.getChangelogTag()))
 
         if (managedShow) {
             builder.withMinVersionToShow(BuildConfig.VERSION_CODE)
@@ -55,13 +54,8 @@ object ChangelogHandler {
         return false
     }
 
-    class SwiftChangelogFilter(val tag: String): IChangelogFilter {
-
-        constructor(p: Parcel): this(p.readString()!!)
-
-        override fun writeToParcel(dest: Parcel, flags: Int) {
-            dest.writeString(tag)
-        }
+    @Parcelize
+    class SwiftChangelogFilter(val tag: String) : IChangelogFilter {
 
         override fun checkFilter(item: IRecyclerViewItem): Boolean {
             if (item.recyclerViewType == ChangelogRecyclerViewAdapter.Type.Row) {
@@ -75,17 +69,6 @@ object ChangelogHandler {
 
         override fun describeContents(): Int {
             return 0
-        }
-
-        @JvmField
-        val CREATOR = object : Parcelable.Creator<SwiftChangelogFilter> {
-            override fun createFromParcel(p: Parcel): SwiftChangelogFilter {
-                return SwiftChangelogFilter(p)
-            }
-
-            override fun newArray(p0: Int): Array<SwiftChangelogFilter> {
-                return newArray(p0)
-            }
         }
     }
 }

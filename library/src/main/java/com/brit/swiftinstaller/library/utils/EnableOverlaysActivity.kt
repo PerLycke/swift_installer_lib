@@ -27,7 +27,6 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.preference.PreferenceManager
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.activities.RebootActivity
 import com.brit.swiftinstaller.library.utils.OverlayUtils.enableAllOverlays
@@ -39,11 +38,12 @@ class EnableOverlaysActivity : Activity() {
     override fun onResume() {
         super.onResume()
 
-        if (!enableAllOverlays()) {
+        if (!enableAllOverlays() || swift.prefs.getBoolean("noSecondReboot", false)) {
+            swift.prefs.edit().putBoolean("noSecondReboot", false).apply()
             return finish()
         }
 
-        PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("reboot_card", true).apply()
+        prefs.edit().putBoolean("reboot_card", true).apply()
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         sendNotification()
         finish()
@@ -58,7 +58,7 @@ class EnableOverlaysActivity : Activity() {
                 0,
                 rebootIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT
-        )
+                                                     )
 
         val channelID = "boot_enabled"
 

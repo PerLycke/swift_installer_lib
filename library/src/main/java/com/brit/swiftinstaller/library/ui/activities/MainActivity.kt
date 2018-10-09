@@ -22,72 +22,57 @@
 package com.brit.swiftinstaller.library.ui.activities
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
 import android.os.Build
 import android.os.Bundle
-import android.preference.PreferenceManager
+import android.os.Handler
+import android.os.SystemClock
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import android.widget.PopupWindow
-import androidx.appcompat.app.AlertDialog
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
-import com.brit.swiftinstaller.library.ui.applist.AppItem
+import com.brit.swiftinstaller.library.installer.rom.RomHandler
+import com.brit.swiftinstaller.library.ui.InfoCard
+import com.brit.swiftinstaller.library.ui.MainCard
 import com.brit.swiftinstaller.library.ui.changelog.ChangelogHandler
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.enableAllOverlays
-import kotlinx.android.synthetic.main.card_compatibility_info.*
 import kotlinx.android.synthetic.main.card_install.*
-import kotlinx.android.synthetic.main.card_update.*
 import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.dialog_about.view.*
-import kotlinx.android.synthetic.main.dialog_help.view.*
 import kotlinx.android.synthetic.main.popup_menu.view.*
 import org.jetbrains.anko.doAsync
 
+
 class MainActivity : ThemeActivity() {
 
-    private var overlaysList = ArrayList<AppItem>()
+    private val handler = Handler()
+    private var updateCard: View? = null
+    private var extrasCard: View? = null
+    private var extrasCardShowing = false
+    private var updateCardShowing = false
+    private var extraApps: Set<String>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(main_toolbar)
+        extraApps = swift.extrasHandler.appExtras.keys
 
         ChangelogHandler.showChangelog(this, true)
 
-        update_checker_spinner.indeterminateDrawable.setColorFilter(getAccentColor(this), PorterDuff.Mode.SRC_ATOP)
+        update_checker_spinner.indeterminateDrawable.setColorFilter(swift.selection.accentColor,
+                PorterDuff.Mode.SRC_ATOP)
 
         doAsync {
             enableAllOverlays()
-            overlaysList = Utils.sortedOverlaysList(this@MainActivity)
-        }
-
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("not_closed", true)) {
-            card_compatibility.visibility = View.VISIBLE
-            card_compatibility_close.setOnClickListener {
-                PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("not_closed", false).apply()
-                card_compatibility.visibility = View.GONE
-            }
-        }
-
-        if (ShellUtils.isRootAvailable &&
-                PreferenceManager.getDefaultSharedPreferences(this).getBoolean("reboot_card", false)) {
-            card_reboot.visibility = View.VISIBLE
-            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("reboot_card", false).apply()
-            card_reboot.setOnClickListener {
-                card_reboot.visibility = View.GONE
-                val intent = Intent(this, RebootActivity::class.java)
-                startActivity(intent)
-            }
         }
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -106,26 +91,82 @@ class MainActivity : ThemeActivity() {
             }
         }
 
+        setupCards()
+
         card_install.setOnClickListener {
             val intent = Intent(this, OverlaysActivity::class.java)
-            val bundle = Bundle()
-            bundle.putParcelableArrayList("overlays_list", overlaysList)
-            intent.putExtras(bundle)
             startActivity(intent)
-        }
-
-        card_update.setOnClickListener {
-            val intent = Intent(this, OverlaysActivity::class.java)
-            intent.putExtra("tab", OverlaysActivity.UPDATE_TAB)
-            val bundle = Bundle()
-            bundle.putParcelableArrayList("overlays_list", overlaysList)
-            intent.putExtras(bundle)
-            startActivity(intent)
+            card_install.isEnabled = false
         }
 
         card_personalize.setOnClickListener {
             val intent = Intent(this, CustomizeActivity::class.java)
             startActivity(intent)
+            card_personalize.isEnabled = false
+        }
+
+        if (Utils.isSamsungOreo()) {
+            handler.post {
+                val bootTime = SystemClock.elapsedRealtime()
+                if (bootTime / 1000 / 60 < 4) {
+                    if (!prefs.getBoolean("delay_on_boot_dialog", false)) {
+                        prefs.edit().putBoolean("delay_on_boot_dialog", true).apply()
+                        alert {
+                            title = getString(R.string.reboot_delay_title)
+                            message = getString(R.string.reboot_delay_msg)
+                            positiveButton(R.string.got_it) { dialog ->
+                                dialog.dismiss()
+                            }
+                            show()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setupExtraCard() {
+        if (prefs.getBoolean("foundExtra", false)) {
+            extrasCard = MainCard(
+                    title = getString(R.string.overlay_extras_title),
+                    desc = getString(R.string.extras_card_desc),
+                    icon = getDrawable(R.drawable.ic_extras),
+                    onClick = {
+                        extrasCard?.isEnabled = false
+                        extrasCard?.findViewById<ImageView>(R.id.card_new_indicator)?.setVisible(false)
+                        prefs.edit().putBoolean("extras_indicator", false).apply()
+                        startActivity(Intent(this, ExtrasActivity::class.java))
+                    }
+            ).build(this, cards_list)
+            cards_list.addView(extrasCard)
+            extrasCardShowing = true
+        }
+    }
+
+    private fun setupCards() {
+        setupExtraCard()
+        if (prefs.getBoolean("not_closed", true)) {
+            cards_list.addView(InfoCard(
+                    desc = getString(R.string.info_card_compatibility_msg),
+                    icon = getDrawable(R.drawable.ic_close),
+                    btnClick = View.OnClickListener { view ->
+                        prefs.edit()
+                                .putBoolean("not_closed", false).apply()
+                        val parent = view.parent as View
+                        parent.visibility = View.GONE
+                    }
+            ).build(this), 0)
+        }
+        if (ShellUtils.isRootAccessAvailable && prefs.getBoolean("reboot_card", false)) {
+            cards_list.addView(InfoCard(
+                    desc = getString(R.string.info_card_reboot_msg),
+                    icon = getDrawable(R.drawable.ic_reboot),
+                    bgClick = View.OnClickListener {
+                        val intent = Intent(this, RebootActivity::class.java)
+                        startActivity(intent)
+                    }
+            ).build(this), 0)
+            prefs.edit().putBoolean("reboot_card", false).apply()
         }
     }
 
@@ -149,85 +190,164 @@ class MainActivity : ThemeActivity() {
     override fun onResume() {
         super.onResume()
 
-        card_install.isClickable = false
+        updateCard?.let {
+            it.findViewById<TextView>(R.id.card_tip_count)?.visibility = View.INVISIBLE
+            it.findViewById<ProgressBar?>(R.id.card_tip_spinner)?.visibility = View.VISIBLE
+        }
 
         UpdateChecker(this, object : UpdateChecker.Callback() {
-            override fun finished(installedCount: Int, updates: ArrayList<String>) {
-                active_count.text = String.format("%d", installedCount)
-                update_checker_spinner.visibility = View.GONE
-                card_install.isClickable = true
-                if (updates.isEmpty()) {
-                    card_update.visibility = View.GONE
-                } else {
-                    updates_count.text = String.format("%d", updates.size)
-                    card_update.visibility = View.VISIBLE
+            override fun updateFound() {
+                if (!updateCardShowing) {
+                    updateCard = MainCard(
+                            title = getString(R.string.big_tile_install_updates),
+                            desc = getString(R.string.big_tile_update_msg),
+                            icon = getDrawable(R.drawable.ic_updates),
+                            countTxt = getString(R.string.small_info_updates),
+                            count = "...",
+                            onClick = {
+                                startActivity(Intent(this@MainActivity, OverlaysActivity::class.java)
+                                        .putExtra("tab", OverlaysActivity.UPDATE_TAB))
+                                updateCard?.isEnabled = false
+                            }
+                    ).build(this@MainActivity, cards_list)
+                    cards_list.addView(updateCard, cards_list.indexOfChild(card_install))
+                    updateCardShowing = true
                 }
             }
+            override fun finished(installedCount: Int, hasOption: Boolean, updates: SynchronizedArrayList<String>) {
+                active_count.text = String.format("%d", installedCount)
 
+                if (updates.isEmpty()) {
+                    updateCard.let {
+                        cards_list.removeView(it)
+                    }
+                } else {
+                    updateCard?.let {
+                        it.findViewById<TextView>(R.id.card_tip_count)?.text = String.format("%d", updates.size)
+                        it.findViewById<ProgressBar?>(R.id.card_tip_spinner)?.visibility = View.INVISIBLE
+                        it.findViewById<TextView>(R.id.card_tip_count)?.visibility = View.VISIBLE
+                    }
+                }
+
+                if (!hasOption) {
+                    if (extrasCardShowing) {
+                        cards_list.removeView(extrasCard)
+                        extrasCardShowing = false
+                        prefs.edit().putBoolean("foundExtra", false).apply()
+                    }
+                } else if (!extrasCardShowing) {
+                    prefs.edit().putBoolean("foundExtra", true).apply()
+                    setupExtraCard()
+                }
+
+                extrasCard?.let {
+                    if (prefs.getBoolean("extras_indicator", false)) {
+                        it.findViewById<ImageView>(R.id.card_new_indicator)?.setVisible(true)
+                    } else {
+                        it.findViewById<ImageView>(R.id.card_new_indicator)?.setVisible(false)
+                    }
+                }
+                update_checker_spinner.visibility = View.GONE
+            }
         }).execute()
+
+        extrasCard?.isEnabled = true
+        updateCard?.isEnabled = true
+        card_install.isEnabled = true
+        card_personalize.isEnabled = true
     }
 
-    @SuppressLint("RtlHardcoded", "InflateParams")
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finishAffinity()
+    }
+
     fun overflowClick(view: View) {
         val popup = PopupWindow(this, null, 0, R.style.PopupWindow)
-        val popupView = LayoutInflater.from(this).inflate(R.layout.popup_menu, null)
+        val popupView = View.inflate(this, R.layout.popup_menu, null)
+        if (!getUseSoftReboot(this)) {
+            popupView.popup_menu_soft_reboot.text = getString(R.string.reboot)
+        }
         popup.animationStyle = R.style.PopupWindowAnimation
         popup.contentView = popupView
         popup.isFocusable = true
 
         val b = popupView.background as LayerDrawable
-        b.findDrawableByLayerId(R.id.background_popup).setTint(MaterialPalette.get(this).cardBackgroud)
+        b.findDrawableByLayerId(R.id.background_popup)
+                .setTint(MaterialPalette.get(this).cardBackground)
 
         popupView.popup_menu_about.setOnClickListener { _ ->
             popup.dismiss()
+            alert {
+                title = getString(R.string.swift_app_name)
 
-            val dialogView = View.inflate(this, R.layout.dialog_about, null)
-            val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-            builder.setView(dialogView)
-            themeDialog()
+                val pi = packageManager.getPackageInfo(packageName, 0)
+                val m = getString(R.string.installer_version, pi.versionName, pi.getVersionCode()) + "\n\n" +
+                        getString(R.string.installer_library_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE) + "\n\n" +
+                        getString(R.string.installer_source_link)
+                val l = getString(R.string.installer_source_link)
 
-            val dialog = builder.create()
+                message = Utils.createLinkedString(this@MainActivity, m, l)
 
-            dialogView.about_ok_btn.setOnClickListener {
-                dialog.dismiss()
+                positiveButton(R.string.ok) { dialog ->
+                    dialog.dismiss()
+                }
+                show()
             }
-
-            dialogView.installer_version.text = BuildConfig.VERSION_NAME
-            dialog.show()
         }
 
         popupView.popup_menu_help.setOnClickListener { _ ->
             popup.dismiss()
 
-            val dialogView = View.inflate(this, R.layout.dialog_help, null)
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
-                dialogView.magisk_link.visibility= View.GONE
-                dialogView.rescue_pie.visibility= View.GONE
-            }
-            val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-            builder.setView(dialogView)
-            themeDialog()
+            alert {
+                title = getString(R.string.help)
 
-            val dialog = builder.create()
+                val m = "${getString(R.string.help_msg)} \n\n" +
+                        "${getString(R.string.faq, getString(R.string.link_faq))} \n\n" +
+                        getString(R.string.telegram_support, getString(R.string.link_telegram)) +
+                        if (RomHandler.supportsMagisk) {
+                            "\n\n${getString(R.string.magisk_module,
+                                    getString(R.string.link_magisk))} \n\n"
+                        } else {
+                            ""
+                        } +
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                            "${getString(R.string.rescue_zip_pie,
+                                    getString(R.string.link_rescue_zip))} "
+                        } else {
+                            ""
+                        }
 
-            dialogView.help_ok_btn.setOnClickListener {
-                dialog.dismiss()
+                var mes = Utils.createLinkedString(ctx, m, getString(R.string.link_faq))
+                mes = Utils.createLinkedString(ctx, mes, getString(R.string.link_telegram))
+                if (RomHandler.supportsMagisk) {
+                    mes = Utils.createLinkedString(ctx, mes, getString(R.string.link_magisk))
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    mes = Utils.createLinkedString(ctx, mes, getString(R.string.link_rescue_zip))
+                }
+
+                message = mes
+
+                positiveButton(R.string.ok) { dialog ->
+                    dialog.dismiss()
+                }
+                show()
             }
-            dialog.show()
         }
         popupView.popup_menu_settings.setOnClickListener {
             popup.dismiss()
             startActivity(Intent(this, SettingsActivity::class.java))
         }
 
-        if (RomInfo.getRomInfo(this).useHotSwap()) {
+        if (ShellUtils.isRootAvailable && !swift.romHandler.magiskEnabled) {
             popupView.popup_menu_soft_reboot.setOnClickListener {
                 popup.dismiss()
-                if (getUseSoftReboot(this)) {
-                    quickRebootCommand()
-                } else {
-                    rebootCommand()
-                }
+                val intent = Intent(this, RebootActivity::class.java)
+                startActivity(intent)
+            }
+            if (getUseSoftReboot(this)) {
+                popupView.popup_menu_soft_reboot.text = getString(R.string.soft_reboot)
             }
         } else {
             popupView.popup_menu_soft_reboot.visibility = View.GONE
@@ -235,8 +355,9 @@ class MainActivity : ThemeActivity() {
 
         popupView.popup_menu_changelog.setOnClickListener {
             ChangelogHandler.showChangelog(this, false)
+            popup.dismiss()
         }
 
-        popup.showAtLocation(view, Gravity.TOP or Gravity.RIGHT, 0, 0)
+        popup.showAtLocation(view, Gravity.TOP or Gravity.END, 0, 0)
     }
 }

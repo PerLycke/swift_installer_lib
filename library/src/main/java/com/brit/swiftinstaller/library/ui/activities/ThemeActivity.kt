@@ -21,43 +21,45 @@
 
 package com.brit.swiftinstaller.library.ui.activities
 
-import android.annotation.SuppressLint
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.StateListDrawable
 import android.os.Bundle
-import android.preference.PreferenceManager
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.library.utils.*
+import com.brit.swiftinstaller.library.utils.IdLists
+import com.brit.swiftinstaller.library.utils.KEY_BACKGROUND_PALETTE
+import com.brit.swiftinstaller.library.utils.MaterialPalette
+import com.brit.swiftinstaller.library.utils.prefs
+import com.brit.swiftinstaller.library.utils.swift
+import com.brit.swiftinstaller.library.utils.useBackgroundPalette
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-@SuppressLint("Registered")
 open class ThemeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener { _, key ->
-            if (key == KEY_ACCENT_COLOR || key == KEY_BACKGROUND_COLOR || key == KEY_BACKGROUND_PALETTE) {
-                updateColors(getBackgroundColor(this), useBackgroundPalette(this))
-            }
-        }
+        prefs.registerOnSharedPreferenceChangeListener { _, key ->
+                    if (key == "customize_options" || key == KEY_BACKGROUND_PALETTE) {
+                        updateColors(swift.selection.backgroundColor, useBackgroundPalette(this))
+                    }
+                }
     }
 
     override fun onResume() {
         super.onResume()
-        updateColors(getBackgroundColor(this), useBackgroundPalette(this))
+        updateColors(swift.selection.backgroundColor, useBackgroundPalette(this))
     }
 
     fun themeDialog() {
         val dialogBg = getDrawable(R.drawable.dialog_bg) as LayerDrawable
-        dialogBg.findDrawableByLayerId(R.id.dialog_bg).setTint(getBackgroundColor(this))
+        dialogBg.findDrawableByLayerId(R.id.dialog_bg).setTint(swift.selection.backgroundColor)
     }
 
     fun updateColors(backgroundColor: Int, usePalette: Boolean) {
@@ -71,20 +73,21 @@ open class ThemeActivity : AppCompatActivity() {
             }
         }
         if (findViewById<FloatingActionButton>(R.id.fab) != null) {
-            findViewById<FloatingActionButton>(R.id.fab).background.setTint(getAccentColor(this))
+            findViewById<FloatingActionButton>(R.id.fab).background.setTint(
+                    swift.selection.accentColor)
         }
         for (id in IdLists.cardIds) {
             val v = findViewById<View>(id)
             if (v != null) {
                 if (v.background != null) {
-                    v.background.setTint(palette.cardBackgroud)
+                    v.background.setTint(palette.cardBackground)
                 } else if (v is ImageView && v.drawable != null) {
                     if (v.drawable is StateListDrawable) {
                         val draw = v.drawable as StateListDrawable
-                        draw.current.setTint(palette.cardBackgroud)
+                        draw.current.setTint(palette.cardBackground)
                     } else if (v.drawable is LayerDrawable) {
                         val draw = v.drawable as LayerDrawable
-                        draw.findDrawableByLayerId(R.id.background).setTint(palette.cardBackgroud)
+                        draw.findDrawableByLayerId(R.id.background).setTint(palette.cardBackground)
                     }
                 }
             }

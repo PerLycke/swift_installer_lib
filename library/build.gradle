@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 26
         targetSdkVersion 28
-        versionCode 9
-        versionName "1.8"
+        versionCode 18
+        versionName "2.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         resValue("string", "lib_version", "${versionName}")
@@ -30,13 +30,16 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
+    androidExtensions {
+        experimental = true
+    }
 }
 
 Properties props = new Properties()
 def propFile = new File('signing.properties')
 if (propFile.canRead()) {
     props.load(new FileInputStream(propFile))
-    if (props!=null && props.containsKey('STORE_FILE') && props.containsKey('STORE_PASSWORD') &&
+    if (props != null && props.containsKey('STORE_FILE') && props.containsKey('STORE_PASSWORD') &&
             props.containsKey('KEY_ALIAS') && props.containsKey('KEY_PASSWORD')) {
         android.signingConfigs.release.storeFile = file(props['STORE_FILE'])
         android.signingConfigs.release.storePassword = props['STORE_PASSWORD']
@@ -54,22 +57,22 @@ if (propFile.canRead()) {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.0.0-rc02'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0-rc02'
-    implementation 'com.google.android.material:material:1.0.0-rc02'
-    implementation 'androidx.preference:preference:1.0.0-rc02'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.preference:preference:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
-    implementation 'com.android.tools.build:apksig:3.1.4'
+    androidTestImplementation 'androidx.test:runner:1.1.0-beta01'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-beta01'
+    implementation 'com.android.tools.build:apksig:3.2.0'
     implementation 'org.bouncycastle:bcprov-jdk16:1.45'
     implementation 'commons-io:commons-io:2.5'
     implementation project(':tutorial-view')
     implementation "org.jetbrains.anko:anko-commons:0.10.4"
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'com.github.topjohnwu:libsu:2.0.2'
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.2.70"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.2.71"
     implementation 'com.github.MFlisar:changelog:1.0.4'
-    implementation 'androidx.browser:browser:1.0.0-rc02'
+    implementation 'androidx.browser:browser:1.0.0'
 }

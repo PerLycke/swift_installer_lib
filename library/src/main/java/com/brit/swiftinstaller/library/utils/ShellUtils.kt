@@ -19,28 +19,33 @@
  *
  */
 
-@file:Suppress("unused")
 
 package com.brit.swiftinstaller.library.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Handler
+import android.os.Looper
+import android.os.MessageQueue
 import android.system.Os
 import android.util.Log
 import com.android.apksig.ApkSigner
 import com.topjohnwu.superuser.Shell
 import com.topjohnwu.superuser.io.SuFile
-import java.io.*
+import org.jetbrains.anko.toast
+import java.io.File
+import java.io.IOException
+import java.io.InputStream
 import java.lang.reflect.InvocationTargetException
 import java.security.KeyStore
 import java.security.PrivateKey
 import java.security.cert.X509Certificate
 import java.util.*
 
-@Suppress("unused", "MemberVisibilityCanBePrivate")
 object ShellUtils {
 
     private val TAG = ShellUtils::class.java.simpleName
@@ -51,38 +56,23 @@ object ShellUtils {
         }
     val isRootAccessAvailable: Boolean
         get() {
-            var os: DataOutputStream? = null
             var process: Process? = null
-            try {
-                process = Runtime.getRuntime().exec("sh")
-                os = DataOutputStream(process!!.outputStream)
-                os.writeBytes("su\n")
-                os.flush()
-                os.writeBytes("exit\n")
-                os.writeBytes("exit\n")
-                os.flush()
+            return try {
+                process = Runtime.getRuntime().exec("su -c id")
                 process.waitFor()
                 val exit = process.exitValue()
-                return exit == 0
+                (exit == 0 && inputStreamToString(process.inputStream).contains("uid=0"))
             } catch (e: IOException) {
-                //e.printStackTrace()
-                return false
+                false
             } catch (e: InterruptedException) {
-                //e.printStackTrace()
-                return false
+                false
             } finally {
                 try {
-                    os?.close()
                     process?.destroy()
                 } catch (ignored: IOException) {
                 }
             }
         }
-
-    fun listFiles(path: String): List<String> {
-        val f = SuFile(path)
-        return f.list().toList()
-    }
 
     fun inputStreamToString(`is`: InputStream?): String {
         val s = java.util.Scanner(`is`!!).useDelimiter("\\A")
@@ -102,10 +92,10 @@ object ShellUtils {
     }
 
     fun compileOverlay(context: Context, themePackage: String, res: String?, manifest: String,
-                       overlayPath: String, assetPath: String?, targetInfo: ApplicationInfo?): CommandOutput {
+                       overlayPath: String, assetPath: String?,
+                       targetInfo: ApplicationInfo?): CommandOutput {
         val overlay = File(overlayPath)
-        @Suppress("LocalVariableName")
-        val unsigned_unaligned = File(overlay.parent, "unsigned_unaligned" + overlay.name)
+        val unsignedUnaligned = File(overlay.parent, "unsigned_unaligned" + overlay.name)
         val unsigned = File(overlay.parent, "unsigned_${overlay.name}")
         val overlayFolder = File(context.cacheDir.toString() + "/" + themePackage + "/overlays")
         if (!overlayFolder.exists()) {
@@ -114,8 +104,9 @@ object ShellUtils {
             }
         }
 
-        if (fileExists(unsigned_unaligned.absolutePath) && !deleteFileShell(unsigned_unaligned.absolutePath)) {
-            Log.e(TAG, "Unable to delete " + unsigned_unaligned.absolutePath)
+        if (fileExists(unsignedUnaligned.absolutePath) && !deleteFileShell(
+                        unsignedUnaligned.absolutePath)) {
+            Log.e(TAG, "Unable to delete " + unsignedUnaligned.absolutePath)
         }
         if (fileExists(unsigned.absolutePath) && !deleteFileShell(unsigned.absolutePath)) {
             Log.e(TAG, "Unable to delete " + unsigned.absolutePath)
@@ -138,15 +129,15 @@ object ShellUtils {
         if (targetInfo != null && targetInfo.packageName != "android") {
             cmd.append(" -I ").append(targetInfo.sourceDir)
         }
-        cmd.append(" -F ").append(unsigned_unaligned.absolutePath)
+        cmd.append(" -F ").append(unsignedUnaligned.absolutePath)
         var result = Shell.sh(cmd.toString()).exec()
 
         // Zipalign
-        if (unsigned_unaligned.exists()) {
+        if (unsignedUnaligned.exists()) {
             val zipalign = StringBuilder()
             zipalign.append(getZipalign(context))
             zipalign.append(" 4")
-            zipalign.append(" ${unsigned_unaligned.absolutePath}")
+            zipalign.append(" ${unsignedUnaligned.absolutePath}")
             zipalign.append(" ${unsigned.absolutePath}")
             result = Shell.sh(zipalign.toString()).exec()
         }
@@ -260,15 +251,10 @@ fun deleteFileRoot(path: String): Boolean {
     return output.exitCode == 0
 }
 
-fun fileExistsRoot(path: String) : Boolean {
-    val output = runCommand("test -f $path", true)
-    return output.exitCode == 0
-}
-
 @SuppressLint("PrivateApi")
 fun getProperty(name: String): String? {
     try {
-        @SuppressLint("PrivateApi") val clazz = Class.forName("android.os.SystemProperties")
+        val clazz = Class.forName("android.os.SystemProperties")
         val m = clazz.getDeclaredMethod("get", String::class.java)
         return m.invoke(null, name) as String
     } catch (e: ClassNotFoundException) {
@@ -288,10 +274,14 @@ fun getProperty(name: String): String? {
 
 fun getProperty(name: String, def: String): String {
     val value = getProperty(name)
-    return if (value.isNullOrEmpty()) { def } else { value!! }
+    return if (value.isNullOrEmpty()) {
+        def
+    } else {
+        value!!
+    }
 }
 
-private fun resultToOutput(result: Shell.Result) : CommandOutput {
+private fun resultToOutput(result: Shell.Result): CommandOutput {
     var out = ""
     for (r in result.out) {
         out += "${r.trim()}\n"
@@ -304,7 +294,11 @@ private fun resultToOutput(result: Shell.Result) : CommandOutput {
 }
 
 fun rebootCommand() {
-    runCommand("reboot", true)
+    runCommand("am broadcast android.intent.action.ACTION_SHUTDOWN", true)
+
+    Handler().postDelayed({
+        runCommand("reboot", true)
+    }, 1500)
 }
 
 fun quickRebootCommand() {
@@ -315,8 +309,24 @@ fun quickRebootCommand() {
     }, 1500)
 }
 
-fun restartSysUi() {
-    Handler().postDelayed({
-        runCommand("killall com.android.systemui", true)
-    }, 750)
+fun restartSysUi(context: Context) {
+    val handler = MessageQueue.IdleHandler {
+        context.toast("SystemUI restarting & loading colors")
+        Handler().postDelayed({
+            val intent = Intent(Intent.ACTION_MAIN)
+            intent.addCategory(Intent.CATEGORY_HOME)
+            val launcherPackage = context.pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY).activityInfo.packageName
+            runCommand("pkill com.android.systemui")
+            if (launcherPackage.isNotEmpty()) {
+                runCommand("pkill $launcherPackage")
+            }
+        }, 2000)
+        false
+    }
+    Looper.myQueue().addIdleHandler(handler)
+}
+
+fun disableOverlayCommand(packageName: String) : Boolean {
+    runCommand("cmd overlay disable $packageName", true)
+    return true
 }

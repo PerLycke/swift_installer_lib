@@ -26,24 +26,23 @@ import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AlertDialog
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
-import com.brit.swiftinstaller.library.utils.ShellUtils
-import com.brit.swiftinstaller.library.utils.getUseSoftReboot
-import com.brit.swiftinstaller.library.utils.quickRebootCommand
-import com.brit.swiftinstaller.library.utils.rebootCommand
+import com.brit.swiftinstaller.library.ui.applist.AppList
+import com.brit.swiftinstaller.library.utils.*
 
 class UninstallFinishedActivity : ThemeActivity() {
 
     private lateinit var dialog: AlertDialog
-    private val mHandler = Handler()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        InstallActivity().finish()
+
+        if (Utils.isSamsungOreo()) {
+            AppList.updateList(this)
+        }
 
         val builder = AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-        .setTitle(R.string.reboot)
-        .setMessage(R.string.reboot_manually)
+                .setTitle(R.string.reboot)
+                .setMessage(R.string.reboot_manually)
         if (!ShellUtils.isRootAvailable) {
             builder.setPositiveButton(R.string.reboot_later) { dialogInterface, _ ->
                 dialogInterface.dismiss()
@@ -54,12 +53,10 @@ class UninstallFinishedActivity : ThemeActivity() {
                 val dialog = Dialog(this, R.style.AppTheme_Translucent)
                 dialog.setContentView(R.layout.reboot)
                 dialog.show()
-                mHandler.post {
-                    if (!RomInfo.getRomInfo(this).magiskEnabled() && getUseSoftReboot(this)) {
-                        quickRebootCommand()
-                    } else {
-                        rebootCommand()
-                    }
+                if (!swift.romHandler.magiskEnabled && getUseSoftReboot(this)) {
+                    quickRebootCommand()
+                } else {
+                    rebootCommand()
                 }
             }
             builder.setNegativeButton("Reboot Later") { _, _ ->
@@ -70,13 +67,19 @@ class UninstallFinishedActivity : ThemeActivity() {
         dialog = builder.create()
         dialog.setCancelable(false)
         dialog.setCanceledOnTouchOutside(false)
-        themeDialog()
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
+            themeDialog()
             dialog.show()
+            dialog.getButton(
+                    android.app.AlertDialog.BUTTON_POSITIVE)
+                    .setTextColor(swift.selection.accentColor)
+            dialog.getButton(
+                    android.app.AlertDialog.BUTTON_NEGATIVE)
+                    .setTextColor(swift.selection.accentColor)
         }
     }
 

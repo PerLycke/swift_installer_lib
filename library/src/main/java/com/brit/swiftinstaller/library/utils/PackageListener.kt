@@ -28,10 +28,10 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.activities.OverlaysActivity
+import com.brit.swiftinstaller.library.ui.applist.AppList
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
 import org.jetbrains.anko.doAsync
 
@@ -43,22 +43,24 @@ class PackageListener : BroadcastReceiver() {
         val packageName = intent.data?.schemeSpecificPart ?: ""
         when (intent.action) {
             Intent.ACTION_PACKAGE_FULLY_REMOVED -> {
-                if (RomInfo.getRomInfo(context).isOverlayInstalled(getOverlayPackageName(packageName))) {
-                    RomInfo.getRomInfo(context).uninstallOverlay(context, packageName)
+                if (context.swift.romHandler.isOverlayInstalled(getOverlayPackageName(packageName))) {
+                    context.swift.romHandler.uninstallOverlay(context, packageName)
                 }
+                AppList.updateApp(context, OverlayUtils.getTargetPackage(packageName))
             }
 
             Intent.ACTION_PACKAGE_ADDED -> {
                 val replacing = intent.getBooleanExtra(Intent.EXTRA_REPLACING, false)
                 if (replacing) {
-                    if (RomInfo.getRomInfo(context).isOverlayInstalled(packageName)) {
-                        RomInfo.getRomInfo(context).disableOverlay(packageName)
+                    if (context.swift.romHandler.isOverlayInstalled(packageName)) {
+                        context.swift.romHandler.disableOverlay(packageName)
                         doAsync {
                             UpdateChecker(context, null).execute()
                         }
                     }
                 }
-                if (!replacing && OverlayUtils.hasOverlay(context, packageName) && newAppNotificationEnabled(context)) {
+                if (!replacing && OverlayUtils.hasOverlay(context,
+                                packageName) && newAppNotificationEnabled(context)) {
                     val notificationID = 102
                     val rebootIntent = Intent(context, OverlaysActivity::class.java)
                     val pendingIntent = PendingIntent.getActivity(
@@ -73,15 +75,18 @@ class PackageListener : BroadcastReceiver() {
                             channelID)
                             .setContentTitle(context.getString(R.string.notif_new_app_title))
                             .setContentText(context.getString(R.string.notif_new_app_summary,
-                                    context.packageManager.getApplicationInfo(packageName, 0).loadLabel(context.packageManager)))
+                                    context.packageManager.getApplicationInfo(packageName,
+                                            0).loadLabel(context.packageManager)))
                             .setSmallIcon(R.drawable.notif)
                             .setChannelId(channelID)
                             .setContentIntent(pendingIntent)
                             .setAutoCancel(true)
                             .build()
-                    val notifManager = context.applicationContext.getSystemService(NotificationManager::class.java)
+                    val notifManager = context.applicationContext.getSystemService(
+                            NotificationManager::class.java)
                     notifManager.notify(notificationID, notification)
                 }
+                AppList.updateApp(context, OverlayUtils.getTargetPackage(packageName))
             }
         }
         if (BuildConfig.DEBUG) {

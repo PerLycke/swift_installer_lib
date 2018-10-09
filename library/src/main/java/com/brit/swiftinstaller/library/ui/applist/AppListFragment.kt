@@ -21,92 +21,105 @@
 
 package com.brit.swiftinstaller.library.ui.applist
 
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
-import android.os.Handler
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.CompoundButton
+import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.ArrayMap
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.ui.activities.InstallActivity
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.checkVersionCompatible
-import com.brit.swiftinstaller.library.utils.OverlayUtils.overlayHasVersion
+import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.activity_app_list.*
+import kotlinx.android.synthetic.main.app_item.*
 import kotlinx.android.synthetic.main.app_option_item.view.*
-import kotlinx.android.synthetic.main.failed_info_card.view.*
 
 class AppListFragment : Fragment() {
 
-    var mApps: ArrayList<AppItem> = ArrayList()
-    var mVisible: ArrayList<Int> = ArrayList()
+    var apps: SynchronizedArrayList<AppItem> = SynchronizedArrayList()
+    var visible: SynchronizedArrayList<Int> = SynchronizedArrayList()
 
-    var requiredApps: Array<String> = emptyArray()
+    private var requiredApps: Array<String> = emptyArray()
 
-    private val mChecked = SparseBooleanArray()
+    lateinit var appExtrasHandler: AppExtrasHandler
+
+    private val checked = SparseBooleanArray()
 
     var alertIconClickListener: AlertIconClickListener? = null
     var appCheckBoxClickListener: AppCheckBoxClickListener? = null
     var viewClickListener: ViewClickListener? = null
 
-    private var mSummary = false
-    private var mFailedTab = false
+    private var summary = false
+    private var extras = false
+    private var failedTab = false
 
     companion object {
-        fun instance(summary: Boolean, failedTab: Boolean): AppListFragment {
+        fun instance(summary: Boolean, extras: Boolean, failedTab: Boolean): AppListFragment {
             val fragment = AppListFragment()
             val args = Bundle()
             args.putBoolean("summary", summary)
+            args.putBoolean("extras", extras)
             args.putBoolean("failed_tab", failedTab)
             fragment.arguments = args
             return fragment
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        appExtrasHandler = context!!.swift.extrasHandler
         val view = inflater.inflate(R.layout.activity_app_list, container, false)
         if (arguments != null) {
-            mSummary = arguments!!.getBoolean("summary", false)
-            mFailedTab = arguments!!.getBoolean("failed_tab", false)
-        }
-        if (mSummary && mFailedTab && !getHideFailedInfoCard(context!!)) {
-            view.failed_info_card.visibility = View.VISIBLE
-        } else {
-            view.failed_info_card.visibility = View.GONE
+            summary = arguments!!.getBoolean("summary", false)
+            extras = arguments!!.getBoolean("extras", false)
+            failedTab = arguments!!.getBoolean("failed_tab", false)
         }
         selectAll(false)
-        view.failed_info_card.failed_info_card_close.setOnClickListener {
-            view.failed_info_card.visibility = View.GONE
-            setHideFailedInfoCard(context!!, true)
-        }
         return view
     }
 
+    fun addCard(card: View) {
+        view?.findViewById<LinearLayout>(R.id.app_list_root)?.addView(card, 0)
+    }
+
     fun querySearch(query: String) {
-        mVisible.clear()
+        visible.clear()
         if (query.isEmpty() || query.isBlank()) {
-            mApps.forEach { mVisible.add(mApps.indexOf(it)) }
+            apps.forEach { visible.add(apps.indexOf(it)) }
         } else {
-            mApps.forEach {
+            apps.forEach {
                 if (it.title.toLowerCase().contains(query.toLowerCase())) {
-                    mVisible.add(mApps.indexOf(it))
+                    visible.add(apps.indexOf(it))
                 }
             }
         }
         if (app_list_view != null && !app_list_view.isComputingLayout) {
             app_list_view.adapter?.notifyDataSetChanged()
+        }
+    }
+
+    inner class CachingLayoutManager: LinearLayoutManager(context) {
+        override fun supportsPredictiveItemAnimations(): Boolean {
+            return false
+        }
+
+        override fun getExtraLayoutSpace(state: RecyclerView.State?): Int {
+            return 400
         }
     }
 
@@ -114,37 +127,57 @@ class AppListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         app_list_view.adapter = AppAdapter()
-        app_list_view.layoutManager = LinearLayoutManager(activity)
+        app_list_view.layoutManager = CachingLayoutManager().apply {
+            isItemPrefetchEnabled = true
+        }
+        app_list_view.setHasFixedSize(true)
+        app_list_view.setItemViewCacheSize(apps.size)
+        app_list_view.isNestedScrollingEnabled = false
     }
 
-    fun getCheckedItems(): ArrayList<AppItem> {
-        val apps = ArrayList<AppItem>()
-        for (i in mApps.indices) {
-            if (mChecked.get(i) || requiredApps.contains(mApps[i].packageName)) {
-                apps.add(mApps[i])
+    fun getCheckedItems(): SynchronizedArrayList<AppItem> {
+        val checkedApps = SynchronizedArrayList<AppItem>()
+        for (i in apps.indices) {
+            if (checked.get(i) || requiredApps.contains(apps[i].packageName)) {
+                checkedApps.add(apps[i])
             }
         }
-        return apps
+        return checkedApps
     }
 
-    fun selectAll(checked: Boolean) {
-        for (index in mApps.indices) {
+    fun clearCheckedITems() {
+        checked.clear()
+    }
+
+    fun addApp(app: AppItem) {
+        apps.add(app)
+        visible.clear()
+        visible.addAll(apps.indices)
+        app_list_view?.let {
+            if (!it.isComputingLayout) {
+                it.adapter?.notifyDataSetChanged()
+            }
+        }
+    }
+
+    fun selectAll(check: Boolean) {
+        for (index in apps.indices) {
             if (context != null) {
-                if (checkVersionCompatible(context!!, mApps[index].packageName) ||
-                        RomInfo.getRomInfo(context!!).isOverlayInstalled(mApps[index].packageName)) {
-                    mChecked.put(index, checked)
+                if (checkVersionCompatible(context!!, apps[index].packageName) ||
+                        context!!.swift.romHandler.isOverlayInstalled(apps[index].packageName)) {
+                    checked.put(index, check)
                 }
             } else {
-                mChecked.put(index, checked)
+                checked.put(index, check)
             }
         }
     }
 
-    fun setAppList(apps: ArrayList<AppItem>?) {
-        mApps.clear()
-        mVisible.clear()
-        mApps.addAll(apps!!)
-        mVisible.addAll(mApps.indices)
+    fun setAppList(newApps: SynchronizedArrayList<AppItem>) {
+        apps.clear()
+        visible.clear()
+        apps.addAll(newApps)
+        visible.addAll(apps.indices)
         if (app_list_view != null && !app_list_view.isComputingLayout) {
             app_list_view.adapter?.notifyDataSetChanged()
         }
@@ -152,6 +185,12 @@ class AppListFragment : Fragment() {
 
     fun setRequiredAppList(apps: Array<String>) {
         requiredApps = apps
+    }
+    
+    fun notifyDataSetChanged() {
+        if (app_list_view != null && !app_list_view.isComputingLayout) {
+            app_list_view.adapter?.notifyDataSetChanged()
+        }
     }
 
     inner class AppAdapter : RecyclerView.Adapter<AppAdapter.ViewHolder>() {
@@ -162,175 +201,188 @@ class AppListFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.bindAppItem(mApps[mVisible[position]])
+            if (apps.isNotEmpty()) {
+                holder.bindAppItem(apps[visible[position]])
+            }
 
             if (position + 1 == itemCount) {
-                setBottomMargin(holder.itemView, (64 * Resources.getSystem().displayMetrics.density).toInt())
+                setBottomMargin(holder.itemView,
+                        (64 * Resources.getSystem().displayMetrics.density).toInt())
             } else {
                 setBottomMargin(holder.itemView, 0)
             }
         }
 
+        override fun getItemViewType(position: Int): Int {
+            return 0
+        }
+
         private fun setBottomMargin(view: View, bottomMargin: Int) {
             if (view.layoutParams is ViewGroup.MarginLayoutParams) {
                 val params = view.layoutParams as ViewGroup.MarginLayoutParams
-                params.setMargins(params.leftMargin, params.topMargin, params.rightMargin, bottomMargin)
+                params.setMargins(params.leftMargin, params.topMargin, params.rightMargin,
+                        bottomMargin)
                 view.requestLayout()
             }
         }
 
         override fun getItemCount(): Int {
-            return mVisible.size
+            return visible.size
         }
 
-        inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-            private var appName: TextView = view.findViewById(R.id.app_item_name)
-            private var packageName: TextView = view.findViewById(R.id.app_name)
-            private var appIcon: ImageView = view.findViewById(R.id.app_item_image)
-            private var appCheckBox: CheckBox = view.findViewById(R.id.app_item_checkbox)
-            private var alertIcon: ImageView = view.findViewById(R.id.alert_icon)
-            private var downloadIcon: ImageView = view.findViewById(R.id.download_icon)
-            private var optionsIcon: ImageView = view.findViewById(R.id.options_icon)
-            private var required: TextView = view.findViewById(R.id.required)
-            private var blockedPackagesAlert: ImageView = view.findViewById(R.id.blocked_packages_alert)
+        inner class ViewHolder(override val containerView: View) :
+                RecyclerView.ViewHolder(containerView), LayoutContainer {
 
             private val checkListener: (CompoundButton, Boolean) -> Unit
-            private val clickListener: (View) -> Unit
+            private val clickListener: (View) -> Unit = {
+                viewClickListener!!.onClick(apps[visible[adapterPosition]])
+                app_item_checkbox.toggle()
+            }
 
             init {
-                clickListener = {
-                    viewClickListener!!.onClick(mApps[mVisible[adapterPosition]])
-                    appCheckBox.toggle()
+                checkListener = { _, check ->
+                    checked.put(visible[adapterPosition], check)
                 }
-                checkListener = { _: CompoundButton, checked: Boolean ->
-                    mChecked.put(mVisible[adapterPosition], checked)
+                containerView.setOnClickListener(clickListener)
+                app_item_checkbox.setOnClickListener {
+                    appCheckBoxClickListener!!.onCheckBoxClick(apps[visible[adapterPosition]])
+                }
+                app_item_checkbox.setOnCheckedChangeListener(checkListener)
+                alert_icon.setOnClickListener {
+                    alertIconClickListener!!.onAlertIconClick(apps[visible[adapterPosition]])
                 }
             }
 
             fun bindAppItem(item: AppItem) {
-                val incompatible = !checkVersionCompatible(context!!, item.packageName)
-                val installed = RomInfo.getRomInfo(context!!).isOverlayInstalled(item.packageName)
-                val hasVersions = overlayHasVersion(context!!, item.packageName)
-                val hasUpdate = getAppsToUpdate(context!!).contains(item.packageName)
-                val isRequired = requiredApps.contains(item.packageName)
-                appName.text = item.title
-                appName.setTextColor(context!!.getColor(android.R.color.white))
-                appName.alpha = 1.0f
-                appIcon.setImageDrawable(item.icon)
-                packageName.text = item.packageName
-                view.setOnClickListener(clickListener)
-                appCheckBox.visibility = View.VISIBLE
-                appCheckBox.setOnCheckedChangeListener(checkListener)
-                appCheckBox.setOnClickListener {
-                    appCheckBoxClickListener!!.onCheckBoxClick(mApps[mVisible[adapterPosition]])
-                }
-                appCheckBox.isChecked = mChecked.get(mVisible[adapterPosition], false)
-                appCheckBox.alpha = 1.0f
-                alertIcon.visibility = View.GONE
-                alertIcon.setImageDrawable(context!!.getDrawable(R.drawable.ic_info))
+                app_item_name.text = item.title
+                app_item_name.setTextColor(context!!.getColor(android.R.color.white))
+                app_item_name.alpha = 1.0f
+                app_item_image.setImageDrawable(item.icon)
+                app_name.text = item.packageName
+                app_item_checkbox.visibility = View.VISIBLE
+                app_item_checkbox.isChecked = checked.get(visible[adapterPosition], false)
+                app_item_checkbox.alpha = 1.0f
+                alert_icon.setImageDrawable(context!!.getDrawable(R.drawable.ic_info))
+                alert_icon.setVisible(item.hasVersions)
                 required.visibility = View.GONE
-                downloadIcon.visibility = View.GONE
-                blockedPackagesAlert.visibility = View.GONE
+                download_icon.visibility = View.GONE
+                blocked_packages_alert.visibility = View.GONE
+                options_icon.setVisible(false)
 
-                val appOptions = OverlayUtils.getOverlayOptions(context!!, item.packageName)
-                if (appOptions.isNotEmpty() && !mSummary) {
-                    val optionsSelection = ArrayList<String>()
-                    val selected = getSelectedOverlayOptions(context!!, item.packageName)
-                    for (i in appOptions.keys.indices) {
-                        if (selected.containsKey(appOptions.keyAt(i))) {
+                item.appOptions?.let { appOptions ->
+                    if (appOptions.isNotEmpty() && !summary) {
+                        val optionsSelection = SynchronizedArrayList<String>()
+                        val selected = getSelectedOverlayOptions(context!!, item.packageName)
+                        for (i in appOptions.keys.indices) {
                             optionsSelection.add(i, selected[appOptions.keyAt(i)] ?: "")
                         }
-                    }
-                    optionsIcon.visibility = View.VISIBLE
-                    optionsIcon.setColorFilter(getAccentColor(context!!))
+                        options_icon.visibility = View.VISIBLE
+                        options_icon.setColorFilter(
+                                activity!!.swift.romHandler.getCustomizeHandler().getSelection().accentColor)
 
-                    optionsIcon.setOnClickListener {
-                        val builder = AlertDialog.Builder(context!!, R.style.AppTheme_AlertDialog)
-                        val dialogBg = context!!.getDrawable(R.drawable.dialog_bg) as LayerDrawable
-                        dialogBg.findDrawableByLayerId(R.id.dialog_bg).setTint(getBackgroundColor(context!!))
-                        builder.setTitle(item.title)
-                        builder.setIcon(item.icon)
-                        builder.setAdapter(OptionsAdapter(context!!, appOptions, optionsSelection)) { _, _ ->
-                        }
-                        builder.setPositiveButton("Apply") { _, _ ->
-                            for (pos in appOptions.keys.indices) {
-                                val value = optionsSelection.elementAtOrNull(pos)
-                                if (value != null) {
-                                    setOverlayOption(context!!, item.packageName,
-                                            appOptions.keyAt(pos), value)
+                        options_icon.setOnClickListener {
+                            context!!.alert {
+                                title = item.title
+                                icon = item.icon
+                                adapter(OptionsAdapter(ctx, appOptions, optionsSelection)) { _, _ ->
                                 }
-                            }
-                            if (installed) {
-                                val intent = Intent(context!!, InstallActivity::class.java)
-                                val apps = ArrayList<String>()
-                                apps.add(item.packageName)
-                                intent.putStringArrayListExtra("apps", apps)
-                                startActivity(intent)
+                                positiveButton("Apply") { dialog ->
+                                    for (pos in appOptions.keys.indices) {
+                                        val value = optionsSelection.elementAtOrNull(pos)
+                                        if (value != null) {
+                                            setOverlayOption(context!!, item.packageName,
+                                                    appOptions.keyAt(pos), value)
+                                        }
+                                    }
+                                    if (item.installed) {
+                                        val intent = Intent(context!!, InstallActivity::class.java)
+                                        val apps = SynchronizedArrayList<String>()
+                                        apps.add(item.packageName)
+                                        intent.putStringArrayListExtra("apps", apps)
+                                        startActivity(intent)
+                                    }
+                                    dialog.dismiss()
+                                }
+                                negativeButton(R.string.cancel) { dialog ->
+                                    dialog.dismiss()
+                                }
+                                show()
                             }
                         }
-                        builder.setNegativeButton(R.string.cancel) { dialogInterface, _ ->
-                            dialogInterface.dismiss()
-                        }
-                        val dialog = builder.create()
-                        dialog.show()
-                        dialog.window?.setBackgroundDrawable(dialogBg)
-                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getAccentColor(context!!))
-                        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getAccentColor(context!!))
                     }
-                } else {
-                    optionsIcon.visibility = View.GONE
+                    if (extras) {
+                        app_item_checkbox.isClickable = false
+                        app_item_checkbox.setVisible(false)
+                        app_name.setVisible(false)
+                        alert_icon.setVisible(false)
+                        containerView.isClickable = false
+                    }
                 }
 
-                if (mSummary) {
-                    appCheckBox.visibility = View.GONE
-                    appCheckBox.isEnabled = false
-                    view.isClickable = false
-                    if (mFailedTab) {
-                        alertIcon.visibility = View.VISIBLE
-                        alertIcon.setImageDrawable(context!!.getDrawable(R.drawable.ic_alert))
+                if (summary) {
+                    app_item_checkbox.visibility = View.GONE
+                    app_item_checkbox.isEnabled = false
+                    containerView.isClickable = false
+                    if (failedTab) {
+                        alert_icon.visibility = View.VISIBLE
+                        alert_icon.setImageDrawable(context!!.getDrawable(R.drawable.ic_alert))
                     }
                 } else {
-                    if (isRequired) {
-                        appCheckBox.isChecked = true
-                        appCheckBox.isClickable = false
-                        appCheckBox.alpha = 0.3f
+                    if (item.isRequired && !item.installed) {
+                        app_item_checkbox.isChecked = true
+                        app_item_checkbox.isClickable = false
+                        app_item_checkbox.alpha = 0.3f
                         required.visibility = View.VISIBLE
                         required.text = getString(R.string.required)
-                        appName.setTextColor(Color.parseColor("#4dffffff"))
-                        view.isClickable = false
+                        app_item_name.setTextColor(Color.parseColor("#4dffffff"))
+                        containerView.isClickable = false
                     }
-                    if (incompatible) {
-                        appName.alpha = 0.3f
-                        alertIcon.setImageDrawable(context!!.getDrawable(R.drawable.ic_alert))
+                    if (item.incompatible) {
+                        app_item_name.alpha = 0.3f
+                        alert_icon.setImageDrawable(context!!.getDrawable(R.drawable.ic_alert))
                         required.visibility = View.VISIBLE
                         required.text = getString(R.string.unsupported)
-                        if (!installed) {
-                            appCheckBox.visibility = View.GONE
-                            appCheckBox.isClickable = false
-                            appCheckBox.isChecked = false
-                            view.isClickable = false
+                        if (!item.installed) {
+                            app_item_checkbox.visibility = View.GONE
+                            app_item_checkbox.isClickable = false
+                            app_item_checkbox.isChecked = false
+                            containerView.isClickable = false
                             required.visibility = View.GONE
                         }
                     }
-                    if (hasUpdate && installed) {
-                        appName.setTextColor(context!!.getColor(R.color.minimal_orange))
+                    if (item.hasUpdate && item.installed) {
+                        app_item_name.setTextColor(context!!.getColor(R.color.minimal_orange))
                     }
-                    if (hasVersions) {
-                        alertIcon.visibility = View.VISIBLE
-                    }
-                    if (appName.text.contains("Gboard")) {
-                        downloadIcon.visibility = View.VISIBLE
-                        downloadIcon.setColorFilter(getAccentColor(context!!))
-                    }
-                    if (appName.text.contains("Samsung Music") || appName.text.contains("Voice Recorder")) {
-                        blockedPackagesAlert.visibility = View.VISIBLE
-                        blockedPackagesAlert.setColorFilter(getAccentColor(context!!))
+                    if (app_item_name.text.contains("Samsung Music") || app_item_name.text.contains(
+                                    "Voice Recorder")) {
+                        blocked_packages_alert.visibility = View.VISIBLE
+                        blocked_packages_alert.setColorFilter(context!!.swift.selection.accentColor)
                     }
                 }
 
-                if (alertIcon.visibility == View.VISIBLE) {
-                    alertIcon.setOnClickListener {
-                        alertIconClickListener!!.onAlertIconClick(mApps[mVisible[adapterPosition]])
+                if (appExtrasHandler.appExtras.containsKey(item.packageName)) {
+                    when {
+                        getHiddenApps(context!!).contains(item.packageName) -> {
+                            app_item_checkbox.isClickable = false
+                            app_item_checkbox.setVisible(false)
+                        }
+                        summary -> {
+                            required.visibility = View.VISIBLE
+                            required.text = getString(R.string.needs_extras)
+                        }
+                        else -> {
+                            if (extras) {
+                                app_item_checkbox.isClickable = false
+                                app_item_checkbox.setVisible(false)
+                                app_name.setVisible(false)
+                            }
+                            download_icon.visibility = View.VISIBLE
+                            download_icon.setColorFilter(context!!.swift.selection.accentColor)
+                            download_icon.setOnClickListener {
+                                appExtrasHandler.appExtras[item.packageName]?.invoke(
+                                        activity!! as AppCompatActivity)
+                            }
+                        }
                     }
                 }
             }
@@ -338,38 +390,40 @@ class AppListFragment : Fragment() {
 
     }
 
-    class OptionsAdapter(context: Context, val options: ArrayMap<String, Array<String>>, val selection: ArrayList<String>) : ArrayAdapter<String>(context, R.layout.app_option_item) {
-
-        private val mHandler = Handler()
+    class OptionsAdapter(context: Context, val options: ArrayMap<String, Array<String>>,
+                         val selection: SynchronizedArrayList<String>) :
+            ArrayAdapter<String>(context, R.layout.app_option_item) {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-            val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.app_option_item, parent, false)
+            val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.app_option_item,
+                    parent, false)
 
             view.options_title.text = options.keyAt(position)
             val opts = options[options.keyAt(position)]
             if (opts!!.contains("on")) {
                 view.checkbox.visibility = View.VISIBLE
+                view.checkbox.isChecked = (selection.elementAtOrNull(position) ?: "off") == "on"
                 view.checkbox.setOnCheckedChangeListener { _, b ->
-                    if (selection.elementAtOrNull(position) != null)
-                        selection.removeAt(position)
-                    mHandler.post {
-                        selection.add(position, if (b) { "on" } else { "off" })
+                    selection[position] = if (b) {
+                        "on"
+                    } else {
+                        "off"
                     }
                 }
-                view.checkbox.isChecked = (selection.elementAtOrNull(position) ?: "off") == "on"
                 view.spinner.visibility = View.GONE
             } else {
                 view.spinner.visibility = View.VISIBLE
                 view.checkbox.visibility = View.GONE
-                view.spinner.adapter = ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, opts)
+                view.spinner.adapter =
+                        ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item,
+                                opts)
                 val popupBg = context.getDrawable(R.drawable.popup_bg_options) as LayerDrawable
-                popupBg.findDrawableByLayerId(R.id.background_popup).setTint(MaterialPalette.get(context).cardBackgroud)
+                popupBg.findDrawableByLayerId(R.id.background_popup)
+                        .setTint(MaterialPalette.get(context).cardBackground)
                 view.spinner.setPopupBackgroundDrawable(popupBg)
                 view.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                        if (selection.elementAtOrNull(position) != null)
-                            selection.removeAt(position)
-                        selection.add(position, opts[p2])
+                        selection[position] = opts[p2]
                     }
 
                     override fun onNothingSelected(p0: AdapterView<*>?) {

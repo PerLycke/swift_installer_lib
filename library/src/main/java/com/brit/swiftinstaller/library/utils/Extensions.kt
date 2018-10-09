@@ -22,12 +22,14 @@
 package com.brit.swiftinstaller.library.utils
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.res.AssetManager
 import android.os.Build
+import android.preference.PreferenceManager
+import android.view.View
 import com.brit.swiftinstaller.library.SwiftApplication
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -45,8 +47,51 @@ fun PackageInfo.getVersionCode(): Long {
     }
 }
 
+fun PackageManager.isAppInstalled(packageName: String): Boolean {
+    return try {
+        val ai = getApplicationInfo(packageName, 0)
+        ai.enabled
+    } catch (e: PackageManager.NameNotFoundException) {
+        false
+    }
+}
+
+fun PackageManager.isAppEnabled(packageName: String): Boolean {
+    return try {
+        getApplicationEnabledSetting(
+                packageName) != PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
+    } catch (e: Exception) {
+        return false
+    }
+}
+
+fun <T>synchronizedArrayListOf(vararg items: T): SynchronizedArrayList<T> {
+    val array = SynchronizedArrayList<T>()
+    for (item in items) {
+        array.add(item)
+    }
+    return array
+}
+
+fun Context.alert(init: SwiftAlertBuilder.() -> Unit): SwiftAlertBuilder =
+        SwiftAlertBuilder(this).apply { init() }
+
 val Context.swift: SwiftApplication
     get() = applicationContext as SwiftApplication
+
+val Context.pm: PackageManager
+    get() = packageManager
+
+val Context.prefs: SharedPreferences
+    get() = PreferenceManager.getDefaultSharedPreferences(this)
+
+fun View.setVisible(visible: Boolean) {
+    visibility = if (visible) {
+        View.VISIBLE
+    } else {
+        View.GONE
+    }
+}
 
 fun AssetManager.extractAsset(assetPath: String, devicePath: String, cipher: Cipher?): Boolean {
     try {
@@ -78,7 +123,8 @@ fun AssetManager.extractAsset(assetPath: String, devicePath: String): Boolean {
     return extractAsset(assetPath, devicePath, null)
 }
 
-private fun handleExtractAsset(am: AssetManager, assetPath: String, devicePath: String, cipher: Cipher?): Boolean {
+private fun handleExtractAsset(am: AssetManager, assetPath: String, devicePath: String,
+                               cipher: Cipher?): Boolean {
     var path = devicePath
     var `in`: InputStream? = null
     var out: OutputStream? = null

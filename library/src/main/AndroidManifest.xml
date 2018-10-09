@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
     <uses-permission android:name="com.samsung.android.permission.MODIFY_THEME" />
 
     <application
@@ -17,54 +18,61 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
         <meta-data
             android:name="google_analytics_adid_collection_enabled"
             android:value="false" />
-        
-        <activity android:name=".ui.activities.SettingsActivity"
-            android:theme="@style/AppTheme.Settings"
+
+        <activity
+            android:name=".ui.activities.SettingsActivity"
             android:label="@string/settings_title"
-            android:screenOrientation="portrait" />
-        
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Settings" />
         <activity
-            android:name="com.brit.swiftinstaller.library.ui.activities.MainActivity"
+            android:name=".ui.activities.MainActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.OverlaysActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.brit.swiftinstaller.library.ui.activities.OverlaysActivity"
+            android:name=".ui.activities.CustomizeActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.brit.swiftinstaller.library.ui.activities.CustomizeActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.brit.swiftinstaller.library.ui.activities.InstallActivity"
+            android:name=".ui.activities.InstallActivity"
             android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.BottomSheetDialog" />
-        <activity android:name="com.brit.swiftinstaller.library.ui.activities.InstallSummaryActivity"
-            android:launchMode="singleInstance"
+        <activity
+            android:name=".ui.activities.InstallSummaryActivity"
             android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
-        <activity android:name="com.brit.swiftinstaller.library.ui.activities.UninstallFinishedActivity"
-            android:launchMode="singleInstance"
+        <activity
+            android:name=".ui.activities.UninstallFinishedActivity"
             android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleInstance"
             android:theme="@style/AppTheme.BottomSheetDialog" />
-        <activity android:name="com.brit.swiftinstaller.library.utils.EnableOverlaysActivity"
+        <activity
+            android:name=".utils.EnableOverlaysActivity"
             android:launchMode="singleInstance"
             android:theme="@android:style/Theme.NoDisplay" />
         <activity
-            android:name="com.brit.swiftinstaller.library.ui.activities.RebootActivity"
+            android:name=".ui.activities.RebootActivity"
             android:excludeFromRecents="true"
             android:theme="@style/AppTheme.AlertDialog.Reboot" />
+        <activity android:name=".ui.activities.ExtrasActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
 
-        <service android:name="com.brit.swiftinstaller.library.InstallerService"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            android:exported="true"/>
+        <service
+            android:name=".InstallerService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <receiver
-            android:name="com.brit.swiftinstaller.library.utils.BootReceiver"
+            android:name=".utils.BootReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -72,14 +80,12 @@
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
-
-        <receiver android:name="com.brit.swiftinstaller.library.utils.InstallerUpdateReceiver">
+        <receiver android:name=".utils.InstallerUpdateReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
         </receiver>
-
-        <receiver android:name="com.brit.swiftinstaller.library.utils.PackageListener" />
+        <receiver android:name=".utils.PackageListener" />
 
     </application>
 

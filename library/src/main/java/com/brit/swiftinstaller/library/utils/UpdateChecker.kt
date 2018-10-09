@@ -26,43 +26,59 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
 import android.os.AsyncTask
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.ui.activities.OverlaysActivity
+import com.brit.swiftinstaller.library.ui.applist.AppList
 import java.lang.ref.WeakReference
 
-class UpdateChecker(context: Context, private val callback: Callback?) : AsyncTask<Void, Void, UpdateChecker.Output>() {
+class UpdateChecker(context: Context, private val callback: Callback?) :
+        AsyncTask<Void, Int, UpdateChecker.Output>() {
 
     private val mConRef: WeakReference<Context> = WeakReference(context)
 
     override fun doInBackground(vararg params: Void?): Output {
         var installedCount = 0
-        val updates = ArrayList<String>()
+        var hasOption = false
+        val updates = SynchronizedArrayList<String>()
         val context = mConRef.get()
-        val pm = mConRef.get()!!.packageManager
 
         clearAppsToUpdate(context!!)
         val overlays = context.assets.list("overlays") ?: emptyArray()
         for (packageName in overlays) {
-            if (RomInfo.getRomInfo(context).isOverlayInstalled(packageName)
-                    && Utils.isAppInstalled(context, packageName)
-                    && pm.getApplicationEnabledSetting(packageName) != COMPONENT_ENABLED_STATE_DISABLED_USER) {
+            if (context.swift.romHandler.isOverlayInstalled(packageName)
+                    && context.pm.isAppInstalled(packageName)
+                    && context.pm.isAppEnabled(packageName)) {
                 installedCount++
                 if (OverlayUtils.checkOverlayVersion(context, packageName)
                         || OverlayUtils.checkAppVersion(context, packageName)) {
                     updates.add(packageName)
                     addAppToUpdate(context, packageName)
+                    publishProgress(1)
+                } else {
+                    removeAppToUpdate(context, packageName)
+                }
+                AppList.updateApp(context, packageName)
+                if (OverlayUtils.getOverlayOptions(context, packageName).isNotEmpty() ||
+                        context.swift.extrasHandler.appExtras.containsKey(packageName)) {
+                    hasOption = true
                 }
             }
         }
-        return Output(installedCount, updates)
+        return Output(installedCount, hasOption, updates)
+    }
+
+    override fun onProgressUpdate(vararg values: Int?) {
+        super.onProgressUpdate(*values)
+        if (values[0] == 1) {
+            callback?.updateFound()
+        }
+
     }
 
     override fun onPostExecute(result: Output?) {
         super.onPostExecute(result)
-        callback?.finished(result!!.installedCount, result.updates)
+        callback?.finished(result!!.installedCount, result.hasOption, result.updates)
         if (result!!.updates.isNotEmpty() && callback == null) {
             postNotification()
         }
@@ -96,8 +112,10 @@ class UpdateChecker(context: Context, private val callback: Callback?) : AsyncTa
     }
 
     abstract class Callback {
-        abstract fun finished(installedCount: Int, updates: ArrayList<String>)
+        abstract fun finished(installedCount: Int, hasOption: Boolean, updates: SynchronizedArrayList<String>)
+        open fun updateFound() {
+        }
     }
 
-    inner class Output(var installedCount: Int, var updates: ArrayList<String>)
+    inner class Output(var installedCount: Int, var hasOption: Boolean, var updates: SynchronizedArrayList<String>)
 }

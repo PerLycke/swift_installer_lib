@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ /*
   ~  * Copyright (C) 2018 Griffin Millender
   ~  * Copyright (C) 2018 Per Lycke
@@ -48,8 +47,8 @@
             layout="@layout/tab_layout_overlay"
             android:layout_width="0dp"
             android:layout_height="48dp"
-            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/include3" />
@@ -60,13 +59,13 @@
         android:id="@+id/tab_underline"
         android:layout_width="0dp"
         android:layout_height="0.5dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:background="@color/tab_underline"
+        android:contentDescription="@string/image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
-        android:contentDescription="@string/image" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
 
     <ImageView
         android:id="@+id/empty_list_image"
@@ -84,9 +83,9 @@
         android:id="@+id/empty_list_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textColor="@android:color/white"
@@ -110,8 +109,8 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:onClick="fabClick"
         app:borderWidth="0dp"
         app:layout_constraintBottom_toBottomOf="@+id/container"

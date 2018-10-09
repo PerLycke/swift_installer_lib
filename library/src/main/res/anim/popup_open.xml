@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ /*
   ~  * Copyright (C) 2018 Griffin Millender
   ~  * Copyright (C) 2018 Per Lycke
@@ -22,15 +21,17 @@
 
 <set xmlns:android="http://schemas.android.com/apk/res/android"
     android:interpolator="@android:anim/decelerate_interpolator">
-    <alpha android:duration="@android:integer/config_shortAnimTime" android:fromAlpha="0.0" android:toAlpha="1.0"
-    xmlns:android="http://schemas.android.com/apk/res/android" />
+    <alpha xmlns:android="http://schemas.android.com/apk/res/android"
+        android:duration="@android:integer/config_shortAnimTime"
+        android:fromAlpha="0.0"
+        android:toAlpha="1.0" />
     <scale
-        android:fromYScale="0"
-        android:toYScale="1.0"
-        android:startOffset="0"
         android:duration="200"
-        android:fromXScale="0.7"
-        android:toXScale="1.0"
         android:fillAfter="true"
-        android:pivotX="100%" />
+        android:fromXScale="0.7"
+        android:fromYScale="0"
+        android:pivotX="100%"
+        android:startOffset="0"
+        android:toXScale="1.0"
+        android:toYScale="1.0" />
 </set>

@@ -23,43 +23,67 @@ package com.brit.swiftinstaller.library
 
 import android.content.Intent
 import android.content.IntentFilter
+import com.brit.swiftinstaller.library.installer.rom.RomHandler
+import com.brit.swiftinstaller.library.ui.applist.AppList
+import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
+import com.brit.swiftinstaller.library.utils.AppExtrasHandler
 import com.brit.swiftinstaller.library.utils.PackageListener
-import com.brit.swiftinstaller.library.utils.swift
 import com.topjohnwu.superuser.BuildConfig
 import com.topjohnwu.superuser.BusyBox
 import com.topjohnwu.superuser.ContainerApp
 import com.topjohnwu.superuser.Shell
+import org.jetbrains.anko.doAsync
 import javax.crypto.Cipher
 
 open class SwiftApplication : ContainerApp() {
 
-    val installApps: ArrayList<String>
-        get() = SwiftApplication.staticInstallApps
-
-    val errorMap: HashMap<String, String>
-        get() = SwiftApplication.staticErrorMap
-
-    companion object {
-        @JvmStatic val staticInstallApps = arrayListOf<String>()
-        @JvmStatic val staticErrorMap = HashMap<String, String>()
+    val romHandler: RomHandler by lazy {
+        RomHandler.createRomHandler(this)
+    }
+    val extrasHandler: AppExtrasHandler by lazy {
+        val v = createExtrasHandler()
+        v.initialize()
+        v
     }
 
-    var cipher: Cipher? = null
+    private var currentSelection: CustomizeSelection = CustomizeSelection()
+
+    var selection: CustomizeSelection
+        get() {
+            if (currentSelection.isEmpty) {
+                currentSelection = romHandler.getCustomizeHandler().getSelection()
+            }
+            return currentSelection
+        }
+        set(value) {
+            romHandler.getCustomizeHandler().setSelection(value)
+            currentSelection = value
+        }
+
+    val cipher: Cipher? by lazy {
+        createCipher()
+    }
 
     override fun onCreate() {
         super.onCreate()
 
-        cipher = createCipher()
+        doAsync {
+            startReceivers()
 
-        startReceivers()
+            AppList.updateList(this@SwiftApplication)
+        }
 
         Shell.Config.verboseLogging(BuildConfig.DEBUG)
         Shell.Config.setFlags(Shell.FLAG_REDIRECT_STDERR)
         BusyBox.setup(this)
     }
 
-    open fun createCipher() : Cipher? {
+    open fun createCipher(): Cipher? {
         return null
+    }
+
+    open fun createExtrasHandler(): AppExtrasHandler {
+        return AppExtrasHandler(this)
     }
 
     private fun startReceivers() {

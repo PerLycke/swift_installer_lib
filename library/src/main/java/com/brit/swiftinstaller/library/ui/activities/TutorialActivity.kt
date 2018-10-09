@@ -21,20 +21,18 @@
 
 package com.brit.swiftinstaller.library.ui.activities
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.View
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.library.installer.rom.RomInfo
 import com.brit.swiftinstaller.library.utils.OverlayUtils
 import com.brit.swiftinstaller.library.utils.ShellUtils
+import com.brit.swiftinstaller.library.utils.swift
 import com.hololo.tutorial.library.TutorialActivity
 import kotlinx.android.synthetic.main.no_root.view.*
 import org.jetbrains.anko.doAsync
@@ -58,46 +56,33 @@ open class TutorialActivity : TutorialActivity() {
                 "Listen for new and update overlays",
                 "Notifies when a new overlay is available to be installer, or an update is available")
 
-        if (!resources.getBoolean(R.bool.allow_unsupported_systems)) {
-            val samsung = packageManager.getApplicationInfo(packageName,
-                    PackageManager.GET_META_DATA).metaData.getBoolean("is_samsung_only", false)
-            if (samsung && !packageManager.hasSystemFeature("com.samsung.feature.samsung_experience_mobile")) {
-                AlertDialog.Builder(this, R.style.AppTheme_AlertDialog)
-                        .setTitle("Unsupported")
-                        .setMessage("Only supports samsung devices for now.")
-                        .setPositiveButton("EXIT") { _, _ ->
-                            finish()
-                        }
-                        .show()
-                return
-            }
-        }
-
         doAsync {
             OverlayUtils.checkAndHideOverlays(this@TutorialActivity)
         }
 
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("appHasRunBefore", false)) {
+        if (swift.romHandler.requiresRoot() && !ShellUtils.isRootAccessAvailable) {
+            val dialog = Dialog(this, R.style.AppTheme)
+            val layout = View.inflate(this, R.layout.no_root, null)
+            dialog.setContentView(layout)
+            dialog.setCancelable(false)
+            layout.no_root_msg.text = getString(R.string.no_root_msg)
+            layout.no_root_exit.visibility = View.VISIBLE
+            layout.no_root_exit.setOnClickListener {
+                finishAffinity()
+            }
+            dialog.show()
+            return
+        }
+
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("appHasRunBefore",
+                        false)) {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+            finish()
         } else {
-            if (RomInfo.getRomInfo(this).requiresRoot() && !ShellUtils.isRootAccessAvailable) {
-                val dialog = Dialog(this, R.style.AppTheme)
-                val layout = View.inflate(this, R.layout.no_root, null)
-                dialog.setContentView(layout)
-                dialog.setCancelable(false)
-                layout.no_root_msg.text = getString(R.string.no_root_msg)
-                layout.no_root_exit.visibility = View.VISIBLE
-                layout.no_root_exit.setOnClickListener {
-                    finish()
-                }
-                dialog.show()
-                return
-            }
-
             setIndicator(R.drawable.tutorial_indicator)
             setIndicatorSelected(R.drawable.tutorial_indicator_selected)
-            RomInfo.getRomInfo(this).addTutorialSteps(this)
+            swift.romHandler.addTutorialSteps(this)
         }
     }
 
@@ -105,7 +90,8 @@ open class TutorialActivity : TutorialActivity() {
         super.finishTutorial()
         val intent = Intent(this, CustomizeActivity::class.java)
         intent.putExtra("parentActivity", "tutorial")
-        PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean("appHasRunBefore", true).apply()
+        PreferenceManager.getDefaultSharedPreferences(this).edit()
+                .putBoolean("appHasRunBefore", true).apply()
         startActivity(intent)
         finish()
     }

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ /*
   ~  * Copyright (C) 2018 Griffin Millender
   ~  * Copyright (C) 2018 Per Lycke
@@ -20,7 +19,7 @@
   ~  */
   -->
 
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/customize_bg_root"
@@ -47,7 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="sans-serif"
         android:text="@string/category_background"
         android:textAllCaps="true"
@@ -63,7 +62,7 @@
         android:layout_width="0dp"
         android:layout_height="2dp"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="16dp"
         android:background="@color/divider"
         android:contentDescription="@string/image"
         android:visibility="visible"
@@ -103,6 +102,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="?android:selectableItemBackgroundBorderless"
+        android:onClick="baseThemeInfoClick"
         android:paddingStart="8dp"
         android:paddingBottom="8dp"
         android:text="@string/whats_this"
@@ -154,218 +154,19 @@
         app:layout_constraintStart_toEndOf="@+id/custom_bg_title"
         app:layout_constraintTop_toTopOf="@+id/custom_bg_title" />
 
-    <ImageView
-        android:id="@+id/custom_dark_bg_indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/image"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/custom_dark_bg"
-        app:layout_constraintEnd_toEndOf="@+id/custom_dark_bg"
-        app:layout_constraintStart_toStartOf="@+id/custom_dark_bg"
-        app:layout_constraintTop_toTopOf="@+id/custom_dark_bg"
-        app:srcCompat="@drawable/bg_circle_active_stroke" />
-
-    <ImageView
-        android:id="@+id/custom_dark_bg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:background="?android:selectableItemBackgroundBorderless"
-        android:contentDescription="@string/image"
-        app:layout_constraintEnd_toStartOf="@+id/custom_black_bg"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toBottomOf="@+id/custom_bg_title"
-        app:srcCompat="@drawable/bg_circle_dark" />
-
-    <TextView
-        android:id="@+id/custom_dark_bg_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:fontFamily="sans-serif"
-        android:text="@string/swift_dark"
-        app:layout_constraintEnd_toEndOf="@+id/custom_dark_bg"
-        app:layout_constraintStart_toStartOf="@+id/custom_dark_bg"
-        app:layout_constraintTop_toBottomOf="@+id/custom_dark_bg" />
-
-    <ImageView
-        android:id="@+id/custom_black_bg_indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/image"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/custom_black_bg"
-        app:layout_constraintEnd_toEndOf="@+id/custom_black_bg"
-        app:layout_constraintStart_toStartOf="@+id/custom_black_bg"
-        app:layout_constraintTop_toTopOf="@+id/custom_black_bg"
-        app:srcCompat="@drawable/bg_circle_active_stroke" />
-
-    <ImageView
-        android:id="@+id/custom_black_bg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="?android:selectableItemBackgroundBorderless"
-        android:contentDescription="@string/image"
-        app:layout_constraintEnd_toStartOf="@+id/custom_style_bg"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/custom_dark_bg"
-        app:layout_constraintTop_toTopOf="@+id/custom_dark_bg"
-        app:srcCompat="@drawable/bg_circle_black" />
-
-    <TextView
-        android:id="@+id/custom_black_bg_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="sans-serif"
-        android:text="@string/swift_black"
-        app:layout_constraintEnd_toEndOf="@+id/custom_black_bg"
-        app:layout_constraintStart_toStartOf="@+id/custom_black_bg"
-        app:layout_constraintTop_toBottomOf="@+id/custom_black_bg" />
-
-    <ImageView
-        android:id="@+id/custom_style_bg_indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/image"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/custom_style_bg"
-        app:layout_constraintEnd_toEndOf="@+id/custom_style_bg"
-        app:layout_constraintStart_toStartOf="@+id/custom_style_bg"
-        app:layout_constraintTop_toTopOf="@+id/custom_style_bg"
-        app:srcCompat="@drawable/bg_circle_active_stroke" />
-
-    <ImageView
-        android:id="@+id/custom_style_bg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:background="?android:selectableItemBackgroundBorderless"
-        android:contentDescription="@string/image"
-        app:layout_constraintEnd_toStartOf="@+id/guideline6"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/custom_black_bg"
-        app:layout_constraintTop_toTopOf="@+id/custom_black_bg"
-        app:srcCompat="@drawable/bg_circle_style" />
-
-    <TextView
-        android:id="@+id/custom_style_bg_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="sans-serif"
-        android:text="@string/swift_style"
-        app:layout_constraintEnd_toEndOf="@+id/custom_style_bg"
-        app:layout_constraintStart_toStartOf="@+id/custom_style_bg"
-        app:layout_constraintTop_toBottomOf="@+id/custom_style_bg" />
-
-    <ImageView
-        android:id="@+id/custom_nature_bg_indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/image"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/custom_nature_bg"
-        app:layout_constraintEnd_toEndOf="@+id/custom_nature_bg"
-        app:layout_constraintStart_toStartOf="@+id/custom_nature_bg"
-        app:layout_constraintTop_toTopOf="@+id/custom_nature_bg"
-        app:srcCompat="@drawable/bg_circle_active_stroke" />
-
-    <ImageView
-        android:id="@+id/custom_nature_bg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:background="?android:selectableItemBackgroundBorderless"
-        android:contentDescription="@string/image"
-        app:layout_constraintStart_toStartOf="@+id/custom_dark_bg"
-        app:layout_constraintTop_toBottomOf="@+id/custom_dark_bg_txt"
-        app:srcCompat="@drawable/bg_circle_nature" />
-
-    <TextView
-        android:id="@+id/custom_nature_bg_txt"
+    <GridView
+        android:id="@+id/background_palette"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="sans-serif"
-        android:text="@string/bg_nature"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="@+id/custom_nature_bg"
-        app:layout_constraintStart_toStartOf="@+id/custom_nature_bg"
-        app:layout_constraintTop_toBottomOf="@+id/custom_nature_bg" />
-
-    <ImageView
-        android:id="@+id/custom_ocean_bg_indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/image"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/custom_ocean_bg"
-        app:layout_constraintEnd_toEndOf="@+id/custom_ocean_bg"
-        app:layout_constraintStart_toStartOf="@+id/custom_ocean_bg"
-        app:layout_constraintTop_toTopOf="@+id/custom_ocean_bg"
-        app:srcCompat="@drawable/bg_circle_active_stroke" />
-
-    <ImageView
-        android:id="@+id/custom_ocean_bg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="?android:selectableItemBackgroundBorderless"
-        android:contentDescription="@string/image"
-        app:layout_constraintEnd_toStartOf="@+id/custom_night_bg"
-        app:layout_constraintStart_toEndOf="@+id/custom_nature_bg"
-        app:layout_constraintTop_toTopOf="@+id/custom_nature_bg"
-        app:srcCompat="@drawable/bg_circle_ocean" />
-
-    <TextView
-        android:id="@+id/custom_ocean_bg_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="sans-serif"
-        android:text="@string/bg_ocean"
-        app:layout_constraintEnd_toEndOf="@+id/custom_ocean_bg"
-        app:layout_constraintStart_toStartOf="@+id/custom_ocean_bg"
-        app:layout_constraintTop_toBottomOf="@+id/custom_ocean_bg" />
-
-    <ImageView
-        android:id="@+id/custom_night_bg_indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/image"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/custom_night_bg"
-        app:layout_constraintEnd_toEndOf="@+id/custom_night_bg"
-        app:layout_constraintStart_toStartOf="@+id/custom_night_bg"
-        app:layout_constraintTop_toTopOf="@+id/custom_night_bg"
-        app:srcCompat="@drawable/bg_circle_active_stroke" />
-
-    <ImageView
-        android:id="@+id/custom_night_bg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="?android:selectableItemBackgroundBorderless"
-        android:contentDescription="@string/image"
-        app:layout_constraintEnd_toEndOf="@+id/custom_style_bg"
-        app:layout_constraintTop_toTopOf="@+id/custom_ocean_bg"
-        app:srcCompat="@drawable/bg_circle_night" />
-
-    <TextView
-        android:id="@+id/custom_night_bg_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="sans-serif"
-        android:text="@string/night"
-        app:layout_constraintEnd_toEndOf="@+id/custom_night_bg"
-        app:layout_constraintStart_toStartOf="@+id/custom_night_bg"
-        app:layout_constraintTop_toBottomOf="@+id/custom_night_bg" />
+        android:layout_height="168dp"
+        android:layout_marginTop="16dp"
+        android:columnWidth="50dp"
+        android:gravity="center"
+        android:numColumns="3"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="5dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toBottomOf="@+id/custom_bg_title" />
 
     <TextView
         android:id="@+id/hashtag_bg"
@@ -393,6 +194,6 @@
         android:maxLength="6"
         android:singleLine="true"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
-        app:layout_constraintTop_toBottomOf="@+id/custom_ocean_bg_txt" />
+        app:layout_constraintTop_toBottomOf="@+id/background_palette" />
 
-</merge>
+</androidx.constraintlayout.widget.ConstraintLayout>

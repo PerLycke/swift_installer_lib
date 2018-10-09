@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!--
+<?xml version="1.0" encoding="utf-8" standalone="no"?><!--
   ~ /*
   ~  * Copyright (C) 2018 Griffin Millender
   ~  * Copyright (C) 2018 Per Lycke
@@ -38,6 +37,8 @@
     <color name="item_background_color">#BFffffff</color>
     <color name="reboot_bg">#BF000000</color>
     <color name="sysui_icons_tint">#de000000</color>
+    <color name="notification_bg_light">#f5f5f5</color>
+    <color name="disabled">#4Dffffff</color>
 
     <!-- Minimal palette -->
     <color name="minimal_blue">#4A7CA5</color>
@@ -53,17 +54,4 @@
     <color name="violet">#a67ac7</color>
 
     <color name="ic_magisk_background">#00AF9C</color>
-
-    <integer-array name="accent_colors">
-        <item>@color/minimal_green</item>
-        <item>@color/minimal_blue</item>
-        <item>@color/minimal_orange</item>
-        <item>@color/minimal_red</item>
-        <item>@color/minimal_tangerine</item>
-        <item>@color/blue</item>
-        <item>@color/red</item>
-        <item>@color/green</item>
-        <item>@color/amber</item>
-        <item>@color/violet</item>
-    </integer-array>
 </resources>

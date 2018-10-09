@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ /*
   ~  * Copyright (C) 2018 Griffin Millender
   ~  * Copyright (C) 2018 Per Lycke
@@ -20,7 +19,7 @@
   ~  */
   -->
 
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/customize_accent_root"
@@ -62,8 +61,8 @@
         android:id="@+id/accent_category_divider"
         android:layout_width="0dp"
         android:layout_height="2dp"
-        android:layout_marginEnd="32dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
         android:background="@color/divider"
         android:contentDescription="@string/image"
         android:visibility="visible"
@@ -73,7 +72,7 @@
         app:layout_constraintTop_toTopOf="@+id/toolbar_subtitle_accent_title" />
 
     <GridView
-        android:id="@+id/palette"
+        android:id="@+id/accent_palette"
         android:layout_width="0dp"
         android:layout_height="94dp"
         android:layout_marginTop="20dp"
@@ -109,20 +108,7 @@
         android:inputType="textNoSuggestions|textVisiblePassword"
         android:maxLength="6"
         android:singleLine="true"
-        app:layout_constraintEnd_toEndOf="@+id/palette"
-        app:layout_constraintTop_toBottomOf="@+id/palette" />
+        app:layout_constraintEnd_toEndOf="@+id/accent_palette"
+        app:layout_constraintTop_toBottomOf="@+id/accent_palette" />
 
-    <Button
-        android:id="@+id/apply_hex"
-        style="@android:style/Widget.DeviceDefault.Button.Borderless.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/minimal_blue"
-        android:fontFamily="sans-serif"
-        android:text="@string/apply"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/accent_hex_input"
-        app:layout_constraintTop_toTopOf="@+id/accent_hex_input" />
-
-</merge>
+</androidx.constraintlayout.widget.ConstraintLayout>

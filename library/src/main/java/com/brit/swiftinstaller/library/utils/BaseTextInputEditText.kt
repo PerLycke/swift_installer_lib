@@ -24,14 +24,16 @@ package com.brit.swiftinstaller.library.utils
 import android.app.Activity
 import android.content.Context
 import android.graphics.Rect
-import androidx.appcompat.widget.AppCompatEditText
 import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.widget.AppCompatEditText
 
-class BaseTextInputEditText(context: Context?, attrs: AttributeSet) : AppCompatEditText(context, attrs){
+class BaseTextInputEditText(context: Context?, attrs: AttributeSet) :
+        AppCompatEditText(context, attrs) {
 
-    private val inputMethodManager = context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    private val inputMethodManager =
+            context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
 
     override fun onFocusChanged(focused: Boolean, direction: Int, previouslyFocusedRect: Rect?) {
         super.onFocusChanged(focused, direction, previouslyFocusedRect)
@@ -41,7 +43,7 @@ class BaseTextInputEditText(context: Context?, attrs: AttributeSet) : AppCompatE
         }
     }
 
-    override fun onKeyPreIme(keyCode:Int, event:KeyEvent):Boolean {
+    override fun onKeyPreIme(keyCode: Int, event: KeyEvent): Boolean {
         return super.dispatchKeyEvent(event)
     }
 }
