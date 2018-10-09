@@ -74,7 +74,8 @@ open class OreoRomHandler(context: Context) : RomHandler(context) {
                 "com.google.android.gms",
                 "com.google.android.apps.nexuslauncher",
                 "com.lastpass.lpandroid",
-                "com.weather.Weather"
+                "com.weather.Weather",
+                "com.google.android.inputmethod.latin"
         )
     }
 

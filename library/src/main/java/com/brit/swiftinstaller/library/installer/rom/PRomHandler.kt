@@ -87,7 +87,8 @@ open class PRomHandler(context: Context) : RomHandler(context) {
                 "com.google.android.apps.nexuslauncher",
                 "com.lastpass.lpandroid",
                 "com.weather.Weather",
-                "com.google.android.settings.intelligence"
+                "com.google.android.settings.intelligence",
+                "com.google.android.inputmethod.latin"
         )
     }
 

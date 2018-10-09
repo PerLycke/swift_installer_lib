@@ -68,6 +68,7 @@ class OOSOreoRomHandler(context: Context) : OreoRomHandler(context) {
                 "com.google.android.apps.nexuslauncher",
                 "com.oneplus.deskclock",
                 "com.lastpass.lpandroid",
-                "com.weather.Weather")
+                "com.weather.Weather",
+                "com.google.android.inputmethod.latin")
         }
     }

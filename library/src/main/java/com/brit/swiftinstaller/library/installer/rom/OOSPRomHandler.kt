@@ -48,7 +48,8 @@ class OOSPRomHandler(context: Context) : PRomHandler(context) {
                 "com.oneplus.deskclock",
                 "com.lastpass.lpandroid",
                 "com.weather.Weather",
-                "com.google.android.settings.intelligence"
+                "com.google.android.settings.intelligence",
+                "com.google.android.inputmethod.latin"
         )
     }
 }

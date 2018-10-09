@@ -103,7 +103,8 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
                 "de.axelspringer.yana.zeropage",
                 "com.google.android.apps.nexuslauncher",
                 "com.lastpass.lpandroid",
-                "com.weather.Weather"
+                "com.weather.Weather",
+                "com.google.android.inputmethod.latin"
         )
     }
 
