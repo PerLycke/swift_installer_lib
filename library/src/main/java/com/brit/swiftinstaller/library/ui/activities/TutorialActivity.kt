@@ -56,10 +56,6 @@ open class TutorialActivity : TutorialActivity() {
                 "Listen for new and update overlays",
                 "Notifies when a new overlay is available to be installer, or an update is available")
 
-        doAsync {
-            OverlayUtils.checkAndHideOverlays(this@TutorialActivity)
-        }
-
         if (swift.romHandler.requiresRoot() && !ShellUtils.isRootAccessAvailable) {
             val dialog = Dialog(this, R.style.AppTheme)
             val layout = View.inflate(this, R.layout.no_root, null)

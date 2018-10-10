@@ -26,7 +26,6 @@ import android.content.pm.PackageManager
 import android.content.res.AssetManager
 import android.os.Environment
 import androidx.collection.ArrayMap
-import com.brit.swiftinstaller.library.ui.applist.AppList
 
 object OverlayUtils {
 
@@ -157,7 +156,6 @@ object OverlayUtils {
             } else {
                 removeHiddenApp(context, overlay)
             }
-            AppList.updateApp(context, overlay)
         }
     }
 

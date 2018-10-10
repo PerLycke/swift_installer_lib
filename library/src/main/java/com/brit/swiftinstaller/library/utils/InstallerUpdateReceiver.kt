@@ -31,7 +31,6 @@ class InstallerUpdateReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
         if (intent?.action != Intent.ACTION_MY_PACKAGE_REPLACED) return
         doAsync {
-            OverlayUtils.checkAndHideOverlays(context)
             UpdateChecker(context, null).execute()
             convertSettings(context)
         }

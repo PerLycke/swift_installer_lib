@@ -27,6 +27,7 @@ import com.brit.swiftinstaller.library.installer.rom.RomHandler
 import com.brit.swiftinstaller.library.ui.applist.AppList
 import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
 import com.brit.swiftinstaller.library.utils.AppExtrasHandler
+import com.brit.swiftinstaller.library.utils.OverlayUtils
 import com.brit.swiftinstaller.library.utils.PackageListener
 import com.topjohnwu.superuser.BuildConfig
 import com.topjohnwu.superuser.BusyBox
@@ -70,6 +71,7 @@ open class SwiftApplication : ContainerApp() {
         doAsync {
             startReceivers()
 
+            OverlayUtils.checkAndHideOverlays(this@SwiftApplication)
             AppList.updateList(this@SwiftApplication)
         }
 
