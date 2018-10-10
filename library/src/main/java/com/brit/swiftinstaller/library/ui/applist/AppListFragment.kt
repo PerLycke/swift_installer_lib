@@ -268,6 +268,7 @@ class AppListFragment : Fragment() {
                 download_icon.visibility = View.GONE
                 blocked_packages_alert.visibility = View.GONE
                 options_icon.setVisible(false)
+                containerView.isClickable = true
 
                 item.appOptions?.let { appOptions ->
                     if (appOptions.isNotEmpty() && !summary) {
