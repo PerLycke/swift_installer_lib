@@ -356,10 +356,10 @@ class InstallSummaryActivity : ThemeActivity() {
         emailIntent.putExtra(Intent.EXTRA_EMAIL, Array(1) { "swiftuserhelp@gmail.com" })
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Swift Installer: Error Log")
 
-        val pi = packageManager.getPackageInfo(packageName, 0)
+
         val text = StringBuilder()
         text.append("\n")
-        text.append("Installer Version: ${getString(R.string.lib_version)} (${pi.getVersionCode()})")
+        text.append("Installer Version: ${getString(R.string.lib_version)} (${packageManager.getPackageInfo(packageName, 0).getVersionCode()})")
         text.append("\n")
         text.append("Device: ${Build.DEVICE}")
         text.append("\n")
