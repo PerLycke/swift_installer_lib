@@ -350,6 +350,11 @@ class InstallSummaryActivity : ThemeActivity() {
         finish()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        finish()
+    }
+
     private fun sendErrorLog() {
         val emailIntent = Intent(Intent.ACTION_SENDTO)
         emailIntent.data = Uri.parse("mailto:")
