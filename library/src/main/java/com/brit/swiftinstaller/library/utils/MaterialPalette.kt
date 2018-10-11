@@ -27,6 +27,7 @@ import com.brit.swiftinstaller.library.utils.ColorUtils.handleColor
 class MaterialPalette {
     var backgroundColor = 0
     var cardBackground = 0
+    var constantCardBackground = 0
     var floatingBackground = 0
     var darkBackgroundColor = 0
     var darkerBackgroundColor = 0
@@ -45,6 +46,7 @@ class MaterialPalette {
             if (palette) {
                 p.backgroundColor = color
                 p.cardBackground = handleColor(color, 8)
+                p.constantCardBackground = handleColor(color, 8)
                 p.floatingBackground = handleColor(color, 3)
                 p.darkBackgroundColor = handleColor(color, -5)
                 p.darkerBackgroundColor = handleColor(color, -10)
@@ -54,6 +56,7 @@ class MaterialPalette {
             } else {
                 p.backgroundColor = color
                 p.cardBackground = color
+                p.constantCardBackground = handleColor(color, 8)
                 p.floatingBackground = color
                 p.darkBackgroundColor = color
                 p.darkerBackgroundColor = color
@@ -68,6 +71,7 @@ class MaterialPalette {
     override fun toString(): String {
         return "backgroundColor - ${Integer.toHexString(backgroundColor)}\n " +
                 "cardBackground - ${Integer.toHexString(cardBackground)}\n" +
+                "constantCardBackground - ${Integer.toHexString(constantCardBackground)}\n" +
                 "floatingBackground - ${Integer.toHexString(floatingBackground)}\n" +
                 "darkBackground - ${Integer.toHexString(darkBackgroundColor)}\n" +
                 "darkerBackground - ${Integer.toHexString(darkerBackgroundColor)}\n" +
