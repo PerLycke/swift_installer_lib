@@ -139,7 +139,10 @@ object ShellUtils {
             zipalign.append(" 4")
             zipalign.append(" ${unsignedUnaligned.absolutePath}")
             zipalign.append(" ${unsigned.absolutePath}")
-            result = Shell.sh(zipalign.toString()).exec()
+            val zipAlignResult = Shell.sh(zipalign.toString()).exec()
+            if (zipAlignResult.code != 0) {
+                copyFile(unsignedUnaligned.absolutePath, unsigned.absolutePath)
+            }
         }
 
         if (unsigned.exists()) {
