@@ -22,6 +22,7 @@
 package com.brit.swiftinstaller.library.utils
 
 import android.content.Context
+import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.res.AssetManager
 import android.os.Environment
@@ -124,12 +125,16 @@ object OverlayUtils {
         return false
     }
 
-    fun getAvailableOverlayVersions(context: Context, packageName: String): String {
+    fun getAvailableOverlayVersions(context: Context, packageInfo: PackageInfo, packageName: String): String {
         val versions = StringBuilder()
         val vers = context.assets.list("overlays/$packageName/versions") ?: emptyArray()
         for (version in vers) {
             if (version != "common") {
-                versions.append("v$version, ")
+                if (packageInfo.versionName.startsWith(version)) {
+                    versions.append("<font color='#47AE84'>$version.x</font><br>")
+                } else {
+                    versions.append("<font color='#FF6868'>$version.x</font><br>")
+                }
             }
         }
         return versions.substring(0, versions.length - 2)

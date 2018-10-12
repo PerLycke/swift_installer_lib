@@ -26,6 +26,7 @@ import android.content.pm.PackageManager
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Handler
+import android.text.Html
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
@@ -38,6 +39,7 @@ import com.brit.swiftinstaller.library.ui.applist.AppList
 import com.brit.swiftinstaller.library.ui.applist.AppListFragment
 import com.brit.swiftinstaller.library.ui.applist.AppsTabPagerAdapter
 import com.brit.swiftinstaller.library.utils.*
+import com.brit.swiftinstaller.library.utils.OverlayUtils.checkVersionCompatible
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getAvailableOverlayVersions
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
@@ -88,13 +90,23 @@ class OverlaysActivity : ThemeActivity() {
                 } catch (e: PackageManager.NameNotFoundException) {
                     return
                 }
+                val supported = if (checkVersionCompatible(this@OverlaysActivity, appItem.packageName)) {
+                    "<font color='#47AE84'><b> - (supported!)</b></font>"
+                } else {
+                    "<font color='#FF6868'><b> - (not supported)</b></font>"
+                }
                 alert {
                     title = appItem.title
                     icon = appItem.icon
-                    message = ("Version support info:" +
-                            "\nCurrent Version: ${packageInfo.versionName}" +
-                            "\nAvailable Versions: ${getAvailableOverlayVersions(
-                                    this@OverlaysActivity, appItem.packageName)}")
+                    message = Html.fromHtml(
+                            "<br><b>Installed app version: " +
+                                    "</b><br><br>" +
+                                    packageInfo.versionName + supported +
+                                    "<br><br><b>" +
+                                    "Supported versions: " +
+                                    "</b><br><br>" +
+                                    getAvailableOverlayVersions(
+                                            this@OverlaysActivity, packageInfo, appItem.packageName), Html.FROM_HTML_MODE_LEGACY)
                     positiveButton(R.string.ok) { dialog ->
                         dialog.dismiss()
                     }
