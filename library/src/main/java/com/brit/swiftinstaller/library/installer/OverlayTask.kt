@@ -205,7 +205,6 @@ class OverlayTask(private val om: OverlayManager) : Runnable {
         file.append("<color name=\"legacy_primary\">#${toHexString(
                 palette.darkBackgroundColor)}</color>\n")
         file.append("<color name=\"legacy_green\">#${toHexString(palette.cardBackground)}</color>\n")
-        file.append("<color name=\"background_leanback_dark\">#${toHexString(palette.constantCardBackground)}</color>\n")
         file.append(
                 "<color name=\"legacy_orange\">#${toHexString(palette.otherBackground)}</color>\n")
         file.append("<color name=\"legacy_control_activated\">#${ColorUtils.getAlpha(
