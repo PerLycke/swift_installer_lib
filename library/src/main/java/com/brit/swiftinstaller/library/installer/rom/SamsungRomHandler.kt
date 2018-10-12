@@ -94,7 +94,6 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
                 "com.samsung.android.incallui",
                 "com.twitter.android",
                 "com.samsung.android.contacts",
-                "com.samsung.android.scloud",
                 "com.samsung.android.themestore",
                 "com.samsung.android.lool",
                 "com.samsung.android.samsungpassautofill",
