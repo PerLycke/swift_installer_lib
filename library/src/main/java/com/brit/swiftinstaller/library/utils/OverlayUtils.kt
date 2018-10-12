@@ -131,7 +131,7 @@ object OverlayUtils {
         for (version in vers) {
             if (version != "common") {
                 if (packageInfo.versionName.startsWith(version)) {
-                    versions.append("<font color='#47AE84'>$version.x</font><br>")
+                    versions.append("<font color='#47AE84'><b>$version.x</b></font><br>")
                 } else {
                     versions.append("<font color='#FF6868'>$version.x</font><br>")
                 }
