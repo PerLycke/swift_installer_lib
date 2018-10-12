@@ -22,6 +22,7 @@
 package com.brit.swiftinstaller.library.ui.activities
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Handler
@@ -82,7 +83,11 @@ class OverlaysActivity : ThemeActivity() {
                 false, false, INSTALL_TAB, ACTIVE_TAB, UPDATE_TAB)
         pagerAdapter.setAlertIconClickListener(object : AppListFragment.AlertIconClickListener {
             override fun onAlertIconClick(appItem: AppItem) {
-                val packageInfo = packageManager.getPackageInfo(appItem.packageName, 0)
+                val packageInfo =  try {
+                    packageManager.getPackageInfo(appItem.packageName, 0)
+                } catch (e: PackageManager.NameNotFoundException) {
+                    return
+                }
                 alert {
                     title = appItem.title
                     icon = appItem.icon
