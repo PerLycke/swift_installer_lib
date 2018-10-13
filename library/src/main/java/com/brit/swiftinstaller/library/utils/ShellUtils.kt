@@ -80,7 +80,7 @@ object ShellUtils {
     }
 
     fun copyFile(path: String, output: String): Boolean {
-        return SuFile(path).renameTo(SuFile(output))
+        return SuFile(path).copyTo(SuFile(output)).exists()
     }
 
     fun mkdir(path: String): Boolean {
