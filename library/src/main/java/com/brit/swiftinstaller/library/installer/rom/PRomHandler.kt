@@ -234,7 +234,7 @@ open class PRomHandler(context: Context) : RomHandler(context) {
         }
     }
 
-    private fun populatePieCustomizeOptions(categories: CategoryMap) {
+    open fun populatePieCustomizeOptions(categories: CategoryMap) {
         val pieIconOptions = OptionsMap()
         pieIconOptions.add(Option(context.getString(R.string.stock_icons_multi), "default_icons"))
         pieIconOptions.add(Option(context.getString(R.string.stock_icons), "stock_accented"))

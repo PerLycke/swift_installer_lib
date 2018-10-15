@@ -2,6 +2,7 @@ package com.brit.swiftinstaller.library.installer.rom
 
 import android.content.Context
 import android.content.Intent
+import com.brit.swiftinstaller.library.ui.customize.CategoryMap
 import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
 import com.brit.swiftinstaller.library.utils.runCommand
 import com.brit.swiftinstaller.library.utils.swift
@@ -51,5 +52,8 @@ class OOSPRomHandler(context: Context) : PRomHandler(context) {
                 "com.google.android.settings.intelligence",
                 "com.google.android.inputmethod.latin"
         )
+    }
+
+    override fun populatePieCustomizeOptions(categories: CategoryMap) {
     }
 }
