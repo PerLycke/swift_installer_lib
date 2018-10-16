@@ -79,6 +79,10 @@ open class OreoRomHandler(context: Context) : RomHandler(context) {
         )
     }
 
+    override fun getDefaultAccent(): Int {
+        return ColorUtils.convertToColorInt("4285f4")
+    }
+
     override fun postInstall(uninstall: Boolean, apps: SynchronizedArrayList<String>,
                              oppositeApps: SynchronizedArrayList<String>, intent: Intent?) {
 

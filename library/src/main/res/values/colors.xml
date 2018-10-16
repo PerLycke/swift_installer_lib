@@ -41,17 +41,17 @@
     <color name="disabled">#4Dffffff</color>
 
     <!-- Minimal palette -->
-    <color name="minimal_blue">#4A7CA5</color>
-    <color name="minimal_green">#47AE84</color>
-    <color name="minimal_orange">#FFC069</color>
-    <color name="minimal_tangerine">#FF9669</color>
-    <color name="minimal_red">#FF6868</color>
+    <color name="minimal_blue">#4a7ca5</color>
+    <color name="minimal_green">#47ae84</color>
+    <color name="minimal_orange">#ffb042</color>
+    <color name="minimal_tangerine">#ff8055</color>
+    <color name="minimal_red">#ff4151</color>
 
-    <color name="amber">#ffab00</color>
+    <color name="cyan">#00c7dd</color>
     <color name="blue">#5e97f6</color>
     <color name="green">#1ed760</color>
-    <color name="red">#d32828</color>
-    <color name="violet">#a67ac7</color>
+    <color name="red">#b31818</color>
+    <color name="violet">#a86bd5</color>
 
     <color name="ic_magisk_background">#00AF9C</color>
 </resources>

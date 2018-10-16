@@ -107,6 +107,10 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
         )
     }
 
+    override fun getDefaultAccent(): Int {
+        return ColorUtils.convertToColorInt("3dbce9")
+    }
+
     override fun postInstall(uninstall: Boolean, apps: SynchronizedArrayList<String>,
                              oppositeApps: SynchronizedArrayList<String>, intent: Intent?) {
         val extraIntent = intent != null

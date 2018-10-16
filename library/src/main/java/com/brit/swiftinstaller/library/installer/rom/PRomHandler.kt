@@ -92,6 +92,10 @@ open class PRomHandler(context: Context) : RomHandler(context) {
         )
     }
 
+    override fun getDefaultAccent(): Int {
+        return ColorUtils.convertToColorInt("1a73e8")
+    }
+
     override fun postInstall(uninstall: Boolean, apps: SynchronizedArrayList<String>,
                              oppositeApps: SynchronizedArrayList<String>, intent: Intent?) {
 

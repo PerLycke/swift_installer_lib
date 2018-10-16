@@ -73,6 +73,10 @@ class OOSOreoRomHandler(context: Context) : OreoRomHandler(context) {
                 "com.google.android.inputmethod.latin")
     }
 
+    override fun getDefaultAccent(): Int {
+        return ColorUtils.convertToColorInt("42a5f5")
+    }
+
     override fun createCustomizeHandler(): CustomizeHandler {
         return object : CustomizeHandler(context) {
 

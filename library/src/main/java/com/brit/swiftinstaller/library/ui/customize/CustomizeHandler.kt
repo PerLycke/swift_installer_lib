@@ -62,16 +62,16 @@ abstract class CustomizeHandler(val context: Context) {
     }
 
     open fun populateAccentColors(accents: SynchronizedArrayList<PaletteItem>) {
-        accents.add(PaletteItem(context.getColor(R.color.minimal_green)))
-        accents.add(PaletteItem(context.getColor(R.color.minimal_blue)))
+        accents.add(PaletteItem(context.swift.romHandler.getDefaultAccent()))
         accents.add(PaletteItem(context.getColor(R.color.minimal_orange)))
         accents.add(PaletteItem(context.getColor(R.color.minimal_red)))
-        accents.add(PaletteItem(context.getColor(R.color.minimal_tangerine)))
-        accents.add(PaletteItem(context.getColor(R.color.blue)))
-        accents.add(PaletteItem(context.getColor(R.color.red)))
         accents.add(PaletteItem(context.getColor(R.color.green)))
-        accents.add(PaletteItem(context.getColor(R.color.amber)))
+        accents.add(PaletteItem(context.getColor(R.color.blue)))
+        accents.add(PaletteItem(context.getColor(R.color.minimal_tangerine)))
+        accents.add(PaletteItem(context.getColor(R.color.minimal_green)))
+        accents.add(PaletteItem(context.getColor(R.color.minimal_blue)))
         accents.add(PaletteItem(context.getColor(R.color.violet)))
+        accents.add(PaletteItem(context.getColor(R.color.red)))
     }
 
     fun getAccentColors(): SynchronizedArrayList<PaletteItem> {
