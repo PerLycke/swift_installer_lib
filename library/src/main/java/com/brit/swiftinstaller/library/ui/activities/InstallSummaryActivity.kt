@@ -340,7 +340,10 @@ class InstallSummaryActivity : ThemeActivity() {
                 }
             }
             isCancelable = false
-            show()
+
+            if (!isFinishing) {
+                show()
+            }
         }
     }
 
