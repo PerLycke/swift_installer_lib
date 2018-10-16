@@ -23,9 +23,10 @@ package com.brit.swiftinstaller.library.installer.rom
 
 import android.content.Context
 import android.content.Intent
-import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
-import com.brit.swiftinstaller.library.utils.runCommand
-import com.brit.swiftinstaller.library.utils.swift
+import com.brit.swiftinstaller.library.R
+import com.brit.swiftinstaller.library.ui.customize.*
+import com.brit.swiftinstaller.library.utils.*
+import kotlinx.android.synthetic.main.customize_preview_settings.view.*
 
 class OOSOreoRomHandler(context: Context) : OreoRomHandler(context) {
 
@@ -70,5 +71,70 @@ class OOSOreoRomHandler(context: Context) : OreoRomHandler(context) {
                 "com.lastpass.lpandroid",
                 "com.weather.Weather",
                 "com.google.android.inputmethod.latin")
+    }
+
+    override fun createCustomizeHandler(): CustomizeHandler {
+        return object : CustomizeHandler(context) {
+
+            override fun getDefaultSelection(): CustomizeSelection {
+                val selection = super.getDefaultSelection()
+                selection["oos_oreo_clock"] = "oos_right"
+                return selection
+            }
+
+            override fun populateCustomizeOptions(categories: CategoryMap) {
+                populateOreoCustomizeOptions(categories)
+                super.populateCustomizeOptions(categories)
+            }
+
+            override fun createPreviewHandler(context: Context): PreviewHandler {
+                return OreoPreviewHandler(context)
+            }
         }
     }
+
+    class OreoPreviewHandler(context: Context) : PreviewHandler(context) {
+        override fun updateView(palette: MaterialPalette, selection: CustomizeSelection) {
+            super.updateView(palette, selection)
+            settingsPreview?.let {
+                if (selection.containsKey("oos_oreo_clock")) {
+                    val clockSelection = selection["oos_oreo_clock"]
+                    it.clock_right.setVisible(clockSelection == "oos_right")
+                    it.clock_left.setVisible(clockSelection == "oos_left")
+                    it.clock_centered.setVisible(clockSelection == "oos_centered")
+                }
+            }
+        }
+
+        override fun updateIcons(selection: CustomizeSelection) {
+            settingsIcons.forEach { icon ->
+                icon.setColorFilter(selection.accentColor)
+                val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_aosp"
+                val id = context.resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName",
+                        null, null)
+                if (id > 0) {
+                    icon.setImageDrawable(context.getDrawable(id))
+                }
+            }
+            systemUiIcons.forEach { icon ->
+                val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_aosp"
+                val id = context.resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName",
+                        null, null)
+                if (id > 0) {
+                    icon.setImageDrawable(context.getDrawable(id))
+                }
+                icon.setColorFilter(selection.accentColor)
+            }
+        }
+    }
+
+    private fun populateOreoCustomizeOptions(categories: CategoryMap) {
+        val clockOptions = OptionsMap()
+        clockOptions.add(Option(context.getString(R.string.right), "oos_right"))
+        clockOptions.add(Option(context.getString(R.string.left), "oos_left"))
+        clockOptions.add(Option(context.getString(R.string.centered), "oos_centered"))
+        categories.add(
+                CustomizeCategory(context.getString(R.string.clock), "oos_oreo_clock", "oos_right",
+                        clockOptions, synchronizedArrayListOf("com.android.systemui")))
+    }
+}
