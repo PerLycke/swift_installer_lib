@@ -54,13 +54,17 @@ import com.brit.swiftinstaller.library.utils.ColorUtils.checkAccentColor
 import com.brit.swiftinstaller.library.utils.ColorUtils.checkBackgroundColor
 import com.brit.swiftinstaller.library.utils.ColorUtils.convertToColorInt
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.madrapps.pikolo.listeners.OnColorSelectionListener
 import kotlinx.android.synthetic.main.activity_customize.*
 import kotlinx.android.synthetic.main.customize_accent.*
 import kotlinx.android.synthetic.main.customize_background.*
 import kotlinx.android.synthetic.main.customize_option_item.view.*
 import kotlinx.android.synthetic.main.customize_option_layout.view.*
+import kotlinx.android.synthetic.main.dialog_color_picker.*
+import kotlinx.android.synthetic.main.dialog_color_picker.view.*
 import kotlinx.android.synthetic.main.fab_sheet_personalize.view.*
 import kotlinx.android.synthetic.main.palette_view.view.*
+import kotlinx.android.synthetic.main.toolbar_overlays.view.*
 import org.jetbrains.anko.toast
 
 class CustomizeActivity : ThemeActivity() {
@@ -319,6 +323,84 @@ class CustomizeActivity : ThemeActivity() {
             }
             usePalette = material_theme.isChecked
             updateColor(false)
+        }
+
+        hashtag.setOnClickListener {
+            alert {
+                var selectedColor = selection.accentColor
+                titleResource = R.string.category_accent
+                positiveButton("Confirm") { d ->
+                    selection.accentColor = selectedColor
+                    updateColor(true)
+                    d.dismiss()
+                }
+                negativeButton("Cancel") { d ->
+                    d.dismiss()
+                }
+                val view = View.inflate(this@CustomizeActivity, R.layout.dialog_color_picker, null)
+                view.colorPicker.setColorSelectionListener(object : OnColorSelectionListener {
+                    override fun onColorSelected(color: Int) {
+                        if (checkAccentColor(color)) {
+                            selectedColor = color
+                            view.imageView.background.setColorFilter(color,
+                                    PorterDuff.Mode.MULTIPLY)
+                        } else {
+                            toast("Invalid color selected")
+                            view.colorPicker.setColor(selectedColor)
+                        }
+                    }
+
+                    override fun onColorSelectionStart(color: Int) {
+                    }
+
+                    override fun onColorSelectionEnd(color: Int) {
+                    }
+
+                })
+                view.colorPicker.setColor(selection.accentColor)
+                view.imageView.background.setColorFilter(selection.accentColor, PorterDuff.Mode.MULTIPLY)
+                customView = view
+                show()
+            }
+        }
+
+        hashtag_bg.setOnClickListener {
+            alert {
+                var selectedColor = selection.backgroundColor
+                titleResource = R.string.category_background
+                positiveButton("Confirm") { d ->
+                    selection.backgroundColor = selectedColor
+                    updateColor(true)
+                    d.dismiss()
+                }
+                negativeButton("Cancel") { d ->
+                    d.dismiss()
+                }
+                val view = View.inflate(this@CustomizeActivity, R.layout.dialog_color_picker, null)
+                view.colorPicker.setColorSelectionListener(object : OnColorSelectionListener {
+                    override fun onColorSelected(color: Int) {
+                        if (checkBackgroundColor(color)) {
+                            selectedColor = color
+                            view.imageView.background.setColorFilter(color,
+                                    PorterDuff.Mode.MULTIPLY)
+                        } else {
+                            toast("Invalid color selected")
+                            view.colorPicker.setColor(selectedColor)
+                        }
+                    }
+
+                    override fun onColorSelectionStart(color: Int) {
+                    }
+
+                    override fun onColorSelectionEnd(color: Int) {
+                    }
+
+                })
+                view.colorPicker.setColor(selection.backgroundColor)
+                view.imageView.background.setColorFilter(selection.backgroundColor, PorterDuff.Mode.MULTIPLY)
+                customView = view
+                show()
+            }
         }
 
         material_theme.setOnCheckedChangeListener(baseThemeListener)
