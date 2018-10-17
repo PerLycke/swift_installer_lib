@@ -168,6 +168,17 @@
         app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toBottomOf="@+id/custom_bg_title" />
 
+    <ImageView
+        android:id="@+id/background_picker_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp"
+        android:src="@drawable/color_picker_round"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toTopOf="@+id/hashtag_bg"
+        app:layout_constraintBottom_toBottomOf="@+id/hashtag_bg"/>
+
     <TextView
         android:id="@+id/hashtag_bg"
         android:layout_width="wrap_content"
@@ -184,6 +195,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
         android:backgroundTint="@color/minimal_green"
         android:digits="0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,A,B,C,D,E,F"
         android:ems="6"

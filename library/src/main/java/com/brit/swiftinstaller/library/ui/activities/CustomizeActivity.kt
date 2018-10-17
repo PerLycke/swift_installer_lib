@@ -26,6 +26,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.PorterDuff
+import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -325,7 +326,7 @@ class CustomizeActivity : ThemeActivity() {
             updateColor(false)
         }
 
-        hashtag.setOnClickListener {
+        accent_picker_icon.setOnClickListener {
             alert {
                 var selectedColor = selection.accentColor
                 titleResource = R.string.category_accent
@@ -587,6 +588,9 @@ class CustomizeActivity : ThemeActivity() {
 
         backgroundIndicatorHandler.setIndicatorColor(selection.accentColor)
         backgroundIndicatorHandler.setActiveIndicator(selection.backgroundColor)
+
+        //(accent_picker_icon.drawable as LayerDrawable).findDrawableByLayerId(R.id.background)
+          //      .setColorFilter(selection.accentColor, PorterDuff.Mode.MULTIPLY)
 
         val buttonTint = ColorUtils.radioButtonColor(this, R.color.radio_button_disabled,
                 selection.accentColor)

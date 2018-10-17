@@ -7,8 +7,8 @@
 
     <com.madrapps.pikolo.HSLColorPicker
         android:id="@+id/colorPicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,23 +20,26 @@
         app:saturation_indicator_stroke_color="@color/colorPrimary"
         app:saturation_start_angle="150"/>
 
+
+
     <ImageView
         android:id="@+id/colorIndicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:contentDescription="@string/image"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="@+id/imageView"
-        app:srcCompat="@drawable/bg_circle_active_stroke" />
+        android:backgroundTint="#30ffffff"
+        android:background="@drawable/bg_circle"/>
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:padding="10dp"
         android:background="@drawable/bg_circle"
+        android:backgroundTint="@color/amber"
         app:layout_constraintBottom_toBottomOf="@+id/colorPicker"
         app:layout_constraintEnd_toEndOf="@+id/colorPicker"
         app:layout_constraintStart_toStartOf="@+id/colorPicker"
