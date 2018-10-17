@@ -80,7 +80,7 @@ object ShellUtils {
     }
 
     fun copyFile(path: String, output: String): Boolean {
-        return SuFile(path).copyTo(SuFile(output)).exists()
+        return runCommand("cp $path $output", isRootAvailable).exitCode == 0
     }
 
     fun mkdir(path: String): Boolean {
