@@ -30,6 +30,14 @@ import androidx.collection.ArrayMap
 
 object OverlayUtils {
 
+    fun hasNightInfo(context: Context, targetPackage: String): Boolean {
+        return (context.assets.list("overlays/$targetPackage") ?: arrayOf()).contains("night-mode")
+    }
+
+    fun getNightInfo(context: Context, targetPackage: String): String {
+        return ShellUtils.inputStreamToString(context.assets.open("overlays/$targetPackage/night-mode"))
+    }
+
     fun getTargetPackage(packageName: String): String {
         return if (packageName.endsWith(".swiftinstaller.overlay")) {
             packageName.substring(0, packageName.lastIndexOf(".swiftinstaller.overlay"))
