@@ -140,7 +140,8 @@ object AppList {
                     hasVersions = OverlayUtils.overlayHasVersion(context, packageName),
                     installed = context.swift.romHandler.isOverlayInstalled(packageName),
                     isRequired = context.swift.romHandler.getRequiredApps().contains(packageName),
-                    appOptions = OverlayUtils.getOverlayOptions(context, packageName))
+                    appOptions = OverlayUtils.getOverlayOptions(context, packageName),
+                    nightAvailable = OverlayUtils.hasNightInfo(context, packageName))
             putApp(item, currentIndex)
         }
     }

@@ -251,6 +251,16 @@ class AppListFragment : Fragment() {
                 alert_icon.setOnClickListener {
                     alertIconClickListener!!.onAlertIconClick(apps[visible[adapterPosition]])
                 }
+                night_icon.setOnClickListener {
+                    containerView.context.alert {
+                        title = "Night Mode"
+                        message = OverlayUtils.getNightInfo(context!!, apps[visible[adapterPosition]].packageName)
+                        positiveButton("OK") { d ->
+                            d.dismiss()
+                        }
+                        show()
+                    }
+                }
             }
 
             fun bindAppItem(item: AppItem) {
@@ -359,6 +369,10 @@ class AppListFragment : Fragment() {
                         blocked_packages_alert.visibility = View.VISIBLE
                         blocked_packages_alert.setColorFilter(context!!.swift.selection.accentColor)
                     }
+
+                    night_icon.setVisible(item.nightAvailable)
+                    night_icon.isClickable = item.nightAvailable
+                    night_icon.setColorFilter(context!!.swift.selection.accentColor)
                 }
 
                 if (appExtrasHandler.appExtras.containsKey(item.packageName)) {
