@@ -33,6 +33,7 @@ import android.os.Looper
 import android.os.MessageQueue
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -340,13 +341,17 @@ class CustomizeActivity : ThemeActivity() {
                 }
                 val view = View.inflate(this@CustomizeActivity, R.layout.dialog_color_picker, null)
                 view.colorPicker.setColorSelectionListener(object : OnColorSelectionListener {
+                    var toast: Toast? = null
                     override fun onColorSelected(color: Int) {
                         if (checkAccentColor(color)) {
                             selectedColor = color
                             view.imageView.background.setColorFilter(color,
                                     PorterDuff.Mode.MULTIPLY)
                         } else {
-                            toast("Invalid color selected")
+                            if (toast != null) {
+                                toast!!.cancel()
+                            }
+                            toast = toast("Invalid color selected")
                             view.colorPicker.setColor(selectedColor)
                         }
                     }
