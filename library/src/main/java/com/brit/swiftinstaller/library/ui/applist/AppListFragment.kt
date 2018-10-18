@@ -255,7 +255,11 @@ class AppListFragment : Fragment() {
                     containerView.context.alert {
                         title = "Dark mode required"
                         message = OverlayUtils.getNightInfo(context!!, apps[visible[adapterPosition]].packageName)
-                        positiveButton("OK") { d ->
+                        positiveButton("Open App") { d ->
+                            d.dismiss()
+                            activity!!.startActivity(activity!!.pm.getLaunchIntentForPackage(apps[visible[adapterPosition]].packageName))
+                        }
+                        negativeButton("Dismiss") { d ->
                             d.dismiss()
                         }
                         show()
