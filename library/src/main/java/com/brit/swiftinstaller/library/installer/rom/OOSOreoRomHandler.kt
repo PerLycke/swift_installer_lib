@@ -114,7 +114,7 @@ class OOSOreoRomHandler(context: Context) : OreoRomHandler(context) {
             settingsIcons.forEach { icon ->
                 icon.setColorFilter(selection.accentColor)
                 val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_aosp"
-                val id = context.resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName",
+                val id = context.resources.getIdentifier("${context.packageName}:drawable/$idName",
                         null, null)
                 if (id > 0) {
                     icon.setImageDrawable(context.getDrawable(id))
@@ -122,7 +122,7 @@ class OOSOreoRomHandler(context: Context) : OreoRomHandler(context) {
             }
             systemUiIcons.forEach { icon ->
                 val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_aosp"
-                val id = context.resources.getIdentifier("com.brit.swiftinstaller:drawable/$idName",
+                val id = context.resources.getIdentifier("${context.packageName}:drawable/$idName",
                         null, null)
                 if (id > 0) {
                     icon.setImageDrawable(context.getDrawable(id))

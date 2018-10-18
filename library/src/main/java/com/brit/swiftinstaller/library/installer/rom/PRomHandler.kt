@@ -183,7 +183,7 @@ open class PRomHandler(context: Context) : RomHandler(context) {
                             icon.clearColorFilter()
                             val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_p"
                             val id = context.resources.getIdentifier(
-                                    "com.brit.swiftinstaller:drawable/$idName", null, null)
+                                    "${context.packageName}:drawable/$idName", null, null)
                             if (id > 0) {
                                 val drawable = context.getDrawable(id)?.mutate() as LayerDrawable
                                 if (selection["stock_pie_icons"] == "stock_accented") {
@@ -199,7 +199,7 @@ open class PRomHandler(context: Context) : RomHandler(context) {
                             val idName =
                                     "ic_${context.resources.getResourceEntryName(icon.id)}_aosp"
                             val id = context.resources.getIdentifier(
-                                    "com.brit.swiftinstaller:drawable/$idName", null, null)
+                                    "${context.packageName}:drawable/$idName", null, null)
                             if (id > 0) {
                                 val layerDrawable = context.getDrawable(id) as LayerDrawable
                                 icon.setImageDrawable(layerDrawable)
