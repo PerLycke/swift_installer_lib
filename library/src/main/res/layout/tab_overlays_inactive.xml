@@ -31,7 +31,7 @@
         android:fontFamily="sans-serif"
         android:text="@string/tab_inactive"
         android:textAllCaps="true"
-        android:textColor="@android:color/tab_indicator_text"
+        android:textColor="@color/tab_indicator_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
