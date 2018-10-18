@@ -253,7 +253,7 @@ class AppListFragment : Fragment() {
                 }
                 night_icon.setOnClickListener {
                     containerView.context.alert {
-                        title = "Night Mode"
+                        title = "Dark mode required"
                         message = OverlayUtils.getNightInfo(context!!, apps[visible[adapterPosition]].packageName)
                         positiveButton("OK") { d ->
                             d.dismiss()
