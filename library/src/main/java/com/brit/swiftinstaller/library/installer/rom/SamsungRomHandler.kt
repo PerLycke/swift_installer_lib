@@ -157,7 +157,7 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
                 } else {
                     appInstall.action = Intent.ACTION_INSTALL_PACKAGE
                     appInstall.data = FileProvider.getUriForFile(context,
-                            "com.brit.swiftinstaller.myprovider",
+                            "${context.packageName}.myprovider",
                             File(getOverlayPath(apps.elementAt(index))))
                 }
                 appInstall.addCategory(Intent.CATEGORY_DEFAULT)
