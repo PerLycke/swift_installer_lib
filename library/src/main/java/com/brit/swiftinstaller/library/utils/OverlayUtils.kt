@@ -239,8 +239,11 @@ object OverlayUtils {
             for (option in options) {
                 if (optionsMap.containsKey(option)) {
                     val optionsArray = context.assets.list("$path/options/$option") ?: emptyArray()
-                    if (optionsArray.isNotEmpty()) {
+                    if (optionsArray.isNotEmpty() && optionsArray.contains(optionsMap[option])) {
                         checkResourcePath(context, "$path/options/$option/${optionsMap[option]}",
+                                packageName, resourcePaths)
+                    } else {
+                        checkResourcePath(context, "$path/options/$option/else",
                                 packageName, resourcePaths)
                     }
                 }
