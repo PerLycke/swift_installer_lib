@@ -276,6 +276,11 @@ class MainActivity : ThemeActivity() {
         b.findDrawableByLayerId(R.id.background_popup)
                 .setTint(MaterialPalette.get(this).cardBackground)
 
+        popupView.popup_menu_restart_sysui.setVisible(BuildConfig.DEBUG)
+        popupView.popup_menu_restart_sysui.setOnClickListener {
+            restartSysUi(this)
+        }
+
         popupView.popup_menu_about.setOnClickListener { _ ->
             popup.dismiss()
             alert {

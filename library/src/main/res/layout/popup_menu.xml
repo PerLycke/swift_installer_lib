@@ -58,10 +58,28 @@
         android:textAppearance="@android:style/TextAppearance.Material.Medium"
         android:textColor="@android:color/white"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/popup_menu_soft_reboot"
+        app:layout_constraintBottom_toTopOf="@+id/popup_menu_restart_sysui"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/popup_menu_about" />
+
+    <TextView
+        android:id="@+id/popup_menu_restart_sysui"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:foreground="?android:selectableItemBackground"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="0dp"
+        android:text="Restart SystemUI"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/popup_menu_soft_reboot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/popup_menu_settings" />
 
     <TextView
         android:id="@+id/popup_menu_soft_reboot"
@@ -78,7 +96,7 @@
         app:layout_constraintBottom_toTopOf="@+id/popup_menu_changelog"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/popup_menu_settings" />
+        app:layout_constraintTop_toBottomOf="@+id/popup_menu_restart_sysui" />
 
     <TextView
         android:id="@+id/popup_menu_changelog"
