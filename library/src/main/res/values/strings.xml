@@ -192,4 +192,11 @@
     <string name="pie_category_setting_icon">Setting Icons</string>
     <string name="quick_settings_style">Quick Settings Style</string>
     <string name="swiftkey_reboot_needed">You need to reboot for SwiftKey to reload all colors</string>
+    <string name="contact_name_1">Charles</string>
+    <string name="contact_name_2">Michael</string>
+    <string name="contact_name_3">William</string>
+    <string name="tile_option_material_color">Material Colors</string>
+    <string name="tile_option_pastel_color">Pastel Colors</string>
+    <string name="tile_option_accent_color">Accent Colors</string>
+    <string name="tile_options">Letter Tile</string>
 </resources>

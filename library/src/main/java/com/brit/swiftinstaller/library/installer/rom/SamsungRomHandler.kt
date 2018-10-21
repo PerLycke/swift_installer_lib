@@ -277,6 +277,7 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
         }
 
         override fun updateIcons(selection: CustomizeSelection) {
+            super.updateIcons(selection)
 
             val option = context.swift.romHandler.getCustomizeHandler()
                     .getCustomizeOptions()["samsung_oreo_icons"]!!.options[selection["samsung_oreo_icons"]]!!

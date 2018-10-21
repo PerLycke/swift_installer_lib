@@ -1,4 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ /*
+  ~  * Copyright (C) 2018 Griffin Millender
+  ~  * Copyright (C) 2018 Per Lycke
+  ~  * Copyright (C) 2018 Davide Lilli & Nishith Khanna
+  ~  *
+  ~  * This program is free software: you can redistribute it and/or modify
+  ~  * it under the terms of the GNU General Public License as published by
+  ~  * the Free Software Foundation, either version 3 of the License, or
+  ~  * (at your option) any later version.
+  ~  *
+  ~  * This program is distributed in the hope that it will be useful,
+  ~  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  * GNU General Public License for more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License
+  ~  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  ~  */
+  -->
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -56,6 +76,17 @@
             app:layout_constraintTop_toTopOf="@+id/preview_sysui_bg" />
 
         <ImageView
+            android:id="@+id/qs_bg_layout"
+            android:layout_width="0dp"
+            android:layout_height="85dp"
+            android:layout_marginBottom="14dp"
+            android:contentDescription="@string/image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/qs_bg" />
+
+        <ImageView
             android:id="@+id/notif_bg_layout"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -97,8 +128,8 @@
 
         <ImageView
             android:id="@+id/systemui_wifi_icon"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginTop="16dp"
             android:contentDescription="@null"
             app:layout_constraintEnd_toStartOf="@+id/systemui_sound_icon"
@@ -111,8 +142,8 @@
 
         <ImageView
             android:id="@+id/systemui_sound_icon"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:contentDescription="@null"
             app:layout_constraintEnd_toStartOf="@+id/systemui_bluetooth_icon"
             app:layout_constraintHorizontal_bias="0.5"
@@ -122,8 +153,8 @@
 
         <ImageView
             android:id="@+id/systemui_bluetooth_icon"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:contentDescription="@null"
             app:layout_constraintEnd_toStartOf="@+id/systemui_rotation_icon"
             app:layout_constraintHorizontal_bias="0.5"
@@ -133,8 +164,8 @@
 
         <ImageView
             android:id="@+id/systemui_rotation_icon"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:contentDescription="@null"
             android:scaleX="0.9"
             android:scaleY="0.9"
@@ -146,8 +177,8 @@
 
         <ImageView
             android:id="@+id/systemui_flashlight_icon"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:contentDescription="@null"
             app:layout_constraintEnd_toStartOf="@+id/systemui_airplane_icon"
             app:layout_constraintHorizontal_bias="0.5"
@@ -157,8 +188,8 @@
 
         <ImageView
             android:id="@+id/systemui_airplane_icon"
-            android:layout_width="26dp"
-            android:layout_height="26dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:contentDescription="@null"
             app:layout_constraintEnd_toEndOf="@+id/preview_sysui_gear"
             app:layout_constraintHorizontal_bias="0.5"
@@ -183,13 +214,12 @@
             android:layout_width="0dp"
             android:layout_height="2dp"
             android:layout_marginStart="3dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="3dp"
             android:background="#26000000"
             android:contentDescription="@null"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/preview_sysui_handle" />
+            app:layout_constraintTop_toBottomOf="@+id/qs_bg_layout" />
 
         <ImageView
             android:id="@+id/preview_sysui_app_icon"

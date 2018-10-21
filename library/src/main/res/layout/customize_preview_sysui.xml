@@ -76,11 +76,21 @@
             app:layout_constraintTop_toTopOf="@+id/preview_sysui_bg" />
 
         <ImageView
+            android:id="@+id/qs_bg_layout"
+            android:layout_width="0dp"
+            android:layout_height="90dp"
+            android:layout_marginBottom="14dp"
+            android:contentDescription="@string/image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/qs_bg" />
+
+        <ImageView
             android:id="@+id/notif_bg_layout"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="2dp"
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="14dp"
             android:contentDescription="@string/image"
@@ -189,8 +199,8 @@
         <ImageView
             android:id="@+id/preview_sysui_handle"
             android:layout_width="22dp"
-            android:layout_height="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_height="10dp"
+            android:layout_marginTop="10dp"
             android:contentDescription="@null"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="@+id/preview_sysui_divider"
@@ -208,7 +218,7 @@
             android:contentDescription="@null"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/preview_sysui_handle" />
+            app:layout_constraintTop_toBottomOf="@+id/qs_bg_layout" />
 
         <ImageView
             android:id="@+id/preview_sysui_app_icon"

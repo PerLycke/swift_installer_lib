@@ -176,9 +176,34 @@ open class PRomHandler(context: Context) : RomHandler(context) {
                 return selection
             }
 
+            override fun populateCustomizeOptions(categories: CategoryMap) {
+                populatePieCustomizeOptions(categories)
+                super.populateCustomizeOptions(categories)
+            }
+
             override fun createPreviewHandler(context: Context): PreviewHandler {
-                return object : PreviewHandler(context) {
+                return PiePreviewHandler(context)
+            }
+        }
+    }
+    class PiePreviewHandler(context: Context) : PreviewHandler(context) {
+        override fun updateView(palette: MaterialPalette, selection: CustomizeSelection) {
+            super.updateView(palette, selection)
+                val darkNotif = (selection["notif_background"]) == "dark"
+                systemUiPreview?.let {
+                    it.notif_bg_layout.setImageResource(R.drawable.notif_bg_rounded)
+                    if (darkNotif) {
+                        it.notif_bg_layout.drawable.setTint(
+                                ColorUtils.handleColor(palette.backgroundColor, 8))
+                    } else {
+                        it.notif_bg_layout.drawable.setTint(
+                                context.getColor(R.color.notification_bg_light))
+
+                    }
+                }
+            }
                     override fun updateIcons(selection: CustomizeSelection) {
+                        super.updateIcons(selection)
                         settingsIcons.forEach { icon ->
                             icon.clearColorFilter()
                             val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_p"
@@ -211,32 +236,8 @@ open class PRomHandler(context: Context) : RomHandler(context) {
                         }
                     }
 
-                    override fun updateView(palette: MaterialPalette,
-                                            selection: CustomizeSelection) {
-                        super.updateView(palette, selection)
-                        val darkNotif = (selection["notif_background"]) == "dark"
-                        systemUiPreview?.let {
-                            it.notif_bg_layout.setImageResource(R.drawable.notif_bg_rounded)
-                            if (darkNotif) {
-                                it.notif_bg_layout.drawable.setTint(
-                                        ColorUtils.handleColor(palette.backgroundColor, 8))
-                            } else {
-                                it.notif_bg_layout.drawable.setTint(
-                                        context.getColor(R.color.notification_bg_light))
 
-                            }
-                        }
-                    }
                 }
-            }
-
-            override fun populateCustomizeOptions(categories: CategoryMap) {
-                populatePieCustomizeOptions(categories)
-                super.populateCustomizeOptions(categories)
-            }
-
-        }
-    }
 
     open fun populatePieCustomizeOptions(categories: CategoryMap) {
         val pieIconOptions = OptionsMap()

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ /*
+  ~  * Copyright (C) 2018 Griffin Millender
+  ~  * Copyright (C) 2018 Per Lycke
+  ~  * Copyright (C) 2018 Davide Lilli & Nishith Khanna
+  ~  *
+  ~  * This program is free software: you can redistribute it and/or modify
+  ~  * it under the terms of the GNU General Public License as published by
+  ~  * the Free Software Foundation, either version 3 of the License, or
+  ~  * (at your option) any later version.
+  ~  *
+  ~  * This program is distributed in the hope that it will be useful,
+  ~  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  * GNU General Public License for more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License
+  ~  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  ~  */
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/customize_preview_root"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/preview_nav_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/settings_guideline1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="201dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/settings_guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="253dp" />
+
+        <ImageView
+            android:id="@+id/nav_preview"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@string/image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/preview_nav_bg" />
+
+        <ImageView
+            android:id="@+id/contact_tile_icon_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:contentDescription="@string/image"
+            android:maxWidth="8dp"
+            android:maxHeight="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/contact_tile_name_1"
+            app:layout_constraintEnd_toStartOf="@+id/contact_tile_name_1"
+            app:layout_constraintTop_toTopOf="@+id/contact_tile_name_1"
+            app:srcCompat="@drawable/contact_tile_icon_1_pastel" />
+
+        <TextView
+            android:id="@+id/contact_tile_name_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/contact_name_1"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <ImageView
+            android:id="@+id/contact_tile_icon_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:contentDescription="@string/image"
+            android:maxWidth="8dp"
+            android:maxHeight="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/contact_tile_name_2"
+            app:layout_constraintEnd_toStartOf="@+id/contact_tile_name_2"
+            app:layout_constraintTop_toTopOf="@+id/contact_tile_name_2"
+            app:srcCompat="@drawable/contact_tile_icon_1_pastel" />
+
+        <TextView
+            android:id="@+id/contact_tile_name_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/contact_name_2"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/nav_preview"
+            app:layout_constraintTop_toBottomOf="@+id/contact_tile_name_1" />
+
+        <ImageView
+            android:id="@+id/contact_tile_icon_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:contentDescription="@string/image"
+            android:maxWidth="8dp"
+            android:maxHeight="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/contact_tile_name_3"
+            app:layout_constraintEnd_toStartOf="@+id/contact_tile_name_3"
+            app:layout_constraintTop_toTopOf="@+id/contact_tile_name_3"
+            app:srcCompat="@drawable/contact_tile_icon_1_pastel" />
+
+        <TextView
+            android:id="@+id/contact_tile_name_3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/contact_name_3"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/nav_preview"
+            app:layout_constraintTop_toBottomOf="@+id/contact_tile_name_2" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

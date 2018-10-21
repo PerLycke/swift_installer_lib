@@ -111,6 +111,7 @@ class OOSOreoRomHandler(context: Context) : OreoRomHandler(context) {
         }
 
         override fun updateIcons(selection: CustomizeSelection) {
+            super.updateIcons(selection)
             settingsIcons.forEach { icon ->
                 icon.setColorFilter(selection.accentColor)
                 val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_aosp"
