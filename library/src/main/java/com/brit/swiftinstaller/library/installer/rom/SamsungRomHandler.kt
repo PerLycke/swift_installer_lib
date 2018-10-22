@@ -217,6 +217,8 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
                 val selection = super.getDefaultSelection()
                 selection["samsung_oreo_icons"] = "stock_accent"
                 selection["samsung_oreo_clock"] = "right"
+                selection["samsung_oreo_nav_icons"] = "nav_stock"
+                selection["samsung_oreo_nav_color_icons"] = "nav_color_white"
                 if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O) {
                     selection["samsung_oreo_notif_style"] = "default"
                 }
@@ -307,6 +309,24 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
                 }
                 icon.setColorFilter(selection.accentColor)
             }
+            val navOption = context.swift.romHandler.getCustomizeHandler()
+                    .getCustomizeOptions()["samsung_oreo_nav_icons"]!!.options[selection["samsung_oreo_nav_icons"]]!!
+            navIcons.forEach { icon ->
+                if (selection[navOption.subOptionKey] == "nav_color_accent") {
+                    icon.setColorFilter(selection.accentColor)
+                } else {
+                    icon.clearColorFilter()
+                }
+
+                val idName =
+                        "${context.resources.getResourceEntryName(icon.id)}_${navOption.resTag}"
+                val id = context.resources.getIdentifier("${context.packageName}:drawable/$idName",
+                        null, null)
+                if (id > 0) {
+                    icon.setImageDrawable(context.getDrawable(id))
+                }
+
+            }
         }
     }
 
@@ -347,5 +367,27 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
                     "samsung_oreo_notif_style", "default", notifOptions,
                     synchronizedArrayListOf("com.android.systemui", "android")))
         }
+
+        val navIconOptions = OptionsMap()
+        navIconOptions.add(Option("Stock", "nav_stock", "stock", false))
+        navIconOptions.add(Option("AOSP", "nav_aosp", "aosp", false))
+        navIconOptions.add(Option("Oreo Pixel", "nav_oreo", "oreo", false))
+        navIconOptions.add(Option("Outline", "nav_outline", "outline", false))
+
+        val navIconColorOptions = OptionsMap()
+        navIconColorOptions.add(Option("White", "nav_color_white", "nav_color_white", false))
+        navIconColorOptions.add(Option("Accent", "nav_color_accent", "nav_color_accent", true))
+        navIconOptions["nav_stock"]!!.subOptions.putAll(navIconColorOptions)
+        navIconOptions["nav_stock"]!!.subOptionKey = "samsung_oreo_nav_color_icons"
+        navIconOptions["nav_aosp"]!!.subOptions.putAll(navIconColorOptions)
+        navIconOptions["nav_aosp"]!!.subOptionKey = "samsung_oreo_nav_color_icons"
+        navIconOptions["nav_oreo"]!!.subOptions.putAll(navIconColorOptions)
+        navIconOptions["nav_oreo"]!!.subOptionKey = "samsung_oreo_nav_color_icons"
+        navIconOptions["nav_outline"]!!.subOptions.putAll(navIconColorOptions)
+        navIconOptions["nav_outline"]!!.subOptionKey = "samsung_oreo_nav_color_icons"
+
+        categories.add(
+                CustomizeCategory("Navigation Icons", "samsung_oreo_nav_icons", "nav_stock",
+                        navIconOptions, synchronizedArrayListOf("com.android.systemui")))
     }
 }

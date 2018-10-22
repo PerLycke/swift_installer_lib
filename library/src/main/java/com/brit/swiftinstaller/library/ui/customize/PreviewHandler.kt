@@ -41,6 +41,7 @@ abstract class PreviewHandler(val context: Context) {
 
     var settingsPreview: ViewGroup? = null
     var systemUiPreview: ViewGroup? = null
+    val navIcons = SynchronizedArrayList<ImageView>()
     var navPreview: ViewGroup? = null
 
     val settingsIcons = SynchronizedArrayList<ImageView>()
@@ -85,6 +86,9 @@ abstract class PreviewHandler(val context: Context) {
                                 container, false) as ViewGroup
 
                 navPreview?.let {
+                    navIcons.add(it.nav_back_icon)
+                    navIcons.add(it.nav_home_icon)
+                    navIcons.add(it.nav_recent_icon)
                     tiles.add(it.contact_tile_icon_1)
                     tiles.add(it.contact_tile_icon_2)
                     tiles.add(it.contact_tile_icon_3)
@@ -192,14 +196,14 @@ abstract class PreviewHandler(val context: Context) {
             }
             it.searchbar_bg.setColorFilter(palette.cardBackground)
 
-            navPreview?.let {
-                if (it.nav_preview.drawable != null) {
+            navPreview?.let {v ->
+                if (v.nav_preview.drawable != null) {
                     val navBackground =
-                            it.nav_preview.drawable as LayerDrawable
+                            v.nav_preview.drawable as LayerDrawable
                     navBackground.findDrawableByLayerId(R.id.preview_nav_background)
                             .setTint(palette.backgroundColor)
-
                 }
+                v.navbar_bg.setColorFilter(palette.darkBackgroundColor)
             }
         }
     }

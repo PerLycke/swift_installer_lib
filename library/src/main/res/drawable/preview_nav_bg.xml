@@ -1,25 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/preview_frame">
+    <item android:id="@+id/search_frame_background">
         <shape xmlns:android="http://schemas.android.com/apk/res/android"
             android:shape="rectangle">
             <corners
                 android:bottomLeftRadius="18dp"
                 android:bottomRightRadius="18dp" />
-            <solid android:color="@color/preview_stroke" />
-        </shape>
-    </item>
-    <item
-        android:id="@+id/preview_nav_background"
-        android:bottom="3dp"
-        android:left="3dp"
-        android:right="3dp"
-        android:top="0dp">
-        <shape xmlns:android="http://schemas.android.com/apk/res/android"
-            android:shape="rectangle">
-            <corners
-                android:bottomLeftRadius="16dp"
-                android:bottomRightRadius="16dp" />
+            <stroke
+                android:color="@color/search_frame_stroke" />
         </shape>
     </item>
 </layer-list>

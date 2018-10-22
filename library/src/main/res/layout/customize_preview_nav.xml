@@ -58,7 +58,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/preview_nav_bg" />
+            app:srcCompat="@drawable/preview_nav_frame_bg" />
 
         <ImageView
             android:id="@+id/contact_tile_icon_1"
@@ -141,6 +141,54 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/nav_preview"
             app:layout_constraintTop_toBottomOf="@+id/contact_tile_name_2" />
+
+        <ImageView
+            android:id="@+id/navbar_bg"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginBottom="3dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:contentDescription="@string/image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/preview_nav_bg" />
+
+        <ImageView
+            android:id="@+id/nav_back_icon"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="40dp"
+            android:contentDescription="@string/image"
+            app:layout_constraintBottom_toBottomOf="@+id/navbar_bg"
+            app:layout_constraintStart_toStartOf="@+id/navbar_bg"
+            app:layout_constraintTop_toTopOf="@+id/navbar_bg"
+            app:srcCompat="@drawable/nav_back_icon_stock" />
+
+        <ImageView
+            android:id="@+id/nav_home_icon"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="76dp"
+            android:contentDescription="@string/image"
+            app:layout_constraintBottom_toBottomOf="@+id/navbar_bg"
+            app:layout_constraintStart_toStartOf="@+id/nav_back_icon"
+            app:layout_constraintTop_toTopOf="@+id/navbar_bg"
+            app:srcCompat="@drawable/nav_home_icon_stock" />
+
+        <ImageView
+            android:id="@+id/nav_recent_icon"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="72dp"
+            android:layout_marginEnd="40dp"
+            android:contentDescription="@string/image"
+            app:layout_constraintBottom_toBottomOf="@+id/navbar_bg"
+            app:layout_constraintEnd_toEndOf="@+id/navbar_bg"
+            app:layout_constraintTop_toTopOf="@+id/navbar_bg"
+            app:srcCompat="@drawable/nav_recent_icon_stock" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
