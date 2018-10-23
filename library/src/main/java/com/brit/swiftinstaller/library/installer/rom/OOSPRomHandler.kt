@@ -113,7 +113,7 @@ class OOSPRomHandler(context: Context) : PRomHandler(context) {
             }
             navIcons.forEach { icon ->
                 val idName =
-                        "ic_${context.resources.getResourceEntryName(icon.id)}_outline"
+                        "${context.resources.getResourceEntryName(icon.id)}_outline"
                 val id = context.resources.getIdentifier(
                         "${context.packageName}:drawable/$idName", null, null)
                 if (id > 0) {

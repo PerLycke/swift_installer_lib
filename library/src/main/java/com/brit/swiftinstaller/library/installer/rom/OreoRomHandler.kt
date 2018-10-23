@@ -138,7 +138,7 @@ open class OreoRomHandler(context: Context) : RomHandler(context) {
             }
             navIcons.forEach { icon ->
                 val idName =
-                        "ic_${context.resources.getResourceEntryName(icon.id)}_aosp"
+                        "${context.resources.getResourceEntryName(icon.id)}_aosp"
                 val id = context.resources.getIdentifier(
                         "${context.packageName}:drawable/$idName", null, null)
                 if (id > 0) {

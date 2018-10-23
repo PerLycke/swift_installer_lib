@@ -235,7 +235,7 @@ open class PRomHandler(context: Context) : RomHandler(context) {
                         }
                         navIcons.forEach { icon ->
                             val idName =
-                                    "ic_${context.resources.getResourceEntryName(icon.id)}_pie"
+                                    "${context.resources.getResourceEntryName(icon.id)}_pie"
                             val id = context.resources.getIdentifier(
                                     "${context.packageName}:drawable/$idName", null, null)
                             if (id > 0) {
