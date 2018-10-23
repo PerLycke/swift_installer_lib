@@ -34,6 +34,7 @@ import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.browser.customtabs.CustomTabsIntent
+import org.jetbrains.anko.doAsync
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.File
@@ -43,8 +44,6 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
 object Utils {
-
-    private const val BUFFER = 80000
 
     fun isSamsungOreo(): Boolean {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
@@ -94,6 +93,22 @@ object Utils {
                         origin.copyTo(out, 1024)
                     }
                 }
+            }
+        }
+    }
+
+    fun updateRequiredApps(context: Context) {
+        doAsync {
+            val requiredApps = arrayListOf<String>()
+            requiredApps.addAll(context.swift.romHandler.getRequiredApps())
+            val options = context.swift.romHandler.getCustomizeHandler().getCustomizeOptions()
+            val selection = context.swift.romHandler.getCustomizeHandler().getSelection()
+            selection.forEach { it ->
+                val req = options[it.key]?.options?.get(it.value)?.requiredApps
+                req.let { set ->
+                    requiredApps.addAll(set!!)
+                }
+                context.prefs.requiredApps = requiredApps.toSet()
             }
         }
     }

@@ -85,6 +85,10 @@ val Context.pm: PackageManager
 val Context.prefs: SharedPreferences
     get() = PreferenceManager.getDefaultSharedPreferences(this)
 
+var SharedPreferences.requiredApps
+    get() = getStringSet("required_apps", setOf())
+    set(value) = edit().putStringSet("required_apps", value).apply()
+
 fun View.setVisible(visible: Boolean) {
     visibility = if (visible) {
         View.VISIBLE

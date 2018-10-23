@@ -136,7 +136,7 @@ class OverlaysActivity : ThemeActivity() {
             }
         })
         pagerAdapter.setRequiredApps(INSTALL_TAB,
-                swift.romHandler.getRequiredApps())
+                prefs.requiredApps.toTypedArray())
 
         search_view.setOnSearchClickListener {
             toolbar_overlays_main_content.visibility = View.GONE
