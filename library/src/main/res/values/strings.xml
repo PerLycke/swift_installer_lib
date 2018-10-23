@@ -199,4 +199,12 @@
     <string name="tile_option_pastel_color">Pastel palette</string>
     <string name="tile_option_accent_color">Accent linked</string>
     <string name="tile_options">Contacts tiles style</string>
+    <string name="navigation_icon_options">Navigation Icons</string>
+    <string name="navigation_icon_stock">Stock</string>
+    <string name="navigation_icon_aosp">AOSP</string>
+    <string name="navigation_icon_oreo_pixel">Oreo Pixel</string>
+    <string name="navigation_icon_outline">Outline</string>
+    <string name="navigation_icon_pie">Pie</string>
+    <string name="navigation_icon_color_white">White</string>
+    <string name="navigation_icon_color_accent">Accented</string>
 </resources>
