@@ -4,14 +4,14 @@
         <shape xmlns:android="http://schemas.android.com/apk/res/android"
             android:shape="oval">
             <solid android:color="#ffdb4437"/>
-            <size android:height="36dp" android:width="36dp"/>
+            <size android:height="24dp" android:width="24dp"/>
         </shape>
     </item>
     <item android:id="@+id/tile_foreground"
             android:gravity="center">
             <vector
-                android:width="24.0dip"
-                android:height="24.0dip"
+                android:width="18.0dip"
+                android:height="18.0dip"
                 android:viewportWidth="24.0"
                 android:viewportHeight="24.0">
                 <path
