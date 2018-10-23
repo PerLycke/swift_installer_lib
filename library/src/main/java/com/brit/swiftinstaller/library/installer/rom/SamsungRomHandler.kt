@@ -372,6 +372,7 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
         navIconOptions.add(Option("AOSP", "nav_aosp", "aosp", false))
         navIconOptions.add(Option("Oreo Pixel", "nav_oreo", "oreo", false))
         navIconOptions.add(Option("Outline", "nav_outline", "outline", false))
+        navIconOptions.add(Option("Pie", "nav_pie", "pie", false))
 
         val navIconColorOptions = OptionsMap()
         navIconColorOptions.add(Option("White", "nav_color_white", "nav_color_white", false))
@@ -384,6 +385,8 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
         navIconOptions["nav_oreo"]!!.subOptionKey = "samsung_oreo_nav_color_icons"
         navIconOptions["nav_outline"]!!.subOptions.putAll(navIconColorOptions)
         navIconOptions["nav_outline"]!!.subOptionKey = "samsung_oreo_nav_color_icons"
+        navIconOptions["nav_pie"]!!.subOptions.putAll(navIconColorOptions)
+        navIconOptions["nav_pie"]!!.subOptionKey = "samsung_oreo_nav_color_icons"
 
         categories.add(
                 CustomizeCategory("Navigation Icons", "samsung_oreo_nav_icons", "nav_stock",

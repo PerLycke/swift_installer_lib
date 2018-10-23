@@ -2,11 +2,11 @@ package com.brit.swiftinstaller.library.installer.rom
 
 import android.content.Context
 import android.content.Intent
-import com.brit.swiftinstaller.library.ui.customize.CategoryMap
-import com.brit.swiftinstaller.library.utils.ColorUtils
-import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
-import com.brit.swiftinstaller.library.utils.runCommand
-import com.brit.swiftinstaller.library.utils.swift
+import android.graphics.drawable.LayerDrawable
+import com.brit.swiftinstaller.library.R
+import com.brit.swiftinstaller.library.ui.customize.*
+import com.brit.swiftinstaller.library.utils.*
+import kotlinx.android.synthetic.main.customize_preview_sysui.view.*
 
 class OOSPRomHandler(context: Context) : PRomHandler(context) {
 
@@ -59,6 +59,71 @@ class OOSPRomHandler(context: Context) : PRomHandler(context) {
     }
 
 
+    override fun createCustomizeHandler(): CustomizeHandler {
+        return object : CustomizeHandler(context) {
+            override fun populateCustomizeOptions(categories: CategoryMap) {
+                populatePieCustomizeOptions(categories)
+                super.populateCustomizeOptions(categories)
+            }
+            override fun createPreviewHandler(context: Context): PreviewHandler {
+                return PiePreviewHandler(context)
+            }
+        }
+    }
+    class PiePreviewHandler(context: Context) : PreviewHandler(context) {
+        override fun updateView(palette: MaterialPalette, selection: CustomizeSelection) {
+            super.updateView(palette, selection)
+            val darkNotif = (selection["notif_background"]) == "dark"
+            systemUiPreview?.let {
+                it.notif_bg_layout.setImageResource(R.drawable.notif_bg_rounded)
+                if (darkNotif) {
+                    it.notif_bg_layout.drawable.setTint(
+                            ColorUtils.handleColor(palette.backgroundColor, 8))
+                } else {
+                    it.notif_bg_layout.drawable.setTint(
+                            context.getColor(R.color.notification_bg_light))
+
+                }
+            }
+        }
+        override fun updateIcons(selection: CustomizeSelection) {
+            super.updateIcons(selection)
+            settingsIcons.forEach { icon ->
+                icon.clearColorFilter()
+                val idName = "ic_${context.resources.getResourceEntryName(icon.id)}_p"
+                val id = context.resources.getIdentifier(
+                        "${context.packageName}:drawable/$idName", null, null)
+                if (id > 0) {
+                    icon.setImageDrawable(context.getDrawable(id))
+                }
+            }
+            systemUiIcons.forEach { icon ->
+                val idName =
+                        "ic_${context.resources.getResourceEntryName(icon.id)}_aosp"
+                val id = context.resources.getIdentifier(
+                        "${context.packageName}:drawable/$idName", null, null)
+                if (id > 0) {
+                    val layerDrawable = context.getDrawable(id) as LayerDrawable
+                    icon.setImageDrawable(layerDrawable)
+                    layerDrawable.findDrawableByLayerId(R.id.icon_bg)
+                            .setTint(selection.accentColor)
+                    layerDrawable.findDrawableByLayerId(
+                            R.id.icon_tint).setTint(selection.backgroundColor)
+                }
+            }
+            navIcons.forEach { icon ->
+                val idName =
+                        "ic_${context.resources.getResourceEntryName(icon.id)}_outline"
+                val id = context.resources.getIdentifier(
+                        "${context.packageName}:drawable/$idName", null, null)
+                if (id > 0) {
+                    icon.setImageDrawable(context.getDrawable(id))
+                }
+            }
+        }
+
+
+    }
     override fun populatePieCustomizeOptions(categories: CategoryMap) {
     }
 }

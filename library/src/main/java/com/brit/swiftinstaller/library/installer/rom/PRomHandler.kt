@@ -233,6 +233,15 @@ open class PRomHandler(context: Context) : RomHandler(context) {
                                         R.id.icon_tint).setTint(selection.backgroundColor)
                             }
                         }
+                        navIcons.forEach { icon ->
+                            val idName =
+                                    "ic_${context.resources.getResourceEntryName(icon.id)}_pie"
+                            val id = context.resources.getIdentifier(
+                                    "${context.packageName}:drawable/$idName", null, null)
+                            if (id > 0) {
+                                icon.setImageDrawable(context.getDrawable(id))
+                            }
+                        }
                     }
 
 
