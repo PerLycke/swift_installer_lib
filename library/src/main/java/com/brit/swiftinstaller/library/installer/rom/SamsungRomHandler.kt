@@ -82,7 +82,6 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
                 "com.embermitre.pixolor.app",
                 "com.google.android.apps.genie.geniewidget",
                 "com.google.android.apps.inbox",
-                "com.google.android.apps.messaging",
                 "com.google.android.gm",
                 "com.google.android.talk",
                 "com.google.android.packageinstaller",
