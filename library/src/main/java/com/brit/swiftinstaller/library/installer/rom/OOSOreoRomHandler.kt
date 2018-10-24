@@ -129,15 +129,6 @@ class OOSOreoRomHandler(context: Context) : OreoRomHandler(context) {
                 }
                 icon.setColorFilter(selection.accentColor)
             }
-            navIcons.forEach { icon ->
-                val idName =
-                        "${context.resources.getResourceEntryName(icon.id)}_outline"
-                val id = context.resources.getIdentifier(
-                        "${context.packageName}:drawable/$idName", null, null)
-                if (id > 0) {
-                    icon.setImageDrawable(context.getDrawable(id))
-                }
-            }
         }
     }
 

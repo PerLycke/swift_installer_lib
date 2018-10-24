@@ -32,8 +32,6 @@ import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.utils.ColorUtils
 import com.brit.swiftinstaller.library.utils.MaterialPalette
 import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
-import com.brit.swiftinstaller.library.utils.swift
-import kotlinx.android.synthetic.main.customize_preview_nav.view.*
 import kotlinx.android.synthetic.main.customize_preview_settings.view.*
 import kotlinx.android.synthetic.main.customize_preview_sysui.view.*
 
@@ -41,92 +39,47 @@ abstract class PreviewHandler(val context: Context) {
 
     var settingsPreview: ViewGroup? = null
     var systemUiPreview: ViewGroup? = null
-    val navIcons = SynchronizedArrayList<ImageView>()
-    var navPreview: ViewGroup? = null
 
     val settingsIcons = SynchronizedArrayList<ImageView>()
     val systemUiIcons = SynchronizedArrayList<ImageView>()
-    val tiles = SynchronizedArrayList<ImageView>()
 
     open fun getPage(container: ViewGroup, position: Int): View {
-        return when (position) {
-            0 -> {
-                settingsPreview =
-                        LayoutInflater.from(context).inflate(R.layout.customize_preview_settings,
-                                container, false) as ViewGroup
+        return if (position == 0) {
+            settingsPreview =
+                    LayoutInflater.from(context).inflate(R.layout.customize_preview_settings,
+                            container, false) as ViewGroup
 
-                settingsPreview?.let {
-                    settingsIcons.add(it.settings_connections_icon)
-                    settingsIcons.add(it.settings_sound_icon)
-                    settingsIcons.add(it.settings_notifications_icon)
-                }
-
-                settingsPreview!!
-            }
-            1 -> {
-                systemUiPreview = LayoutInflater.from(context).inflate(R.layout.customize_preview_sysui,
-                        container, false) as ViewGroup
-
-                systemUiPreview?.let {
-                    it.preview_wallpaper.clipToOutline = true
-
-                    systemUiIcons.add(it.systemui_wifi_icon)
-                    systemUiIcons.add(it.systemui_airplane_icon)
-                    systemUiIcons.add(it.systemui_bluetooth_icon)
-                    systemUiIcons.add(it.systemui_flashlight_icon)
-                    systemUiIcons.add(it.systemui_sound_icon)
-                    systemUiIcons.add(it.systemui_rotation_icon)
-                }
-
-                systemUiPreview!!
-            }
-            else -> {
-                navPreview =
-                        LayoutInflater.from(context).inflate(R.layout.customize_preview_nav,
-                                container, false) as ViewGroup
-
-                navPreview?.let {
-                    navIcons.add(it.nav_back_icon)
-                    navIcons.add(it.nav_home_icon)
-                    navIcons.add(it.nav_recent_icon)
-                    tiles.add(it.contact_tile_icon_1)
-                    tiles.add(it.contact_tile_icon_2)
-                    tiles.add(it.contact_tile_icon_3)
-
-                }
-
-                navPreview!!
+            settingsPreview?.let {
+                settingsIcons.add(it.settings_connections_icon)
+                settingsIcons.add(it.settings_sound_icon)
+                settingsIcons.add(it.settings_notifications_icon)
             }
 
+            settingsPreview!!
+        } else {
+            systemUiPreview = LayoutInflater.from(context).inflate(R.layout.customize_preview_sysui,
+                    container, false) as ViewGroup
+
+            systemUiPreview?.let {
+                it.preview_wallpaper.clipToOutline = true
+
+                systemUiIcons.add(it.systemui_wifi_icon)
+                systemUiIcons.add(it.systemui_airplane_icon)
+                systemUiIcons.add(it.systemui_bluetooth_icon)
+                systemUiIcons.add(it.systemui_flashlight_icon)
+                systemUiIcons.add(it.systemui_sound_icon)
+                systemUiIcons.add(it.systemui_rotation_icon)
+            }
+
+            systemUiPreview!!
         }
     }
 
     open fun getPageCount(): Int {
-        return 3
+        return 2
     }
 
     open fun updateIcons(selection: CustomizeSelection) {
-        val tileOption = context.swift.romHandler.getCustomizeHandler()
-                .getCustomizeOptions()["tiles_options"]!!.options[selection["tiles_options"]]!!
-        tiles.forEach { icon ->
-            icon.clearColorFilter()
-
-            val idName =
-                    "${context.resources.getResourceEntryName(icon.id)}_${tileOption.resTag}"
-            val id = context.resources.getIdentifier("${context.packageName}:drawable/$idName",
-                    null, null)
-            if (id > 0) {
-                val tileDrawable = context.getDrawable(id)?.mutate() as LayerDrawable
-                if (tileOption.iconTint) {
-                    tileDrawable.findDrawableByLayerId(R.id.tile_background)
-                            .setTint(selection.accentColor)
-                }
-                tileDrawable.findDrawableByLayerId(R.id.tile_foreground)
-                        .setTint(selection.backgroundColor)
-                icon.setImageDrawable(tileDrawable)
-
-            }
-        }
     }
 
     open fun updateView(palette: MaterialPalette, selection: CustomizeSelection) {
@@ -196,15 +149,6 @@ abstract class PreviewHandler(val context: Context) {
             }
             it.searchbar_bg.setColorFilter(palette.cardBackground)
 
-            navPreview?.let {v ->
-                if (v.nav_preview.drawable != null) {
-                    val navBackground =
-                            v.nav_preview.drawable as LayerDrawable
-                    navBackground.findDrawableByLayerId(R.id.preview_nav_background)
-                            .setTint(palette.backgroundColor)
-                }
-                v.navbar_bg.setColorFilter(palette.darkBackgroundColor)
-            }
         }
     }
 }

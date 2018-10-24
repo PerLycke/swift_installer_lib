@@ -192,19 +192,4 @@
     <string name="pie_category_setting_icon">Setting Icons</string>
     <string name="quick_settings_style">Quick Settings Style</string>
     <string name="swiftkey_reboot_needed">You need to reboot for SwiftKey to reload all colors</string>
-    <string name="contact_name_1">Charles</string>
-    <string name="contact_name_2">Michael</string>
-    <string name="contact_name_3">William</string>
-    <string name="tile_option_material_color">Old Google material</string>
-    <string name="tile_option_pastel_color">New Google material</string>
-    <string name="tile_option_accent_color">Accent linked</string>
-    <string name="tile_options">Contacts tiles color</string>
-    <string name="navigation_icon_options">Navigation Icons</string>
-    <string name="navigation_icon_stock">Stock</string>
-    <string name="navigation_icon_aosp">AOSP filled</string>
-    <string name="navigation_icon_oreo_pixel">Oreo Pixel</string>
-    <string name="navigation_icon_outline">AOSP outline</string>
-    <string name="navigation_icon_pie">Pie</string>
-    <string name="navigation_icon_color_white">White</string>
-    <string name="navigation_icon_color_accent">Accented</string>
 </resources>

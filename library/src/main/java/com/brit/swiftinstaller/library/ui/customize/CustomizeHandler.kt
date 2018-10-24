@@ -127,7 +127,6 @@ abstract class CustomizeHandler(val context: Context) {
         selection.accentColor = context.swift.romHandler.getDefaultAccent()
         selection.backgroundColor = convertToColorInt("16161c")
         selection["qs_alpha"] = "0"
-        selection["tiles_options"] = "accent_colors"
         return selection
     }
 
@@ -156,18 +155,6 @@ abstract class CustomizeHandler(val context: Context) {
         categories.add(CustomizeCategory(context.getString(R.string.quick_settings_style),
                 "qs_alpha", "0", qsOptions,
                 synchronizedArrayListOf("android")))
-        val tilesOptions = OptionsMap()
-        tilesOptions.add(Option((context.getString(R.string.tile_option_material_color)), "material_colors", "material", false))
-        tilesOptions.add(Option((context.getString(R.string.tile_option_pastel_color)), "pastel_colors", "pastel", false))
-        tilesOptions.add(Option((context.getString(R.string.tile_option_accent_color)), "accent_colors", "pastel", true))
-        categories.add(
-                CustomizeCategory((context.getString(R.string.tile_options)), "tiles_options",
-                        "accent_colors", tilesOptions,
-                        synchronizedArrayListOf("com.google.android.dialer",
-                                "com.google.android.contacts",
-                                "com.google.android.apps.messaging",
-                                "com.google.android.apps.tachyon"
-                        )))
     }
 
     fun getCustomizeOptions(): CategoryMap {
