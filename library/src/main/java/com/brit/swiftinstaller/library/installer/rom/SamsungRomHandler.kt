@@ -311,12 +311,6 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
             val navOption = context.swift.romHandler.getCustomizeHandler()
                     .getCustomizeOptions()["samsung_oreo_nav_icons"]!!.options[selection["samsung_oreo_nav_icons"]]!!
             navIcons.forEach { icon ->
-                if (selection[navOption.subOptionKey] == "nav_color_accent") {
-                    icon.setColorFilter(selection.accentColor)
-                } else {
-                    icon.clearColorFilter()
-                }
-
                 val idName =
                         "${context.resources.getResourceEntryName(icon.id)}_${navOption.resTag}"
                 val id = context.resources.getIdentifier("${context.packageName}:drawable/$idName",
@@ -370,23 +364,7 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
         val navIconOptions = OptionsMap()
         navIconOptions.add(Option((context.getString(R.string.navigation_icon_stock)), "nav_stock", "stock", false))
         navIconOptions.add(Option((context.getString(R.string.navigation_icon_aosp)), "nav_aosp", "aosp", false))
-        navIconOptions.add(Option((context.getString(R.string.navigation_icon_oreo_pixel)), "nav_oreo", "oreo", false))
         navIconOptions.add(Option((context.getString(R.string.navigation_icon_outline)), "nav_outline", "outline", false))
-        navIconOptions.add(Option((context.getString(R.string.navigation_icon_pie)), "nav_pie", "pie", false))
-
-        val navIconColorOptions = OptionsMap()
-        navIconColorOptions.add(Option((context.getString(R.string.navigation_icon_color_white)), "nav_color_white", "nav_color_white", false))
-        navIconColorOptions.add(Option((context.getString(R.string.navigation_icon_color_accent)), "nav_color_accent", "nav_color_accent", true))
-        navIconOptions["nav_stock"]!!.subOptions.putAll(navIconColorOptions)
-        navIconOptions["nav_stock"]!!.subOptionKey = "samsung_oreo_nav_color_icons"
-        navIconOptions["nav_aosp"]!!.subOptions.putAll(navIconColorOptions)
-        navIconOptions["nav_aosp"]!!.subOptionKey = "samsung_oreo_nav_color_icons"
-        navIconOptions["nav_oreo"]!!.subOptions.putAll(navIconColorOptions)
-        navIconOptions["nav_oreo"]!!.subOptionKey = "samsung_oreo_nav_color_icons"
-        navIconOptions["nav_outline"]!!.subOptions.putAll(navIconColorOptions)
-        navIconOptions["nav_outline"]!!.subOptionKey = "samsung_oreo_nav_color_icons"
-        navIconOptions["nav_pie"]!!.subOptions.putAll(navIconColorOptions)
-        navIconOptions["nav_pie"]!!.subOptionKey = "samsung_oreo_nav_color_icons"
 
         categories.add(
                 CustomizeCategory((context.getString(R.string.navigation_icon_options)), "samsung_oreo_nav_icons", "nav_stock",
