@@ -248,6 +248,7 @@ open class PRomHandler(context: Context) : RomHandler(context) {
                         synchronizedArrayListOf("com.android.settings",
                                 "com.google.android.apps.wellbeing",
                                 "com.google.android.gms",
-                                "com.cyanogenmod.settings.device")))
+                                "com.cyanogenmod.settings.device",
+                                "com.du.settings.doze")))
     }
 }
