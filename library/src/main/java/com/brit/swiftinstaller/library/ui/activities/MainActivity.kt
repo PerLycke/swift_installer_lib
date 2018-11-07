@@ -282,8 +282,8 @@ class MainActivity : ThemeActivity() {
                 title = getString(R.string.swift_app_name)
 
                 val pi = packageManager.getPackageInfo(packageName, 0)
-                val m = getString(R.string.installer_version, pi.versionName, pi.getVersionCode()) + "\n\n" +
-                        getString(R.string.installer_library_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE) + "\n\n" +
+                val m = "Swift Installer version: " + pi.versionName + " (${pi.getVersionCode()})" + "\n\n" +
+                        "Installer library version: " + BuildConfig.VERSION_NAME +  " (${BuildConfig.VERSION_CODE})"  + "\n\n" +
                         getString(R.string.installer_source_link)
                 val l = getString(R.string.installer_source_link)
 
