@@ -249,6 +249,7 @@ open class PRomHandler(context: Context) : RomHandler(context) {
                                 "com.google.android.apps.wellbeing",
                                 "com.google.android.gms",
                                 "com.cyanogenmod.settings.device",
-                                "com.du.settings.doze")))
+                                "com.du.settings.doze",
+                                "com.moto.actions")))
     }
 }
