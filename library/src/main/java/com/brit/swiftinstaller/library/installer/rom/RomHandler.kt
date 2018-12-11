@@ -205,7 +205,10 @@ abstract class RomHandler constructor(var context: Context) {
                         && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P -> OOSPRomHandler(context)
                 getProperty("ro.oxygen.version", "def") != "def"
                         && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> OOSOreoRomHandler(context)
-                getProperty("ro.config.knox", "def") != "def" -> SamsungRomHandler(context)
+                getProperty("ro.config.knox", "def") != "def"
+                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P -> SamsungPRomHandler(context)
+                getProperty("ro.config.knox", "def") != "def"
+                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> SamsungRomHandler(context)
                 Build.VERSION_CODES.P == Build.VERSION.SDK_INT -> PRomHandler(context)
                 else -> OreoRomHandler(context)
             }

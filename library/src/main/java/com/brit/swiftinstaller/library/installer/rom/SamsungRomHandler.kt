@@ -62,69 +62,12 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
     }
 
     override fun getDisabledOverlays(): SynchronizedArrayList<String> {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            return synchronizedArrayListOf(
-                    "com.android.emergency",
-                    "com.android.bluetooth",
-                    "com.android.documentsui",
-                    "com.android.phone",
-                    "com.android.settings",
-                    "com.android.systemui",
-                    "com.samsung.android.app.aodservice",
-                    "com.samsung.android.app.appsedge",
-                    "com.samsung.android.app.cocktailbarservice",
-                    "com.samsung.android.app.notes",
-                    "com.samsung.android.app.smartcapture",
-                    "com.samsung.android.app.spage",
-                    "com.samsung.android.applock",
-                    "com.samsung.android.bixby.agent",
-                    "com.samsung.android.calendar",
-                    "com.samsung.android.clipboarduiservice",
-                    "com.samsung.android.contacts",
-                    "com.samsung.android.da.daagent",
-                    "com.samsung.android.email.provider",
-                    "com.samsung.android.game.gametools",
-                    "com.samsung.android.gametuner.thin",
-                    "com.samsung.android.incallui",
-                    "com.samsung.android.lool",
-                    "com.samsung.android.messaging",
-                    "com.samsung.android.oneconnect",
-                    "com.samsung.android.samsungpassautofill",
-                    "com.samsung.android.securitylogagent",
-                    "com.samsung.android.themestore",
-                    "com.samsung.android.videolist",
-                    "com.samsung.app.newtrim",
-                    "com.samsung.networkui",
-                    "com.sec.android.app.clockpackage",
-                    "com.sec.android.app.launcher",
-                    "com.sec.android.app.music",
-                    "com.sec.android.app.myfiles",
-                    "com.sec.android.app.popupcalculator",
-                    "com.sec.android.app.samsungapps",
-                    "com.sec.android.app.sbrowser",
-                    "com.sec.android.app.sbrowser.beta",
-                    "com.sec.android.app.simsettingmgr",
-                    "com.sec.android.app.soundalive",
-                    "com.sec.android.app.voicenote",
-                    "com.sec.android.daemonapp",
-                    "com.sec.android.gallery3d",
-                    "com.sec.android.inputmethod",
-                    "com.sec.hearingadjust"
-
-
-
-
-            )
-        }
         return synchronizedArrayListOf(
                 "com.android.emergency"
         )
     }
 
     override fun getRequiredApps(): Array<String> {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            return arrayOf()
-        }
         return arrayOf(
                 "android",
                 "com.android.systemui",
@@ -367,7 +310,6 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
     }
 
     private fun populateOreoCustomizeOptions(categories: CategoryMap) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
             val iconOptions = OptionsMap()
             iconOptions.add(Option(context.getString(R.string.aosp_icons), "aosp", "aosp", true))
             iconOptions.add(
@@ -416,7 +358,6 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
             categories.add(CustomizeCategory(context.getString(R.string.quick_settings_style),
                     "qs_alpha", "0", qsOptions,
                     synchronizedArrayListOf("android")))
-        }
 
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O) {
             val notifOptions = OptionsMap()
