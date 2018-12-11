@@ -23,9 +23,8 @@ package com.brit.swiftinstaller.library.installer.rom
 
 import android.content.Context
 import android.content.Intent
-import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
-import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
-import com.brit.swiftinstaller.library.ui.customize.PreviewHandler
+import com.brit.swiftinstaller.library.R
+import com.brit.swiftinstaller.library.ui.customize.*
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
 
@@ -109,8 +108,21 @@ open class OreoRomHandler(context: Context) : RomHandler(context) {
 
     override fun createCustomizeHandler(): CustomizeHandler {
         return object : CustomizeHandler(context) {
+
+            override fun getDefaultSelection(): CustomizeSelection {
+                val selection = super.getDefaultSelection()
+                selection["sender_name_fix"] = "default"
+                selection["notif_background"] = "white"
+                selection["qs_alpha"] = "0"
+                return selection
+            }
+
             override fun createPreviewHandler(context: Context): PreviewHandler {
                 return OreoPreviewHandler(context)
+            }
+            override fun populateCustomizeOptions(categories: CategoryMap) {
+                populateOreoCustomizeOptions(categories)
+                super.populateCustomizeOptions(categories)
             }
         }
     }
@@ -137,5 +149,28 @@ open class OreoRomHandler(context: Context) : RomHandler(context) {
                 icon.setColorFilter(selection.accentColor)
             }
         }
+    }
+    private fun populateOreoCustomizeOptions(categories: CategoryMap) {
+        val notifBackgroundOptions = OptionsMap()
+        notifBackgroundOptions.add(Option(context.getString(R.string.white), "white"))
+        notifBackgroundOptions.add(Option(context.getString(R.string.dark), "dark"))
+        notifBackgroundOptions["dark"]!!.infoText =
+                context.getString(R.string.notif_fix_desc_summary)
+        val senderNameOptions = OptionsMap()
+        senderNameOptions.add(Option(context.getString(R.string.disable), "default"))
+        senderNameOptions.add(Option(context.getString(R.string.enable_shadow_title), "shadow"))
+        notifBackgroundOptions["dark"]!!.subOptions.putAll(senderNameOptions)
+        notifBackgroundOptions["dark"]!!.subOptionKey = "sender_name_fix"
+        categories.add(CustomizeCategory(context.getString(R.string.notification_tweaks),
+                "notif_background", "white", notifBackgroundOptions, synchronizedArrayListOf("android")))
+
+        val qsOptions = OptionsMap()
+        val trans =
+                SliderOption(context.getString(R.string.qs_transparency), "qs_alpha")
+        trans.current = 0
+        qsOptions.add(trans)
+        categories.add(CustomizeCategory(context.getString(R.string.quick_settings_style),
+                "qs_alpha", "0", qsOptions,
+                synchronizedArrayListOf("android")))
     }
 }

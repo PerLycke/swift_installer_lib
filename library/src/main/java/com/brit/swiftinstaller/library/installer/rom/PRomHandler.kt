@@ -173,6 +173,7 @@ open class PRomHandler(context: Context) : RomHandler(context) {
                 val selection = super.getDefaultSelection()
                 selection["stock_pie_icons"] = "default_icons"
                 selection["notif_background"] = "dark"
+                selection["qs_alpha"] = "0"
                 return selection
             }
 
@@ -252,5 +253,19 @@ open class PRomHandler(context: Context) : RomHandler(context) {
                                 "com.cyanogenmod.settings.device",
                                 "com.du.settings.doze",
                                 "com.moto.actions")))
+        val notifBackgroundOptions = OptionsMap()
+        notifBackgroundOptions.add(Option(context.getString(R.string.white), "white"))
+        notifBackgroundOptions.add(Option(context.getString(R.string.dark), "dark"))
+        categories.add(CustomizeCategory(context.getString(R.string.notification_tweaks),
+                "notif_background", "white", notifBackgroundOptions, synchronizedArrayListOf("android")))
+
+        val qsOptions = OptionsMap()
+        val trans =
+                SliderOption(context.getString(R.string.qs_transparency), "qs_alpha")
+        trans.current = 0
+        qsOptions.add(trans)
+        categories.add(CustomizeCategory(context.getString(R.string.quick_settings_style),
+                "qs_alpha", "0", qsOptions,
+                synchronizedArrayListOf("android")))
     }
 }

@@ -22,13 +22,11 @@
 package com.brit.swiftinstaller.library.ui.customize
 
 import android.content.Context
-import android.os.Build
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.utils.ColorUtils.convertToColorInt
 import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
 import com.brit.swiftinstaller.library.utils.prefs
 import com.brit.swiftinstaller.library.utils.swift
-import com.brit.swiftinstaller.library.utils.synchronizedArrayListOf
 
 abstract class CustomizeHandler(val context: Context) {
 
@@ -120,41 +118,13 @@ abstract class CustomizeHandler(val context: Context) {
 
     open fun getDefaultSelection(): CustomizeSelection {
         val selection = CustomizeSelection()
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
-            selection["sender_name_fix"] = "default"
-        }
-        selection["notif_background"] = "white"
         selection.accentColor = context.swift.romHandler.getDefaultAccent()
         selection.backgroundColor = convertToColorInt("16161c")
-        selection["qs_alpha"] = "0"
         return selection
     }
 
     open fun populateCustomizeOptions(categories: CategoryMap) {
 
-        val notifBackgroundOptions = OptionsMap()
-        notifBackgroundOptions.add(Option(context.getString(R.string.white), "white"))
-        notifBackgroundOptions.add(Option(context.getString(R.string.dark), "dark"))
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
-            notifBackgroundOptions["dark"]!!.infoText =
-                    context.getString(R.string.notif_fix_desc_summary)
-            val senderNameOptions = OptionsMap()
-            senderNameOptions.add(Option(context.getString(R.string.disable), "default"))
-            senderNameOptions.add(Option(context.getString(R.string.enable_shadow_title), "shadow"))
-            notifBackgroundOptions["dark"]!!.subOptions.putAll(senderNameOptions)
-            notifBackgroundOptions["dark"]!!.subOptionKey = "sender_name_fix"
-        }
-        categories.add(CustomizeCategory(context.getString(R.string.notification_tweaks),
-                "notif_background", "white", notifBackgroundOptions, synchronizedArrayListOf("android")))
-
-        val qsOptions = OptionsMap()
-        val trans =
-                SliderOption(context.getString(R.string.qs_transparency), "qs_alpha")
-        trans.current = 0
-        qsOptions.add(trans)
-        categories.add(CustomizeCategory(context.getString(R.string.quick_settings_style),
-                "qs_alpha", "0", qsOptions,
-                synchronizedArrayListOf("android")))
     }
 
     fun getCustomizeOptions(): CategoryMap {

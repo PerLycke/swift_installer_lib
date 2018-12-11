@@ -82,6 +82,9 @@ class OOSOreoRomHandler(context: Context) : OreoRomHandler(context) {
             override fun getDefaultSelection(): CustomizeSelection {
                 val selection = super.getDefaultSelection()
                 selection["oos_oreo_clock"] = "oos_right"
+                selection["sender_name_fix"] = "default"
+                selection["notif_background"] = "white"
+                selection["qs_alpha"] = "0"
                 return selection
             }
 
@@ -140,5 +143,26 @@ class OOSOreoRomHandler(context: Context) : OreoRomHandler(context) {
         categories.add(
                 CustomizeCategory(context.getString(R.string.clock), "oos_oreo_clock", "oos_right",
                         clockOptions, synchronizedArrayListOf("com.android.systemui")))
+        val notifBackgroundOptions = OptionsMap()
+        notifBackgroundOptions.add(Option(context.getString(R.string.white), "white"))
+        notifBackgroundOptions.add(Option(context.getString(R.string.dark), "dark"))
+            notifBackgroundOptions["dark"]!!.infoText =
+                    context.getString(R.string.notif_fix_desc_summary)
+            val senderNameOptions = OptionsMap()
+            senderNameOptions.add(Option(context.getString(R.string.disable), "default"))
+            senderNameOptions.add(Option(context.getString(R.string.enable_shadow_title), "shadow"))
+            notifBackgroundOptions["dark"]!!.subOptions.putAll(senderNameOptions)
+            notifBackgroundOptions["dark"]!!.subOptionKey = "sender_name_fix"
+        categories.add(CustomizeCategory(context.getString(R.string.notification_tweaks),
+                "notif_background", "white", notifBackgroundOptions, synchronizedArrayListOf("android")))
+
+        val qsOptions = OptionsMap()
+        val trans =
+                SliderOption(context.getString(R.string.qs_transparency), "qs_alpha")
+        trans.current = 0
+        qsOptions.add(trans)
+        categories.add(CustomizeCategory(context.getString(R.string.quick_settings_style),
+                "qs_alpha", "0", qsOptions,
+                synchronizedArrayListOf("android")))
     }
 }
