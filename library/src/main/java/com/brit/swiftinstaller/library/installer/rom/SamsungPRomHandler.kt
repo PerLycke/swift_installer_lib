@@ -64,7 +64,6 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
                     "com.android.documentsui",
                     "com.android.phone",
                     "com.android.settings",
-                    "com.android.systemui",
                     "com.samsung.android.app.aodservice",
                     "com.samsung.android.app.appsedge",
                     "com.samsung.android.app.cocktailbarservice",
