@@ -252,7 +252,8 @@ open class PRomHandler(context: Context) : RomHandler(context) {
                                 "com.google.android.gms",
                                 "com.cyanogenmod.settings.device",
                                 "com.du.settings.doze",
-                                "com.moto.actions")))
+                                "com.moto.actions",
+                                "com.slim.device")))
         val notifBackgroundOptions = OptionsMap()
         notifBackgroundOptions.add(Option(context.getString(R.string.white), "white"))
         notifBackgroundOptions.add(Option(context.getString(R.string.dark), "dark"))
