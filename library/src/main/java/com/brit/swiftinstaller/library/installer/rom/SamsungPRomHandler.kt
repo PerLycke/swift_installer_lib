@@ -43,7 +43,7 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
     }
 
     override fun getChangelogTag(): String {
-        return "samsung"
+        return "samsung-p"
     }
 
     override fun addTutorialSteps(tutorial: TutorialActivity) {

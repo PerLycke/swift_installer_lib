@@ -23,6 +23,7 @@ object ChangelogHandler {
         setup.registerTag(SwiftChangelogTag("oos-p", "OOS Pie"))
         setup.registerTag(SwiftChangelogTag("p", "Pie"))
         setup.registerTag(SwiftChangelogTag("samsung", "Samsung"))
+        setup.registerTag(SwiftChangelogTag("samsung-p", "Samsung Pie"))
         setup.registerTag(SwiftChangelogTag("installer", "Installer"))
         setup.registerTag(SwiftChangelogTag("common", ""))
 
