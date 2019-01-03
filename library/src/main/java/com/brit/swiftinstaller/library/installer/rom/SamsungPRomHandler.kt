@@ -111,7 +111,10 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
     }
 
     override fun getRequiredApps(): Array<String> {
-            return arrayOf()
+            return arrayOf(
+                    "android",
+                    "com.android.systemui"
+            )
     }
 
     override fun getDefaultAccent(): Int {
