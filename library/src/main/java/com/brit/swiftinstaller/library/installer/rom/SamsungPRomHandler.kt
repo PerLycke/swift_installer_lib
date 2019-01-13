@@ -106,7 +106,8 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
                     "com.sec.hearingadjust",
                     "com.android.server.telecom",
                     "com.google.android.packageinstaller",
-                    "com.wssyncmldm"
+                    "com.wssyncmldm",
+                    "com.samsung.android.scloud"
             )
     }
 
