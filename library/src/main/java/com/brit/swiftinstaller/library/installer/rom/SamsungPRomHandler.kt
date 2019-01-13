@@ -95,8 +95,6 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
                     "com.sec.android.app.myfiles",
                     "com.sec.android.app.popupcalculator",
                     "com.sec.android.app.samsungapps",
-                    "com.sec.android.app.sbrowser",
-                    "com.sec.android.app.sbrowser.beta",
                     "com.sec.android.app.simsettingmgr",
                     "com.sec.android.app.soundalive",
                     "com.sec.android.app.voicenote",
