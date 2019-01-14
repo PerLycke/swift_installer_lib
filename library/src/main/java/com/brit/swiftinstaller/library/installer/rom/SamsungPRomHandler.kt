@@ -105,7 +105,8 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
                     "com.android.server.telecom",
                     "com.google.android.packageinstaller",
                     "com.wssyncmldm",
-                    "com.samsung.android.scloud"
+                    "com.samsung.android.scloud",
+                    "com.android.providers.media"
             )
     }
 
