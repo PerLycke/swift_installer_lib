@@ -218,6 +218,15 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
 
     override fun createCustomizeHandler(): CustomizeHandler {
         return object : CustomizeHandler(context) {
+            override fun getDefaultSelection(): CustomizeSelection {
+                val selection = super.getDefaultSelection()
+                selection["qs_alpha"] = "0"
+                return selection
+            }
+            override fun populateCustomizeOptions(categories: CategoryMap) {
+                populatePieCustomizeOptions(categories)
+                super.populateCustomizeOptions(categories)
+            }
 
 
             override fun createPreviewHandler(context: Context): PreviewHandler {
@@ -252,5 +261,18 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
                 icon.setColorFilter(selection.accentColor)
             }
         }
+    }
+
+    private fun populatePieCustomizeOptions(categories: CategoryMap) {
+
+        val qsOptions = OptionsMap()
+        val trans =
+                SliderOption(context.getString(R.string.qs_transparency), "qs_alpha")
+        trans.current = 0
+        qsOptions.add(trans)
+        categories.add(CustomizeCategory(context.getString(R.string.quick_settings_style),
+                "qs_alpha", "0", qsOptions,
+                synchronizedArrayListOf("android")))
+
     }
 }
