@@ -221,12 +221,21 @@ abstract class RomHandler constructor(var context: Context) {
                 getProperty("ro.oxygen.version", "def") != "def"
                         && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> OOSOreoRomHandler(context)
                 getProperty("ro.config.knox", "def") != "def"
-                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P -> SamsungPRomHandler(context)
+                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ->
+                    if (isSamsungPatched()) {
+                        PRomHandler(context)
+                    } else {
+                        SamsungPRomHandler(context)
+                    }
                 getProperty("ro.config.knox", "def") != "def"
                         && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> SamsungRomHandler(context)
                 Build.VERSION_CODES.P == Build.VERSION.SDK_INT -> PRomHandler(context)
                 else -> OreoRomHandler(context)
             }
+        }
+
+        fun isSamsungPatched(): Boolean {
+            return Integer.parseInt(getProperty("ro.build.date.utc", "0")) > 1545951730
         }
     }
 }

@@ -39,7 +39,7 @@ import java.io.File
 class SamsungPRomHandler(context: Context) : RomHandler(context) {
 
     override fun requiresRoot(): Boolean {
-        return false
+        return isSamsungPatched()
     }
 
     override fun getChangelogTag(): String {

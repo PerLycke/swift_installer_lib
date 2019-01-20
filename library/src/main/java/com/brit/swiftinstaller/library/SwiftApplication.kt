@@ -23,7 +23,9 @@ package com.brit.swiftinstaller.library
 
 import android.content.Intent
 import android.content.IntentFilter
+import android.util.Log
 import com.brit.swiftinstaller.library.installer.rom.RomHandler
+import com.brit.swiftinstaller.library.installer.rom.SamsungPRomHandler
 import com.brit.swiftinstaller.library.ui.applist.AppList
 import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
 import com.brit.swiftinstaller.library.utils.AppExtrasHandler
@@ -67,6 +69,10 @@ open class SwiftApplication : ContainerApp() {
 
     override fun onCreate() {
         super.onCreate()
+
+        if (romHandler is SamsungPRomHandler) {
+            Log.d("TEST", "samsung is patched - ${(romHandler as SamsungPRomHandler).isPatched()}")
+        }
 
         doAsync {
             startReceivers()
