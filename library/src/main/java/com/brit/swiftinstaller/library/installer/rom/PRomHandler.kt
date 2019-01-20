@@ -148,8 +148,9 @@ open class PRomHandler(context: Context) : RomHandler(context) {
                 val magiskFile = SuFile("$magiskPath/${systemFile.absolutePath}")
                 if (systemFile.exists()) {
                     if (!magiskFile.exists()) {
-                        magiskFile.parentFile.mkdirs()
-                        systemFile.renameTo(magiskFile)
+                        ShellUtils.mkdir(magiskFile.parent)
+                        ShellUtils.copyFile(systemFile.absolutePath, magiskFile.absolutePath)
+                        ShellUtils.setPermissions(644, magiskFile.absolutePath)
                         deleteFileRoot(systemFile.parent)
                     } else {
                         val soi = context.packageManager.getPackageArchiveInfo(
@@ -157,7 +158,8 @@ open class PRomHandler(context: Context) : RomHandler(context) {
                         val moi = context.packageManager.getPackageArchiveInfo(
                                 magiskFile.absolutePath, 0)
                         if (soi.getVersionCode() > moi.getVersionCode()) {
-                            systemFile.renameTo(magiskFile)
+                            ShellUtils.copyFile(systemFile.absolutePath, magiskFile.absolutePath)
+                            ShellUtils.setPermissions(644, magiskFile.absolutePath)
                             deleteFileRoot(systemFile.parent)
                         }
                     }
