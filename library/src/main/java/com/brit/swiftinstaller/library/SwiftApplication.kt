@@ -71,7 +71,7 @@ open class SwiftApplication : ContainerApp() {
         super.onCreate()
 
         if (romHandler is SamsungPRomHandler) {
-            Log.d("TEST", "samsung is patched - ${(romHandler as SamsungPRomHandler).isPatched()}")
+            Log.d("TEST", "samsung is patched - ${RomHandler.isSamsungPatched()}")
         }
 
         doAsync {
