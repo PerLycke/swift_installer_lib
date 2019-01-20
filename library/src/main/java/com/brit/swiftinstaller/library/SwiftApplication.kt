@@ -77,6 +77,7 @@ open class SwiftApplication : ContainerApp() {
         doAsync {
             startReceivers()
 
+            romHandler.onBootCompleted(this@SwiftApplication)
             OverlayUtils.checkAndHideOverlays(this@SwiftApplication)
             AppList.updateList(this@SwiftApplication)
         }

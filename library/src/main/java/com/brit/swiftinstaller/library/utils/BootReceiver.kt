@@ -35,10 +35,6 @@ class BootReceiver : BroadcastReceiver() {
             val enable = Intent(context, EnableOverlaysActivity::class.java)
             enable.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context!!.applicationContext.startActivity(enable)
-
-            doAsync {
-                context.swift.romHandler.onBootCompleted(context)
-            }
         }
     }
 }
