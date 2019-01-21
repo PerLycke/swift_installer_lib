@@ -47,7 +47,7 @@ class SettingsActivity : AppCompatActivity() {
             if (!BuildConfig.DEBUG) {
                 preferenceScreen.removePreference(disableMagisk)
             } else {
-                preferenceScreen.setOnPreferenceChangeListener { _, newValue ->
+                disableMagisk.setOnPreferenceChangeListener { _, newValue ->
                     if ((newValue as Boolean)) {
                         MagiskUtils.convertFromMagisk(activity!!)
                     } else {
