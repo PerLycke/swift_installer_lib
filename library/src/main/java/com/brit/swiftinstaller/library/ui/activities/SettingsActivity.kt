@@ -2,7 +2,6 @@ package com.brit.swiftinstaller.library.ui.activities
 
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -10,7 +9,6 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.library.installer.rom.RomHandler
 import com.brit.swiftinstaller.library.utils.*
 
 class SettingsActivity : AppCompatActivity() {
@@ -49,9 +47,11 @@ class SettingsActivity : AppCompatActivity() {
             if (!BuildConfig.DEBUG) {
                 preferenceScreen.removePreference(disableMagisk)
             } else {
-                preferenceScreen.setOnPreferenceChangeListener { preference, newValue ->
+                preferenceScreen.setOnPreferenceChangeListener { _, newValue ->
                     if ((newValue as Boolean)) {
-                        deleteFileRoot(RomHandler.magiskPath)
+                        MagiskUtils.convertFromMagisk(activity!!)
+                    } else {
+                        MagiskUtils.convertToMagisk(activity!!)
                     }
                     false
                 }

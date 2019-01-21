@@ -26,7 +26,6 @@ import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.LayerDrawable
-import android.util.Log
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.customize.*
 import com.brit.swiftinstaller.library.utils.*
@@ -144,37 +143,10 @@ open class PRomHandler(context: Context) : RomHandler(context) {
     }
 
     override fun onBootCompleted(context: Context) {
-        if (magiskEnabled && !moduleDisabled) {
-            val overlays = context.assets.list("overlays") ?: emptyArray()
-            remountRW("/system")
-            if (getMagiskVersion() < 17000) {
-                // show dialog or notification here. need activity for dialog as this is run on boot.
-                return
-            }
-            overlays.forEach { packageName ->
-                val opn = getOverlayPackageName(packageName)
-                val systemFile = SuFile("$systemApp/$opn/$opn.apk")
-                val magiskFile = SuFile("$magiskPath/${systemFile.absolutePath}")
-                if (systemFile.exists()) {
-                    if (!magiskFile.exists()) {
-                        ShellUtils.mkdir(magiskFile.parent)
-                        ShellUtils.copyFile(systemFile.absolutePath, magiskFile.absolutePath)
-                        ShellUtils.setPermissions(755, magiskFile.absolutePath)
-                        deleteFileRoot(systemFile.parent)
-                    } else {
-                        val soi = context.packageManager.getPackageArchiveInfo(
-                                systemFile.absolutePath, 0)
-                        val moi = context.packageManager.getPackageArchiveInfo(
-                                magiskFile.absolutePath, 0)
-                        if (soi.getVersionCode() > moi.getVersionCode()) {
-                            ShellUtils.copyFile(systemFile.absolutePath, magiskFile.absolutePath)
-                            ShellUtils.setPermissions(755, magiskFile.absolutePath)
-                            deleteFileRoot(systemFile.parent)
-                        }
-                    }
-                }
-            }
-            remountRO("/system")
+        if (magiskEnabled && !moduleDisabled && !context.disableMagisk) {
+            MagiskUtils.convertToMagisk(context)
+        } else {
+            MagiskUtils.convertFromMagisk(context)
         }
     }
 

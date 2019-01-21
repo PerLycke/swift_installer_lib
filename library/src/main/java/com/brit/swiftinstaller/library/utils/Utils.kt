@@ -96,8 +96,3 @@ object Utils {
         }
     }
 }
-
-fun getMagiskVersion(): Int {
-    val ver = (runCommand("magisk -V").output?: "0").trim()
-    return ver.toInt()
-}

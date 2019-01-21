@@ -23,15 +23,12 @@ package com.brit.swiftinstaller.library
 
 import android.content.Intent
 import android.content.IntentFilter
-import android.util.Log
 import com.brit.swiftinstaller.library.installer.rom.RomHandler
-import com.brit.swiftinstaller.library.installer.rom.SamsungPRomHandler
 import com.brit.swiftinstaller.library.ui.applist.AppList
 import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
 import com.brit.swiftinstaller.library.utils.AppExtrasHandler
 import com.brit.swiftinstaller.library.utils.OverlayUtils
 import com.brit.swiftinstaller.library.utils.PackageListener
-import com.brit.swiftinstaller.library.utils.getMagiskVersion
 import com.topjohnwu.superuser.BuildConfig
 import com.topjohnwu.superuser.BusyBox
 import com.topjohnwu.superuser.ContainerApp
