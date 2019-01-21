@@ -27,10 +27,12 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.drawable.LayerDrawable
 import android.net.Uri
 import android.os.Build
 import android.text.SpannableString
 import android.text.Spanned
+import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.view.Gravity
@@ -149,6 +151,11 @@ object Utils {
             layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT
             layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
             dialog?.getWindow()?.setAttributes(layoutParams)
+            val dialogBg = context.getDrawable(R.drawable.dialog_bg) as LayerDrawable
+            dialogBg.findDrawableByLayerId(R.id.dialog_bg).setTint(context.swift.selection.backgroundColor)
+            dialog.window?.setBackgroundDrawable(dialogBg)
+            dialog.findViewById<TextView>(android.R.id.message)?.movementMethod =
+                    LinkMovementMethod.getInstance()
         }
         return dialog
     }
