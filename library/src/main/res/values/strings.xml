@@ -191,4 +191,5 @@
     <string name="quick_settings_style">Quick Settings Style</string>
     <string name="swiftkey_reboot_needed">You need to reboot for SwiftKey to reload all colors</string>
     <string name="disable_magisk_title">Disable magisk</string>
+    <string name="overlay_move_msg">Moving overlays. Please wait....</string>
 </resources>

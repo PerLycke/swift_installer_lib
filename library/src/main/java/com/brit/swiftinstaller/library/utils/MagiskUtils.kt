@@ -41,10 +41,12 @@ object MagiskUtils {
             }
         }
         remountRO("/system")
-        val reboot = Intent(context, RebootActivity::class.java)
-        reboot.flags += Intent.FLAG_ACTIVITY_NEW_TASK
-        reboot.putExtra("message", context.getString(R.string.reboot_dialog_msg))
-        context.startActivity(reboot)
+        if (shouldReboot) {
+            val reboot = Intent(context, RebootActivity::class.java)
+            reboot.flags += Intent.FLAG_ACTIVITY_NEW_TASK
+            reboot.putExtra("message", context.getString(R.string.reboot_dialog_msg))
+            context.startActivity(reboot)
+        }
     }
 
     fun convertFromMagisk(context: Context) {
@@ -110,7 +112,7 @@ object MagiskUtils {
         }
     }
 
-    fun getMagiskVersion(): Int {
+    private fun getMagiskVersion(): Int {
         val ver = (runCommand("magisk -V").output?: "0").trim()
         return ver.toInt()
     }

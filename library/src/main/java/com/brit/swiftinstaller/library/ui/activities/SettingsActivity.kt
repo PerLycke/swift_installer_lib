@@ -10,6 +10,9 @@ import androidx.preference.SwitchPreference
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.utils.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
+
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -48,10 +51,16 @@ class SettingsActivity : AppCompatActivity() {
                 preferenceScreen.removePreference(disableMagisk)
             } else {
                 disableMagisk.setOnPreferenceChangeListener { _, newValue ->
-                    if ((newValue as Boolean)) {
-                        MagiskUtils.convertFromMagisk(activity!!)
-                    } else {
-                        MagiskUtils.convertToMagisk(activity!!)
+                    val dlg = Utils.progressDialog(activity!!, activity!!.getString(R.string.overlay_move_msg))
+                    doAsync {
+                        if ((newValue as Boolean)) {
+                            MagiskUtils.convertFromMagisk(activity!!)
+                        } else {
+                            MagiskUtils.convertToMagisk(activity!!)
+                        }
+                        uiThread {
+                            dlg.dismiss()
+                        }
                     }
                     false
                 }
