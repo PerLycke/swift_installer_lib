@@ -148,10 +148,15 @@ open class PRomHandler(context: Context) : RomHandler(context) {
         if (magiskEnabled && !moduleDisabled) {
             val overlays = context.assets.list("overlays") ?: emptyArray()
             remountRW("/system")
+            if (Integer.parseInt(runCommand("magisk -V").output?: "0") < 17000) {
+                // show dialog or notification here. need activity for dialog as this is run on boot.
+                return
+            }
             overlays.forEach { packageName ->
                 val opn = getOverlayPackageName(packageName)
                 val systemFile = SuFile("$systemApp/$opn/$opn.apk")
                 val magiskFile = SuFile("$magiskPath/${systemFile.absolutePath}")
+                ShellUtils.setPermissions(755, magiskPath)
                 if (systemFile.exists()) {
                     if (!magiskFile.exists()) {
                         ShellUtils.mkdir(magiskFile.parent)
@@ -165,7 +170,7 @@ open class PRomHandler(context: Context) : RomHandler(context) {
                                 magiskFile.absolutePath, 0)
                         if (soi.getVersionCode() > moi.getVersionCode()) {
                             ShellUtils.copyFile(systemFile.absolutePath, magiskFile.absolutePath)
-                            ShellUtils.setPermissions(644, magiskFile.absolutePath)
+                            ShellUtils.setPermissions(755, magiskFile.absolutePath)
                             deleteFileRoot(systemFile.parent)
                         }
                     }
