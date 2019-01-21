@@ -23,6 +23,8 @@ package com.brit.swiftinstaller.library.installer.rom
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -174,6 +176,7 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
                 appInstall.addCategory(Intent.CATEGORY_DEFAULT)
                 appInstall.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 appInstall.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                appInstall.setPackage("com.google.android.packageinstaller")
                 appInstall
             } else {
                 intent!!.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -220,6 +223,20 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
         } else {
             addAppToUninstall(context, getOverlayPackageName(packageName))
         }
+    }
+
+    override fun isOverlayInstalled(targetPackage: String): Boolean {
+        if (ShellUtils.isRootAvailable) {
+            return pHandler.isOverlayInstalled(targetPackage)
+        }
+        return super.isOverlayInstalled(targetPackage)
+    }
+
+    override fun getOverlayInfo(pm: PackageManager, packageName: String): PackageInfo {
+        if (ShellUtils.isRootAvailable) {
+            return pHandler.getOverlayInfo(pm, packageName)
+        }
+        return super.getOverlayInfo(pm, packageName)
     }
 
     override fun createCustomizeHandler(): CustomizeHandler {
