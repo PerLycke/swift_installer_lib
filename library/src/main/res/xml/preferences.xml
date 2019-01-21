@@ -15,4 +15,9 @@
         android:key="new_app_notification_enabled"
         android:summary="@string/new_app_notif_setting_summary"
         android:title="@string/new_app_notif_setting_title" />
+
+    <com.brit.swiftinstaller.library.ui.preference.SwiftSwitchPreference
+        android:key="disable_magisk"
+        android:title="@string/disable_magisk_title"
+        android:defaultValue="true"/>
 </PreferenceScreen>

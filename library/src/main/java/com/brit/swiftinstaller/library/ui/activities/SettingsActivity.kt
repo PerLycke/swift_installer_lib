@@ -8,11 +8,10 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
+import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.library.utils.KEY_USE_SOFT_REBOOT
-import com.brit.swiftinstaller.library.utils.MaterialPalette
-import com.brit.swiftinstaller.library.utils.getUseSoftReboot
-import com.brit.swiftinstaller.library.utils.swift
+import com.brit.swiftinstaller.library.installer.rom.RomHandler
+import com.brit.swiftinstaller.library.utils.*
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -44,6 +43,18 @@ class SettingsActivity : AppCompatActivity() {
             } else {
                 val softReboot = preferenceScreen.findPreference(KEY_USE_SOFT_REBOOT) as SwitchPreference
                 softReboot.isChecked = getUseSoftReboot(activity!!)
+            }
+
+            val disableMagisk = preferenceScreen.findPreference("disable_magisk") as SwitchPreference
+            if (!BuildConfig.DEBUG) {
+                preferenceScreen.removePreference(disableMagisk)
+            } else {
+                preferenceScreen.setOnPreferenceChangeListener { preference, newValue ->
+                    if ((newValue as Boolean)) {
+                        deleteFileRoot(RomHandler.magiskPath)
+                    }
+                    false
+                }
             }
         }
 

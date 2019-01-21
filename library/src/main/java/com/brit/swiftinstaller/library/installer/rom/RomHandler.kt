@@ -47,17 +47,18 @@ import com.topjohnwu.superuser.io.SuFile
 abstract class RomHandler constructor(var context: Context) {
 
     val moduleDisabled: Boolean by lazy {
-        SuFile(magiskPath, "disable").exists()
+        context.disableMagisk || SuFile(magiskPath, "disable").exists()
     }
 
     val magiskEnabled: Boolean by lazy {
         if (!moduleDisabled && !SuFile(magiskPath).exists()) {
             createModule()
         }
-        !moduleDisabled && SuFile(magiskPath).exists()
+        !context.disableMagisk && !moduleDisabled && SuFile(magiskPath).exists()
     }
 
     open fun createModule() {
+        if (context.disableMagisk) return
         if (!SuFile(magiskPath).exists() && SuFile("/sbin/.core/img").exists()) {
             runCommand("mkdir -p $magiskPath")
             runCommand("chmod -R 755 $magiskPath")

@@ -29,6 +29,7 @@ import android.content.res.AssetManager
 import android.os.Build
 import android.preference.PreferenceManager
 import android.view.View
+import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.SwiftApplication
 import java.io.File
 import java.io.FileOutputStream
@@ -84,6 +85,12 @@ val Context.pm: PackageManager
 
 val Context.prefs: SharedPreferences
     get() = PreferenceManager.getDefaultSharedPreferences(this)
+
+var Context.disableMagisk: Boolean
+    get() = BuildConfig.DEBUG && PreferenceManager.getDefaultSharedPreferences(this)
+            .getBoolean("disable_magisk", true)
+    set(value) = PreferenceManager.getDefaultSharedPreferences(this)
+            .edit().putBoolean("disable_magisk", value).apply()
 
 fun View.setVisible(visible: Boolean) {
     visibility = if (visible) {

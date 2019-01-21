@@ -43,7 +43,7 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
 object Utils {
-    
+
     fun isSamsungOreo(): Boolean {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
                 getProperty("ro.config.knox", "def") != "def"
