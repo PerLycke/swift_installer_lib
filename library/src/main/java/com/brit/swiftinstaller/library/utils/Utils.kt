@@ -132,7 +132,7 @@ object Utils {
         val tvText = TextView(context)
         tvText.text = msg
         tvText.setTextColor(Color.parseColor("#ffffff"))
-        tvText.textSize = 20f
+        tvText.textSize = 16f
         tvText.layoutParams = llParam
 
         ll.addView(progressBar)
