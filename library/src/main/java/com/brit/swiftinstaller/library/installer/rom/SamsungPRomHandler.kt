@@ -38,6 +38,8 @@ import java.io.File
 
 class SamsungPRomHandler(context: Context) : RomHandler(context) {
 
+    private val pHandler = PRomHandler(context)
+
     override fun requiresRoot(): Boolean {
         return isSamsungPatched()
     }
@@ -123,6 +125,10 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
 
     override fun postInstall(uninstall: Boolean, apps: SynchronizedArrayList<String>,
                              oppositeApps: SynchronizedArrayList<String>, intent: Intent?) {
+        if (ShellUtils.isRootAvailable) {
+            pHandler.postInstall(uninstall, apps, oppositeApps, intent)
+            return
+        }
         val extraIntent = intent != null
 
         if (ShellUtils.isRootAvailable) {
@@ -204,13 +210,13 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
 
     override fun installOverlay(context: Context, targetPackage: String, overlayPath: String) {
         if (ShellUtils.isRootAvailable) {
-            runCommand("pm install -r $overlayPath", true)
+            pHandler.installOverlay(context, targetPackage, overlayPath)
         }
     }
 
     override fun uninstallOverlay(context: Context, packageName: String) {
         if (ShellUtils.isRootAvailable) {
-            runCommand("pm uninstall " + getOverlayPackageName(packageName), true)
+            pHandler.uninstallOverlay(context, packageName)
         } else {
             addAppToUninstall(context, getOverlayPackageName(packageName))
         }
