@@ -29,10 +29,7 @@ import android.content.res.AssetManager
 import android.os.Build
 import android.preference.PreferenceManager
 import android.view.View
-import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.SwiftApplication
-import com.brit.swiftinstaller.library.installer.rom.RomHandler
-import com.topjohnwu.superuser.io.SuFile
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
