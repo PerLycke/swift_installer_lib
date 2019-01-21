@@ -58,7 +58,7 @@ open class PRomHandler(context: Context) : RomHandler(context) {
             if (!magiskEnabled) remountRW("/system")
             ShellUtils.mkdir("$appPath/$overlayPackage")
             ShellUtils.copyFile(overlayPath, "$appPath/$overlayPackage/$overlayPackage.apk")
-            ShellUtils.setPermissions(644, "$appPath/$overlayPackage/$overlayPackage.apk")
+            ShellUtils.setPermissions(755, "$appPath/$overlayPackage/$overlayPackage.apk")
             if (!magiskEnabled) remountRO("/system")
         }
     }
@@ -156,7 +156,6 @@ open class PRomHandler(context: Context) : RomHandler(context) {
                 val opn = getOverlayPackageName(packageName)
                 val systemFile = SuFile("$systemApp/$opn/$opn.apk")
                 val magiskFile = SuFile("$magiskPath/${systemFile.absolutePath}")
-                ShellUtils.setPermissions(755, magiskPath)
                 if (systemFile.exists()) {
                     if (!magiskFile.exists()) {
                         ShellUtils.mkdir(magiskFile.parent)

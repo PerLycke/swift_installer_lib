@@ -60,7 +60,7 @@ abstract class RomHandler constructor(var context: Context) {
     open fun createModule() {
         if (!SuFile(magiskPath).exists() && SuFile("/sbin/.core/img").exists()) {
             runCommand("mkdir -p $magiskPath")
-            runCommand("chmod -R 644 $magiskPath")
+            runCommand("chmod -R 755 $magiskPath")
             runCommand("touch $magiskPath/auto_mount", true)
             runCommand("touch $magiskPath/update", true)
             var moduleProp = "id=swift_installer\n"
