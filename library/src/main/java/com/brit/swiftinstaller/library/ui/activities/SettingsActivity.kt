@@ -62,7 +62,7 @@ class SettingsActivity : AppCompatActivity() {
                             dlg.dismiss()
                         }
                     }
-                    false
+                    true
                 }
             }
         }
