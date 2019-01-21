@@ -24,9 +24,7 @@ package com.brit.swiftinstaller.library.ui
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.utils.MaterialPalette
@@ -38,7 +36,7 @@ class InfoCard(val desc: String,
                val bgClick: View.OnClickListener? = null) {
 
     fun build(context: Context) : View {
-        val cardView = LayoutInflater.from(context).inflate(R.layout.card_info, null)
+        val cardView = View.inflate(context, R.layout.card_info, null)
 
         val bg = cardView.findViewById<ImageView>(R.id.card_bg).drawable as LayerDrawable
         bg.findDrawableByLayerId(R.id.background).setTint(MaterialPalette.get(context).cardBackground)

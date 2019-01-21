@@ -220,7 +220,7 @@ class InstallSummaryActivity : ThemeActivity() {
                 if (failedList.isNotEmpty()) {
                     if (!ShellUtils.isRootAvailable) {
                         send_email_layout.visibility = View.VISIBLE
-                        send_email_btn.setOnClickListener { _ ->
+                        send_email_btn.setOnClickListener {
                             sendErrorLog()
                         }
                     }

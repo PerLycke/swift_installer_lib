@@ -23,7 +23,6 @@ package com.brit.swiftinstaller.library.ui.activities
 
 import android.app.Dialog
 import android.os.Bundle
-import android.os.Handler
 import androidx.appcompat.app.AlertDialog
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.applist.AppList

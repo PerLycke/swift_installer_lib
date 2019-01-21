@@ -140,6 +140,7 @@ object ColorUtils {
         return rgbToRgba(Integer.toHexString(rgb))
     }
 
+    @Suppress("MemberVisibilityCanBePrivate")
     fun rgbToRgba(rgb: String): String {
         return "$rgb${rgb.substring(0, 2)}".removeRange(0, 2)
     }

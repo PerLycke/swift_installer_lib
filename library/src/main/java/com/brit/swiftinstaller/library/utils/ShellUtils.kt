@@ -130,7 +130,7 @@ object ShellUtils {
             cmd.append(" -I ").append(targetInfo.sourceDir)
         }
         cmd.append(" -F ").append(unsignedUnaligned.absolutePath)
-        var result = Shell.sh(cmd.toString()).exec()
+        val result = Shell.sh(cmd.toString()).exec()
 
         // Zipalign
         if (unsignedUnaligned.exists()) {
@@ -280,7 +280,7 @@ fun getProperty(name: String, def: String): String {
     return if (value.isNullOrEmpty()) {
         def
     } else {
-        value!!
+        value
     }
 }
 

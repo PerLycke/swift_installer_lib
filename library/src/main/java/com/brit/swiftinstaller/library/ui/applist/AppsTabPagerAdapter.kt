@@ -26,7 +26,6 @@ import android.os.Handler
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.brit.swiftinstaller.library.ui.activities.InstallSummaryActivity
 import com.brit.swiftinstaller.library.utils.OverlayUtils.checkVersionCompatible

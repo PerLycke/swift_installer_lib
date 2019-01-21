@@ -37,10 +37,10 @@ class RebootActivity : ThemeActivity() {
 
         alert {
             title = getString(R.string.reboot_dialog_title)
-            if (intent.hasExtra("message")) {
-                message = intent.getStringExtra("message")
+            message = if (intent.hasExtra("message")) {
+                intent.getStringExtra("message")
             } else {
-                message = getString(R.string.reboot_dialog_msg)
+                getString(R.string.reboot_dialog_msg)
             }
             positiveButton(R.string.reboot) {
                 val rebootingDialog = Dialog(ctx, R.style.AppTheme_Translucent)

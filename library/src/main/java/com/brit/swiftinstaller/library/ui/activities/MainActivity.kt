@@ -276,7 +276,7 @@ class MainActivity : ThemeActivity() {
         b.findDrawableByLayerId(R.id.background_popup)
                 .setTint(MaterialPalette.get(this).cardBackground)
 
-        popupView.popup_menu_about.setOnClickListener { _ ->
+        popupView.popup_menu_about.setOnClickListener {
             popup.dismiss()
             alert {
                 title = getString(R.string.swift_app_name)
@@ -296,7 +296,7 @@ class MainActivity : ThemeActivity() {
             }
         }
 
-        popupView.popup_menu_help.setOnClickListener { _ ->
+        popupView.popup_menu_help.setOnClickListener {
             popup.dismiss()
 
             alert {

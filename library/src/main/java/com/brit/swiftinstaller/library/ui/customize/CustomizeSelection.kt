@@ -51,7 +51,7 @@ class CustomizeSelection : ArrayMap<String, String>() {
         return if (s.isNullOrEmpty()) {
             ""
         } else {
-            s!!
+            s
         }
     }
 
@@ -61,7 +61,7 @@ class CustomizeSelection : ArrayMap<String, String>() {
             0
         } else {
             try {
-                s!!.toInt()
+                s.toInt()
             } catch (e: NumberFormatException) {
                 0
             }
