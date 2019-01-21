@@ -176,9 +176,8 @@
     <string name="new_app_notif_setting_title">Notifications for new apps</string>
     <string name="new_app_notif_setting_summary">When a new app is installed, show a notification if an overlay is available</string>
     <string name="soft_reboot">Soft reboot</string>
-    <string name="magisk_module_description">Our Swift Installer module allows you to: \n\n• Install overlays systemlessly, so they don\'t conflict with other modules \n\n• Disable all overlays by just turning off the module \n\n• Theme Gboard easier and better, with a custom generated system theme\n\n You can find it: </string>
-    <string name="magisk_module_description_oreo">Our Swift Installer module allows you to theme Gboard easier and better, with a custom generated system theme.\n\n You can find it: </string>
-    <string name="magisk_module_link_text">HERE</string>
+    <string name="magisk_module_description">Our Swift Installer module allows you to: \n\n• Install overlays systemlessly, so they don\'t conflict with other modules \n\n• Disable all overlays by just turning off the module \n\n• Theme Gboard easier and better, with a custom generated system theme\n\n The module will be automatically generated and enabled after a reboot, but you can turn this off in the app settings  </string>
+    <string name="magisk_module_description_oreo">Our Swift Installer module allows you to theme Gboard easier and better, with a custom generated system theme.\n\n The module will be automatically generated and enabled after a reboot, but you can turn this off in the app settings </string>
     <string name="changelog">Changelog</string>
     <string name="magisk_module">Magisk module: %s</string>
     <string name="rescue_zip_pie">TWRP flashable rescue zip: %s</string>
@@ -190,6 +189,6 @@
     <string name="pie_category_setting_icon">Setting Icons</string>
     <string name="quick_settings_style">Quick Settings Style</string>
     <string name="swiftkey_reboot_needed">You need to reboot for SwiftKey to reload all colors</string>
-    <string name="disable_magisk_title">Disable magisk</string>
-    <string name="overlay_move_msg">Moving overlays. Please wait....</string>
+    <string name="disable_magisk_title">Disable Magisk module generation</string>
+    <string name="overlay_move_msg">Moving overlays. Please wait…</string>
 </resources>
