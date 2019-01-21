@@ -90,7 +90,7 @@ val Context.prefs: SharedPreferences
 
 var Context.disableMagisk: Boolean
     get() = PreferenceManager.getDefaultSharedPreferences(this)
-            .getBoolean("disable_magisk", !SuFile(RomHandler.magiskPath).exists())
+            .getBoolean("disable_magisk", false)
     set(value) = PreferenceManager.getDefaultSharedPreferences(this)
             .edit().putBoolean("disable_magisk", value).apply()
 

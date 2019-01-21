@@ -48,7 +48,6 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             val disableMagisk = preferenceScreen.findPreference("disable_magisk") as SwitchPreference
-            disableMagisk.setDefaultValue(!SuFile(RomHandler.magiskPath).exists())
             disableMagisk.setOnPreferenceChangeListener { _, newValue ->
                 val dlg = Utils.progressDialog(activity!!, activity!!.getString(R.string.overlay_move_msg))
                 doAsync {

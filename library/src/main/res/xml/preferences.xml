@@ -19,5 +19,5 @@
     <com.brit.swiftinstaller.library.ui.preference.SwiftSwitchPreference
         android:key="disable_magisk"
         android:title="@string/disable_magisk_title"
-        android:defaultValue="true"/>
+        android:defaultValue="false"/>
 </PreferenceScreen>
