@@ -31,6 +31,8 @@ import android.preference.PreferenceManager
 import android.view.View
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.SwiftApplication
+import com.brit.swiftinstaller.library.installer.rom.RomHandler
+import com.topjohnwu.superuser.io.SuFile
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -87,8 +89,8 @@ val Context.prefs: SharedPreferences
     get() = PreferenceManager.getDefaultSharedPreferences(this)
 
 var Context.disableMagisk: Boolean
-    get() = BuildConfig.DEBUG && PreferenceManager.getDefaultSharedPreferences(this)
-            .getBoolean("disable_magisk", true)
+    get() = PreferenceManager.getDefaultSharedPreferences(this)
+            .getBoolean("disable_magisk", !SuFile(RomHandler.magiskPath).exists())
     set(value) = PreferenceManager.getDefaultSharedPreferences(this)
             .edit().putBoolean("disable_magisk", value).apply()
 

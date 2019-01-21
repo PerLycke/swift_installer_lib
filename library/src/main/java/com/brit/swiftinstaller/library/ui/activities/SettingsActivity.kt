@@ -7,9 +7,10 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
-import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
+import com.brit.swiftinstaller.library.installer.rom.RomHandler
 import com.brit.swiftinstaller.library.utils.*
+import com.topjohnwu.superuser.io.SuFile
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
@@ -47,23 +48,20 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             val disableMagisk = preferenceScreen.findPreference("disable_magisk") as SwitchPreference
-            if (!BuildConfig.DEBUG) {
-                preferenceScreen.removePreference(disableMagisk)
-            } else {
-                disableMagisk.setOnPreferenceChangeListener { _, newValue ->
-                    val dlg = Utils.progressDialog(activity!!, activity!!.getString(R.string.overlay_move_msg))
-                    doAsync {
-                        if ((newValue as Boolean)) {
-                            MagiskUtils.convertFromMagisk(activity!!)
-                        } else {
-                            MagiskUtils.convertToMagisk(activity!!)
-                        }
-                        uiThread {
-                            dlg.dismiss()
-                        }
+            disableMagisk.setDefaultValue(!SuFile(RomHandler.magiskPath).exists())
+            disableMagisk.setOnPreferenceChangeListener { _, newValue ->
+                val dlg = Utils.progressDialog(activity!!, activity!!.getString(R.string.overlay_move_msg))
+                doAsync {
+                    if ((newValue as Boolean)) {
+                        MagiskUtils.convertFromMagisk(activity!!)
+                    } else {
+                        MagiskUtils.convertToMagisk(activity!!)
                     }
-                    true
+                    uiThread {
+                        dlg.dismiss()
+                    }
                 }
+                true
             }
         }
 
