@@ -26,6 +26,7 @@ import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.LayerDrawable
+import android.util.Log
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.customize.*
 import com.brit.swiftinstaller.library.utils.*
@@ -124,9 +125,14 @@ open class PRomHandler(context: Context) : RomHandler(context) {
         return SuFile("$appPath/$overlayPackage/$overlayPackage.apk").exists()
     }
 
-    override fun getOverlayInfo(pm: PackageManager, packageName: String): PackageInfo {
+    private fun getOverlayPath(packageName: String): String {
         val overlayPackage = getOverlayPackageName(packageName)
-        return pm.getPackageArchiveInfo("$appPath/$overlayPackage/$overlayPackage.apk",
+        return "$appPath/$overlayPackage/$overlayPackage.apk"
+    }
+
+    override fun getOverlayInfo(pm: PackageManager, packageName: String): PackageInfo {
+        Log.d("TEST", "overlay path - ${getOverlayPath(packageName)}")
+        return pm.getPackageArchiveInfo(getOverlayPath(packageName),
                 PackageManager.GET_META_DATA)
     }
 
@@ -150,7 +156,7 @@ open class PRomHandler(context: Context) : RomHandler(context) {
                     if (!magiskFile.exists()) {
                         ShellUtils.mkdir(magiskFile.parent)
                         ShellUtils.copyFile(systemFile.absolutePath, magiskFile.absolutePath)
-                        ShellUtils.setPermissions(644, magiskFile.absolutePath)
+                        ShellUtils.setPermissions(755, magiskFile.absolutePath)
                         deleteFileRoot(systemFile.parent)
                     } else {
                         val soi = context.packageManager.getPackageArchiveInfo(
