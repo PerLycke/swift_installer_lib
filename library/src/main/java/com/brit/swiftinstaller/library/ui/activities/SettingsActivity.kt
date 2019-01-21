@@ -1,6 +1,7 @@
 package com.brit.swiftinstaller.library.ui.activities
 
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -48,6 +49,9 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             val disableMagisk = preferenceScreen.findPreference("disable_magisk") as SwitchPreference
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+                preferenceScreen.removePreference(disableMagisk)
+            }
             disableMagisk.setOnPreferenceChangeListener { _, newValue ->
                 val dlg = Utils.progressDialog(activity!!, activity!!.getString(R.string.overlay_move_msg))
                 doAsync {
