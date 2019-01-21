@@ -100,22 +100,8 @@ abstract class RomHandler constructor(var context: Context) {
             } else {
                 tutorial.getString(R.string.magisk_module_description_oreo)
             }
-            val link = tutorial.getString(R.string.magisk_module_link_text)
-
-            val click = object : ClickableSpan() {
-                override fun onClick(p0: View) {
-                    val url = context.getString(R.string.magisk_module_link)
-                    val builder = CustomTabsIntent.Builder()
-                    val intent = builder.build()
-                    intent.intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    intent.launchUrl(context, Uri.parse(url))
-                }
-            }
-            val ss = SpannableString("$content $link")
-            ss.setSpan(click, content.length + 1, content.length + 1 + link.length,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            tutorial.addFragment(Step.Builder().setTitle("Magisk Module")
-                    .setContent(ss)
+            tutorial.addFragment(Step.Builder().setTitle("Magisk module")
+                    .setContent(content)
                     .setDrawable(R.drawable.ic_magisk_logo)
                     .setBackgroundColor(tutorial.getColor(R.color.background_main)).build(),
                     3)
