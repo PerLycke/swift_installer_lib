@@ -42,6 +42,7 @@ object MagiskUtils {
         }
         remountRO("/system")
         val reboot = Intent(context, RebootActivity::class.java)
+        reboot.flags += Intent.FLAG_ACTIVITY_NEW_TASK
         reboot.putExtra("message", context.getString(R.string.reboot_dialog_msg))
         context.startActivity(reboot)
     }
@@ -82,6 +83,7 @@ object MagiskUtils {
         deleteFileRoot(RomHandler.magiskPath)
         remountRO("/system")
         val reboot = Intent(context, RebootActivity::class.java)
+        reboot.flags += Intent.FLAG_ACTIVITY_NEW_TASK
         reboot.putExtra("message", context.getString(R.string.reboot_dialog_msg))
         context.startActivity(reboot)
     }
@@ -102,6 +104,7 @@ object MagiskUtils {
             runCommand("echo \"$moduleProp\" > "
                     + "${RomHandler.magiskPath}/module.prop", true)
             val reboot = Intent(context, RebootActivity::class.java)
+            reboot.flags += Intent.FLAG_ACTIVITY_NEW_TASK
             reboot.putExtra("message", context.getString(R.string.reboot_dialog_msg))
             context.startActivity(reboot)
         }
