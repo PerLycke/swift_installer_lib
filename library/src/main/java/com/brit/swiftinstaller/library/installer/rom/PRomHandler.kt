@@ -131,7 +131,6 @@ open class PRomHandler(context: Context) : RomHandler(context) {
     }
 
     override fun getOverlayInfo(pm: PackageManager, packageName: String): PackageInfo {
-        Log.d("TEST", "overlay path - ${getOverlayPath(packageName)}")
         return pm.getPackageArchiveInfo(getOverlayPath(packageName),
                 PackageManager.GET_META_DATA)
     }
@@ -148,7 +147,7 @@ open class PRomHandler(context: Context) : RomHandler(context) {
         if (magiskEnabled && !moduleDisabled) {
             val overlays = context.assets.list("overlays") ?: emptyArray()
             remountRW("/system")
-            if (Integer.parseInt(runCommand("magisk -V").output?: "0") < 17000) {
+            if (getMagiskVersion() < 17000) {
                 // show dialog or notification here. need activity for dialog as this is run on boot.
                 return
             }

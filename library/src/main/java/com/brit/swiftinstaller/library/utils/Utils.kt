@@ -43,9 +43,7 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
 object Utils {
-
-    private const val BUFFER = 80000
-
+    
     fun isSamsungOreo(): Boolean {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
                 getProperty("ro.config.knox", "def") != "def"
@@ -97,4 +95,9 @@ object Utils {
             }
         }
     }
+}
+
+fun getMagiskVersion(): Int {
+    val ver = (runCommand("magisk -V").output?: "0").trim()
+    return ver.toInt()
 }
