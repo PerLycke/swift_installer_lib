@@ -161,6 +161,7 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
                 appInstall.addCategory(Intent.CATEGORY_DEFAULT)
                 appInstall.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 appInstall.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                appInstall.setPackage("com.google.android.packageinstaller")
                 appInstall
             } else {
                 intent!!.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -186,6 +187,7 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
                 }
                 appInstall.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 appInstall.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                appInstall.setPackage("com.google.android.packageinstaller")
                 appInstall
             }
             context.startActivities(oppositeIntents)

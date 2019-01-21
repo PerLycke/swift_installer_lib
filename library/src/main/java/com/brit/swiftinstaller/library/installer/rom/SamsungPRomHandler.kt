@@ -202,6 +202,7 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
                 }
                 appInstall.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 appInstall.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                appInstall.setPackage("com.google.android.packageinstaller")
                 appInstall
             }
             context.startActivities(oppositeIntents)
