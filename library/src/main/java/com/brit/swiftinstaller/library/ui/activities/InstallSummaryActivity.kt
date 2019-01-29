@@ -112,7 +112,7 @@ class InstallSummaryActivity : ThemeActivity() {
         val sendLog = sheetView.findViewById<View>(R.id.send_email_layout)
         val reboot = sheetView.findViewById<View>(R.id.reboot_layout)
 
-        if (Holder.errorMap.isNotEmpty()) {
+        if (Holder.errorMap.isNotEmpty() && !setContainsAny(Holder.errorMap.keys, resources.getStringArray(R.array.log_blacklist))) {
             sendLog.visibility = View.VISIBLE
             sendLog.setOnClickListener {
                 sendErrorLog()

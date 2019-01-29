@@ -98,3 +98,8 @@ object Utils {
         }
     }
 }
+
+fun setContainsAny(set: Set<String>, array: Array<String>): Boolean {
+    array.forEach { if (set.contains(it)) return true }
+    return false
+}
