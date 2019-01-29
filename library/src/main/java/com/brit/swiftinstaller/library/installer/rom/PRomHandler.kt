@@ -39,6 +39,13 @@ open class PRomHandler(context: Context) : RomHandler(context) {
 
     private val appPath: String
 
+    override val magiskEnabled: Boolean by lazy {
+        if (!moduleDisabled && !SuFile(magiskPath).exists()) {
+            MagiskUtils.createModule(context)
+        }
+        super.magiskEnabled
+    }
+
     init {
         appPath = if (!moduleDisabled && SuFile(magiskPath).exists()) {
             val f = SuFile(magiskPath, systemApp)

@@ -53,17 +53,33 @@ class SettingsActivity : AppCompatActivity() {
                 preferenceScreen.removePreference(disableMagisk)
             }
             disableMagisk.setOnPreferenceChangeListener { _, newValue ->
-                val dlg = Utils.progressDialog(activity!!, activity!!.getString(R.string.overlay_move_msg))
-                doAsync {
-                    if ((newValue as Boolean)) {
-                        MagiskUtils.convertFromMagisk(activity!!)
+                activity!!.alert {
+                    if (activity!!.swift.romHandler.moduleDisabled) {
+                        titleResource = R.string.magisk_switch_confirm_enable_title
+                        messageResource = R.string.magisk_switch_confirm_enable_message
                     } else {
-                        MagiskUtils.convertToMagisk(activity!!)
+                        titleResource = R.string.magisk_switch_confirm_disable_title
+                        messageResource = R.string.magisk_switch_confirm_disable_message
                     }
-                    uiThread {
-                        dlg.dismiss()
+                    positiveButton(getString(android.R.string.ok)) {
+                        disableMagisk.isEnabled = false
+                        val dlg = Utils.progressDialog(activity!!, activity!!.getString(R.string.overlay_move_msg))
+                        doAsync {
+                            if ((newValue as Boolean)) {
+                                MagiskUtils.convertFromMagisk(activity!!)
+                            } else {
+                                MagiskUtils.convertToMagisk(activity!!)
+                            }
+                            uiThread {
+                                dlg.dismiss()
+                            }
+                        }
+                    }
+                    negativeButton(getString(android.R.string.cancel)) {
+
                     }
                 }
+
                 true
             }
         }

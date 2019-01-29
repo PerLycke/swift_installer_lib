@@ -191,4 +191,9 @@
     <string name="swiftkey_reboot_needed">You need to reboot for SwiftKey to reload all colors</string>
     <string name="disable_magisk_title">Disable Magisk module generation</string>
     <string name="overlay_move_msg">Moving overlays. Please wait…</string>
+    <string name="reboot_dialog_magisk_msg">Reboot to load magisk module.</string>
+    <string name="magisk_switch_confirm_enable_title">Enable magisk</string>
+    <string name="magisk_switch_confirm_enable_message">Enable magisk</string>
+    <string name="magisk_switch_confirm_disable_title">Disable magisk</string>
+    <string name="magisk_switch_confirm_disable_message">Disable magisk</string>
 </resources>

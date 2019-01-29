@@ -50,10 +50,7 @@ abstract class RomHandler constructor(var context: Context) {
         context.disableMagisk || SuFile(magiskPath, "disable").exists()
     }
 
-    val magiskEnabled: Boolean by lazy {
-        if (!moduleDisabled && !SuFile(magiskPath).exists()) {
-            MagiskUtils.createModule(context)
-        }
+    open val magiskEnabled: Boolean by lazy {
         !context.disableMagisk && !moduleDisabled && SuFile(magiskPath).exists()
     }
 
@@ -173,6 +170,8 @@ abstract class RomHandler constructor(var context: Context) {
 
         const val magiskPath = "/sbin/.core/img/swift_installer"
 
+        val magiskAvailable = fileExists("/sbin/.core/config")
+
         val supportsMagisk = ShellUtils.isRootAccessAvailable
 
         const val TUTORIAL_PAGE_MAIN = 0
@@ -191,11 +190,7 @@ abstract class RomHandler constructor(var context: Context) {
                         && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> OOSOreoRomHandler(context)
                 getProperty("ro.config.knox", "def") != "def"
                         && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P ->
-                    if (isSamsungPatched()) {
-                        PRomHandler(context)
-                    } else {
-                        SamsungPRomHandler(context)
-                    }
+                    SamsungPRomHandler(context)
                 getProperty("ro.config.knox", "def") != "def"
                         && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> SamsungRomHandler(context)
                 Build.VERSION_CODES.P == Build.VERSION.SDK_INT -> PRomHandler(context)
