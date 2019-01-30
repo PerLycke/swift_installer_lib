@@ -176,7 +176,11 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
                 appInstall.addCategory(Intent.CATEGORY_DEFAULT)
                 appInstall.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 appInstall.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                appInstall.setPackage("com.google.android.packageinstaller")
+                if (context.pm.isAppInstalled("com.google.android.packageinstaller")) {
+                    appInstall.setPackage("com.google.android.packageinstaller")
+                } else if (context.pm.isAppInstalled("com.samsung.android.packageinstaller")) {
+                    appInstall.setPackage("com.samsung.android.packageinstaller")
+                }
                 appInstall
             } else {
                 intent!!.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -202,7 +206,11 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
                 }
                 appInstall.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 appInstall.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                appInstall.setPackage("com.google.android.packageinstaller")
+                if (context.pm.isAppInstalled("com.google.android.packageinstaller")) {
+                    appInstall.setPackage("com.google.android.packageinstaller")
+                } else if (context.pm.isAppInstalled("com.samsung.android.packageinstaller")) {
+                    appInstall.setPackage("com.samsung.android.packageinstaller")
+                }
                 appInstall
             }
             context.startActivities(oppositeIntents)
