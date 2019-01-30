@@ -47,6 +47,10 @@ fun PackageInfo.getVersionCode(): Long {
     }
 }
 
+fun PackageManager.getAppPath(packageName: String): String {
+    return getApplicationInfo(packageName, 0).sourceDir
+}
+
 fun PackageManager.isAppInstalled(packageName: String): Boolean {
     return try {
         val ai = getApplicationInfo(packageName, 0)

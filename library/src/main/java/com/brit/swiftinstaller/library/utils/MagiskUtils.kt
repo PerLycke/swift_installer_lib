@@ -20,23 +20,32 @@ object MagiskUtils {
             val opn = OverlayUtils.getOverlayPackageName(packageName)
             val systemFile = SuFile("/system/app/$opn/$opn.apk")
             val magiskFile = SuFile("${RomHandler.magiskPath}/${systemFile.absolutePath}")
-            if (systemFile.exists()) {
+            val overlayInstalled = context.pm.isAppInstalled(opn)
+            if (overlayInstalled || systemFile.exists()) {
                 shouldReboot = true
+                val appPath = if (overlayInstalled) {
+                    context.pm.getAppPath(opn)
+                } else {
+                    systemFile.absolutePath
+                }
                 if (!magiskFile.exists()) {
                     ShellUtils.mkdir(magiskFile.parent)
-                    ShellUtils.copyFile(systemFile.absolutePath, magiskFile.absolutePath)
+                    ShellUtils.copyFile(appPath, magiskFile.absolutePath)
                     ShellUtils.setPermissions(755, magiskFile.absolutePath)
-                    deleteFileRoot(systemFile.parent)
                 } else {
                     val soi = context.packageManager.getPackageArchiveInfo(
-                            systemFile.absolutePath, 0)
+                            appPath, 0)
                     val moi = context.packageManager.getPackageArchiveInfo(
                             magiskFile.absolutePath, 0)
                     if (soi.getVersionCode() > moi.getVersionCode()) {
-                        ShellUtils.copyFile(systemFile.absolutePath, magiskFile.absolutePath)
+                        ShellUtils.copyFile(appPath, magiskFile.absolutePath)
                         ShellUtils.setPermissions(755, magiskFile.absolutePath)
-                        deleteFileRoot(systemFile.parent)
                     }
+                }
+                if (overlayInstalled) {
+                    runCommand("pm uninstall " + OverlayUtils.getOverlayPackageName(packageName), true)
+                } else {
+                    deleteFileRoot(systemFile.parent)
                 }
             }
         }

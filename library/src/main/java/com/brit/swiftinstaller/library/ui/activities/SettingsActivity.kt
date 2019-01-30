@@ -78,6 +78,7 @@ class SettingsActivity : AppCompatActivity() {
                     negativeButton(getString(android.R.string.cancel)) {
 
                     }
+                    show()
                 }
 
                 true
