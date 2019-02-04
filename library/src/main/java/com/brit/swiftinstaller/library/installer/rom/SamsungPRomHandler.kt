@@ -106,7 +106,8 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
                     "com.google.android.packageinstaller",
                     "com.wssyncmldm",
                     "com.samsung.android.scloud",
-                    "com.android.providers.media"
+                    "com.android.providers.media",
+                    "com.google.android.marvin.talkback"
             )
     }
 
