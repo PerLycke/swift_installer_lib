@@ -24,6 +24,12 @@ class OOSPRomHandler(context: Context) : PRomHandler(context) {
         return "oos-p"
     }
 
+    override fun getDisabledOverlays(): SynchronizedArrayList<String> {
+        return synchronizedArrayListOf(
+                "com.google.android.marvin.talkback"
+        )
+    }
+
     override fun getRequiredApps(): Array<String> {
         return arrayOf(
                 "android",
