@@ -190,10 +190,10 @@
     <string name="quick_settings_style">Quick Settings Style</string>
     <string name="swiftkey_reboot_needed">You need to reboot for SwiftKey to reload all colors</string>
     <string name="disable_magisk_title">Disable Magisk module generation</string>
-    <string name="overlay_move_msg">Moving overlays. Please wait…</string>
-    <string name="reboot_dialog_magisk_msg">Reboot to load magisk module.</string>
-    <string name="magisk_switch_confirm_enable_title">Enable magisk</string>
-    <string name="magisk_switch_confirm_enable_message">Enable magisk</string>
-    <string name="magisk_switch_confirm_disable_title">Disable magisk</string>
-    <string name="magisk_switch_confirm_disable_message">Disable magisk</string>
+    <string name="overlay_move_msg">Moving overlays, please wait…</string>
+    <string name="reboot_dialog_magisk_msg">Reboot to load the Magisk module</string>
+    <string name="magisk_switch_confirm_enable_title">Magisk module enabled</string>
+    <string name="magisk_switch_confirm_enable_message">This will make the Installer auto-generate the Magisk module. The Installer will now attempt to move your current overlays from your system folders to the Magisk module. A full reboot will then be necessary for the module and for the overlays load</string>
+    <string name="magisk_switch_confirm_disable_title">Magisk module disabled</string>
+    <string name="magisk_switch_confirm_disable_message">This will make the Installer stop auto-generating the Magisk module. You will then have to manually remove the module from Magisk Manager. A full reboot will then be necessary for the module to be removed completely. The Installer will now attempt to move your current overlays from the Magisk module to your system folders.</string>
 </resources>
