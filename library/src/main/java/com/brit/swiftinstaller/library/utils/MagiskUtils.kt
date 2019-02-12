@@ -54,6 +54,7 @@ object MagiskUtils {
             val reboot = Intent(context, RebootActivity::class.java)
             reboot.flags += Intent.FLAG_ACTIVITY_NEW_TASK
             reboot.putExtra("message", context.getString(R.string.reboot_dialog_magisk_msg))
+            reboot.putExtra("force-reboot", true)
             context.startActivity(reboot)
         }
     }
@@ -96,6 +97,7 @@ object MagiskUtils {
         val reboot = Intent(context, RebootActivity::class.java)
         reboot.flags += Intent.FLAG_ACTIVITY_NEW_TASK
         reboot.putExtra("message", context.getString(R.string.reboot_dialog_magisk_msg))
+        reboot.putExtra("force-reboot", true)
         context.startActivity(reboot)
     }
 
