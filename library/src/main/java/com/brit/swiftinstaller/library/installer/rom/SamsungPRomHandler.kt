@@ -23,6 +23,8 @@ package com.brit.swiftinstaller.library.installer.rom
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -38,8 +40,10 @@ import java.io.File
 
 class SamsungPRomHandler(context: Context) : RomHandler(context) {
 
+    private val pHandler = PRomHandler(context)
+
     override fun requiresRoot(): Boolean {
-        return false
+        return isSamsungPatched()
     }
 
     override fun getChangelogTag(): String {
@@ -124,6 +128,10 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
 
     override fun postInstall(uninstall: Boolean, apps: SynchronizedArrayList<String>,
                              oppositeApps: SynchronizedArrayList<String>, intent: Intent?) {
+        if (ShellUtils.isRootAvailable) {
+            pHandler.postInstall(uninstall, apps, oppositeApps, intent)
+            return
+        }
         val extraIntent = intent != null
 
         if (ShellUtils.isRootAvailable) {
@@ -215,16 +223,30 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
 
     override fun installOverlay(context: Context, targetPackage: String, overlayPath: String) {
         if (ShellUtils.isRootAvailable) {
-            runCommand("pm install -r $overlayPath", true)
+            pHandler.installOverlay(context, targetPackage, overlayPath)
         }
     }
 
     override fun uninstallOverlay(context: Context, packageName: String) {
         if (ShellUtils.isRootAvailable) {
-            runCommand("pm uninstall " + getOverlayPackageName(packageName), true)
+            pHandler.uninstallOverlay(context, packageName)
         } else {
             addAppToUninstall(context, getOverlayPackageName(packageName))
         }
+    }
+
+    override fun isOverlayInstalled(targetPackage: String): Boolean {
+        if (ShellUtils.isRootAvailable) {
+            return pHandler.isOverlayInstalled(targetPackage)
+        }
+        return super.isOverlayInstalled(targetPackage)
+    }
+
+    override fun getOverlayInfo(pm: PackageManager, packageName: String): PackageInfo {
+        if (ShellUtils.isRootAvailable) {
+            return pHandler.getOverlayInfo(pm, packageName)
+        }
+        return super.getOverlayInfo(pm, packageName)
     }
 
     override fun createCustomizeHandler(): CustomizeHandler {

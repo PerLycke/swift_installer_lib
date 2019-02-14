@@ -213,5 +213,13 @@ abstract class RomHandler constructor(var context: Context) {
                 else -> OreoRomHandler(context)
             }
         }
+        fun isSamsungPatched(): Boolean {
+            if (getProperty("ro.product.device", "").startsWith("dream")) {
+                return Integer.parseInt(getProperty("ro.build.date.utc", "0")) > 1545951730
+            } else if (getProperty("ro.product.device", "").startsWith("great")) {
+                return Integer.parseInt(getProperty("ro.build.date.utc", "0")) > 1545951730
+            }
+            return false
+        }
     }
 }
