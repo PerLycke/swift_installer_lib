@@ -158,7 +158,7 @@
     <string name="info_card_compatibility_msg">Note that we cannot guarantee a stable experience if you use Swift Installer in combination with other themes or mods.</string>
     <string name="faq">FAQ: %s</string>
     <string name="link_apps">Supported apps: https://goo.gl/gS84kK</string>
-    <string name="no_root_msg">Root access is required for the Installer to work. We inform about this in the Play Store description. You can request a refund from the Play Store, or email us with your GPA code for a manual refund. Email is swiftuserhelp@gmail.com</string>
+    <string name="no_root_msg">Root access is required for Swift Installer to work on this device and setup. We inform about this in the Play Store description. You can request a refund from the Play Store, or email us your GPA code for a manual refund, within 48 hours of purchase. Email is swiftuserhelp@gmail.com</string>
     <string name="exit">Exit</string>
     <string name="requesting_root_access">Requesting root access…</string>
     <string name="search_in_settings">Search in Settings</string>
