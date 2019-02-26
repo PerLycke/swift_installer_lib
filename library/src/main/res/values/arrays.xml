@@ -2,7 +2,7 @@
 <resources>
     <string-array name="log_blacklist" translatable="false">
         <item>com.android.chrome</item>
-        <item>com.chrome.beta</item>
         <item>org.bromite.bromite</item>
+        <item>com.brave.browser</item>
     </string-array>
 </resources>
