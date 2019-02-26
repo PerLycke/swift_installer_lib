@@ -145,6 +145,11 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
             apps.removeAt(index)
             apps.add(0, "android")
         }
+        if (apps.contains("com.google.android.packageinstaller")) {
+            val index = apps.indexOf("com.google.android.packageinstaller")
+            apps.removeAt(index)
+            apps.add(0, "com.google.android.packageinstaller")
+        }
 
         val intents = Array(if (!extraIntent) {
             apps.size
