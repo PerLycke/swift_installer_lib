@@ -219,6 +219,9 @@ abstract class RomHandler constructor(var context: Context) {
             } else if (getProperty("ro.product.device", "").startsWith("great")) {
                 return Integer.parseInt(getProperty("ro.build.date.utc", "0")) > 1548077047
             }
+            else if (getProperty("ro.product.device", "").startsWith("beyond")) {
+                return true
+            }
             return false
         }
     }
