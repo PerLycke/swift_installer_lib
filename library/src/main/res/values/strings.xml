@@ -21,7 +21,6 @@
 
 <resources>
     <string name="swift_app_name">Swift Installer</string>
-    <string name="aosp_icons">AOSP</string>
     <string name="base_theme">Base theme</string>
     <string name="basic_usage">Basic usage</string>
     <string name="bg_nature">Nature</string>
@@ -35,7 +34,6 @@
     <string name="cancel">Cancel</string>
     <string name="category_accent">Accent</string>
     <string name="category_background">Background</string>
-    <string name="category_icons">Icons</string>
     <string name="confirm">Confirm</string>
     <string name="connections">Connections</string>
     <string name="connections_desc">Wi-Fi, Bluetooth, Data usage, Flight mode</string>
@@ -79,7 +77,6 @@
     <string name="progress_installing_title">Installing…</string>
     <string name="progress_uninstalling_title">Uninstalling…</string>
     <string name="reboot">Reboot</string>
-    <string name="restart_sysui">Restart SystemUI</string>
     <string name="reboot_delay_msg">Installing an overlay, or any APK, on Samsung right after a reboot will take a lot of time. The device needs around 4 mins to finish all the startup processes. If you just rebooted, we recommend waiting a moment before installing overlays or change background and accents.\n\nHave fun theming :)</string>
     <string name="reboot_delay_title">After rebooting</string>
     <string name="reboot_later">Reboot later</string>
@@ -117,7 +114,6 @@
     <string name="continue_theming">Continue theming</string>
     <string name="exit_to_main">Exit to main menu</string>
     <string name="stock_icons_multi">Stock multi-colored</string>
-    <string name="android_p">Android P (settings only)</string>
     <string name="force_close">Force close</string>
     <string name="confirm_changes">Confirm Changes</string>
     <string name="discard_changes">Discard changes</string>
@@ -149,7 +145,6 @@
     <string name="reboot_notif_msg">New overlays were enabled at boot. The last step is to make a quick reboot in order for all apps to reload with the new colors. Tap this notification to proceed</string>
     <string name="reboot_dialog_title">Reboot</string>
     <string name="reboot_dialog_msg">Reboot now to reload resources.</string>
-    <string name="restart_sysui_msg">Restart SystemUI now to reload resources.</string>
     <string name="info_card_reboot_msg">New overlays enabled at boot. The last step is to make a quick reboot in order for all apps to reload with the new colors. <b>Tap to proceed.</b></string>
     <string name="wait">Please wait…</string>
     <string name="reboot_now">Reboot now</string>
@@ -157,7 +152,6 @@
     <string name="reboot_now_title">Reboot now?</string>
     <string name="info_card_compatibility_msg">Note that we cannot guarantee a stable experience if you use Swift Installer in combination with other themes or mods.</string>
     <string name="faq">FAQ: %s</string>
-    <string name="link_apps">Supported apps: https://goo.gl/gS84kK</string>
     <string name="no_root_msg">Root access is required for Swift Installer to work on this device and setup. We inform about this in the Play Store description. You can request a refund from the Play Store, or email us your GPA code for a manual refund, within 48 hours of purchase. Email is swiftuserhelp@gmail.com</string>
     <string name="exit">Exit</string>
     <string name="requesting_root_access">Requesting root access…</string>
@@ -182,12 +176,37 @@
     <string name="changelog">Changelog</string>
     <string name="magisk_module">Magisk module: %s</string>
     <string name="rescue_zip_pie">TWRP flashable rescue zip: %s</string>
-    <string name="something_failed">Something failed</string>
-    <string name="something_failed_msg">An overlay failed to install. Examine the result and optionally send an error log.</string>
     <string name="needs_extras">Needs action from the "Overlay extras"</string>
     <string name="overlay_extras_title">Overlay extras</string>
     <string name="extras_card_desc">Additional options for overlays</string>
     <string name="pie_category_setting_icon">Setting Icons</string>
     <string name="quick_settings_style">Quick Settings Style</string>
     <string name="swiftkey_reboot_needed">You need to reboot for SwiftKey to reload all colors</string>
+    <string name="sbar_icons_color_default">Default</string>
+    <string name="sbar_icons_color_grey">Grey</string>
+    <string name="sbar_icons_color_white">White</string>
+    <string name="sbar_icons_color_accent">Accent</string>
+    <string name="sbar_icons_color_category">Status bar icons color</string>
+    <string name="sbar_icons_color_default_dialog_title">Default</string>
+    <string name="sbar_icons_color_default_dialog_text">Default Android behavior. Dark lightStatusBar icons. May become invisible on dark statusbars, in themed apps. \n\n Normal statusbar icons will stay white.</string>
+    <string name="sbar_icons_color_grey_dialog_title">Grey</string>
+    <string name="sbar_icons_color_grey_dialog_text">Middle tone lightStatusBar icons. Will be visible on both white and dark statusbars. May have readability issues on colored or grey statusbars. \n\n Normal statusbar icons will stay white.</string>
+    <string name="sbar_icons_color_white_dialog_title">White</string>
+    <string name="sbar_icons_color_white_dialog_text">Pure white lightStatusBar icons. May become invisible on unthemed apps, where the statusbar background is white. \n\n Normal statusbar icons will stay white.</string>
+    <string name="sbar_icons_color_accent_dialog_title">Accent</string>
+    <string name="sbar_icons_color_accent_dialog_text">Accent linked statusbar icons. Should be visible on both white and dark statusbars, and may have readability issues on colored or grey statusbars, depending on which accent you\'re using. \n\n Normal statusbar icons will be accent linked too.</string>
+    <string name="sbar_icons_category">Status bar icons</string>
+    <string name="sbar_icons_stock">Stock</string>
+    <string name="sbar_icons_aosp">AOSP</string>
+    <string name="settings_icons_stock_accented">Stock accented</string>
+    <string name="settings_icons_stock_multi">Stock multi-colored</string>
+    <string name="settings_icons_aosp">AOSP</string>
+    <string name="settings_icons_p">Android P</string>
+    <string name="settings_icons_category">Settings and Power menu icons</string>
+    <string name="nav_icons_stock">Stock</string>
+    <string name="nav_icons_aosp">AOSP</string>
+    <string name="nav_icons_category">Navigation bar icons</string>
+    <string name="qs_icons_stock">Stock</string>
+    <string name="qs_icons_aosp">AOSP</string>
+    <string name="qs_icons_category">Quick setting icons</string>
 </resources>

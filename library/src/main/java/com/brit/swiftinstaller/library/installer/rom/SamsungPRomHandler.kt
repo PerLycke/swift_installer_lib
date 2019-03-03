@@ -253,6 +253,7 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
             override fun getDefaultSelection(): CustomizeSelection {
                 val selection = super.getDefaultSelection()
                 selection["qs_alpha"] = "0"
+                selection["samsung_oreo_sbar_icons_color"] = "grey"
                 return selection
             }
             override fun populateCustomizeOptions(categories: CategoryMap) {
@@ -305,6 +306,22 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
         categories.add(CustomizeCategory(context.getString(R.string.quick_settings_style),
                 "qs_alpha", "0", qsOptions,
                 synchronizedArrayListOf("android")))
+
+        val sbarIconColorOptions = OptionsMap()
+        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_default), "default"))
+        sbarIconColorOptions["default"]!!.infoDialogTitle = context.getString(R.string.sbar_icons_color_default_dialog_title)
+        sbarIconColorOptions["default"]!!.infoDialogText = context.getString(R.string.sbar_icons_color_default_dialog_text)
+        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_white), "white"))
+        sbarIconColorOptions["white"]!!.infoDialogTitle = context.getString(R.string.sbar_icons_color_white_dialog_title)
+        sbarIconColorOptions["white"]!!.infoDialogText = context.getString(R.string.sbar_icons_color_white_dialog_text)
+        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_grey), "grey"))
+        sbarIconColorOptions["grey"]!!.infoDialogTitle = context.getString(R.string.sbar_icons_color_grey_dialog_title)
+        sbarIconColorOptions["grey"]!!.infoDialogText = context.getString(R.string.sbar_icons_color_grey_dialog_text)
+        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_accent), "accent"))
+        sbarIconColorOptions["accent"]!!.infoDialogTitle = context.getString(R.string.sbar_icons_color_accent_dialog_title)
+        sbarIconColorOptions["accent"]!!.infoDialogText = context.getString(R.string.sbar_icons_color_accent_dialog_text)
+
+        categories.add(CustomizeCategory(context.getString(R.string.sbar_icons_color_category), "samsung_oreo_sbar_icons_color", "stock", sbarIconColorOptions, synchronizedArrayListOf("com.android.systemui")))
 
     }
 }

@@ -225,6 +225,10 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
                 selection["samsung_oreo_clock"] = "right"
                 selection["sender_name_fix"] = "default"
                 selection["notif_background"] = "white"
+                selection["samsung_oreo_nav_icons"] = "stock"
+                selection["samsung_oreo_sbar_icons"] = "stock"
+                selection["samsung_oreo_sbar_icons_color"] = "grey"
+                selection["samsung_oreo_qs_icons"] = "stock"
                 selection["qs_alpha"] = "0"
                 if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O) {
                     selection["samsung_oreo_notif_style"] = "default"
@@ -288,18 +292,21 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
         override fun updateIcons(selection: CustomizeSelection) {
             super.updateIcons(selection)
 
-            val option = context.swift.romHandler.getCustomizeHandler()
+            val settingOption = context.swift.romHandler.getCustomizeHandler()
                     .getCustomizeOptions()["samsung_oreo_icons"]!!.options[selection["samsung_oreo_icons"]]!!
 
+            val qsOption = context.swift.romHandler.getCustomizeHandler()
+                    .getCustomizeOptions()["samsung_oreo_qs_icons"]!!.options[selection["samsung_oreo_qs_icons"]]!!
+
             settingsIcons.forEach { icon ->
-                if (option.iconTint) {
+                if (settingOption.iconTint) {
                     icon.setColorFilter(selection.accentColor)
                 } else {
                     icon.clearColorFilter()
                 }
 
                 val idName =
-                        "ic_${context.resources.getResourceEntryName(icon.id)}_${option.resTag}"
+                        "ic_${context.resources.getResourceEntryName(icon.id)}_${settingOption.resTag}"
                 val id = context.resources.getIdentifier("${context.packageName}:drawable/$idName",
                         null, null)
                 if (id > 0) {
@@ -308,7 +315,7 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
             }
             systemUiIcons.forEach { icon ->
                 val idName =
-                        "ic_${context.resources.getResourceEntryName(icon.id)}_${option.resTag}"
+                        "ic_${context.resources.getResourceEntryName(icon.id)}_${qsOption.resTag}"
                 val id = context.resources.getIdentifier("${context.packageName}:drawable/$idName",
                         null, null)
                 if (id > 0) {
@@ -320,23 +327,65 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
     }
 
     private fun populateOreoCustomizeOptions(categories: CategoryMap) {
-            val iconOptions = OptionsMap()
-            iconOptions.add(Option(context.getString(R.string.aosp_icons), "aosp", "aosp", true))
-            iconOptions.add(
-                    Option(context.getString(R.string.stock_icons), "stock_accent", "stock_accent", true))
-            iconOptions.add(
-                    Option(context.getString(R.string.stock_icons_multi), "stock_multi", "stock_multi",
+            val settingIconOptions = OptionsMap()
+        settingIconOptions.add(Option(context.getString(R.string.settings_icons_aosp), "aosp", "aosp", true))
+        settingIconOptions.add(
+                    Option(context.getString(R.string.settings_icons_stock_accented), "stock_accent", "stock_accent", true))
+        settingIconOptions.add(
+                    Option(context.getString(R.string.settings_icons_stock_multi), "stock_multi", "stock_multi",
                             false))
-            iconOptions.add(Option(context.getString(R.string.android_p), "p", "p", false))
+        settingIconOptions.add(Option(context.getString(R.string.settings_icons_p), "p", "p", false))
             categories.add(
-                    CustomizeCategory(context.getString(R.string.category_icons), "samsung_oreo_icons",
-                            "stock_accent", iconOptions,
+                    CustomizeCategory(context.getString(R.string.settings_icons_category), "samsung_oreo_icons",
+                            "stock_accent", settingIconOptions,
                             synchronizedArrayListOf("com.android.systemui",
                                     "com.samsung.android.lool",
                                     "com.samsung.android.themestore",
                                     "com.android.settings",
                                     "com.samsung.android.app.aodservice",
                                     "android")))
+
+        val navIconOptions = OptionsMap()
+        navIconOptions.add(Option(context.getString(R.string.nav_icons_stock), "stock"))
+        navIconOptions.add(Option(context.getString(R.string.nav_icons_aosp), "aosp"))
+        categories.add(CustomizeCategory(context.getString(R.string.nav_icons_category), "samsung_oreo_nav_icons", "stock", navIconOptions, synchronizedArrayListOf("com.android.systemui")))
+
+        val sbarIconOptions = OptionsMap()
+        sbarIconOptions.add(Option(context.getString(R.string.sbar_icons_stock), "stock"))
+        sbarIconOptions.add(Option(context.getString(R.string.sbar_icons_aosp), "aosp"))
+        val sbarIconColorOptions = OptionsMap()
+        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_default), "default"))
+        sbarIconColorOptions["default"]!!.infoDialogTitle = context.getString(R.string.sbar_icons_color_default_dialog_title)
+        sbarIconColorOptions["default"]!!.infoDialogText = context.getString(R.string.sbar_icons_color_default_dialog_text)
+        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_white), "white"))
+        sbarIconColorOptions["white"]!!.infoDialogTitle = context.getString(R.string.sbar_icons_color_white_dialog_title)
+        sbarIconColorOptions["white"]!!.infoDialogText = context.getString(R.string.sbar_icons_color_white_dialog_text)
+        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_grey), "grey"))
+        sbarIconColorOptions["grey"]!!.infoDialogTitle = context.getString(R.string.sbar_icons_color_grey_dialog_title)
+        sbarIconColorOptions["grey"]!!.infoDialogText = context.getString(R.string.sbar_icons_color_grey_dialog_text)
+        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_accent), "accent"))
+        sbarIconColorOptions["accent"]!!.infoDialogTitle = context.getString(R.string.sbar_icons_color_accent_dialog_title)
+        sbarIconColorOptions["accent"]!!.infoDialogText = context.getString(R.string.sbar_icons_color_accent_dialog_text)
+
+        sbarIconOptions["stock"]!!.subOptions.putAll(sbarIconColorOptions)
+        sbarIconOptions["stock"]!!.subOptionKey = "samsung_oreo_sbar_icons_color"
+        sbarIconOptions["aosp"]!!.subOptions.putAll(sbarIconColorOptions)
+        sbarIconOptions["aosp"]!!.subOptionKey = "samsung_oreo_sbar_icons_color"
+        categories.add(CustomizeCategory(context.getString(R.string.sbar_icons_category), "samsung_oreo_sbar_icons", "stock", sbarIconOptions, synchronizedArrayListOf("com.android.systemui")))
+
+        val qsIconOptions = OptionsMap()
+        qsIconOptions.add(Option(context.getString(R.string.qs_icons_stock), "stock", "stock", true))
+        qsIconOptions.add(Option(context.getString(R.string.qs_icons_aosp), "aosp", "aosp", true))
+        categories.add(CustomizeCategory(context.getString(R.string.qs_icons_category), "samsung_oreo_qs_icons", "stock", qsIconOptions, synchronizedArrayListOf("com.android.systemui")))
+
+        val qsOptions = OptionsMap()
+        val trans =
+                SliderOption(context.getString(R.string.qs_transparency), "qs_alpha")
+        trans.current = 0
+        qsOptions.add(trans)
+        categories.add(CustomizeCategory(context.getString(R.string.quick_settings_style),
+                "qs_alpha", "0", qsOptions,
+                synchronizedArrayListOf("android")))
 
             val clockOptions = OptionsMap()
             clockOptions.add(Option(context.getString(R.string.right), "right"))
@@ -359,15 +408,6 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
 
             categories.add(CustomizeCategory(context.getString(R.string.notification_tweaks),
                     "notif_background", "white", notifBackgroundOptions, synchronizedArrayListOf("android")))
-
-            val qsOptions = OptionsMap()
-            val trans =
-                    SliderOption(context.getString(R.string.qs_transparency), "qs_alpha")
-            trans.current = 0
-            qsOptions.add(trans)
-            categories.add(CustomizeCategory(context.getString(R.string.quick_settings_style),
-                    "qs_alpha", "0", qsOptions,
-                    synchronizedArrayListOf("android")))
 
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O) {
             val notifOptions = OptionsMap()
