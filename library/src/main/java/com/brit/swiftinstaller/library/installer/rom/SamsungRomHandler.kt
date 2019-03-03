@@ -227,7 +227,7 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
                 selection["notif_background"] = "white"
                 selection["samsung_oreo_nav_icons"] = "stock"
                 selection["samsung_oreo_sbar_icons"] = "stock"
-                selection["samsung_oreo_sbar_icons_color"] = "grey"
+                selection["sbar_icons_color"] = "grey"
                 selection["samsung_oreo_qs_icons"] = "stock"
                 selection["qs_alpha"] = "0"
                 if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O) {
@@ -368,9 +368,9 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
         sbarIconColorOptions["accent"]!!.infoDialogText = context.getString(R.string.sbar_icons_color_accent_dialog_text)
 
         sbarIconOptions["stock"]!!.subOptions.putAll(sbarIconColorOptions)
-        sbarIconOptions["stock"]!!.subOptionKey = "samsung_oreo_sbar_icons_color"
+        sbarIconOptions["stock"]!!.subOptionKey = "sbar_icons_color"
         sbarIconOptions["aosp"]!!.subOptions.putAll(sbarIconColorOptions)
-        sbarIconOptions["aosp"]!!.subOptionKey = "samsung_oreo_sbar_icons_color"
+        sbarIconOptions["aosp"]!!.subOptionKey = "sbar_icons_color"
         categories.add(CustomizeCategory(context.getString(R.string.sbar_icons_category), "samsung_oreo_sbar_icons", "stock", sbarIconOptions, synchronizedArrayListOf("com.android.systemui")))
 
         val qsIconOptions = OptionsMap()

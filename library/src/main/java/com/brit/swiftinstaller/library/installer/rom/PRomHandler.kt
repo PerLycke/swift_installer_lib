@@ -174,7 +174,7 @@ open class PRomHandler(context: Context) : RomHandler(context) {
                 selection["stock_pie_icons"] = "default_icons"
                 selection["notif_background"] = "dark"
                 selection["qs_alpha"] = "0"
-                selection["samsung_oreo_sbar_icons_color"] = "grey"
+                selection["sbar_icons_color"] = "grey"
                 return selection
             }
 
@@ -270,7 +270,7 @@ open class PRomHandler(context: Context) : RomHandler(context) {
         sbarIconColorOptions["accent"]!!.infoDialogTitle = context.getString(R.string.sbar_icons_color_accent_dialog_title)
         sbarIconColorOptions["accent"]!!.infoDialogText = context.getString(R.string.sbar_icons_color_accent_dialog_text)
 
-        categories.add(CustomizeCategory(context.getString(R.string.sbar_icons_color_category), "samsung_oreo_sbar_icons_color", "stock", sbarIconColorOptions, synchronizedArrayListOf("com.android.systemui")))
+        categories.add(CustomizeCategory(context.getString(R.string.sbar_icons_color_category), "sbar_icons_color", "stock", sbarIconColorOptions, synchronizedArrayListOf("com.android.systemui")))
 
         val notifBackgroundOptions = OptionsMap()
         notifBackgroundOptions.add(Option(context.getString(R.string.white), "white"))
