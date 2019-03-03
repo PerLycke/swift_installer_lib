@@ -266,9 +266,6 @@ open class PRomHandler(context: Context) : RomHandler(context) {
         sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_grey), "grey"))
         sbarIconColorOptions["grey"]!!.infoDialogTitle = context.getString(R.string.sbar_icons_color_grey_dialog_title)
         sbarIconColorOptions["grey"]!!.infoDialogText = context.getString(R.string.sbar_icons_color_grey_dialog_text)
-        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_accent), "accent"))
-        sbarIconColorOptions["accent"]!!.infoDialogTitle = context.getString(R.string.sbar_icons_color_accent_dialog_title)
-        sbarIconColorOptions["accent"]!!.infoDialogText = context.getString(R.string.sbar_icons_color_accent_dialog_text)
 
         categories.add(CustomizeCategory(context.getString(R.string.sbar_icons_color_category), "sbar_icons_color", "stock", sbarIconColorOptions, synchronizedArrayListOf("com.android.systemui")))
 
