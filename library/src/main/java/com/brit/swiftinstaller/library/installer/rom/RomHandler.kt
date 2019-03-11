@@ -214,13 +214,11 @@ abstract class RomHandler constructor(var context: Context) {
             }
         }
         fun isSamsungPatched(): Boolean {
-            if (getProperty("ro.product.device", "").startsWith("dream")) {
-                return Integer.parseInt(getProperty("ro.build.date.utc", "0")) > 1545951730
-            } else if (getProperty("ro.product.device", "").startsWith("great")) {
-                return Integer.parseInt(getProperty("ro.build.date.utc", "0")) > 1548077047
-            }
-            else if (getProperty("ro.product.device", "").startsWith("beyond")) {
-                return true
+            when {
+                getProperty("ro.product.device", "").startsWith("dream") -> return Integer.parseInt(getProperty("ro.build.date.utc", "0")) > 1545951730
+                getProperty("ro.product.device", "").startsWith("great") -> return Integer.parseInt(getProperty("ro.build.date.utc", "0")) > 1548077047
+                getProperty("ro.product.device", "").startsWith("beyond") -> return true
+                getProperty("ro.product.device", "").startsWith("jackpot") -> return true
             }
             return false
         }
