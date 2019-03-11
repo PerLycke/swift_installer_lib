@@ -254,7 +254,8 @@ open class PRomHandler(context: Context) : RomHandler(context) {
                                 "com.cyanogenmod.settings.device",
                                 "com.du.settings.doze",
                                 "com.moto.actions",
-                                "com.slim.device")))
+                                "com.slim.device",
+                                "com.google.android.marvin.talkback")))
 
         val sbarIconColorOptions = OptionsMap()
         sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_default), "default"))
