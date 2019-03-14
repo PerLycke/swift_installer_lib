@@ -56,8 +56,9 @@
     <string name="install_count">%1$d / %2$d</string>
     <string name="installing_and_uninstalling_msg">In the process of installing or uninstalling the Android System overlay some apps might force close. This is expected, and normal. Everything will work fine once you rebooted after installation is completed.</string>
     <string name="installing_and_uninstalling_title">Android System</string>
-    <string name="invalid_accent">Invalid Accent</string>
-    <string name="invalid_background">Invalid Background</string>
+    <string name="bright_accent">Accent is too bright</string>
+    <string name="dark_accent">Accent is too dark</string>
+    <string name="bright_background">Background is too bright</string>
     <string name="material">Material</string>
     <string name="night">Night</string>
     <string name="notif_fix_desc_summary">When using dark notifications: Some notification texts are hardcoded black, e.g. WhatsApp notifications. This fix adds a shadow around all text, making black text visible. You can see how it looks in the preview above.</string>

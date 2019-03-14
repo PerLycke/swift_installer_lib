@@ -32,7 +32,6 @@ import android.os.Looper
 import android.os.MessageQueue
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -51,8 +50,9 @@ import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
 import com.brit.swiftinstaller.library.ui.customize.Option
 import com.brit.swiftinstaller.library.ui.customize.PreviewHandler
 import com.brit.swiftinstaller.library.utils.*
-import com.brit.swiftinstaller.library.utils.ColorUtils.checkAccentColor
 import com.brit.swiftinstaller.library.utils.ColorUtils.checkBackgroundColor
+import com.brit.swiftinstaller.library.utils.ColorUtils.checkBrightAccentColor
+import com.brit.swiftinstaller.library.utils.ColorUtils.checkDarkAccentColor
 import com.brit.swiftinstaller.library.utils.ColorUtils.convertToColorInt
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_customize.*
@@ -179,12 +179,16 @@ class CustomizeActivity : ThemeActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s?.length == 3 || s?.length == 6) {
-                    if (checkAccentColor(convertToColorInt(s.toString()))) {
-                        selection.accentColor = convertToColorInt(s.toString())
-                        updateColor(false)
+                if (s?.length == 6) {
+                    if (checkBrightAccentColor(convertToColorInt(s.toString()))) {
+                        if (checkDarkAccentColor(convertToColorInt(s.toString()))) {
+                            selection.accentColor = convertToColorInt(s.toString())
+                            updateColor(false)
+                        } else {
+                            toast(R.string.dark_accent)
+                        }
                     } else {
-                        toast(R.string.invalid_accent)
+                        toast(R.string.bright_accent)
                     }
                 }
             }
@@ -198,12 +202,12 @@ class CustomizeActivity : ThemeActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s?.length == 3 || s?.length == 6) {
+                if (s?.length == 6) {
                     if (checkBackgroundColor(convertToColorInt(s.toString()))) {
                         selection.backgroundColor = convertToColorInt(s.toString())
                         updateColor(false)
                     } else {
-                        toast(R.string.invalid_background)
+                        toast(R.string.bright_background)
                     }
                 }
             }

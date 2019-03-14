@@ -43,10 +43,16 @@ object ColorUtils {
         return darkness > 0.65
     }
 
-    fun checkAccentColor(color: Int): Boolean {
+    fun checkDarkAccentColor(color: Int): Boolean {
         val darkness = 1 - sqrt(0.299 * Color.red(color) * Color.red(color)
                 + 0.587 * Color.green(color) * Color.green(color) + 0.114 * Color.blue(color) * Color.blue(color)) / 255
-        return darkness > 0.25 && darkness < 0.75
+        return darkness < 0.75
+    }
+
+    fun checkBrightAccentColor(color: Int): Boolean {
+        val darkness = 1 - sqrt(0.299 * Color.red(color) * Color.red(color)
+                + 0.587 * Color.green(color) * Color.green(color) + 0.114 * Color.blue(color) * Color.blue(color)) / 255
+        return darkness > 0.25
     }
 
     fun getAlpha(color: Int, i: Int): String {
