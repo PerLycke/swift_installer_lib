@@ -25,6 +25,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import androidx.core.content.ContextCompat
+import kotlin.math.sqrt
 
 object ColorUtils {
 
@@ -37,16 +38,15 @@ object ColorUtils {
     }
 
     fun checkBackgroundColor(color: Int): Boolean {
-        val darkness = 1 - (0.299 * Color.red(color)
-                + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255
-
-        return darkness > 0.4
+        val darkness = 1 - sqrt(0.299 * Color.red(color) * Color.red(color)
+                + 0.587 * Color.green(color) * Color.green(color) + 0.114 * Color.blue(color) * Color.blue(color)) / 255
+        return darkness > 0.65
     }
 
     fun checkAccentColor(color: Int): Boolean {
-        val darkness = 1 - (0.299 * Color.red(color)
-                + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255
-        return darkness > 0.2 && darkness < 0.9
+        val darkness = 1 - sqrt(0.299 * Color.red(color) * Color.red(color)
+                + 0.587 * Color.green(color) * Color.green(color) + 0.114 * Color.blue(color) * Color.blue(color)) / 255
+        return darkness > 0.25 && darkness < 0.75
     }
 
     fun getAlpha(color: Int, i: Int): String {
