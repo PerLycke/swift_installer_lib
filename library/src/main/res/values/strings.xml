@@ -183,11 +183,11 @@
     <string name="pie_category_setting_icon">Setting Icons</string>
     <string name="quick_settings_style">Quick Settings Style</string>
     <string name="swiftkey_reboot_needed">You need to reboot for SwiftKey to reload all colors</string>
-    <string name="sbar_icons_color_default">Default</string>
-    <string name="sbar_icons_color_grey">Grey</string>
-    <string name="sbar_icons_color_white">White</string>
-    <string name="sbar_icons_color_accent">Accent</string>
-    <string name="sbar_icons_color_category">Status bar icons color</string>
+    <string name="sbar_icons_color_default">White, black (default Android behavior)</string>
+    <string name="sbar_icons_color_grey">White, grey (recommended)</string>
+    <string name="sbar_icons_color_white">Always white</string>
+    <string name="sbar_icons_color_accent">Always accent</string>
+    <string name="sbar_icons_color_category">Status bar icons colors</string>
     <string name="sbar_icons_color_default_dialog_title">Default</string>
     <string name="sbar_icons_color_default_dialog_text">Default Android behavior. Dark lightStatusBar icons. May become invisible on dark statusbars, in themed apps. \n\n Normal statusbar icons will stay white.</string>
     <string name="sbar_icons_color_grey_dialog_title">Grey</string>
