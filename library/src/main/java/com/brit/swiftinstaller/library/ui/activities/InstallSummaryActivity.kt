@@ -361,7 +361,7 @@ class InstallSummaryActivity : ThemeActivity() {
     private fun sendErrorLog() {
         val emailIntent = Intent(Intent.ACTION_SENDTO)
         emailIntent.data = Uri.parse("mailto:")
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, Array(1) { "swiftuserhelp@gmail.com" })
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, Array(1) { "swiftthemereports@gmail.com" })
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Swift Installer: Error Log")
 
 
