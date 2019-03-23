@@ -69,7 +69,7 @@ class MiuiPRomHandler(context: Context) : PRomHandler(context) {
                 val selection = super.getDefaultSelection()
                 selection["notif_background"] = "dark"
                 selection["qs_alpha"] = "0"
-                selection["sbar_icons_color"] = "grey"
+                selection["sbar_icons_color"] = "default"
                 return selection
             }
 
