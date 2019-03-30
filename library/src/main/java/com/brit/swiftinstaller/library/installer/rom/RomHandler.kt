@@ -182,7 +182,7 @@ abstract class RomHandler constructor(var context: Context) {
 
     companion object {
         val magiskPath: String by lazy {
-            val magiskVersion = runCommand("su -V").output!!.toInt()
+            val magiskVersion = runCommand("su -V").output!!.trim().toInt()
             if (magiskVersion >= 18200) {
                 "/data/adb/modules/swift_installer"
             } else {
