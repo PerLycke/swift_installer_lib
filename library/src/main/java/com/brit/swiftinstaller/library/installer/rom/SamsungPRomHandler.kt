@@ -117,7 +117,7 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
     }
 
     override fun getDefaultAccent(): Int {
-        return ColorUtils.convertToColorInt("3dbce9")
+        return ColorUtils.convertToColorInt("3a99ff")
     }
 
     override fun postInstall(uninstall: Boolean, apps: SynchronizedArrayList<String>,
