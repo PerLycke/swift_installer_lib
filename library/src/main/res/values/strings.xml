@@ -61,8 +61,8 @@
     <string name="bright_background">Background is too bright</string>
     <string name="material">Material</string>
     <string name="night">Night</string>
-    <string name="notif_fix_desc_summary">When using dark notifications: Some notification texts are hardcoded black, e.g. WhatsApp notifications. This fix adds a shadow around all text, making black text visible. You can see how it looks in the preview above.</string>
-    <string name="dark_notifications_preview_shadow">Notification fix makes black text visible, e.g. WhatsApp notifications.</string>
+    <string name="notif_fix_desc_summary">When using dark notifications, consider that some texts are hardcoded to black colors, like sender names from group chats. This fix adds a shadow around all texts, making black ones visible too. You can see how it looks in the preview above.</string>
+    <string name="dark_notifications_preview_shadow">Notification fix makes black texts visible by adding a white shadow around them.</string>
     <string name="notification_tweaks">Notification background</string>
     <string name="notifications">Notifications</string>
     <string name="notifications_desc">Block, allow, prioritise</string>
