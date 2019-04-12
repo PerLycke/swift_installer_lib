@@ -276,8 +276,9 @@ class AppListFragment : Fragment() {
                 app_item_checkbox.visibility = View.VISIBLE
                 app_item_checkbox.isChecked = checked.get(visible[adapterPosition], false)
                 app_item_checkbox.alpha = 1.0f
-                alert_icon.setImageDrawable(context!!.getDrawable(R.drawable.ic_info))
+                alert_icon.setImageDrawable(context!!.getDrawable(R.drawable.ic_versions))
                 alert_icon.setVisible(item.hasVersions)
+                alert_icon.setColorFilter(context!!.swift.selection.accentColor)
                 required.visibility = View.GONE
                 download_icon.visibility = View.GONE
                 blocked_packages_alert.visibility = View.GONE
