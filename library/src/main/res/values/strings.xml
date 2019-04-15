@@ -141,7 +141,7 @@
     <string name="empty_list_active">No active overlays</string>
     <string name="empty_list_updates">No updates available</string>
     <string name="help_msg">Here are some useful links if you need help:</string>
-    <string name="telegram_support">Telegram chat support: %s</string>
+    <string name="telegram_support">Telegram chat support</string>
     <string name="reboot_notif_title">System almost themed!…</string>
     <string name="reboot_notif_msg">New overlays were enabled at boot. The last step is to make a quick reboot in order for all apps to reload with the new colors. Tap this notification to proceed</string>
     <string name="reboot_dialog_title">Reboot</string>
@@ -152,7 +152,7 @@
     <string name="installation_failed">Installation failed</string>
     <string name="reboot_now_title">Reboot now?</string>
     <string name="info_card_compatibility_msg">Note that we cannot guarantee a stable experience if you use Swift Installer in combination with other themes or mods.</string>
-    <string name="faq">FAQ: %s</string>
+    <string name="instructions">Instructions</string>
     <string name="no_root_msg">Root access is required for Swift Installer to work on this device and setup. We inform about this in the Play Store description. You can request a refund from the Play Store, or email us your GPA code for a manual refund, within 48 hours of purchase. Email is swiftuserhelp@gmail.com</string>
     <string name="exit">Exit</string>
     <string name="requesting_root_access">Requesting root access…</string>
@@ -175,8 +175,8 @@
     <string name="magisk_module_description_oreo">Our Swift Installer module allows you to theme Gboard easier and better, with a custom generated system theme.\n\n You can find it: </string>
     <string name="magisk_module_link_text">HERE</string>
     <string name="changelog">Changelog</string>
-    <string name="magisk_module">Magisk module: %s</string>
-    <string name="rescue_zip_pie">TWRP flashable rescue zip: %s</string>
+    <string name="magisk_module">Magisk module</string>
+    <string name="rescue_zip_pie">TWRP flashable rescue zip</string>
     <string name="needs_extras">Needs action from the "Overlay extras"</string>
     <string name="overlay_extras_title">Overlay extras</string>
     <string name="extras_card_desc">Additional options for overlays</string>
@@ -210,4 +210,7 @@
     <string name="qs_icons_stock">Stock</string>
     <string name="qs_icons_aosp">AOSP</string>
     <string name="qs_icons_category">Quick setting icons</string>
+    <string name="documentation">Documentation</string>
+    <string name="email_support">Email support</string>
+    <string name="rescue_script">Rescue Script</string>
 </resources>

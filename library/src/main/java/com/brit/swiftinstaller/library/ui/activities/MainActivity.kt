@@ -26,10 +26,15 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.SystemClock
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ClickableSpan
+import android.text.style.ForegroundColorSpan
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
@@ -276,7 +281,7 @@ class MainActivity : ThemeActivity() {
         b.findDrawableByLayerId(R.id.background_popup)
                 .setTint(MaterialPalette.get(this).cardBackground)
 
-        popupView.popup_menu_about.setOnClickListener { _ ->
+        popupView.popup_menu_about.setOnClickListener {
             popup.dismiss()
             alert {
                 title = getString(R.string.swift_app_name)
@@ -284,10 +289,10 @@ class MainActivity : ThemeActivity() {
                 val pi = packageManager.getPackageInfo(packageName, 0)
                 val m = "Swift Installer version: " + pi.versionName + " (${pi.getVersionCode()})" + "\n\n" +
                         "Installer library version: " + BuildConfig.VERSION_NAME +  " (${BuildConfig.VERSION_CODE})"  + "\n\n" +
-                        getString(R.string.installer_source_link)
-                val l = getString(R.string.installer_source_link)
+                        "Github"
+                val link = getString(R.string.installer_source_link)
 
-                message = Utils.createLinkedString(this@MainActivity, m, l)
+                message = Utils.createLinkedString(this@MainActivity, m, "Github", link)
 
                 positiveButton(R.string.ok) { dialog ->
                     dialog.dismiss()
@@ -296,45 +301,69 @@ class MainActivity : ThemeActivity() {
             }
         }
 
-        popupView.popup_menu_help.setOnClickListener { _ ->
+        val click = object : ClickableSpan() {
+            override fun onClick(p0: View) {
+                val emailIntent = Intent(Intent.ACTION_SENDTO)
+                emailIntent.data = Uri.parse("mailto:")
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, Array(1) { "swiftthemereports@gmail.com" })
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Swift Installer: Error Log")
+                startActivity(Intent.createChooser(emailIntent, "Send feedback"))
+            }
+        }
+
+        popupView.popup_menu_help.setOnClickListener {
             popup.dismiss()
 
             alert {
                 title = getString(R.string.help)
 
                 val m = "${getString(R.string.help_msg)} \n\n" +
-                        "${getString(R.string.faq, getString(R.string.link_faq))} \n\n" +
-                        getString(R.string.telegram_support, getString(R.string.link_telegram)) +
+                        "${getString(R.string.documentation)} \n\n" +
+                        "${getString(R.string.instructions)} \n\n" +
+                        "${getString(R.string.telegram_support)} \n\n" +
+                        "${getString(R.string.email_support)} \n\n" +
                         if (RomHandler.supportsMagisk) {
-                            "\n\n${getString(R.string.magisk_module,
-                                    getString(R.string.link_magisk))} \n\n"
+                            "${getString(R.string.magisk_module)} \n\n"
                         } else {
                             ""
                         } +
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                            "${getString(R.string.rescue_zip_pie,
-                                    getString(R.string.link_rescue_zip))} "
+                            "${getString(R.string.rescue_zip_pie)} \n\n"
+                        } else {
+                            ""
+                        } +
+                        if (Build.VERSION.SDK_INT == 26 || Build.VERSION.SDK_INT == 27 || RomHandler.isSamsungPatched()) {
+                            "${getString(R.string.rescue_script)} \n\n"
                         } else {
                             ""
                         }
 
-                var mes = Utils.createLinkedString(ctx, m, getString(R.string.link_faq))
-                mes = Utils.createLinkedString(ctx, mes, getString(R.string.link_telegram))
-                if (RomHandler.supportsMagisk) {
-                    mes = Utils.createLinkedString(ctx, mes, getString(R.string.link_magisk))
-                }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    mes = Utils.createLinkedString(ctx, mes, getString(R.string.link_rescue_zip))
-                }
 
-                message = mes
+                        var mes = Utils.createLinkedString(ctx, m, getString(R.string.instructions), getString(R.string.link_instructions))
+                        mes = Utils.createLinkedString(ctx, mes, getString(R.string.telegram_support), getString(R.string.link_telegram))
+                        mes = Utils.createLinkedString(ctx, mes, getString(R.string.documentation), getString(R.string.link_documentation))
+                        if (RomHandler.supportsMagisk) {
+                            mes = Utils.createLinkedString(ctx, mes, getString(R.string.magisk_module), getString(R.string.link_magisk))
+                        }
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                            mes = Utils.createLinkedString(ctx, mes, getString(R.string.rescue_zip_pie), getString(R.string.link_rescue_zip))
+                        }
+                        if (Build.VERSION.SDK_INT == 26 || Build.VERSION.SDK_INT == 27 || RomHandler.isSamsungPatched()) {
+                        mes = Utils.createLinkedString(ctx, mes, getString(R.string.rescue_script), getString(R.string.link_rescue_script))
+                        }
+                        val ss = SpannableString(mes)
+                        ss.setSpan(click, m.indexOf(getString(R.string.email_support)), m.indexOf(getString(R.string.email_support)) + getString(R.string.email_support).length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                        val color = ForegroundColorSpan(ctx.swift.selection.accentColor)
+                        ss.setSpan(color, m.indexOf(getString(R.string.email_support)), m.indexOf(getString(R.string.email_support)) + getString(R.string.email_support).length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
-                positiveButton(R.string.ok) { dialog ->
-                    dialog.dismiss()
+                        message = ss
+
+                        positiveButton(R.string.ok) { dialog ->
+                            dialog.dismiss()
+                        }
+                        show()
+                    }
                 }
-                show()
-            }
-        }
         popupView.popup_menu_settings.setOnClickListener {
             popup.dismiss()
             startActivity(Intent(this, SettingsActivity::class.java))

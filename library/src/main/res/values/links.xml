@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="magisk_module_link" translatable="false">https://www.dropbox.com/s/gvdlaktcxuujcg9/swift_magisk_module.zip?raw=1</string>
-    <string name="link_faq" translatable="false">https://goo.gl/F4V5j1</string>
-    <string name="link_telegram" translatable="false">https://goo.gl/tpPji0</string>
-    <string name="link_magisk" translatable="false">https://goo.gl/dX5Yej</string>
-    <string name="link_rescue_zip" translatable="false">https://goo.gl/NgQxe3</string>
+    <string name="link_documentation">https://docs.google.com/spreadsheets/d/e/2PACX-1vS63Apt0Q7pililTAfbFTA6z59aPgg-_c66UcV406vShDPrLjmLKFLPlRQCNQG0WyLalp3Py59Dn0J0/pubhtml</string>
+    <string name="link_instructions" translatable="false">https://docs.google.com/spreadsheets/d/e/2PACX-1vS63Apt0Q7pililTAfbFTA6z59aPgg-_c66UcV406vShDPrLjmLKFLPlRQCNQG0WyLalp3Py59Dn0J0/pubhtml?gid=544270388</string>
+    <string name="link_telegram" translatable="false">https://telegram.me/joinchat/Ch5dq0FTvqYJXhwRuUj1SQ</string>
+    <string name="link_magisk" translatable="false">https://www.dropbox.com/s/gvdlaktcxuujcg9/swift_magisk_module.zip?dl=1</string>
+    <string name="link_rescue_zip" translatable="false">https://www.dropbox.com/s/91sjsu9pbw3auz9/Pie_rescue.zip?dl=1</string>
+    <string name="link_rescue_script">https://www.dropbox.com/s/nkhl9cj881via2t/Rescue.zip?dl=1</string>
 </resources>

@@ -34,11 +34,7 @@ import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.browser.customtabs.CustomTabsIntent
-import java.io.BufferedInputStream
-import java.io.BufferedOutputStream
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
+import java.io.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
@@ -60,7 +56,7 @@ object Utils {
         return bitmap
     }
 
-    fun createLinkedString(ctx: Context, m: CharSequence, l: String): SpannableString {
+    fun createLinkedString(ctx: Context, message: CharSequence, urltext: String, urllink: String): SpannableString {
         val click = object : ClickableSpan() {
             override fun onClick(p0: View) {
                 val builder = CustomTabsIntent.Builder()
@@ -70,17 +66,16 @@ object Utils {
                 builder.enableUrlBarHiding()
                 val intent = builder.build()
                 intent.intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                intent.launchUrl(ctx, Uri.parse(l))
+                intent.launchUrl(ctx, Uri.parse(urllink))
             }
         }
-
-        m.indexOf(l)
+        message.indexOf(urltext)
 
         val color = ForegroundColorSpan(ctx.swift.selection.accentColor)
-        val ss = SpannableString(m)
-        ss.setSpan(click, m.indexOf(l), m.indexOf(l) + l.length,
+        val ss = SpannableString(message)
+        ss.setSpan(click, message.indexOf(urltext), message.indexOf(urltext) + urltext.length,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        ss.setSpan(color, m.indexOf(l), m.indexOf(l) + l.length, Spanned.SPAN_EXCLUSIVE_INCLUSIVE)
+        ss.setSpan(color, message.indexOf(urltext), message.indexOf(urltext) + urltext.length, Spanned.SPAN_EXCLUSIVE_INCLUSIVE)
         return ss
     }
 
