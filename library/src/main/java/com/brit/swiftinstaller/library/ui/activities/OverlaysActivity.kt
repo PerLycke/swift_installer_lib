@@ -40,6 +40,7 @@ import com.brit.swiftinstaller.library.ui.applist.AppListFragment
 import com.brit.swiftinstaller.library.ui.applist.AppsTabPagerAdapter
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.checkVersionCompatible
+import com.brit.swiftinstaller.library.utils.OverlayUtils.getApkLink
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getAvailableOverlayVersions
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
@@ -98,15 +99,17 @@ class OverlaysActivity : ThemeActivity() {
                 alert {
                     title = appItem.title
                     icon = appItem.icon
-                    message = Html.fromHtml(
-                            "<br><b>Installed app version: " +
-                                    "</b><br><br>" +
-                                    packageInfo.versionName + supported +
-                                    "<br><br><b>" +
-                                    "Supported versions: " +
-                                    "</b><br><br>" +
-                                    getAvailableOverlayVersions(
-                                            this@OverlaysActivity, packageInfo, appItem.packageName), Html.FROM_HTML_MODE_LEGACY)
+                        val m = Html.fromHtml(
+                                "<br><b>Installed app version: " +
+                                        "</b><br><br>" +
+                                        packageInfo.versionName + supported +
+                                        "<br><br><b>" +
+                                        "Supported versions: " +
+                                        "</b><br><br>" +
+                                        getAvailableOverlayVersions(
+                                                this@OverlaysActivity, packageInfo, appItem.packageName), Html.FROM_HTML_MODE_LEGACY)
+                        val ss = getApkLink(this@OverlaysActivity, m, packageInfo, appItem.packageName)
+                        message = ss
                     positiveButton(R.string.ok) { dialog ->
                         dialog.dismiss()
                     }

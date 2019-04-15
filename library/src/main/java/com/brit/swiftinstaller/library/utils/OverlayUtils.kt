@@ -133,7 +133,35 @@ object OverlayUtils {
         return false
     }
 
-    fun getAvailableOverlayVersions(context: Context, packageInfo: PackageInfo, packageName: String): String {
+    fun getApkLink (context : Context, m: CharSequence, packageInfo: PackageInfo, packageName: String): CharSequence {
+        if (overlayHasVersion(context, packageName)) {
+            val vers = context.assets.list("overlays/$packageName/versions") ?: emptyArray()
+            for (ver in vers) {
+                    if (!packageInfo.versionName.startsWith(ver)) {
+                        if ((context.assets.list("overlays/$packageName")
+                                        ?: arrayOf()).contains("apk-link-all") && (context.assets.list("overlays/$packageName")
+                                        ?: arrayOf()).contains("apk-link-$ver")) {
+                            var ss = Utils.createLinkedString(context, m, "Download", ShellUtils.inputStreamToString(context.assets.open("overlays/$packageName/apk-link-$ver")))
+                            ss = Utils.createLinkedString(context, ss, "Download latest supported apk", ShellUtils.inputStreamToString(context.assets.open("overlays/$packageName/apk-link-all")))
+                            return ss
+                        } else if ((context.assets.list("overlays/$packageName")
+                                        ?: arrayOf()).contains("apk-link-all")) {
+                            return Utils.createLinkedString(context, m, "Download latest supported apk", ShellUtils.inputStreamToString(context.assets.open("overlays/$packageName/apk-link-all")))
+                        } else if ((context.assets.list("overlays/$packageName")
+                                        ?: arrayOf()).contains("apk-link-$ver")) {
+                            return Utils.createLinkedString(context, m, "Download", ShellUtils.inputStreamToString(context.assets.open("overlays/$packageName/apk-link-$ver")))
+
+                        }
+                    }
+            }
+            }
+        return m
+        }
+
+
+
+
+    fun getAvailableOverlayVersions(context: Context, packageInfo: PackageInfo, packageName: String): CharSequence {
         val versions = StringBuilder()
         val vers = context.assets.list("overlays/$packageName/versions") ?: emptyArray()
         for (version in vers) {
@@ -141,9 +169,18 @@ object OverlayUtils {
                 if (packageInfo.versionName.startsWith(version)) {
                     versions.append("<font color='#47AE84'><b>$version.x</b></font><br>")
                 } else {
-                    versions.append("<font color='#FF6868'>$version.x</font><br>")
+                    if ((context.assets.list("overlays/$packageName")
+                                    ?: arrayOf()).contains("apk-link-$version")) {
+                        versions.append("<font color='#FF6868'>$version.x: </font>Download<br>")
+                    } else {
+                        versions.append("<font color='#FF6868'>$version.x</font><br>")
+                    }
                 }
             }
+        }
+        if ((context.assets.list("overlays/$packageName")
+                        ?: arrayOf()).contains("apk-link-all")) {
+            versions.append("<br>Download latest supported apk<br>")
         }
         return versions.substring(0, versions.length - 2)
     }
