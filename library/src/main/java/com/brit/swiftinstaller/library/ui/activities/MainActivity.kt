@@ -332,7 +332,7 @@ class MainActivity : ThemeActivity() {
                         } else {
                             ""
                         } +
-                        if (Build.VERSION.SDK_INT == 26 || Build.VERSION.SDK_INT == 27 || RomHandler.isSamsungPatched()) {
+                        if (Build.VERSION.SDK_INT == 26 || Build.VERSION.SDK_INT == 27 || !RomHandler.isSamsungPatched()) {
                             "${getString(R.string.rescue_script)} \n\n"
                         } else {
                             ""
