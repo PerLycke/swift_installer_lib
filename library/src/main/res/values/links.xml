@@ -6,4 +6,5 @@
     <string name="link_magisk" translatable="false">https://www.dropbox.com/s/gvdlaktcxuujcg9/swift_magisk_module.zip?dl=1</string>
     <string name="link_rescue_zip" translatable="false">https://www.dropbox.com/s/91sjsu9pbw3auz9/Pie_rescue.zip?dl=1</string>
     <string name="link_rescue_script">https://www.dropbox.com/s/nkhl9cj881via2t/Rescue.zip?dl=1</string>
+    <string name="link_installer_source">https://github.com/PerLycke/swift_installer_lib</string>
 </resources>

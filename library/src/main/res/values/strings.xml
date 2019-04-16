@@ -158,7 +158,6 @@
     <string name="requesting_root_access">Requesting root access…</string>
     <string name="search_in_settings">Search in Settings</string>
     <string name="help">Help</string>
-    <string name="installer_source_link">https://github.com/PerLycke/swift_installer_lib</string>
     <string name="settings_title">Settings</string>
     <string name="soft_reboot_title">Use soft reboot</string>
     <string name="soft_reboot_summary">Turn this off if you use SIM pin</string>
@@ -213,4 +212,7 @@
     <string name="documentation">Documentation</string>
     <string name="email_support">Email support</string>
     <string name="rescue_script">Rescue Script</string>
+    <string name="github">Github link</string>
+    <string name="swift_installer_version">Swift Installer version: </string>
+    <string name="swift_installer_lib_version">Swift Installer Lib version: </string>
 </resources>
