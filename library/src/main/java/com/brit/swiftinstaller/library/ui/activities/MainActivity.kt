@@ -302,10 +302,10 @@ class MainActivity : ThemeActivity() {
         val click = object : ClickableSpan() {
             override fun onClick(p0: View) {
                 val emailIntent = Intent(Intent.ACTION_SENDTO)
-                emailIntent.data = Uri.parse("mailto:")
-                emailIntent.putExtra(Intent.EXTRA_EMAIL, Array(1) { "swiftthemereports@gmail.com" })
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Swift Installer: Error Log")
-                startActivity(Intent.createChooser(emailIntent, "Send feedback"))
+                emailIntent.data = Uri.parse(getString(R.string.email_support_intent_link))
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, Array(1) { getString(R.string.email_feedback) })
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_feedback_subject))
+                startActivity(Intent.createChooser(emailIntent, getString(R.string.email_send_feedback)))
             }
         }
 
