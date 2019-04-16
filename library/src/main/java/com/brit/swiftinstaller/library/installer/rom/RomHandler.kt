@@ -106,7 +106,7 @@ abstract class RomHandler constructor(var context: Context) {
 
             val click = object : ClickableSpan() {
                 override fun onClick(p0: View) {
-                    val url = context.getString(R.string.magisk_module_link)
+                    val url = context.getString(R.string.link_magisk)
                     val builder = CustomTabsIntent.Builder()
                     val intent = builder.build()
                     intent.intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
