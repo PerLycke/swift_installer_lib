@@ -287,8 +287,8 @@ class MainActivity : ThemeActivity() {
                 title = getString(R.string.swift_app_name)
 
                 val pi = packageManager.getPackageInfo(packageName, 0)
-                val m = getString(R.string.swift_installer_version) + pi.versionName + " (${pi.getVersionCode()})" + "\n\n" +
-                        getString(R.string.swift_installer_lib_version) + BuildConfig.VERSION_NAME +  " (${BuildConfig.VERSION_CODE})"  + "\n\n" +
+                val m = getString(R.string.swift_installer_version) + " ${pi.versionName}" + " (${pi.getVersionCode()})" + "\n\n" +
+                        getString(R.string.swift_installer_lib_version) + " ${BuildConfig.VERSION_NAME}" +  " (${BuildConfig.VERSION_CODE})"  + "\n\n" +
                         getString(R.string.github)
                 message = Utils.createLinkedString(this@MainActivity, m, getString(R.string.github), getString(R.string.link_installer_source))
 
@@ -325,7 +325,7 @@ class MainActivity : ThemeActivity() {
                         } else {
                             ""
                         } +
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && RomHandler.isSamsungPatched()) {
                             "${getString(R.string.rescue_zip_pie)} \n\n"
                         } else {
                             ""
@@ -343,10 +343,10 @@ class MainActivity : ThemeActivity() {
                         if (RomHandler.supportsMagisk) {
                             mes = Utils.createLinkedString(ctx, mes, getString(R.string.magisk_module), getString(R.string.link_magisk))
                         }
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && RomHandler.isSamsungPatched()) {
                             mes = Utils.createLinkedString(ctx, mes, getString(R.string.rescue_zip_pie), getString(R.string.link_rescue_zip))
                         }
-                        if (Build.VERSION.SDK_INT == 26 || Build.VERSION.SDK_INT == 27 || RomHandler.isSamsungPatched()) {
+                        if (Build.VERSION.SDK_INT == 26 || Build.VERSION.SDK_INT == 27 || !RomHandler.isSamsungPatched()) {
                         mes = Utils.createLinkedString(ctx, mes, getString(R.string.rescue_script), getString(R.string.link_rescue_script))
                         }
                         val ss = SpannableString(mes)

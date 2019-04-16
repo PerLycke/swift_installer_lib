@@ -213,6 +213,6 @@
     <string name="email_support">Email support</string>
     <string name="rescue_script">Rescue Script</string>
     <string name="github">Github link</string>
-    <string name="swift_installer_version">Swift Installer version: </string>
-    <string name="swift_installer_lib_version">Swift Installer Lib version: </string>
+    <string name="swift_installer_version">Swift Installer version:</string>
+    <string name="swift_installer_lib_version">Swift Installer Lib version:</string>
 </resources>
