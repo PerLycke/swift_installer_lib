@@ -57,6 +57,10 @@ object Utils {
     }
 
     fun createLinkedString(ctx: Context, message: CharSequence, urltext: String, urllink: String): SpannableString {
+        return Utils.createLinkedString(ctx, message, message.indexOf(urltext), message.indexOf(urltext) + urltext.length, urllink)
+    }
+
+    fun createLinkedString(ctx: Context, message: CharSequence, start: Int, end: Int, urllink: String): SpannableString {
         val click = object : ClickableSpan() {
             override fun onClick(p0: View) {
                 val builder = CustomTabsIntent.Builder()
@@ -69,13 +73,11 @@ object Utils {
                 intent.launchUrl(ctx, Uri.parse(urllink))
             }
         }
-        message.indexOf(urltext)
 
         val color = ForegroundColorSpan(ctx.swift.selection.accentColor)
         val ss = SpannableString(message)
-        ss.setSpan(click, message.indexOf(urltext), message.indexOf(urltext) + urltext.length,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        ss.setSpan(color, message.indexOf(urltext), message.indexOf(urltext) + urltext.length, Spanned.SPAN_EXCLUSIVE_INCLUSIVE)
+        ss.setSpan(click, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        ss.setSpan(color, start, end, Spanned.SPAN_EXCLUSIVE_INCLUSIVE)
         return ss
     }
 
