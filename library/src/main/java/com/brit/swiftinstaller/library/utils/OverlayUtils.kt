@@ -29,6 +29,7 @@ import android.os.Environment
 import android.text.SpannableString
 import android.util.Log
 import androidx.collection.ArrayMap
+import com.brit.swiftinstaller.library.ui.customize.OptionsMap
 
 object OverlayUtils {
 
@@ -272,6 +273,7 @@ object OverlayUtils {
         if (variants.contains("options")) {
             val optionsMap = getSelectedOverlayOptions(context, packageName)
             val options = context.assets.list("$path/options") ?: emptyArray()
+            applyDefaultOptionsToMap(context, optionsMap, path)
             for (option in options) {
                 if (optionsMap.containsKey(option)) {
                     val optionsArray = context.assets.list("$path/options/$option") ?: emptyArray()
@@ -294,6 +296,18 @@ object OverlayUtils {
                                 resourcePaths)
                     }
                 }
+            }
+        }
+    }
+
+    private fun applyDefaultOptionsToMap(context: Context, optionsMap: ArrayMap<String, String>, path: String) {
+        val options = context.assets.list("$path/options") ?: emptyArray()
+        for (option in options) {
+            val opt = context.assets.list("$path/options/$option")?: emptyArray()
+            if (opt.contains("off")) {
+                optionsMap.putIfAbsent(option, "off")
+            } else {
+                optionsMap.putIfAbsent(option, opt[0])
             }
         }
     }
