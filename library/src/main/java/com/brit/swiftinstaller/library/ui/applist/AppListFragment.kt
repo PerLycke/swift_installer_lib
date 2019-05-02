@@ -265,6 +265,16 @@ class AppListFragment : Fragment() {
                         show()
                     }
                 }
+                info_icon.setOnClickListener {
+                    containerView.context.alert {
+                        title = "Important Information"
+                        message = OverlayUtils.getAppInfo(context!!, apps[visible[adapterPosition]].packageName)
+                        positiveButton("OK") { d ->
+                            d.dismiss()
+                        }
+                        show()
+                    }
+                }
             }
 
             fun bindAppItem(item: AppItem) {
@@ -281,7 +291,6 @@ class AppListFragment : Fragment() {
                 alert_icon.setColorFilter(context!!.swift.selection.accentColor)
                 required.visibility = View.GONE
                 download_icon.visibility = View.GONE
-                blocked_packages_alert.visibility = View.GONE
                 options_icon.setVisible(false)
                 containerView.isClickable = true
 
@@ -369,15 +378,13 @@ class AppListFragment : Fragment() {
                     if (item.hasUpdate && item.installed) {
                         app_item_name.setTextColor(context!!.getColor(R.color.minimal_orange))
                     }
-                    if (app_item_name.text.contains("Samsung Music") || app_item_name.text.contains(
-                                    "Voice Recorder")) {
-                        blocked_packages_alert.visibility = View.VISIBLE
-                        blocked_packages_alert.setColorFilter(context!!.swift.selection.accentColor)
-                    }
 
                     night_icon.setVisible(item.nightAvailable)
                     night_icon.isClickable = item.nightAvailable
                     night_icon.setColorFilter(context!!.swift.selection.accentColor)
+                    info_icon.setVisible(item.infoAvailable)
+                    info_icon.isClickable = item.infoAvailable
+                    info_icon.setColorFilter(context!!.swift.selection.accentColor)
                 }
 
                 if (appExtrasHandler.appExtras.containsKey(item.packageName)) {

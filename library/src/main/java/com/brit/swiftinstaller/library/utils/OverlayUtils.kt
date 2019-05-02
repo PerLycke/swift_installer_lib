@@ -27,9 +27,7 @@ import android.content.pm.PackageManager
 import android.content.res.AssetManager
 import android.os.Environment
 import android.text.SpannableString
-import android.util.Log
 import androidx.collection.ArrayMap
-import com.brit.swiftinstaller.library.ui.customize.OptionsMap
 
 object OverlayUtils {
 
@@ -39,6 +37,14 @@ object OverlayUtils {
 
     fun getNightInfo(context: Context, targetPackage: String): String {
         return ShellUtils.inputStreamToString(context.assets.open("overlays/$targetPackage/night-mode"))
+    }
+
+    fun hasAppInfo(context: Context, targetPackage: String): Boolean {
+        return (context.assets.list("overlays/$targetPackage") ?: arrayOf()).contains("app-info")
+    }
+
+    fun getAppInfo(context: Context, targetPackage: String): String {
+        return ShellUtils.inputStreamToString(context.assets.open("overlays/$targetPackage/app-info"))
     }
 
     fun getTargetPackage(packageName: String): String {

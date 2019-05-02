@@ -457,16 +457,4 @@ class OverlaysActivity : ThemeActivity() {
     fun overlaysBackClick(@Suppress("UNUSED_PARAMETER") view: View) {
         onBackPressed()
     }
-
-    @Suppress("UNUSED_PARAMETER")
-    fun blockedPackagesInfo(view: View) {
-        alert {
-            title = getString(R.string.blocked_packages_title)
-            message = getString(R.string.blocked_packages_message)
-            positiveButton(R.string.ok) { dialog ->
-                dialog.dismiss()
-            }
-            show()
-        }
-    }
 }

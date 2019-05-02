@@ -36,4 +36,5 @@ class AppItem(val packageName: String = "",
               val isRequired: Boolean = false,
               var icon: Drawable = ColorDrawable(),
               val nightAvailable: Boolean = false,
+              val infoAvailable: Boolean = false,
               var appOptions: ArrayMap<String, Array<String>>? = null)
