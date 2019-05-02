@@ -219,4 +219,6 @@
     <string name="email_reports_subject">Swift Installer: Error Log</string>
     <string name="email_send_feedback">Send Feedback</string>
     <string name="email_support_intent_link">mailto:</string>
+    <string name="night_mode_dialog_title">Dark mode required</string>
+    <string name="app_info_dialog_title">Important Information</string>
 </resources>

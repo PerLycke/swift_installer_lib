@@ -253,7 +253,7 @@ class AppListFragment : Fragment() {
                 }
                 night_icon.setOnClickListener {
                     containerView.context.alert {
-                        title = "Dark mode required"
+                        title = getString(R.string.night_mode_dialog_title)
                         message = OverlayUtils.getNightInfo(context!!, apps[visible[adapterPosition]].packageName)
                         positiveButton("Open App") { d ->
                             d.dismiss()
@@ -267,7 +267,7 @@ class AppListFragment : Fragment() {
                 }
                 info_icon.setOnClickListener {
                     containerView.context.alert {
-                        title = "Important Information"
+                        title = getString(R.string.app_info_dialog_title)
                         message = OverlayUtils.getAppInfo(context!!, apps[visible[adapterPosition]].packageName)
                         positiveButton("OK") { d ->
                             d.dismiss()
