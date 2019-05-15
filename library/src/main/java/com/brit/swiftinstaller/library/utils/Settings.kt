@@ -172,14 +172,20 @@ private fun getOverlayOptionsPrefs(context: Context): SharedPreferences {
 
 fun getSelectedOverlayOptions(context: Context, packageName: String): ArrayMap<String, String> {
     val map = ArrayMap<String, String>()
+    val defaultMap = ArrayMap<String, String>()
+    OverlayUtils.applyDefaultOptionsToMap(context, defaultMap, packageName)
     val prefs = getOverlayOptionsPrefs(context)
     val jsonString = prefs.getString(packageName, JSONObject().toString())
     val json = JSONObject(jsonString)
     val iter = json.keys()
     while (iter.hasNext()) {
         val key = iter.next()
-        val value = json.get(key)
-        map[key] = value as String
+        val value = json.getString(key)
+        if (value.isEmpty() && defaultMap.contains(key)) {
+            map[key] = defaultMap[key]
+        } else {
+            map[key] = value as String
+        }
     }
     return map
 }

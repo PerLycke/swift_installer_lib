@@ -27,6 +27,7 @@ import android.content.pm.PackageManager
 import android.content.res.AssetManager
 import android.os.Environment
 import android.text.SpannableString
+import android.util.Log
 import androidx.collection.ArrayMap
 
 object OverlayUtils {
@@ -279,7 +280,7 @@ object OverlayUtils {
         if (variants.contains("options")) {
             val optionsMap = getSelectedOverlayOptions(context, packageName)
             val options = context.assets.list("$path/options") ?: emptyArray()
-            applyDefaultOptionsToMap(context, optionsMap, path)
+            applyDefaultOptionsToMap(context, optionsMap, packageName)
             for (option in options) {
                 if (optionsMap.containsKey(option)) {
                     val optionsArray = context.assets.list("$path/options/$option") ?: emptyArray()
@@ -306,10 +307,10 @@ object OverlayUtils {
         }
     }
 
-    private fun applyDefaultOptionsToMap(context: Context, optionsMap: ArrayMap<String, String>, path: String) {
-        val options = context.assets.list("$path/options") ?: emptyArray()
+    fun applyDefaultOptionsToMap(context: Context, optionsMap: ArrayMap<String, String>, packageName: String) {
+        val options = context.assets.list("overlays/$packageName/options") ?: emptyArray()
         for (option in options) {
-            val opt = context.assets.list("$path/options/$option")?: emptyArray()
+            val opt = context.assets.list("overlays/$packageName/options/$option")?: emptyArray()
             if (opt.contains("off")) {
                 optionsMap.putIfAbsent(option, "off")
             } else {
