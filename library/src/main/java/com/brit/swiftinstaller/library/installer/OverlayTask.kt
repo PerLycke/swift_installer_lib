@@ -24,6 +24,7 @@ package com.brit.swiftinstaller.library.installer
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
+import android.os.Build
 import android.os.Environment
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
@@ -238,7 +239,7 @@ class OverlayTask(private val om: OverlayManager) : Runnable {
         manifest.append("package=\"${getOverlayPackageName(targetPackage)}\"\n")
         manifest.append("android:versionCode=\"$overlayVersion\"\n")
         manifest.append("android:versionName=\"$overlayVersion\">\n")
-        if (!NO_PERMISSION_PACKAGES.contains(targetPackage)) {
+        if (!NO_PERMISSION_PACKAGES.contains(targetPackage) || Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             manifest.append(
                     "<uses-permission android:name=\"com.samsung.android.permission.SAMSUNG_OVERLAY_COMPONENT\" />\n")
         }
