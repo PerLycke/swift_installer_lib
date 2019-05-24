@@ -56,7 +56,8 @@ class OOSPRomHandler(context: Context) : PRomHandler(context) {
                 "com.lastpass.lpandroid",
                 "com.weather.Weather",
                 "com.google.android.settings.intelligence",
-                "com.google.android.inputmethod.latin"
+                "com.google.android.inputmethod.latin",
+                "com.oneplus.screenrecord"
         )
     }
 
