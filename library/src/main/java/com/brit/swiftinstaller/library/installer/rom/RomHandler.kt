@@ -203,6 +203,8 @@ abstract class RomHandler constructor(var context: Context) {
             return when {
                 getProperty("ro.oxygen.version", "def") != "def"
                         && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P -> OOSPRomHandler(context)
+                getProperty("ro.rom.version", "def") != "def"
+                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P -> OOSPRomHandler(context)
                 getProperty("ro.oxygen.version", "def") != "def"
                         && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> OOSOreoRomHandler(context)
                 getProperty("ro.config.knox", "def") != "def"
