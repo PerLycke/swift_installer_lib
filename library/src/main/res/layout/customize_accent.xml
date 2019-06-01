@@ -81,7 +81,19 @@
         android:verticalSpacing="5dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_subtitle_accent_title" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_subtitle_accent_title"
+        tools:listitem="@layout/palette_view"/>
+
+    <ImageView
+        android:id="@+id/accent_picker_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp"
+        android:src="@drawable/color_picker_round"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="@+id/hashtag"
+        app:layout_constraintBottom_toBottomOf="@+id/hashtag"/>
 
     <TextView
         android:id="@+id/hashtag"
@@ -99,6 +111,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="12dp"
         android:backgroundTint="@color/minimal_green"
         android:digits="0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,A,B,C,D,E,F"
         android:ems="6"

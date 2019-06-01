@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="300dp"
+    android:layout_height="300dp">
+
+    <com.madrapps.pikolo.HSLColorPicker
+        android:id="@+id/colorPicker"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:arc_length="110"
+        app:hue_start_angle="30"
+        app:lightness_start_angle="270"
+        app:radius_offset="20dp"
+        app:saturation_indicator_stroke_color="@color/colorPrimary"
+        app:saturation_start_angle="150"/>
+
+
+
+    <ImageView
+        android:id="@+id/colorIndicator"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:contentDescription="@string/image"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="@+id/imageView"
+        android:backgroundTint="#30ffffff"
+        android:background="@drawable/bg_circle"/>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/bg_circle"
+        android:backgroundTint="#0f0"
+        app:layout_constraintBottom_toBottomOf="@+id/colorPicker"
+        app:layout_constraintEnd_toEndOf="@+id/colorPicker"
+        app:layout_constraintStart_toStartOf="@+id/colorPicker"
+        app:layout_constraintTop_toTopOf="@+id/colorPicker"
+        tools:ignore="ContentDescription" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

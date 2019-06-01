@@ -55,11 +55,13 @@ import com.brit.swiftinstaller.library.utils.ColorUtils.checkBrightAccentColor
 import com.brit.swiftinstaller.library.utils.ColorUtils.checkDarkAccentColor
 import com.brit.swiftinstaller.library.utils.ColorUtils.convertToColorInt
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.madrapps.pikolo.listeners.OnColorSelectionListener
 import kotlinx.android.synthetic.main.activity_customize.*
 import kotlinx.android.synthetic.main.customize_accent.*
 import kotlinx.android.synthetic.main.customize_background.*
 import kotlinx.android.synthetic.main.customize_option_item.view.*
 import kotlinx.android.synthetic.main.customize_option_layout.view.*
+import kotlinx.android.synthetic.main.dialog_color_picker.view.*
 import kotlinx.android.synthetic.main.fab_sheet_personalize.view.*
 import kotlinx.android.synthetic.main.palette_view.view.*
 import org.jetbrains.anko.toast
@@ -333,6 +335,92 @@ class CustomizeActivity : ThemeActivity() {
             }
             usePalette = material_theme.isChecked
             updateColor(false)
+        }
+
+        accent_picker_icon.setOnClickListener {
+            alert {
+                var selectedColor = selection.accentColor
+                titleResource = R.string.category_accent
+                positiveButton("Confirm") { d ->
+                    selection.accentColor = selectedColor
+                    updateColor(true)
+                    d.dismiss()
+                }
+                negativeButton("Cancel") { d ->
+                    d.dismiss()
+                }
+                val view = View.inflate(this@CustomizeActivity, R.layout.dialog_color_picker, null)
+                view.colorPicker.setColorSelectionListener(object : OnColorSelectionListener {
+                    var toast: Toast? = null
+                    override fun onColorSelected(color: Int) {
+                        if (checkBrightAccentColor(color) && checkDarkAccentColor(color)) {
+                            selectedColor = color
+                            view.imageView.background.setColorFilter(color,
+                                    PorterDuff.Mode.MULTIPLY)
+                        } else {
+                            if (toast != null) {
+                                toast!!.cancel()
+                            }
+                            if (!checkBrightAccentColor(color)) {
+                                toast = toast(getString(R.string.bright_accent))
+                            } else {
+                                toast = toast(getString(R.string.dark_accent))
+                            }
+                            view.colorPicker.setColor(selectedColor)
+                        }
+                    }
+
+                    override fun onColorSelectionStart(color: Int) {
+                    }
+
+                    override fun onColorSelectionEnd(color: Int) {
+                    }
+
+                })
+                view.colorPicker.setColor(selection.accentColor)
+                view.imageView.background.setColorFilter(selection.accentColor, PorterDuff.Mode.MULTIPLY)
+                customView = view
+                show()
+            }
+        }
+
+        background_picker_icon.setOnClickListener {
+            alert {
+                var selectedColor = selection.backgroundColor
+                titleResource = R.string.category_background
+                positiveButton("Confirm") { d ->
+                    selection.backgroundColor = selectedColor
+                    updateColor(true)
+                    d.dismiss()
+                }
+                negativeButton("Cancel") { d ->
+                    d.dismiss()
+                }
+                val view = View.inflate(this@CustomizeActivity, R.layout.dialog_color_picker, null)
+                view.colorPicker.setColorSelectionListener(object : OnColorSelectionListener {
+                    override fun onColorSelected(color: Int) {
+                        if (checkBackgroundColor(color)) {
+                            selectedColor = color
+                            view.imageView.background.setColorFilter(color,
+                                    PorterDuff.Mode.MULTIPLY)
+                        } else {
+                            toast(getString(R.string.bright_background))
+                            view.colorPicker.setColor(selectedColor)
+                        }
+                    }
+
+                    override fun onColorSelectionStart(color: Int) {
+                    }
+
+                    override fun onColorSelectionEnd(color: Int) {
+                    }
+
+                })
+                view.colorPicker.setColor(selection.backgroundColor)
+                view.imageView.background.setColorFilter(selection.backgroundColor, PorterDuff.Mode.MULTIPLY)
+                customView = view
+                show()
+            }
         }
 
         material_theme.setOnCheckedChangeListener(baseThemeListener)
