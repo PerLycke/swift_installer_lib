@@ -174,7 +174,7 @@
         android:layout_height="48dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:src="@drawable/color_picker_round"
+        android:src="@drawable/background_color_picker_round"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="@+id/hashtag_bg"
         app:layout_constraintBottom_toBottomOf="@+id/hashtag_bg"/>

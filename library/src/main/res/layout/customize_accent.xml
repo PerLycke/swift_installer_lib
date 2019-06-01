@@ -90,7 +90,7 @@
         android:layout_height="30dp"
         android:layout_marginStart="6dp"
         android:layout_marginEnd="6dp"
-        android:src="@drawable/color_picker_round"
+        android:src="@drawable/accent_color_picker_round"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/hashtag"
         app:layout_constraintBottom_toBottomOf="@+id/hashtag"/>
