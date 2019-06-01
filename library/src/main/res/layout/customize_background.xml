@@ -150,9 +150,24 @@
         android:background="@color/divider"
         android:contentDescription="@string/image"
         app:layout_constraintBottom_toBottomOf="@+id/custom_bg_title"
-        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintEnd_toStartOf="@+id/bgColorPicker"
         app:layout_constraintStart_toEndOf="@+id/custom_bg_title"
         app:layout_constraintTop_toTopOf="@+id/custom_bg_title" />
+
+    <TextView
+        android:id="@+id/bgColorPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:paddingStart="8dp"
+        android:paddingBottom="8dp"
+        android:text="@string/color_wheel"
+        app:layout_constraintBottom_toBottomOf="@+id/custom_bg_divider"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toTopOf="@+id/custom_bg_divider"
+        tools:ignore="RtlSymmetry" />
+
 
     <GridView
         android:id="@+id/background_palette"
@@ -167,17 +182,6 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toBottomOf="@+id/custom_bg_title" />
-
-    <ImageView
-        android:id="@+id/background_picker_icon"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:src="@drawable/background_color_picker_round"
-        app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toTopOf="@+id/hashtag_bg"
-        app:layout_constraintBottom_toBottomOf="@+id/hashtag_bg"/>
 
     <TextView
         android:id="@+id/hashtag_bg"

@@ -337,7 +337,7 @@ class CustomizeActivity : ThemeActivity() {
             updateColor(false)
         }
 
-        accent_picker_icon.setOnClickListener {
+        accentColorPicker.setOnClickListener {
             alert {
                 var selectedColor = selection.accentColor
                 titleResource = R.string.category_accent
@@ -384,10 +384,10 @@ class CustomizeActivity : ThemeActivity() {
             }
         }
 
-        background_picker_icon.setOnClickListener {
+        bgColorPicker.setOnClickListener {
             alert {
                 var selectedColor = selection.backgroundColor
-                titleResource = R.string.category_background
+                title = getString(R.string.color_wheel_background_dialog_title)
                 positiveButton("Confirm") { d ->
                     selection.backgroundColor = selectedColor
                     updateColor(true)
@@ -647,6 +647,8 @@ class CustomizeActivity : ThemeActivity() {
         hex_input_bg.background.setTint(selection.accentColor)
         personalize_fab.background.setTint(selection.accentColor)
         baseThemeInfo.setTextColor(selection.accentColor)
+        bgColorPicker.setTextColor(selection.accentColor)
+        accentColorPicker.setTextColor(selection.accentColor)
 
         materialPalette = MaterialPalette.createPalette(selection.backgroundColor, usePalette)
 

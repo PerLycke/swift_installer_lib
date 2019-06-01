@@ -67,9 +67,23 @@
         android:contentDescription="@string/image"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar_subtitle_accent_title"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/accentColorPicker"
         app:layout_constraintStart_toEndOf="@+id/toolbar_subtitle_accent_title"
         app:layout_constraintTop_toTopOf="@+id/toolbar_subtitle_accent_title" />
+
+    <TextView
+        android:id="@+id/accentColorPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:paddingStart="8dp"
+        android:paddingBottom="8dp"
+        android:text="@string/color_wheel"
+        app:layout_constraintBottom_toBottomOf="@+id/accent_category_divider"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toTopOf="@+id/accent_category_divider"
+        tools:ignore="RtlSymmetry" />
 
     <GridView
         android:id="@+id/accent_palette"
@@ -83,17 +97,6 @@
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_subtitle_accent_title"
         tools:listitem="@layout/palette_view"/>
-
-    <ImageView
-        android:id="@+id/accent_picker_icon"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="6dp"
-        android:layout_marginEnd="6dp"
-        android:src="@drawable/accent_color_picker_round"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toTopOf="@+id/hashtag"
-        app:layout_constraintBottom_toBottomOf="@+id/hashtag"/>
 
     <TextView
         android:id="@+id/hashtag"

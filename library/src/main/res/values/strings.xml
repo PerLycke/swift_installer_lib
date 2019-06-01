@@ -221,4 +221,6 @@
     <string name="email_support_intent_link">mailto:</string>
     <string name="night_mode_dialog_title">Dark mode required</string>
     <string name="app_info_dialog_title">Important Information</string>
+    <string name="color_wheel">Color wheel</string>
+    <string name="color_wheel_background_dialog_title">Dark Background</string>
 </resources>
