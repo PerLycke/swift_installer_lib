@@ -180,7 +180,7 @@
     <string name="pie_category_setting_icon">Setting Icons</string>
     <string name="quick_settings_style">Quick Settings Style</string>
     <string name="swiftkey_reboot_needed">You need to reboot for SwiftKey to reload all colors</string>
-    <string name="sbar_icons_color_default">White, black (default Android behavior)</string>
+    <string name="sbar_icons_color_default">White, black (default behavior)</string>
     <string name="sbar_icons_color_grey">White, grey (recommended)</string>
     <string name="sbar_icons_color_white">Always white</string>
     <string name="sbar_icons_color_accent">Always accent</string>
@@ -209,18 +209,18 @@
     <string name="qs_icons_category">Quick setting icons</string>
     <string name="documentation">Documentation</string>
     <string name="email_support">Email support</string>
-    <string name="rescue_script">Rescue Script</string>
+    <string name="rescue_script">Rescue script</string>
     <string name="github">Github link</string>
     <string name="swift_installer_version">Swift Installer version:</string>
     <string name="swift_installer_lib_version">Swift Installer Lib version:</string>
     <string name="email_feedback_subject">Swift Installer: Feedback</string>
     <string name="email_feedback">swiftuserhelp@gmail.com</string>
     <string name="email_reports">swiftthemereports@gmail.com</string>
-    <string name="email_reports_subject">Swift Installer: Error Log</string>
+    <string name="email_reports_subject">Swift Installer: Error log</string>
     <string name="email_send_feedback">Send Feedback</string>
     <string name="email_support_intent_link">mailto:</string>
     <string name="night_mode_dialog_title">Dark mode required</string>
-    <string name="app_info_dialog_title">Important Information</string>
+    <string name="app_info_dialog_title">Important information</string>
     <string name="color_wheel">Color wheel</string>
-    <string name="color_wheel_background_dialog_title">Dark Background</string>
+    <string name="color_wheel_background_dialog_title">Dark background</string>
 </resources>
