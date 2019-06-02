@@ -367,7 +367,7 @@ class MainActivity : ThemeActivity() {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
 
-        if (ShellUtils.isRootAvailable && !swift.romHandler.magiskEnabled) {
+        if (ShellUtils.isRootAvailable && (!swift.romHandler.magiskEnabled || Build.VERSION.SDK_INT < Build.VERSION_CODES.P)) {
             popupView.popup_menu_soft_reboot.setOnClickListener {
                 popup.dismiss()
                 val intent = Intent(this, RebootActivity::class.java)

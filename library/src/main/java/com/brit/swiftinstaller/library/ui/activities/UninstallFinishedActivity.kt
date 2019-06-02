@@ -22,8 +22,8 @@
 package com.brit.swiftinstaller.library.ui.activities
 
 import android.app.Dialog
+import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import androidx.appcompat.app.AlertDialog
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.applist.AppList
@@ -53,7 +53,7 @@ class UninstallFinishedActivity : ThemeActivity() {
                 val dialog = Dialog(this, R.style.AppTheme_Translucent)
                 dialog.setContentView(R.layout.reboot)
                 dialog.show()
-                if (!swift.romHandler.magiskEnabled && getUseSoftReboot(this)) {
+                if ((!swift.romHandler.magiskEnabled || Build.VERSION.SDK_INT < Build.VERSION_CODES.P) && getUseSoftReboot(this)) {
                     quickRebootCommand()
                 } else {
                     rebootCommand()
