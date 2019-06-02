@@ -48,6 +48,14 @@ object OverlayUtils {
         return ShellUtils.inputStreamToString(context.assets.open("overlays/$targetPackage/app-info"))
     }
 
+    fun hasAppInfoLink(context: Context, targetPackage: String): Boolean {
+        return (context.assets.list("overlays/$targetPackage") ?: arrayOf()).contains("app-info-link")
+    }
+
+    fun getAppInfoLink(context: Context, targetPackage: String): String {
+        return ShellUtils.inputStreamToString(context.assets.open("overlays/$targetPackage/app-info-link"))
+    }
+
     fun getTargetPackage(packageName: String): String {
         return if (packageName.endsWith(".swiftinstaller.overlay")) {
             packageName.substring(0, packageName.lastIndexOf(".swiftinstaller.overlay"))

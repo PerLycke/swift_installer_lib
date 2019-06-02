@@ -223,4 +223,5 @@
     <string name="app_info_dialog_title">Important information</string>
     <string name="color_wheel">Color wheel</string>
     <string name="color_wheel_background_dialog_title">Dark background</string>
+    <string name="app_info_dialog_link_text">Download</string>
 </resources>

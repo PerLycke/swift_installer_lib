@@ -44,6 +44,7 @@ import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.activities.InstallActivity
 import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.OverlayUtils.checkVersionCompatible
+import com.brit.swiftinstaller.library.utils.OverlayUtils.hasAppInfoLink
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.activity_app_list.*
 import kotlinx.android.synthetic.main.app_item.*
@@ -268,7 +269,12 @@ class AppListFragment : Fragment() {
                 info_icon.setOnClickListener {
                     containerView.context.alert {
                         title = getString(R.string.app_info_dialog_title)
-                        message = OverlayUtils.getAppInfo(context!!, apps[visible[adapterPosition]].packageName)
+                        if(hasAppInfoLink(context!!, apps[visible[adapterPosition]].packageName)){
+                            val m = OverlayUtils.getAppInfo(context!!, apps[visible[adapterPosition]].packageName) + "\n\n" + getString(R.string.app_info_dialog_link_text)
+                            message = Utils.createLinkedString(context!!, m, getString(R.string.app_info_dialog_link_text), OverlayUtils.getAppInfoLink(context!!, apps[visible[adapterPosition]].packageName))
+                        } else {
+                            message = OverlayUtils.getAppInfo(context!!, apps[visible[adapterPosition]].packageName)
+                        }
                         positiveButton("OK") { d ->
                             d.dismiss()
                         }
