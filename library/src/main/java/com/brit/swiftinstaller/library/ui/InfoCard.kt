@@ -26,7 +26,6 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.utils.MaterialPalette

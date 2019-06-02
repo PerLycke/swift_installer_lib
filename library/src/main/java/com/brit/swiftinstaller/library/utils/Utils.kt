@@ -57,7 +57,7 @@ object Utils {
     }
 
     fun createLinkedString(ctx: Context, message: CharSequence, urltext: String, urllink: String): SpannableString {
-        return Utils.createLinkedString(ctx, message, message.indexOf(urltext), message.indexOf(urltext) + urltext.length, urllink)
+        return createLinkedString(ctx, message, message.indexOf(urltext), message.indexOf(urltext) + urltext.length, urllink)
     }
 
     fun createLinkedString(ctx: Context, message: CharSequence, start: Int, end: Int, urllink: String): SpannableString {

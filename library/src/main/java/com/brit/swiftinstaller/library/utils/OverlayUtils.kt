@@ -27,7 +27,6 @@ import android.content.pm.PackageManager
 import android.content.res.AssetManager
 import android.os.Environment
 import android.text.SpannableString
-import android.util.Log
 import androidx.collection.ArrayMap
 
 object OverlayUtils {

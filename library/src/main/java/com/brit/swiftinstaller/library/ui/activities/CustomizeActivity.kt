@@ -361,10 +361,10 @@ class CustomizeActivity : ThemeActivity() {
                             if (toast != null) {
                                 toast!!.cancel()
                             }
-                            if (!checkBrightAccentColor(color)) {
-                                toast = toast(getString(R.string.bright_accent))
+                            toast = if (!checkBrightAccentColor(color)) {
+                                toast(getString(R.string.bright_accent))
                             } else {
-                                toast = toast(getString(R.string.dark_accent))
+                                toast(getString(R.string.dark_accent))
                             }
                             view.colorPicker.setColor(selectedColor)
                         }

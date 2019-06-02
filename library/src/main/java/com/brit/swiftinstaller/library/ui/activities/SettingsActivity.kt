@@ -2,7 +2,6 @@ package com.brit.swiftinstaller.library.ui.activities
 
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity

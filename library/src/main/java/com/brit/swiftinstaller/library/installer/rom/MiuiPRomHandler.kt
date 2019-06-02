@@ -1,7 +1,6 @@
 package com.brit.swiftinstaller.library.installer.rom
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.drawable.LayerDrawable
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.customize.*

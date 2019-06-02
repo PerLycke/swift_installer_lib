@@ -30,12 +30,10 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.View
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.library.utils.OverlayUtils
 import com.brit.swiftinstaller.library.utils.ShellUtils
 import com.brit.swiftinstaller.library.utils.swift
 import com.hololo.tutorial.library.TutorialActivity
 import kotlinx.android.synthetic.main.no_root.view.*
-import org.jetbrains.anko.doAsync
 
 open class TutorialActivity : TutorialActivity() {
 

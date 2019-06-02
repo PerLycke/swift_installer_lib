@@ -243,7 +243,7 @@ class InstallSummaryActivity : ThemeActivity() {
                     killSysUI = false
                     restartSysUi(this@InstallSummaryActivity)
                     prefs.edit().putBoolean("hotswap", false).apply()
-                    if (OverlayUtils.isOverlayEnabled("com.touchtype.swiftkey")) {
+                    if (isOverlayEnabled("com.touchtype.swiftkey")) {
                         runCommand("pkill com.touchtype.swiftkey")
                     } else if (swift.romHandler.isOverlayInstalled("com.touchtype.swiftkey")) {
                         alert {
