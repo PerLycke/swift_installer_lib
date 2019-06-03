@@ -354,18 +354,10 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
         sbarIconOptions.add(Option(context.getString(R.string.sbar_icons_stock), "stock"))
         sbarIconOptions.add(Option(context.getString(R.string.sbar_icons_aosp), "aosp"))
         val sbarIconColorOptions = OptionsMap()
-        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_default), "default"))
-        sbarIconColorOptions["default"]!!.infoDialogTitle = context.getString(R.string.sbar_icons_color_default_dialog_title)
-        sbarIconColorOptions["default"]!!.infoDialogText = context.getString(R.string.sbar_icons_color_default_dialog_text)
-        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_white), "white"))
-        sbarIconColorOptions["white"]!!.infoDialogTitle = context.getString(R.string.sbar_icons_color_white_dialog_title)
-        sbarIconColorOptions["white"]!!.infoDialogText = context.getString(R.string.sbar_icons_color_white_dialog_text)
-        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_grey), "grey"))
-        sbarIconColorOptions["grey"]!!.infoDialogTitle = context.getString(R.string.sbar_icons_color_grey_dialog_title)
-        sbarIconColorOptions["grey"]!!.infoDialogText = context.getString(R.string.sbar_icons_color_grey_dialog_text)
-        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_accent), "accent"))
-        sbarIconColorOptions["accent"]!!.infoDialogTitle = context.getString(R.string.sbar_icons_color_accent_dialog_title)
-        sbarIconColorOptions["accent"]!!.infoDialogText = context.getString(R.string.sbar_icons_color_accent_dialog_text)
+        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_default), "default", infoDialogTitle = context.getString(R.string.sbar_icons_color_default_dialog_title), infoDialogText = context.getString(R.string.sbar_icons_color_default_dialog_text)))
+        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_white), "white", infoDialogTitle = context.getString(R.string.sbar_icons_color_white_dialog_title), infoDialogText = context.getString(R.string.sbar_icons_color_white_dialog_text)))
+        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_grey), "grey", infoDialogTitle = context.getString(R.string.sbar_icons_color_grey_dialog_title), infoDialogText = context.getString(R.string.sbar_icons_color_grey_dialog_text)))
+        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_accent), "accent", infoDialogTitle = context.getString(R.string.sbar_icons_color_accent_dialog_title), infoDialogText = context.getString(R.string.sbar_icons_color_accent_dialog_text)))
 
         sbarIconOptions["stock"]!!.subOptions.putAll(sbarIconColorOptions)
         sbarIconOptions["stock"]!!.subOptionKey = "sbar_icons_color"
@@ -397,9 +389,8 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
 
             val notifBackgroundOptions = OptionsMap()
             notifBackgroundOptions.add(Option(context.getString(R.string.white), "white"))
-            notifBackgroundOptions.add(Option(context.getString(R.string.dark), "dark"))
-                notifBackgroundOptions["dark"]!!.infoText =
-                        context.getString(R.string.notif_fix_desc_summary)
+            notifBackgroundOptions.add(Option(context.getString(R.string.dark), "dark", infoText =
+            context.getString(R.string.notif_fix_desc_summary)))
                 val senderNameOptions = OptionsMap()
                 senderNameOptions.add(Option(context.getString(R.string.disable), "default"))
                 senderNameOptions.add(Option(context.getString(R.string.enable_shadow_title), "shadow"))
@@ -412,9 +403,7 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O) {
             val notifOptions = OptionsMap()
             notifOptions.add(Option(context.getString(R.string.default_style), "default"))
-            notifOptions.add(Option(context.getString(R.string.android_p_rounded_style), "p"))
-            notifOptions["p"]!!.infoDialogTitle = context.getString(R.string.rounded_dialog_title)
-            notifOptions["p"]!!.infoDialogText = context.getString(R.string.rounded_dialog_info)
+            notifOptions.add(Option(context.getString(R.string.android_p_rounded_style), "p", infoDialogTitle = context.getString(R.string.rounded_dialog_title), infoDialogText = context.getString(R.string.rounded_dialog_info)))
             categories.add(CustomizeCategory(context.getString(R.string.notification_style),
                     "samsung_oreo_notif_style", "default", notifOptions,
                     synchronizedArrayListOf("com.android.systemui", "android")))

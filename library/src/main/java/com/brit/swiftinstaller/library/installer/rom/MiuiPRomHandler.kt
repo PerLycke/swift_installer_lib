@@ -143,12 +143,8 @@ class MiuiPRomHandler(context: Context) : PRomHandler(context) {
                 synchronizedArrayListOf("android")))
 
         val sbarIconColorOptions = OptionsMap()
-        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_default), "default"))
-        sbarIconColorOptions["default"]!!.infoDialogTitle = context.getString(R.string.sbar_icons_color_default_dialog_title)
-        sbarIconColorOptions["default"]!!.infoDialogText = context.getString(R.string.sbar_icons_color_default_dialog_text)
-        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_white), "white"))
-        sbarIconColorOptions["white"]!!.infoDialogTitle = context.getString(R.string.sbar_icons_color_white_dialog_title)
-        sbarIconColorOptions["white"]!!.infoDialogText = context.getString(R.string.sbar_icons_color_white_dialog_text)
+        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_default), "default", infoDialogTitle = context.getString(R.string.sbar_icons_color_default_dialog_title), infoDialogText = context.getString(R.string.sbar_icons_color_default_dialog_text)))
+        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_white), "white", infoDialogTitle = context.getString(R.string.sbar_icons_color_white_dialog_title), infoDialogText = context.getString(R.string.sbar_icons_color_white_dialog_text)))
 
         categories.add(CustomizeCategory(context.getString(R.string.sbar_icons_color_category), "sbar_icons_color", "white", sbarIconColorOptions, synchronizedArrayListOf("com.android.systemui")))
     }

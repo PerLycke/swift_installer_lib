@@ -21,12 +21,8 @@
 
 package com.brit.swiftinstaller.library.ui.customize
 
-class SliderOption(name: String, value: String) : Option(name, value) {
+class SliderOption(name: String, value: String) : Option(name, value, isSliderOption = true) {
     var min = 0
     var max = 100
     var current = 0
-
-    init {
-        isSliderOption = true
-    }
 }
