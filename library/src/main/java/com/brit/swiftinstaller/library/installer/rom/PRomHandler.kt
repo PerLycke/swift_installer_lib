@@ -130,10 +130,6 @@ open class PRomHandler(context: Context) : RomHandler(context) {
                 PackageManager.GET_META_DATA)
     }
 
-    override fun useHotSwap(): Boolean {
-        return true
-    }
-
     override fun getChangelogTag(): String {
         return "p"
     }
