@@ -23,6 +23,7 @@ package com.brit.swiftinstaller.library.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
 import android.preference.PreferenceManager
 import android.text.TextUtils
 import android.util.ArraySet
@@ -141,8 +142,7 @@ fun clearAppsToUninstall(context: Context) {
 }
 
 fun getUseSoftReboot(context: Context): Boolean {
-    return PreferenceManager.getDefaultSharedPreferences(context)
-            .getBoolean(KEY_USE_SOFT_REBOOT, context.swift.romHandler.useHotSwap())
+    return ((!context.swift.romHandler.magiskEnabled || Build.VERSION.SDK_INT < Build.VERSION_CODES.P) && ShellUtils.isRootAvailable)
 }
 
 fun updateNotificationEnabled(context: Context): Boolean {

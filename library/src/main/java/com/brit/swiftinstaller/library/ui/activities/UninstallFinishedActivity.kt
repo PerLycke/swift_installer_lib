@@ -53,7 +53,7 @@ class UninstallFinishedActivity : ThemeActivity() {
                 val dialog = Dialog(this, R.style.AppTheme_Translucent)
                 dialog.setContentView(R.layout.reboot)
                 dialog.show()
-                if ((!swift.romHandler.magiskEnabled || Build.VERSION.SDK_INT < Build.VERSION_CODES.P) && getUseSoftReboot(this)) {
+                if ((!swift.romHandler.magiskEnabled || Build.VERSION.SDK_INT < Build.VERSION_CODES.P) && ShellUtils.isRootAvailable) {
                     quickRebootCommand()
                 } else {
                     rebootCommand()
