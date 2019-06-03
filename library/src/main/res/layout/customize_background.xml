@@ -67,21 +67,81 @@
         android:contentDescription="@string/image"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/bg_category"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/bgColorPicker"
         app:layout_constraintStart_toEndOf="@+id/bg_category"
         app:layout_constraintTop_toTopOf="@+id/bg_category" />
+
+    <TextView
+        android:id="@+id/bgColorPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:paddingStart="8dp"
+        android:paddingBottom="8dp"
+        android:text="@string/color_wheel"
+        app:layout_constraintBottom_toBottomOf="@+id/bg_category_divider"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toTopOf="@+id/bg_category_divider"
+        tools:ignore="RtlSymmetry" />
+
+    <GridView
+        android:id="@+id/background_palette"
+        android:layout_width="0dp"
+        android:layout_height="168dp"
+        android:layout_marginTop="16dp"
+        android:columnWidth="50dp"
+        android:gravity="center"
+        android:numColumns="3"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="5dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toBottomOf="@+id/bg_category" />
+
+    <TextView
+        android:id="@+id/hashtag_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:text="@string/hashtag"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/hex_input_bg"
+        app:layout_constraintEnd_toStartOf="@+id/hex_input_bg"
+        app:layout_constraintTop_toTopOf="@+id/hex_input_bg" />
+
+    <com.brit.swiftinstaller.library.utils.BaseTextInputEditText
+        android:id="@+id/hex_input_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:backgroundTint="@color/minimal_green"
+        android:digits="0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,A,B,C,D,E,F"
+        android:ems="6"
+        android:fontFamily="sans-serif"
+        android:hint="@string/hex"
+        android:imeOptions="actionDone"
+        android:inputType="textNoSuggestions|textVisiblePassword"
+        android:maxLength="6"
+        android:singleLine="true"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toBottomOf="@+id/background_palette" />
 
     <TextView
         android:id="@+id/customize_base_theme_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="sans-serif"
         android:text="@string/base_theme"
+        android:textAllCaps="true"
+        android:textSize="14sp"
         android:textAppearance="@android:style/TextAppearance.Material.Small"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toBottomOf="@+id/bg_category" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hex_input_bg" />
 
     <ImageView
         android:id="@+id/customize_base_theme_divider"
@@ -118,7 +178,7 @@
         android:layout_marginTop="24dp"
         android:checked="true"
         android:text="@string/material"
-        app:layout_constraintStart_toStartOf="@+id/customize_base_theme_title"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toBottomOf="@+id/customize_base_theme_title" />
 
     <RadioButton
@@ -129,87 +189,5 @@
         android:text="@string/flat"
         app:layout_constraintStart_toStartOf="@+id/material_theme"
         app:layout_constraintTop_toBottomOf="@+id/material_theme" />
-
-    <TextView
-        android:id="@+id/custom_bg_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:fontFamily="sans-serif"
-        android:text="@string/custom_background"
-        android:textAppearance="@android:style/TextAppearance.Material.Small"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toBottomOf="@+id/flat_theme" />
-
-    <ImageView
-        android:id="@+id/custom_bg_divider"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="16dp"
-        android:background="@color/divider"
-        android:contentDescription="@string/image"
-        app:layout_constraintBottom_toBottomOf="@+id/custom_bg_title"
-        app:layout_constraintEnd_toStartOf="@+id/bgColorPicker"
-        app:layout_constraintStart_toEndOf="@+id/custom_bg_title"
-        app:layout_constraintTop_toTopOf="@+id/custom_bg_title" />
-
-    <TextView
-        android:id="@+id/bgColorPicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="?android:selectableItemBackgroundBorderless"
-        android:paddingStart="8dp"
-        android:paddingBottom="8dp"
-        android:text="@string/color_wheel"
-        app:layout_constraintBottom_toBottomOf="@+id/custom_bg_divider"
-        app:layout_constraintEnd_toStartOf="@+id/guideline6"
-        app:layout_constraintTop_toTopOf="@+id/custom_bg_divider"
-        tools:ignore="RtlSymmetry" />
-
-
-    <GridView
-        android:id="@+id/background_palette"
-        android:layout_width="0dp"
-        android:layout_height="168dp"
-        android:layout_marginTop="16dp"
-        android:columnWidth="50dp"
-        android:gravity="center"
-        android:numColumns="3"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="5dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline6"
-        app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toBottomOf="@+id/custom_bg_title" />
-
-    <TextView
-        android:id="@+id/hashtag_bg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:text="@string/hashtag"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/hex_input_bg"
-        app:layout_constraintEnd_toStartOf="@+id/hex_input_bg"
-        app:layout_constraintTop_toTopOf="@+id/hex_input_bg" />
-
-    <com.brit.swiftinstaller.library.utils.BaseTextInputEditText
-        android:id="@+id/hex_input_bg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:backgroundTint="@color/minimal_green"
-        android:digits="0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,A,B,C,D,E,F"
-        android:ems="6"
-        android:fontFamily="sans-serif"
-        android:hint="@string/hex"
-        android:imeOptions="actionDone"
-        android:inputType="textNoSuggestions|textVisiblePassword"
-        android:maxLength="6"
-        android:singleLine="true"
-        app:layout_constraintEnd_toStartOf="@+id/guideline6"
-        app:layout_constraintTop_toBottomOf="@+id/background_palette" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

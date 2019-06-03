@@ -21,7 +21,7 @@
 
 <resources>
     <string name="swift_app_name">Swift Installer</string>
-    <string name="base_theme">Base theme</string>
+    <string name="base_theme">Theme Style</string>
     <string name="basic_usage">Basic usage</string>
     <string name="bg_nature">Nature</string>
     <string name="bg_ocean">Ocean</string>
@@ -33,11 +33,10 @@
     <string name="big_tile_update_msg">Tap here to select and install them</string>
     <string name="cancel">Cancel</string>
     <string name="category_accent">Accent</string>
-    <string name="category_background">Background</string>
+    <string name="category_background">Dark Background</string>
     <string name="confirm">Confirm</string>
     <string name="connections">Connections</string>
     <string name="connections_desc">Wi-Fi, Bluetooth, Data usage, Flight mode</string>
-    <string name="custom_background">Custom background</string>
     <string name="dark">Dark</string>
     <string name="dark_notifications">Dark notifications</string>
     <string name="dark_notifications_preview_normal">A preview of normal dark notifications</string>
