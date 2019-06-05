@@ -55,7 +55,7 @@ class MaterialPalette {
                 p.backgroundColor = color
                 p.cardBackground = color
                 p.floatingBackground = color
-                p.darkBackgroundColor = color
+                p.darkBackgroundColor = handleColor(color, 0)
                 p.darkerBackgroundColor = color
                 p.lighterBackgroundColor = color
                 p.buttonBackground = handleColor(color, 20)
