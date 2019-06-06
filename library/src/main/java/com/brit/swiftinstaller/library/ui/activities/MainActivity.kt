@@ -320,7 +320,7 @@ class MainActivity : ThemeActivity() {
                         "${getString(R.string.instructions)} \n\n" +
                         "${getString(R.string.telegram_support)} \n\n" +
                         "${getString(R.string.email_support)} \n\n" +
-                        if (RomHandler.supportsMagisk) {
+                        if (MagiskUtils.supportsMagisk) {
                             "${getString(R.string.magisk_module)} \n\n"
                         } else {
                             ""
@@ -340,7 +340,7 @@ class MainActivity : ThemeActivity() {
                         var mes = Utils.createLinkedString(ctx, m, getString(R.string.instructions), getString(R.string.link_instructions))
                         mes = Utils.createLinkedString(ctx, mes, getString(R.string.telegram_support), getString(R.string.link_telegram))
                         mes = Utils.createLinkedString(ctx, mes, getString(R.string.documentation), getString(R.string.link_documentation))
-                        if (RomHandler.supportsMagisk) {
+                        if (MagiskUtils.supportsMagisk) {
                             mes = Utils.createLinkedString(ctx, mes, getString(R.string.magisk_module), getString(R.string.link_magisk))
                         }
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && RomHandler.isSamsungPatched()) {
@@ -367,7 +367,7 @@ class MainActivity : ThemeActivity() {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
 
-        if (ShellUtils.isRootAvailable && (!swift.romHandler.magiskEnabled || Build.VERSION.SDK_INT < Build.VERSION_CODES.P)) {
+        if (ShellUtils.isRootAvailable && (!MagiskUtils.magiskEnabled || Build.VERSION.SDK_INT < Build.VERSION_CODES.P)) {
             popupView.popup_menu_soft_reboot.setOnClickListener {
                 popup.dismiss()
                 val intent = Intent(this, RebootActivity::class.java)

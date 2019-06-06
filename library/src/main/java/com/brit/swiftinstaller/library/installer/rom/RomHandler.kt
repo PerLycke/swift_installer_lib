@@ -37,8 +37,8 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
+import com.brit.swiftinstaller.library.utils.MagiskUtils.supportsMagisk
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
-import com.brit.swiftinstaller.library.utils.ShellUtils
 import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
 import com.brit.swiftinstaller.library.utils.getProperty
 import com.brit.swiftinstaller.library.utils.isAppInstalled
@@ -47,17 +47,8 @@ import com.brit.swiftinstaller.library.utils.synchronizedArrayListOf
 import com.hololo.tutorial.library.PermissionStep
 import com.hololo.tutorial.library.Step
 import com.hololo.tutorial.library.TutorialActivity
-import com.topjohnwu.superuser.io.SuFile
 
 abstract class RomHandler constructor(var context: Context) {
-
-    val moduleDisabled: Boolean by lazy {
-        SuFile(magiskPath, "disable").exists()
-    }
-
-    val magiskEnabled: Boolean by lazy {
-        !moduleDisabled && SuFile(magiskPath).exists()
-    }
 
     private var customizeHandler: CustomizeHandler? = null
 
@@ -186,10 +177,6 @@ abstract class RomHandler constructor(var context: Context) {
     }
 
     companion object {
-
-        const val magiskPath = "/sbin/.core/img/swift_installer"
-
-        val supportsMagisk = ShellUtils.isRootAccessAvailable
 
         const val TUTORIAL_PAGE_MAIN = 0
         const val TUTORIAL_PAGE_APPS = 1

@@ -170,7 +170,7 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
                 intent
             }
         }
-        if (!intents.isEmpty()) {
+        if (intents.isNotEmpty()) {
             context.startActivities(intents)
         }
 

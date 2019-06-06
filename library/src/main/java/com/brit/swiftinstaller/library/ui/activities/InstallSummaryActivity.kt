@@ -133,7 +133,7 @@ class InstallSummaryActivity : ThemeActivity() {
         rebootDialog.setContentView(R.layout.reboot)
         rebootDialog.show()
         val idleHandler = MessageQueue.IdleHandler {
-            if ((!swift.romHandler.magiskEnabled || Build.VERSION.SDK_INT < Build.VERSION_CODES.P) && getUseSoftReboot(this)) {
+            if ((!MagiskUtils.magiskEnabled || Build.VERSION.SDK_INT < Build.VERSION_CODES.P) && getUseSoftReboot(this)) {
                 quickRebootCommand()
             } else {
                 rebootCommand()

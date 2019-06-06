@@ -8,10 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
 import com.brit.swiftinstaller.library.R
-import com.brit.swiftinstaller.library.utils.KEY_USE_SOFT_REBOOT
-import com.brit.swiftinstaller.library.utils.MaterialPalette
-import com.brit.swiftinstaller.library.utils.getUseSoftReboot
-import com.brit.swiftinstaller.library.utils.swift
+import com.brit.swiftinstaller.library.utils.*
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -37,7 +34,7 @@ class SettingsActivity : AppCompatActivity() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.preferences)
 
-            if (!activity!!.swift.romHandler.useHotSwap() || activity!!.swift.romHandler.magiskEnabled) {
+            if (!activity!!.swift.romHandler.useHotSwap() || MagiskUtils.magiskEnabled) {
                 preferenceScreen.removePreference(
                         preferenceScreen.findPreference(KEY_USE_SOFT_REBOOT))
             } else {

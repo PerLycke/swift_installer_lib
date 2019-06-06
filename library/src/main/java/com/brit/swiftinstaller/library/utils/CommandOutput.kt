@@ -21,4 +21,10 @@
 
 package com.brit.swiftinstaller.library.utils
 
-class CommandOutput(var output: String?, var error: String, var exitCode: Int)
+class CommandOutput(var output: String?, var error: String, var exitCode: Int) {
+    override fun toString(): String {
+        return "exitCode: $exitCode\n" +
+                "output: $output\n" +
+                "error: $error"
+    }
+}
