@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="log_blacklist" translatable="false">
-        <item>org.bromite.bromite</item>
-        <item>com.brave.browser</item>
     </string-array>
 </resources>
