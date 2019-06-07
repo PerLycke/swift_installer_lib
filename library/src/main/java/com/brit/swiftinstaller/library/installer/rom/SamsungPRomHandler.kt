@@ -96,7 +96,6 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
                     "com.sec.android.app.voicenote",
                     "com.sec.android.daemonapp",
                     "com.sec.android.gallery3d",
-                    "com.sec.android.inputmethod",
                     "com.sec.hearingadjust",
                     "com.android.server.telecom",
                     "com.wssyncmldm",
