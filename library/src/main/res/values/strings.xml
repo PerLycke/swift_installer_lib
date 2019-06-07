@@ -121,13 +121,13 @@
     <string name="left">Left</string>
     <string name="centered">Centered</string>
     <string name="clock">Clock</string>
-    <string name="base_theme_dialog_info">The material theme uses a slightly lighter or darker colors for cards, dialogs and popups to distinguish them from the main background. In Flat theme instead, the background color is mostly the same everywhere.</string>
+    <string name="base_theme_dialog_info">The Material option sets a slightly lighter colors for cards, dialogs and popups, and then a darker one for the app bars, to distinguish them from the main background. The Flat option instead sets the same color for all backgrounds</string>
     <string name="base_theme_dialog_title">Theme style</string>
     <string name="default_style">Default</string>
     <string name="android_p_rounded_style">Android P rounded</string>
     <string name="notification_style">Notification style</string>
     <string name="rounded_info">Info!</string>
-    <string name="rounded_dialog_info">This option is only tested on stock ROMs. Custom ROMs are not tested and they might cause conflicts with this option. If you want to try this option on a custom ROM, make sure you have ADB debugging enabled and the rescue script available.</string>
+    <string name="rounded_dialog_info">This option is only tested on stock ROMs. Custom ROMs are not tested and they might cause conflicts with this option. If you want to try this option on a custom ROM, make sure you have ADB debugging enabled and the rescue script available</string>
     <string name="rounded_dialog_title">Rounded style</string>
     <string name="white">White</string>
     <string name="alpha_value">%1$d %%</string>
@@ -143,7 +143,7 @@
     <string name="reboot_notif_msg">New overlays were enabled at boot. The last step is to make a quick reboot in order for all apps to reload with the new colors. Tap this notification to proceed</string>
     <string name="reboot_dialog_title">Reboot</string>
     <string name="reboot_dialog_msg">Reboot now to reload resources</string>
-    <string name="info_card_reboot_msg">New overlays enabled at boot. The last step is to make a quick reboot in order for all apps to reload with the new colors. <b>Tap to proceed.</b></string>
+    <string name="info_card_reboot_msg">New overlays enabled at boot. The last step is to make a quick reboot in order for all apps to reload with the new colors. <b>Tap to proceed</b></string>
     <string name="wait">Please wait…</string>
     <string name="reboot_now">Reboot now</string>
     <string name="installation_failed">Installation failed</string>
