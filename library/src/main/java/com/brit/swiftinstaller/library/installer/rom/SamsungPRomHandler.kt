@@ -25,6 +25,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.graphics.drawable.LayerDrawable
 import android.net.Uri
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -281,13 +282,17 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
             }
             systemUiIcons.forEach { icon ->
                 val idName =
-                        "ic_${context.resources.getResourceEntryName(icon.id)}_p"
+                        "ic_${context.resources.getResourceEntryName(icon.id)}_aosp"
                 val id = context.resources.getIdentifier("${context.packageName}:drawable/$idName",
                         null, null)
                 if (id > 0) {
-                    icon.setImageDrawable(context.getDrawable(id))
+                    val layerDrawable = context.getDrawable(id) as LayerDrawable
+                    icon.setImageDrawable(layerDrawable)
+                    layerDrawable.findDrawableByLayerId(R.id.icon_bg)
+                            .setTint(selection.accentColor)
+                    layerDrawable.findDrawableByLayerId(
+                            R.id.icon_tint).setTint(selection.backgroundColor)
                 }
-                icon.setColorFilter(selection.accentColor)
             }
         }
     }
