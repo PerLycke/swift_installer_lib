@@ -289,7 +289,7 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
             settingsIcons.forEach { icon ->
 
                 val idName =
-                        "ic_${context.resources.getResourceEntryName(icon.id)}_p"
+                        "ic_${context.resources.getResourceEntryName(icon.id)}_stock_multi"
                 val id = context.resources.getIdentifier("${context.packageName}:drawable/$idName",
                         null, null)
                 if (id > 0) {
