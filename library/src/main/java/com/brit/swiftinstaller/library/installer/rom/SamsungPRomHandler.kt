@@ -25,6 +25,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.graphics.drawable.LayerDrawable
 import android.net.Uri
 import androidx.core.content.ContextCompat
@@ -37,6 +38,7 @@ import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPath
 import com.hololo.tutorial.library.Step
 import com.hololo.tutorial.library.TutorialActivity
+import kotlinx.android.synthetic.main.customize_preview_sysui.view.*
 import java.io.File
 
 class SamsungPRomHandler(context: Context) : RomHandler(context) {
@@ -267,6 +269,19 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
     }
 
     private class SamsungPiePreviewHandler(context: Context) : PreviewHandler(context) {
+
+        override fun updateView(palette: MaterialPalette, selection: CustomizeSelection) {
+            super.updateView(palette, selection)
+            systemUiPreview?.let {
+                it.notif_bg_layout.setImageResource(R.drawable.notif_bg_rounded)
+                it.notif_bg_layout.drawable.setTint(context.getColor(R.color.oneui_notification_color))
+                it.preview_sysui_sender.text =
+                        context.getString(R.string.dark_notifications)
+                it.preview_sysui_sender.setTextColor(context.getColor(R.color.white))
+                it.preview_sysui_msg.setTextColor(Color.parseColor("#b3ffffff"))
+            }
+
+        }
 
         override fun updateIcons(selection: CustomizeSelection) {
             super.updateIcons(selection)

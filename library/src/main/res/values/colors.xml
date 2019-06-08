@@ -55,4 +55,5 @@
 
     <color name="ic_magisk_background">#00AF9C</color>
     <color name="white">#ffffff</color>
+    <color name="oneui_notification_color">#252525</color>
 </resources>
