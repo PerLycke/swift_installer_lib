@@ -254,6 +254,8 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
                 selection["qs_alpha"] = "0"
                 selection["sbar_icons_color"] = "grey"
                 selection["qs_icons_color_samsung_pie"] = "accent"
+                selection["settings_icons_color"] = "multi"
+                selection["settings_icons_samsung_pie"] = "stock"
                 return selection
             }
             override fun populateCustomizeOptions(categories: CategoryMap) {
@@ -287,33 +289,70 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
             super.updateIcons(selection)
 
             settingsIcons.forEach { icon ->
+                if (selection["settings_icons_samsung_pie"] == "pie") {
+                    icon.clearColorFilter()
+                    val idName =
+                            "ic_${context.resources.getResourceEntryName(icon.id)}_p"
+                    val id = context.resources.getIdentifier("${context.packageName}:drawable/$idName",
+                            null, null)
+                    if (id > 0) {
+                        val drawable = context.getDrawable(id)?.mutate() as LayerDrawable
 
-                val idName =
-                        "ic_${context.resources.getResourceEntryName(icon.id)}_stock_multi"
-                val id = context.resources.getIdentifier("${context.packageName}:drawable/$idName",
-                        null, null)
-                if (id > 0) {
-                    icon.setImageDrawable(context.getDrawable(id))
-                }
-            }
-            val qsIcon = (selection["qs_icons_color_samsung_pie"]) == "accent"
-            systemUiIcons.forEach { icon ->
-                val idName =
-                        "ic_${context.resources.getResourceEntryName(icon.id)}_aosp"
-                val id = context.resources.getIdentifier("${context.packageName}:drawable/$idName",
-                        null, null)
-                if (id > 0) {
-                    val layerDrawable = context.getDrawable(id) as LayerDrawable
-                    icon.setImageDrawable(layerDrawable)
-                    if(qsIcon) {
-                        layerDrawable.findDrawableByLayerId(R.id.icon_bg)
-                                .setTint(selection.accentColor)
-                    } else {
-                        layerDrawable.findDrawableByLayerId(R.id.icon_bg)
-                                .setTint(context.getColor(R.color.white))
+                        if (selection["settings_icons_color"] == "accent") {
+                            drawable.findDrawableByLayerId(R.id.icon_bg)
+                                    .setTint(selection.accentColor)
+                            drawable.findDrawableByLayerId(R.id.icon_fg)
+                                    .setTint(selection.backgroundColor)
+                        } else if (selection["settings_icons_color"] == "white") {
+                            drawable.findDrawableByLayerId(R.id.icon_bg)
+                                    .setTint(context.getColor(R.color.white))
+                            drawable.findDrawableByLayerId(R.id.icon_fg)
+                                    .setTint(selection.backgroundColor)
+
+                        } else {
+                            icon.clearColorFilter()
+                        }
+                        icon.setImageDrawable(drawable)
+
                     }
-                    layerDrawable.findDrawableByLayerId(
-                            R.id.icon_tint).setTint(selection.backgroundColor)
+                } else {
+                    val idName =
+                            "ic_${context.resources.getResourceEntryName(icon.id)}_stock_multi"
+                    val id = context.resources.getIdentifier("${context.packageName}:drawable/$idName",
+                            null, null)
+                    if (id > 0) {
+                        icon.setImageDrawable(context.getDrawable(id))
+
+                        if (selection["settings_icons_color"] == "accent") {
+                            icon.setColorFilter(selection.accentColor)
+                        } else
+                            if (selection["settings_icons_color"] == "white") {
+                                icon.setColorFilter(context.getColor(R.color.white))
+
+                            } else {
+                                icon.clearColorFilter()
+                            }
+                    }
+                }
+                val qsIcon = (selection["qs_icons_color_samsung_pie"]) == "accent"
+                systemUiIcons.forEach { icon ->
+                    val idName =
+                            "ic_${context.resources.getResourceEntryName(icon.id)}_aosp"
+                    val id = context.resources.getIdentifier("${context.packageName}:drawable/$idName",
+                            null, null)
+                    if (id > 0) {
+                        val drawable = context.getDrawable(id)?.mutate() as LayerDrawable
+                        if (qsIcon) {
+                            drawable.findDrawableByLayerId(R.id.icon_bg)
+                                    .setTint(selection.accentColor)
+                        } else {
+                            drawable.findDrawableByLayerId(R.id.icon_bg)
+                                    .setTint(context.getColor(R.color.white))
+                        }
+                        drawable.findDrawableByLayerId(
+                                R.id.icon_tint).setTint(selection.backgroundColor)
+                        icon.setImageDrawable(drawable)
+                    }
                 }
             }
         }
@@ -339,10 +378,26 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
         categories.add(CustomizeCategory(context.getString(R.string.sbar_icons_color_category), "sbar_icons_color", "stock", sbarIconColorOptions, synchronizedArrayListOf("com.android.systemui")))
 
         val qsIconColorOptions = OptionsMap()
-        qsIconColorOptions.add(Option("Accent", "accent"))
-        qsIconColorOptions.add(Option("White", "white"))
+        qsIconColorOptions.add(Option(context.getString(R.string.qs_icons_samsung_pie_accent_option), "accent"))
+        qsIconColorOptions.add(Option(context.getString(R.string.qs_icons_samsung_pie_white_option), "white"))
 
-        categories.add(CustomizeCategory("Quick settings icons colors", "qs_icons_color_samsung_pie", "accent", qsIconColorOptions, synchronizedArrayListOf("com.android.systemui")))
+        categories.add(CustomizeCategory(context.getString(R.string.qs_icons_samsung_pie_category), "qs_icons_color_samsung_pie", "accent", qsIconColorOptions, synchronizedArrayListOf("com.android.systemui")))
+
+        val settingIconOptions = OptionsMap()
+        val settingIconColorOptions = OptionsMap()
+        settingIconOptions.add(Option(context.getString(R.string.setting_icons_samsung_pie_stock_option), "stock"))
+        settingIconOptions.add(Option(context.getString(R.string.setting_icons_samsung_pie_aosp_pie_option), "pie"))
+        settingIconColorOptions.add(Option(context.getString(R.string.setting_icons_samsung_pie_multi_option), "multi"))
+        settingIconColorOptions.add(Option(context.getString(R.string.setting_icons_samsung_pie_accent_option), "accent"))
+        settingIconColorOptions.add(Option(context.getString(R.string.setting_icons_samsung_pie_white_option), "white"))
+
+        settingIconOptions["stock"]!!.subOptions.putAll(settingIconColorOptions)
+        settingIconOptions["stock"]!!.subOptionKey = "settings_icons_color"
+        settingIconOptions["pie"]!!.subOptions.putAll(settingIconColorOptions)
+        settingIconOptions["pie"]!!.subOptionKey = "settings_icons_color"
+
+        categories.add(CustomizeCategory(context.getString(R.string.setting_icons_samsung_pie_category), "settings_icons_samsung_pie", "stock", settingIconOptions, synchronizedArrayListOf("com.android.systemui")))
+
 
     }
 }
