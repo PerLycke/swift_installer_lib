@@ -84,7 +84,6 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
                     "com.samsung.android.game.gametools",
                     "com.samsung.android.gametuner.thin",
                     "com.samsung.android.incallui",
-                    "com.samsung.android.lool",
                     "com.samsung.android.oneconnect",
                     "com.samsung.android.samsungpassautofill",
                     "com.samsung.android.securitylogagent",
@@ -254,7 +253,7 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
                 selection["qs_alpha"] = "0"
                 selection["sbar_icons_color"] = "grey"
                 selection["qs_icons_color_samsung_pie"] = "accent"
-                selection["settings_icons_color"] = "multi"
+                selection["settings_icons_color_samsung_pie"] = "multi"
                 selection["settings_icons_samsung_pie"] = "stock"
                 return selection
             }
@@ -298,12 +297,12 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
                     if (id > 0) {
                         val drawable = context.getDrawable(id)?.mutate() as LayerDrawable
 
-                        if (selection["settings_icons_color"] == "accent") {
+                        if (selection["settings_icons_color_samsung_pie"] == "accent") {
                             drawable.findDrawableByLayerId(R.id.icon_bg)
                                     .setTint(selection.accentColor)
                             drawable.findDrawableByLayerId(R.id.icon_fg)
                                     .setTint(selection.backgroundColor)
-                        } else if (selection["settings_icons_color"] == "white") {
+                        } else if (selection["settings_icons_color_samsung_pie"] == "white") {
                             drawable.findDrawableByLayerId(R.id.icon_bg)
                                     .setTint(context.getColor(R.color.white))
                             drawable.findDrawableByLayerId(R.id.icon_fg)
@@ -323,10 +322,10 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
                     if (id > 0) {
                         icon.setImageDrawable(context.getDrawable(id))
 
-                        if (selection["settings_icons_color"] == "accent") {
+                        if (selection["settings_icons_color_samsung_pie"] == "accent") {
                             icon.setColorFilter(selection.accentColor)
                         } else
-                            if (selection["settings_icons_color"] == "white") {
+                            if (selection["settings_icons_color_samsung_pie"] == "white") {
                                 icon.setColorFilter(context.getColor(R.color.white))
 
                             } else {
@@ -392,11 +391,11 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
         settingIconColorOptions.add(Option(context.getString(R.string.setting_icons_samsung_pie_white_option), "white"))
 
         settingIconOptions["stock"]!!.subOptions.putAll(settingIconColorOptions)
-        settingIconOptions["stock"]!!.subOptionKey = "settings_icons_color"
+        settingIconOptions["stock"]!!.subOptionKey = "settings_icons_color_samsung_pie"
         settingIconOptions["pie"]!!.subOptions.putAll(settingIconColorOptions)
-        settingIconOptions["pie"]!!.subOptionKey = "settings_icons_color"
+        settingIconOptions["pie"]!!.subOptionKey = "settings_icons_color_samsung_pie"
 
-        categories.add(CustomizeCategory(context.getString(R.string.setting_icons_samsung_pie_category), "settings_icons_samsung_pie", "stock", settingIconOptions, synchronizedArrayListOf("com.android.systemui")))
+        categories.add(CustomizeCategory(context.getString(R.string.setting_icons_samsung_pie_category), "settings_icons_samsung_pie", "stock", settingIconOptions, synchronizedArrayListOf("com.android.settings", "com.samsung.accessibility", "com.samsung.android.lool")))
 
 
     }
