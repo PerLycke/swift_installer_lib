@@ -92,12 +92,9 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
                 "com.samsung.android.contacts",
                 "com.samsung.android.themestore",
                 "com.samsung.android.lool",
-                "com.samsung.android.samsungpassautofill",
-                "com.google.android.gms",
                 "com.sec.android.daemonapp",
                 "de.axelspringer.yana.zeropage",
                 "com.google.android.apps.nexuslauncher",
-                "com.lastpass.lpandroid",
                 "com.weather.Weather",
                 "com.google.android.inputmethod.latin"
         )
