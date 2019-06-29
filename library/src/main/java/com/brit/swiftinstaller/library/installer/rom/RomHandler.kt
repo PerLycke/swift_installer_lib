@@ -32,7 +32,6 @@ import androidx.core.content.ContextCompat
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
 import com.brit.swiftinstaller.library.utils.*
-import com.brit.swiftinstaller.library.utils.MagiskUtils.supportsMagisk
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
 import com.hololo.tutorial.library.PermissionStep
 import com.hololo.tutorial.library.Step
@@ -55,7 +54,7 @@ abstract class RomHandler constructor(var context: Context) {
     }
 
     fun addToIndex() : Int {
-        return if (supportsMagisk) { 1 } else { 0 }
+        return if (ShellUtils.isRootAccessAvailable) { 1 } else { 0 }
     }
 
     open fun addTutorialSteps(tutorial: TutorialActivity) {
@@ -77,7 +76,7 @@ abstract class RomHandler constructor(var context: Context) {
                 .setDrawable(R.drawable.ic_tutorial_hand) // int top drawable
                 .build(), TUTORIAL_PAGE_USAGE)
 
-        if (supportsMagisk) {
+        if (ShellUtils.isRootAccessAvailable) {
             val content = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 tutorial.getString(R.string.magisk_module_description)
             } else {

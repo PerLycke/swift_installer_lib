@@ -131,6 +131,4 @@ object MagiskUtils {
 
     val magiskEnabled = !SuFile(MAGISK_MODULE_PATH, "disable").exists()
             && SuFile(MAGISK_PATH).exists()
-
-    val supportsMagisk = ShellUtils.isRootAccessAvailable
 }
