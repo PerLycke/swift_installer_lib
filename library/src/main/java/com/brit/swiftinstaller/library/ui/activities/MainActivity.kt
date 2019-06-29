@@ -320,7 +320,7 @@ class MainActivity : ThemeActivity() {
                         "${getString(R.string.instructions)} \n\n" +
                         "${getString(R.string.telegram_support)} \n\n" +
                         "${getString(R.string.email_support)} \n\n" +
-                        if (MagiskUtils.supportsMagisk) {
+                        if (MagiskUtils.magiskEnabled) {
                             "${getString(R.string.magisk_module)} \n\n"
                         } else {
                             ""
@@ -340,7 +340,7 @@ class MainActivity : ThemeActivity() {
                         var mes = Utils.createLinkedString(ctx, m, getString(R.string.instructions), getString(R.string.link_instructions))
                         mes = Utils.createLinkedString(ctx, mes, getString(R.string.telegram_support), getString(R.string.link_telegram))
                         mes = Utils.createLinkedString(ctx, mes, getString(R.string.documentation), getString(R.string.link_documentation))
-                        if (MagiskUtils.supportsMagisk) {
+                        if (MagiskUtils.magiskEnabled) {
                             mes = Utils.createLinkedString(ctx, mes, getString(R.string.magisk_module), getString(R.string.link_magisk))
                         }
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && RomHandler.isSamsungPatched()) {
