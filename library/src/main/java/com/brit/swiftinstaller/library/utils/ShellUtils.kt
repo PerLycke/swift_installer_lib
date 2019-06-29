@@ -84,7 +84,11 @@ object ShellUtils {
     }
 
     fun mkdir(path: String): Boolean {
-        return SuFile(path).mkdirs()
+        val file = SuFile(path)
+        if (!file.exists()) {
+            return SuFile(path).mkdirs()
+        }
+        return false
     }
 
     fun setPermissions(perms: Int, path: String) {
@@ -251,6 +255,7 @@ fun deleteFileShell(path: String): Boolean {
 
 fun deleteFileRoot(path: String): Boolean {
     val output = runCommand("rm -rf $path", true)
+    Log.d("TEST", " delete file $path output - $output")
     return output.exitCode == 0
 }
 

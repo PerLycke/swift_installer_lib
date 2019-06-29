@@ -223,6 +223,7 @@
     <string name="color_wheel">Color wheel</string>
     <string name="color_wheel_background_dialog_title">Dark background</string>
     <string name="app_info_dialog_link_text">Download</string>
+    <string name="reboot_dialog_magisk_msg">Reboot to load or unload the Magisk module</string>
     <string name="qs_icons_samsung_pie_category">Quick settings icons color</string>
     <string name="qs_icons_samsung_pie_accent_option">Accent</string>
     <string name="qs_icons_samsung_pie_white_option">White</string>

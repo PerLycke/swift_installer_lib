@@ -56,6 +56,10 @@ fun PackageManager.isAppInstalled(packageName: String): Boolean {
     }
 }
 
+fun PackageManager.getAppPath(packageName: String): String {
+    return getApplicationInfo(packageName, 0).sourceDir
+}
+
 fun PackageManager.isAppEnabled(packageName: String): Boolean {
     return try {
         getApplicationEnabledSetting(

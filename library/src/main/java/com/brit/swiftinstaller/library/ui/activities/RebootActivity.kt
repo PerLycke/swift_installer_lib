@@ -22,6 +22,8 @@
 package com.brit.swiftinstaller.library.ui.activities
 
 import android.app.Dialog
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Looper
 import android.os.MessageQueue
@@ -37,13 +39,18 @@ class RebootActivity : ThemeActivity() {
 
         alert {
             title = getString(R.string.reboot_dialog_title)
-            message = getString(R.string.reboot_dialog_msg)
+            message = if (intent.hasExtra("message")) {
+                intent.getStringExtra("message")
+            } else {
+                getString(R.string.reboot_dialog_msg)
+            }
             positiveButton(R.string.reboot) {
                 val rebootingDialog = Dialog(ctx, R.style.AppTheme_Translucent)
                 rebootingDialog.setContentView(R.layout.reboot)
                 rebootingDialog.show()
                 val handler = MessageQueue.IdleHandler {
-                    if (getUseSoftReboot(ctx)) {
+                    val force = intent.getBooleanExtra("force-reboot", false)
+                    if (!force || getUseSoftReboot()) {
                         quickRebootCommand()
                     } else {
                         rebootCommand()
@@ -66,5 +73,15 @@ class RebootActivity : ThemeActivity() {
     override fun onStop() {
         super.onStop()
         finish()
+    }
+
+    companion object {
+        fun launchRebootActivity(context: Context, message: String, forceReboot: Boolean) {
+            val intent = Intent(context, RebootActivity::class.java)
+            intent.flags += Intent.FLAG_ACTIVITY_NEW_TASK
+            intent.putExtra("message", message)
+            intent.putExtra("force-reboot", forceReboot)
+            context.startActivity(intent)
+        }
     }
 }

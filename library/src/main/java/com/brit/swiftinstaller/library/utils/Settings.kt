@@ -141,8 +141,8 @@ fun clearAppsToUninstall(context: Context) {
             .putStringSet(KEY_OVERLAYS_TO_UNINSTALL, ArraySet<String>()).apply()
 }
 
-fun getUseSoftReboot(context: Context): Boolean {
-    return ((!context.swift.romHandler.magiskEnabled || Build.VERSION.SDK_INT < Build.VERSION_CODES.P) && ShellUtils.isRootAvailable)
+fun getUseSoftReboot(): Boolean {
+    return ((!MagiskUtils.magiskEnabled || Build.VERSION.SDK_INT < Build.VERSION_CODES.P) && ShellUtils.isRootAvailable)
 }
 
 fun updateNotificationEnabled(context: Context): Boolean {
