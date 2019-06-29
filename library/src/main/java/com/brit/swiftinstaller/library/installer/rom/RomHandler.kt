@@ -27,23 +27,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.style.ClickableSpan
-import android.view.View
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.customize.CustomizeHandler
+import com.brit.swiftinstaller.library.utils.*
 import com.brit.swiftinstaller.library.utils.MagiskUtils.supportsMagisk
 import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
-import com.brit.swiftinstaller.library.utils.SynchronizedArrayList
-import com.brit.swiftinstaller.library.utils.getProperty
-import com.brit.swiftinstaller.library.utils.isAppInstalled
-import com.brit.swiftinstaller.library.utils.pm
-import com.brit.swiftinstaller.library.utils.synchronizedArrayListOf
 import com.hololo.tutorial.library.PermissionStep
 import com.hololo.tutorial.library.Step
 import com.hololo.tutorial.library.TutorialActivity
@@ -93,22 +83,9 @@ abstract class RomHandler constructor(var context: Context) {
             } else {
                 tutorial.getString(R.string.magisk_module_description_oreo)
             }
-            val link = tutorial.getString(R.string.magisk_module_link_text)
-
-            val click = object : ClickableSpan() {
-                override fun onClick(p0: View) {
-                    val url = context.getString(R.string.link_magisk)
-                    val builder = CustomTabsIntent.Builder()
-                    val intent = builder.build()
-                    intent.intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    intent.launchUrl(context, Uri.parse(url))
-                }
-            }
-            val ss = SpannableString("$content $link")
-            ss.setSpan(click, content.length + 1, content.length + 1 + link.length,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            val mes = Utils.createLinkedString(context, content, context.getString(R.string.magisk_module_link_text), context.getString(R.string.link_magisk))
             tutorial.addFragment(Step.Builder().setTitle("Magisk Module")
-                    .setContent(ss)
+                    .setContent(mes)
                     .setDrawable(R.drawable.ic_magisk_logo)
                     .setBackgroundColor(tutorial.getColor(R.color.background_main)).build(),
                     3)
