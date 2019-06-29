@@ -81,11 +81,10 @@ abstract class RomHandler constructor(var context: Context) {
             val content = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 tutorial.getString(R.string.magisk_module_description)
             } else {
-                tutorial.getString(R.string.magisk_module_description_oreo)
+                Utils.createLinkedString(context, tutorial.getString(R.string.magisk_module_description_oreo) , context.getString(R.string.magisk_module_link_text), context.getString(R.string.link_magisk))
             }
-            val mes = Utils.createLinkedString(context, content, context.getString(R.string.magisk_module_link_text), context.getString(R.string.link_magisk))
             tutorial.addFragment(Step.Builder().setTitle("Magisk Module")
-                    .setContent(mes)
+                    .setContent(content)
                     .setDrawable(R.drawable.ic_magisk_logo)
                     .setBackgroundColor(tutorial.getColor(R.color.background_main)).build(),
                     3)
