@@ -49,8 +49,7 @@ class RebootActivity : ThemeActivity() {
                 rebootingDialog.setContentView(R.layout.reboot)
                 rebootingDialog.show()
                 val handler = MessageQueue.IdleHandler {
-                    val force = intent.getBooleanExtra("force-reboot", false)
-                    if (!force || getUseSoftReboot()) {
+                    if (getUseSoftReboot()) {
                         quickRebootCommand()
                     } else {
                         rebootCommand()
@@ -80,7 +79,6 @@ class RebootActivity : ThemeActivity() {
             val intent = Intent(context, RebootActivity::class.java)
             intent.flags += Intent.FLAG_ACTIVITY_NEW_TASK
             intent.putExtra("message", message)
-            intent.putExtra("force-reboot", forceReboot)
             context.startActivity(intent)
         }
     }
