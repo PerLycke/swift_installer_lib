@@ -140,10 +140,10 @@
     <string name="help_msg">Here are some useful links if you need help:</string>
     <string name="telegram_support">Telegram chat support</string>
     <string name="reboot_notif_title">System almost themed!…</string>
-    <string name="reboot_notif_msg">New overlays were enabled at boot. The last step is to make a quick reboot in order for all apps to reload with the new colors. Tap this notification to proceed</string>
+    <string name="reboot_notif_msg">New overlays were enabled at boot. It is now necessary to reboot to make the themed apps reload their resources. Tap this notification to proceed</string>
     <string name="reboot_dialog_title">Reboot</string>
     <string name="reboot_dialog_msg">Reboot now to reload resources</string>
-    <string name="info_card_reboot_msg">New overlays enabled at boot. The last step is to make a quick reboot in order for all apps to reload with the new colors. <b>Tap to proceed</b></string>
+    <string name="info_card_reboot_msg">New overlays were enabled at boot. It is now necessary to reboot to make the themed apps reload their resources. <b>Tap to proceed</b></string>
     <string name="wait">Please wait…</string>
     <string name="reboot_now">Reboot now</string>
     <string name="installation_failed">Installation failed</string>
