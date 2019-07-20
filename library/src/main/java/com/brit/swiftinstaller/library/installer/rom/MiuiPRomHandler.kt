@@ -24,7 +24,8 @@ class MiuiPRomHandler(context: Context) : PRomHandler(context) {
                 "com.android.emergency",
                 "com.android.deskclock",
                 "com.android.phone",
-                "com.android.server.telecom"
+                "com.android.server.telecom",
+                "com.miui.calculator"
         )
     }
 
