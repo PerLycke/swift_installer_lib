@@ -122,6 +122,10 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
                              oppositeApps: SynchronizedArrayList<String>, intent: Intent?) {
         if (ShellUtils.isRootAvailable) {
             pHandler.postInstall(uninstall, apps, oppositeApps, intent)
+            if (apps.contains("android")) {
+                runCommand("settings put system current_sec_active_themepackage 1", true)
+
+            }
             return
         }
         val extraIntent = intent != null
