@@ -82,7 +82,7 @@ class InstallSummaryActivity : ThemeActivity() {
                 alert {
                     title = appItem.title
                     icon = appItem.icon
-                    message = errorMap[appItem.packageName]!!
+                    message = "Installer Version: ${getString(R.string.lib_version)} (${packageManager.getPackageInfo(packageName, 0).getVersionCode()})\n" + "App Version: " + appItem.versionName + "\n\n" + errorMap[appItem.packageName]!!
                     positiveButton(R.string.ok) { dialog ->
                         dialog.dismiss()
                     }
