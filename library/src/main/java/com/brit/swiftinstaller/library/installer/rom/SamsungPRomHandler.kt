@@ -122,8 +122,9 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
                              oppositeApps: SynchronizedArrayList<String>, intent: Intent?) {
         if (ShellUtils.isRootAvailable) {
             pHandler.postInstall(uninstall, apps, oppositeApps, intent)
-            if (apps.contains("android")) {
+            if (apps.contains("android") || apps.contains("com.android.systemui")) {
                 runCommand("settings put system current_sec_active_themepackage 1", true)
+                runCommand("settings put system current_theme_support_night_mode 1", true)
 
             }
             return
