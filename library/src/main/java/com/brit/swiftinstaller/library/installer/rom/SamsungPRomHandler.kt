@@ -68,7 +68,6 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
             return synchronizedArrayListOf(
                     "com.android.emergency",
                     "com.android.bluetooth",
-                    "com.android.documentsui",
                     "com.android.phone",
                     "com.samsung.android.app.aodservice",
                     "com.samsung.android.app.appsedge",
@@ -83,7 +82,6 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
                     "com.samsung.android.da.daagent",
                     "com.samsung.android.game.gametools",
                     "com.samsung.android.gametuner.thin",
-                    "com.samsung.android.incallui",
                     "com.samsung.android.oneconnect",
                     "com.samsung.android.samsungpassautofill",
                     "com.samsung.android.securitylogagent",
