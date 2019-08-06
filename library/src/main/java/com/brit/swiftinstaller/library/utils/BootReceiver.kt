@@ -24,20 +24,23 @@ package com.brit.swiftinstaller.library.utils
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import org.jetbrains.anko.doAsync
 
 class BootReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
 
-        if (intent!!.action == Intent.ACTION_BOOT_COMPLETED ||
-                intent.action == "android.intent.action.QUICKBOOT_POWERON") {
-            val enable = Intent(context, EnableOverlaysActivity::class.java)
-            enable.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            context!!.applicationContext.startActivity(enable)
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+            if (intent!!.action == Intent.ACTION_BOOT_COMPLETED ||
+                    intent.action == "android.intent.action.QUICKBOOT_POWERON") {
+                val enable = Intent(context, EnableOverlaysActivity::class.java)
+                enable.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                context!!.applicationContext.startActivity(enable)
 
-            doAsync {
-                context.swift.romHandler.onBootCompleted(context)
+                doAsync {
+                    context.swift.romHandler.onBootCompleted(context)
+                }
             }
         }
     }
