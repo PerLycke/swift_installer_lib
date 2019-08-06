@@ -27,7 +27,7 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.res.AssetManager
 import android.os.Build
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import android.view.View
 import com.brit.swiftinstaller.library.SwiftApplication
 import java.io.File

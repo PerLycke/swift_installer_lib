@@ -1,7 +1,7 @@
 package com.brit.swiftinstaller.library.ui.changelog
 
 import android.content.Context
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
 import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.utils.swift

@@ -24,7 +24,7 @@ package com.brit.swiftinstaller.library.utils
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import android.text.TextUtils
 import android.util.ArraySet
 import androidx.collection.ArrayMap
@@ -192,7 +192,7 @@ fun getSelectedOverlayOptions(context: Context, packageName: String): ArrayMap<S
 
 fun setOverlayOption(context: Context, packageName: String, option: String, value: String) {
     val prefs = getOverlayOptionsPrefs(context)
-    val json = JSONObject(getSelectedOverlayOptions(context, packageName))
+    val json = JSONObject(getSelectedOverlayOptions(context, packageName) as Map<*, *>)
     json.put(option, value)
     prefs.edit().remove(packageName).apply()
     prefs.edit().putString(packageName, json.toString()).apply()
