@@ -35,7 +35,7 @@ import com.brit.swiftinstaller.library.utils.OverlayUtils.getOverlayPackageName
 import com.topjohnwu.superuser.io.SuFile
 import kotlinx.android.synthetic.main.customize_preview_sysui.view.*
 
-open class PRomHandler(context: Context) : RomHandler(context) {
+open class QRomHandler(context: Context) : RomHandler(context) {
 
     private val systemApp = "/system/app"
 
@@ -67,28 +67,7 @@ open class PRomHandler(context: Context) : RomHandler(context) {
     override fun getRequiredApps(): Array<String> {
         return arrayOf(
                 "android",
-                "com.android.systemui",
-                "com.amazon.clouddrive.photos",
-                "com.android.settings",
-                "com.anydo",
-                "com.apple.android.music",
-                "com.ebay.mobile",
-                "com.embermitre.pixolor.app",
-                "com.google.android.apps.genie.geniewidget",
-                "com.google.android.apps.inbox",
-                "com.google.android.gm",
-                "com.google.android.talk",
-                "com.mxtech.videoplayer.ad",
-                "com.mxtech.videoplayer.pro",
-                "com.pandora.android",
-                "com.simplecity.amp.pro",
-                "com.Slack",
-                "com.twitter.android",
-                "com.google.android.apps.nexuslauncher",
-                "com.weather.Weather",
-                "com.google.android.settings.intelligence",
-                "com.google.android.inputmethod.latin",
-                "com.google.intelligence.sense"
+                "com.android.systemui"
         )
     }
 
@@ -131,7 +110,7 @@ open class PRomHandler(context: Context) : RomHandler(context) {
     }
 
     override fun getChangelogTag(): String {
-        return "p"
+        return "aosp-q"
     }
 
     override fun createCustomizeHandler(): CustomizeHandler {
@@ -209,34 +188,6 @@ open class PRomHandler(context: Context) : RomHandler(context) {
                 }
 
     open fun populatePieCustomizeOptions(categories: CategoryMap) {
-        val pieIconOptions = OptionsMap()
-        pieIconOptions.add(Option(context.getString(R.string.stock_icons_multi), "default_icons"))
-        pieIconOptions.add(Option(context.getString(R.string.stock_icons), "stock_accented"))
-        categories.add(
-                CustomizeCategory(context.getString(R.string.pie_category_setting_icon), "stock_pie_icons",
-                        "default_icons", pieIconOptions,
-                        synchronizedArrayListOf("com.android.settings",
-                                "com.google.android.apps.wellbeing",
-                                "com.google.android.gms",
-                                "com.cyanogenmod.settings.device",
-                                "com.du.settings.doze",
-                                "com.moto.actions",
-                                "com.slim.device",
-                                "com.google.android.marvin.talkback")))
-
-        val sbarIconColorOptions = OptionsMap()
-        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_default), "default", infoDialogTitle = context.getString(R.string.sbar_icons_color_default_dialog_title), infoDialogText = context.getString(R.string.sbar_icons_color_default_dialog_text)))
-        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_white), "white", infoDialogTitle = context.getString(R.string.sbar_icons_color_white_dialog_title), infoDialogText = context.getString(R.string.sbar_icons_color_white_dialog_text)))
-        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_grey), "grey", infoDialogTitle = context.getString(R.string.sbar_icons_color_grey_dialog_title), infoDialogText = context.getString(R.string.sbar_icons_color_grey_dialog_text)))
-
-        categories.add(CustomizeCategory(context.getString(R.string.sbar_icons_color_category), "sbar_icons_color", "stock", sbarIconColorOptions, synchronizedArrayListOf("com.android.systemui")))
-
-        val notifBackgroundOptions = OptionsMap()
-        notifBackgroundOptions.add(Option(context.getString(R.string.white), "white"))
-        notifBackgroundOptions.add(Option(context.getString(R.string.dark), "dark"))
-        categories.add(CustomizeCategory(context.getString(R.string.notification_tweaks),
-                "notif_background", "white", notifBackgroundOptions, synchronizedArrayListOf("android")))
-
         val qsOptions = OptionsMap()
         val trans =
                 SliderOption(context.getString(R.string.qs_transparency), "qs_alpha")
