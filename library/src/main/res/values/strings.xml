@@ -233,4 +233,5 @@
     <string name="setting_icons_samsung_pie_multi_option">Multi colored</string>
     <string name="setting_icons_samsung_pie_accent_option">Accent</string>
     <string name="setting_icons_samsung_pie_white_option">White</string>
+    <string name="android_q_not_yet_supported">Android Q is not yet supported for your device</string>
 </resources>

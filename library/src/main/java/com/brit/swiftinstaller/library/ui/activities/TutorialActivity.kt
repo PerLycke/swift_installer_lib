@@ -26,11 +26,13 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import android.view.View
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.utils.ShellUtils
+import com.brit.swiftinstaller.library.utils.getProperty
 import com.brit.swiftinstaller.library.utils.swift
 import com.hololo.tutorial.library.TutorialActivity
 import kotlinx.android.synthetic.main.no_root.view.*
@@ -60,6 +62,19 @@ open class TutorialActivity : TutorialActivity() {
             dialog.setContentView(layout)
             dialog.setCancelable(false)
             layout.no_root_msg.text = getString(R.string.no_root_msg)
+            layout.no_root_exit.visibility = View.VISIBLE
+            layout.no_root_exit.setOnClickListener {
+                finishAffinity()
+            }
+            dialog.show()
+            return
+        }
+        if ((getProperty("ro.oxygen.version", "def") != "def" || getProperty("ro.rom.version", "def") != "def" || getProperty("ro.config.knox", "def") != "def" || getProperty("ro.miui.ui.version.code", "def") != "def") && Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+            val dialog = Dialog(this, R.style.AppTheme)
+            val layout = View.inflate(this, R.layout.no_root, null)
+            dialog.setContentView(layout)
+            dialog.setCancelable(false)
+            layout.no_root_msg.text = getString(R.string.android_q_not_yet_supported)
             layout.no_root_exit.visibility = View.VISIBLE
             layout.no_root_exit.setOnClickListener {
                 finishAffinity()
