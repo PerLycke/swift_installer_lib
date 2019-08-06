@@ -128,6 +128,9 @@ class MainActivity : ThemeActivity() {
                 }
             }
         }
+        if (ShellUtils.isRootAccessAvailable) {
+            MagiskUtils.createModule()
+        }
     }
 
     private fun setupExtraCard() {
