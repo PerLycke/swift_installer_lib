@@ -1,8 +1,8 @@
 /*
  *
- *  * Copyright (C) 2018 Griffin Millender
- *  * Copyright (C) 2018 Per Lycke
- *  * Copyright (C) 2018 Davide Lilli & Nishith Khanna
+ *  * Copyright (C) 2019 Griffin Millender
+ *  * Copyright (C) 2019 Per Lycke
+ *  * Copyright (C) 2019 Davide Lilli & Nishith Khanna
  *  *
  *  * This program is free software: you can redistribute it and/or modify
  *  * it under the terms of the GNU General Public License as published by
