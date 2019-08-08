@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 26
         targetSdkVersion 28
-        versionCode 79
-        versionName "4.4"
+        versionCode 80
+        versionName "4.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         resValue("string", "lib_version", "${versionName}")
