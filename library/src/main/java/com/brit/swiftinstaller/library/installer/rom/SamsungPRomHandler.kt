@@ -398,7 +398,7 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
         settingIconOptions["pie"]!!.subOptions.putAll(settingIconColorOptions)
         settingIconOptions["pie"]!!.subOptionKey = "settings_icons_color_samsung_pie"
 
-        categories.add(CustomizeCategory(context.getString(R.string.setting_icons_samsung_pie_category), "settings_icons_samsung_pie", "stock", settingIconOptions, synchronizedArrayListOf("com.android.settings", "com.samsung.accessibility", "com.samsung.android.lool", "com.samsung.android.themestore", "com.samsung.android.wellbeing")))
+        categories.add(CustomizeCategory(context.getString(R.string.setting_icons_samsung_pie_category), "settings_icons_samsung_pie", "stock", settingIconOptions, synchronizedArrayListOf("com.android.settings", "com.samsung.accessibility", "com.samsung.android.lool", "com.samsung.android.themestore", "com.samsung.android.wellbeing", "com.samsung.android.knox.containeragent")))
 
 
     }
