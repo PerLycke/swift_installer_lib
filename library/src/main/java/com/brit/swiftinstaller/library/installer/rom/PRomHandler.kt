@@ -222,6 +222,7 @@ open class PRomHandler(context: Context) : RomHandler(context) {
                                 "com.du.settings.doze",
                                 "com.moto.actions",
                                 "com.slim.device",
+                                "com.aosip.device.DeviceSettings",
                                 "com.google.android.marvin.talkback")))
 
         val sbarIconColorOptions = OptionsMap()
