@@ -56,7 +56,6 @@ open class OreoRomHandler(context: Context) : RomHandler(context) {
                 "com.amazon.clouddrive.photos",
                 "com.android.settings",
                 "com.anydo",
-                "com.apple.android.music",
                 "com.ebay.mobile",
                 "com.embermitre.pixolor.app",
                 "com.google.android.apps.genie.geniewidget",

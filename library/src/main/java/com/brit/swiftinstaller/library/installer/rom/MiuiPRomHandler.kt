@@ -37,7 +37,6 @@ class MiuiPRomHandler(context: Context) : PRomHandler(context) {
                 "com.google.android.inputmethod.latin",
                 "com.amazon.clouddrive.photos",
                 "com.anydo",
-                "com.apple.android.music",
                 "com.ebay.mobile",
                 "com.embermitre.pixolor.app",
                 "com.google.android.apps.genie.geniewidget",
