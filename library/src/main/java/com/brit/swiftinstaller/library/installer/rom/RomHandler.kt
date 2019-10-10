@@ -164,6 +164,10 @@ abstract class RomHandler constructor(var context: Context) {
         fun createRomHandler(context: Context): RomHandler {
             return when {
                 getProperty("ro.oxygen.version", "def") != "def"
+                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> OOSQRomHandler(context)
+                getProperty("ro.rom.version", "def") != "def"
+                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> OOSQRomHandler(context)
+                getProperty("ro.oxygen.version", "def") != "def"
                         && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P -> OOSPRomHandler(context)
                 getProperty("ro.rom.version", "def") != "def"
                         && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P -> OOSPRomHandler(context)
