@@ -179,6 +179,8 @@ abstract class RomHandler constructor(var context: Context) {
                         && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> SamsungRomHandler(context)
                 getProperty("ro.miui.ui.version.code", "def") != "def"
                         && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P -> MiuiPRomHandler(context)
+                getProperty("ro.miui.ui.version.code", "def") != "def"
+                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> MiuiQRomHandler(context)
                 Build.VERSION_CODES.P == Build.VERSION.SDK_INT -> PRomHandler(context)
                 Build.VERSION_CODES.Q == Build.VERSION.SDK_INT -> QRomHandler(context)
                 else -> OreoRomHandler(context)

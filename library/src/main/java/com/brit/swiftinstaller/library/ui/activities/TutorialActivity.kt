@@ -69,7 +69,7 @@ open class TutorialActivity : TutorialActivity() {
             dialog.show()
             return
         }
-        if ((getProperty("ro.config.knox", "def") != "def" || getProperty("ro.miui.ui.version.code", "def") != "def") && Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+        if ((getProperty("ro.config.knox", "def") != "def") && Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
             val dialog = Dialog(this, R.style.AppTheme)
             val layout = View.inflate(this, R.layout.no_root, null)
             dialog.setContentView(layout)
