@@ -32,25 +32,7 @@ class MiuiQRomHandler(context: Context) : QRomHandler(context) {
     override fun getRequiredApps(): Array<String> {
         return arrayOf(
                 "android",
-                "com.android.systemui",
-                "com.google.android.packageinstaller",
-                "com.google.android.inputmethod.latin",
-                "com.amazon.clouddrive.photos",
-                "com.anydo",
-                "com.ebay.mobile",
-                "com.embermitre.pixolor.app",
-                "com.google.android.apps.genie.geniewidget",
-                "com.google.android.apps.inbox",
-                "com.google.android.gm",
-                "com.google.android.talk",
-                "com.mxtech.videoplayer.ad",
-                "com.mxtech.videoplayer.pro",
-                "com.pandora.android",
-                "com.simplecity.amp.pro",
-                "com.Slack",
-                "com.twitter.android",
-                "com.google.android.apps.nexuslauncher",
-                "com.weather.Weather"
+                "com.android.systemui"
         )
     }
 
@@ -65,7 +47,6 @@ class MiuiQRomHandler(context: Context) : QRomHandler(context) {
             override fun getDefaultSelection(): CustomizeSelection {
                 val selection = super.getDefaultSelection()
                 selection["qs_alpha"] = "0"
-                selection["sbar_icons_color"] = "default"
                 return selection
             }
 
@@ -117,10 +98,5 @@ class MiuiQRomHandler(context: Context) : QRomHandler(context) {
         categories.add(CustomizeCategory(context.getString(R.string.quick_settings_style),
                 "qs_alpha", "0", qsOptions,
                 synchronizedArrayListOf("android")))
-        val sbarIconColorOptions = OptionsMap()
-        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_default), "default", infoDialogTitle = context.getString(R.string.sbar_icons_color_default_dialog_title), infoDialogText = context.getString(R.string.sbar_icons_color_default_dialog_text)))
-        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_white), "white", infoDialogTitle = context.getString(R.string.sbar_icons_color_white_dialog_title), infoDialogText = context.getString(R.string.sbar_icons_color_white_dialog_text)))
-
-        categories.add(CustomizeCategory(context.getString(R.string.sbar_icons_color_category), "sbar_icons_color", "white", sbarIconColorOptions, synchronizedArrayListOf("com.android.systemui")))
     }
 }
