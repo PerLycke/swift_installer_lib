@@ -64,7 +64,6 @@ class MiuiQRomHandler(context: Context) : QRomHandler(context) {
 
             override fun getDefaultSelection(): CustomizeSelection {
                 val selection = super.getDefaultSelection()
-                selection["notif_background"] = "dark"
                 selection["qs_alpha"] = "0"
                 selection["sbar_icons_color"] = "default"
                 return selection
@@ -80,21 +79,6 @@ class MiuiQRomHandler(context: Context) : QRomHandler(context) {
         }
     }
     class PiePreviewHandler(context: Context) : PreviewHandler(context) {
-        override fun updateView(palette: MaterialPalette, selection: CustomizeSelection) {
-            super.updateView(palette, selection)
-            val darkNotif = (selection["notif_background"]) == "dark"
-            systemUiPreview?.let {
-                it.notif_bg_layout.setImageResource(R.drawable.notif_bg_rounded)
-                if (darkNotif) {
-                    it.notif_bg_layout.drawable.setTint(
-                            ColorUtils.handleColor(palette.backgroundColor, 8))
-                } else {
-                    it.notif_bg_layout.drawable.setTint(
-                            context.getColor(R.color.notification_bg_light))
-
-                }
-            }
-        }
         override fun updateIcons(selection: CustomizeSelection) {
             super.updateIcons(selection)
             settingsIcons.forEach { icon ->
@@ -125,12 +109,6 @@ class MiuiQRomHandler(context: Context) : QRomHandler(context) {
 
     }
     override fun populatePieCustomizeOptions(categories: CategoryMap) {
-        val notifBackgroundOptions = OptionsMap()
-        notifBackgroundOptions.add(Option(context.getString(R.string.white), "white"))
-        notifBackgroundOptions.add(Option(context.getString(R.string.dark), "dark"))
-        categories.add(CustomizeCategory(context.getString(R.string.notification_tweaks),
-                "notif_background", "white", notifBackgroundOptions, synchronizedArrayListOf("android")))
-
         val qsOptions = OptionsMap()
         val trans =
                 SliderOption(context.getString(R.string.qs_transparency), "qs_alpha")
@@ -139,7 +117,6 @@ class MiuiQRomHandler(context: Context) : QRomHandler(context) {
         categories.add(CustomizeCategory(context.getString(R.string.quick_settings_style),
                 "qs_alpha", "0", qsOptions,
                 synchronizedArrayListOf("android")))
-
         val sbarIconColorOptions = OptionsMap()
         sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_default), "default", infoDialogTitle = context.getString(R.string.sbar_icons_color_default_dialog_title), infoDialogText = context.getString(R.string.sbar_icons_color_default_dialog_text)))
         sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_white), "white", infoDialogTitle = context.getString(R.string.sbar_icons_color_white_dialog_title), infoDialogText = context.getString(R.string.sbar_icons_color_white_dialog_text)))
