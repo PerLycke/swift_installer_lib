@@ -164,25 +164,29 @@ abstract class RomHandler constructor(var context: Context) {
         fun createRomHandler(context: Context): RomHandler {
             return when {
                 getProperty("ro.oxygen.version", "def") != "def"
-                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> OOSQRomHandler(context)
+                        && Build.VERSION.SDK_INT == Build.VERSION_CODES.Q -> OOSQRomHandler(context)
                 getProperty("ro.rom.version", "def") != "def"
-                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> OOSQRomHandler(context)
-                getProperty("ro.oxygen.version", "def") != "def"
-                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P -> OOSPRomHandler(context)
-                getProperty("ro.rom.version", "def") != "def"
-                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P -> OOSPRomHandler(context)
-                getProperty("ro.oxygen.version", "def") != "def"
-                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> OOSOreoRomHandler(context)
-                getProperty("ro.config.knox", "def") != "def"
-                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P -> SamsungPRomHandler(context)
-                getProperty("ro.config.knox", "def") != "def"
-                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> SamsungRomHandler(context)
+                        && Build.VERSION.SDK_INT == Build.VERSION_CODES.Q -> OOSQRomHandler(context)
                 getProperty("ro.miui.ui.version.code", "def") != "def"
                         && Build.VERSION.SDK_INT == Build.VERSION_CODES.Q -> MiuiQRomHandler(context)
+
+                getProperty("ro.oxygen.version", "def") != "def"
+                        && Build.VERSION.SDK_INT == Build.VERSION_CODES.P -> OOSPRomHandler(context)
+                getProperty("ro.rom.version", "def") != "def"
+                        && Build.VERSION.SDK_INT == Build.VERSION_CODES.P -> OOSPRomHandler(context)
                 getProperty("ro.miui.ui.version.code", "def") != "def"
                         && Build.VERSION.SDK_INT == Build.VERSION_CODES.P -> MiuiPRomHandler(context)
-                Build.VERSION_CODES.P == Build.VERSION.SDK_INT -> PRomHandler(context)
+                getProperty("ro.config.knox", "def") != "def"
+                        && Build.VERSION.SDK_INT == Build.VERSION_CODES.P -> SamsungPRomHandler(context)
+
+                getProperty("ro.oxygen.version", "def") != "def"
+                        && Build.VERSION.SDK_INT < Build.VERSION_CODES.P -> OOSOreoRomHandler(context)
+                getProperty("ro.config.knox", "def") != "def"
+                        && Build.VERSION.SDK_INT < Build.VERSION_CODES.P -> SamsungRomHandler(context)
+
                 Build.VERSION_CODES.Q == Build.VERSION.SDK_INT -> QRomHandler(context)
+                Build.VERSION_CODES.P == Build.VERSION.SDK_INT -> PRomHandler(context)
+
                 else -> OreoRomHandler(context)
             }
         }
