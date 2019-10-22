@@ -71,6 +71,12 @@ open class QRomHandler(context: Context) : RomHandler(context) {
         )
     }
 
+    override fun getDisabledOverlays(): SynchronizedArrayList<String> {
+        return synchronizedArrayListOf(
+                "com.touchtype.swiftkey"
+        )
+    }
+
     override fun getDefaultAccent(): Int {
         return ColorUtils.convertToColorInt("1a73e8")
     }

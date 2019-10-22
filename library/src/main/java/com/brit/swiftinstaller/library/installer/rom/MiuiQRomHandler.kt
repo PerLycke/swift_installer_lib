@@ -25,7 +25,8 @@ class MiuiQRomHandler(context: Context) : QRomHandler(context) {
                 "com.android.deskclock",
                 "com.android.phone",
                 "com.android.server.telecom",
-                "com.miui.calculator"
+                "com.miui.calculator",
+                "com.touchtype.swiftkey"
         )
     }
 

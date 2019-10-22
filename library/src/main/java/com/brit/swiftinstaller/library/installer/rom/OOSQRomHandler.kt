@@ -26,7 +26,8 @@ class OOSQRomHandler(context: Context) : QRomHandler(context) {
 
     override fun getDisabledOverlays(): SynchronizedArrayList<String> {
         return synchronizedArrayListOf(
-                "com.google.android.marvin.talkback"
+                "com.google.android.marvin.talkback",
+                "com.touchtype.swiftkey"
         )
     }
 
