@@ -375,11 +375,6 @@ class OverlaysActivity : ThemeActivity() {
                     if (!updatesAvailable)
                         updatesAvailable = updates.contains(it.packageName)
                 }
-                update.visibility = if (updatesAvailable || BuildConfig.DEBUG) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
             }
             container.currentItem == UPDATE_TAB -> {
                 install.visibility = View.GONE
