@@ -18,13 +18,16 @@ object ChangelogHandler {
     fun showChangelog(activity: AppCompatActivity, managedShow: Boolean) {
         val setup = ChangelogSetup.get()
         setup.clearTags()
-        setup.registerTag(SwiftChangelogTag("oreo", "Oreo"))
+        setup.registerTag(SwiftChangelogTag("oreo", "AOSP Oreo"))
         setup.registerTag(SwiftChangelogTag("oos-oreo", "OOS Oreo"))
         setup.registerTag(SwiftChangelogTag("oos-p", "OOS Pie"))
-        setup.registerTag(SwiftChangelogTag("p", "Pie"))
+        setup.registerTag(SwiftChangelogTag("oos-q", "OOS 10"))
+        setup.registerTag(SwiftChangelogTag("p", "AOSP Pie"))
+        setup.registerTag(SwiftChangelogTag("aosp-q", "AOSP 10"))
         setup.registerTag(SwiftChangelogTag("samsung", "Samsung"))
         setup.registerTag(SwiftChangelogTag("samsung-p", "Samsung Pie"))
         setup.registerTag(SwiftChangelogTag("miui-p", "Miui Pie"))
+        setup.registerTag(SwiftChangelogTag("miui-q", "Miui Android 10"))
         setup.registerTag(SwiftChangelogTag("installer", "Installer"))
         setup.registerTag(SwiftChangelogTag("common", ""))
 
