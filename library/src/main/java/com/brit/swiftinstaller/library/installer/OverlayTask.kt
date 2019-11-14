@@ -208,7 +208,7 @@ class OverlayTask(private val om: OverlayManager) : Runnable {
         file.append(
                 "<color name=\"legacy_orange\">#${toHexString(palette.otherBackground)}</color>\n")
         file.append("<color name=\"legacy_control_activated\">#${ColorUtils.getAlpha(
-                palette.backgroundColor, selection.getInt("qs_alpha"))}</color>\n")
+                palette.darkBackgroundColor, selection.getInt("qs_alpha"))}</color>\n")
         file.append(
                 "<item type=\"dimen\" name=\"disabled_alpha_leanback_formwizard\">${getAlphaDimen(
                         selection.getInt("qs_alpha"))}</item>\n")
