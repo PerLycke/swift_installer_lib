@@ -194,6 +194,21 @@ open class QRomHandler(context: Context) : RomHandler(context) {
                 }
 
     open fun populatePieCustomizeOptions(categories: CategoryMap) {
+        val pieIconOptions = OptionsMap()
+        pieIconOptions.add(Option(context.getString(R.string.stock_icons_multi), "default_icons"))
+        pieIconOptions.add(Option(context.getString(R.string.stock_icons), "stock_accented"))
+        categories.add(
+                CustomizeCategory(context.getString(R.string.pie_category_setting_icon), "stock_pie_icons",
+                        "default_icons", pieIconOptions,
+                        synchronizedArrayListOf("com.android.settings",
+                                "com.google.android.apps.wellbeing",
+                                "com.google.android.gms",
+                                "com.cyanogenmod.settings.device",
+                                "com.du.settings.doze",
+                                "com.moto.actions",
+                                "com.slim.device",
+                                "com.aosip.device.DeviceSettings",
+                                "com.google.android.marvin.talkback")))
         val qsOptions = OptionsMap()
         val trans =
                 SliderOption(context.getString(R.string.qs_transparency), "qs_alpha")
