@@ -208,7 +208,8 @@ open class QRomHandler(context: Context) : RomHandler(context) {
                                 "com.moto.actions",
                                 "com.slim.device",
                                 "com.aosip.device.DeviceSettings",
-                                "com.google.android.marvin.talkback")))
+                                "com.google.android.marvin.talkback",
+                                "org.lineageos.settings")))
         val qsOptions = OptionsMap()
         val trans =
                 SliderOption(context.getString(R.string.qs_transparency), "qs_alpha")
