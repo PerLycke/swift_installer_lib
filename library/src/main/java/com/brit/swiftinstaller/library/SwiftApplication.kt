@@ -21,6 +21,7 @@
 
 package com.brit.swiftinstaller.library
 
+import android.app.Application
 import android.content.Intent
 import android.content.IntentFilter
 import com.brit.swiftinstaller.library.installer.rom.RomHandler
@@ -30,13 +31,12 @@ import com.brit.swiftinstaller.library.utils.AppExtrasHandler
 import com.brit.swiftinstaller.library.utils.OverlayUtils
 import com.brit.swiftinstaller.library.utils.PackageListener
 import com.topjohnwu.superuser.BuildConfig
-import com.topjohnwu.superuser.BusyBox
-import com.topjohnwu.superuser.ContainerApp
+import com.topjohnwu.superuser.BusyBoxInstaller
 import com.topjohnwu.superuser.Shell
 import org.jetbrains.anko.doAsync
 import javax.crypto.Cipher
 
-open class SwiftApplication : ContainerApp() {
+open class SwiftApplication : Application() {
 
     val romHandler: RomHandler by lazy {
         RomHandler.createRomHandler(this)
@@ -77,7 +77,7 @@ open class SwiftApplication : ContainerApp() {
 
         Shell.Config.verboseLogging(BuildConfig.DEBUG)
         Shell.Config.setFlags(Shell.FLAG_REDIRECT_STDERR)
-        BusyBox.setup(this)
+        Shell.Config.addInitializers(BusyBoxInstaller::class.java)
     }
 
     open fun createCipher(): Cipher? {
