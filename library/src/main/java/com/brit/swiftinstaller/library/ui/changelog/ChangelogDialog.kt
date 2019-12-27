@@ -42,7 +42,7 @@ class ChangelogDialog : DialogFragment() {
 
         view.btn_ok.setTextColor(context!!.swift.selection.accentColor)
         view.btn_ok.setOnClickListener {
-            getDialog().dismiss()
+            getDialog()?.dismiss()
         }
 
         task = ChangelogParserAsyncTask(activity, pb, adapter, builder)

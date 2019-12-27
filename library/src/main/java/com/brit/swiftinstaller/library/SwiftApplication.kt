@@ -51,7 +51,7 @@ open class SwiftApplication : ContainerApp() {
 
     var selection: CustomizeSelection
         get() {
-            if (currentSelection.isEmpty) {
+            if (currentSelection.isEmpty()) {
                 currentSelection = romHandler.getCustomizeHandler().getSelection()
             }
             return currentSelection

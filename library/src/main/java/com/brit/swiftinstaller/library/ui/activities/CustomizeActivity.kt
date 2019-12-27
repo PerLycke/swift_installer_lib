@@ -271,7 +271,7 @@ class CustomizeActivity : ThemeActivity() {
                 }
                 if (option.subOptions.isNotEmpty()) {
                     optionView.sub_options.setVisible(b)
-                    (optionView.sub_options.tag as RadioGroup?)?.setCurrent(selection[option.subOptionKey])
+                    (optionView.sub_options.tag as RadioGroup?)?.setCurrent(selection[option.subOptionKey]!!)
                 }
             }
             optionView.option_button.tag = option.value
@@ -553,7 +553,7 @@ class CustomizeActivity : ThemeActivity() {
                         if (intent.action == InstallSummaryActivity.ACTION_INSTALL_CANCELLED) {
                             selection.keys.forEach { key ->
                                 if (oldSelection[key] != selection[key]) {
-                                    selection[key] = oldSelection[key]
+                                    selection[key] = oldSelection[key]!!
                                 }
                             }
                             customizeHandler.setSelection(selection)

@@ -21,19 +21,18 @@
 
 package com.brit.swiftinstaller.library.ui.customize
 
-import androidx.collection.ArrayMap
 import org.json.JSONObject
 
-class CustomizeSelection : ArrayMap<String, String>() {
+class CustomizeSelection : HashMap<String, String>() {
 
     var accentColor
-        get() = get("accent").toInt()
+        get() = get("accent")!!.toInt()
         set(v) {
             put("accent", v.toString())
         }
 
     var backgroundColor
-        get() = get("background").toInt()
+        get() = get("background")!!.toInt()
         set(v) {
             put("background", v.toString())
         }
@@ -46,25 +45,16 @@ class CustomizeSelection : ArrayMap<String, String>() {
         return json.toString()
     }
 
-    override fun get(key: String?): String {
-        val s = super.get(key)
-        return if (s.isNullOrEmpty()) {
-            ""
-        } else {
-            s!!
-        }
+    override fun get(key: String): String? {
+        return super.getOrDefault(key, "")
     }
 
     fun getInt(key: String): Int {
-        val s = super.get(key)
-        return if (s.isNullOrEmpty()) {
+        val s = super.getOrDefault(key, "0")
+        return try {
+            s!!.toInt()
+        } catch (e: NumberFormatException) {
             0
-        } else {
-            try {
-                s!!.toInt()
-            } catch (e: NumberFormatException) {
-                0
-            }
         }
     }
 

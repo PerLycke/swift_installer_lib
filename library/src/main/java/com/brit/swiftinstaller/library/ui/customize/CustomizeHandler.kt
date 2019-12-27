@@ -105,7 +105,7 @@ abstract class CustomizeHandler(val context: Context) {
         val def = getDefaultSelection()
         for (key in def.keys) {
             if (!selection.containsKey(key)) {
-                selection[key] = def[key]
+                selection[key] = def[key]!!
             }
         }
         return selection

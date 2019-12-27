@@ -38,8 +38,8 @@ class SettingsActivity : AppCompatActivity() {
                 preferenceScreen.removePreference(
                         preferenceScreen.findPreference(KEY_USE_SOFT_REBOOT))
             } else {
-                val softReboot = preferenceScreen.findPreference(KEY_USE_SOFT_REBOOT) as SwitchPreference
-                softReboot.isChecked = getUseSoftReboot()
+                val softReboot = preferenceScreen.findPreference<SwitchPreference>(KEY_USE_SOFT_REBOOT)
+                softReboot?.isChecked = getUseSoftReboot()
             }
         }
 
