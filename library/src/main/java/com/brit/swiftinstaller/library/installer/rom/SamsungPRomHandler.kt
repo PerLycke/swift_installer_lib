@@ -28,6 +28,7 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.LayerDrawable
 import android.net.Uri
+import android.os.Parcelable
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.brit.swiftinstaller.library.BuildConfig
@@ -40,13 +41,14 @@ import com.hololo.tutorial.library.Step
 import com.hololo.tutorial.library.TutorialActivity
 import kotlinx.android.synthetic.main.customize_preview_sysui.view.*
 import java.io.File
+import java.net.URLConnection
 
 class SamsungPRomHandler(context: Context) : RomHandler(context) {
 
     private val pHandler = PRomHandler(context)
 
     override fun requiresRoot(): Boolean {
-        return isSamsungPatched()
+        return false
     }
 
     override fun getChangelogTag(): String {
@@ -127,7 +129,6 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
             }
             return
         }
-        val extraIntent = intent != null
 
         if (ShellUtils.isRootAvailable) {
             if (!uninstall && oppositeApps.isNotEmpty()) {
@@ -140,81 +141,117 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
             }
             return
         }
-
-        if (apps.contains("android")) {
-            val index = apps.indexOf("android")
-            apps.removeAt(index)
-            apps.add(0, "android")
-        }
-        if (apps.contains("com.google.android.packageinstaller")) {
-            val index = apps.indexOf("com.google.android.packageinstaller")
-            apps.removeAt(index)
-            apps.add(0, "com.google.android.packageinstaller")
-        }
-
-        val intents = Array(if (!extraIntent) {
-            apps.size
-        } else {
-            apps.size + 1
-        }) { i ->
-            val index = if (extraIntent) {
-                i - 1
+        
+        if (Utils.isSynergyInstalled(context, "projekt.samsung.theme.compiler") && Utils.isSynergyCompatibleDevice()) {
+                if (apps.size == 1) {
+                    val file = File(getOverlayPath(apps[0]))
+                    val fileUri = FileProvider.getUriForFile(context,
+                            "${context.packageName}.myprovider", file)
+                    Intent(Intent.ACTION_SEND).run {
+                        `package` = "projekt.samsung.theme.compiler"
+                        putExtra(Intent.EXTRA_STREAM, fileUri)
+                        type = URLConnection.guessContentTypeFromName(file.name)
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        context.startActivity(this)
+                    }
+                } else if (apps.size > 1) {
+                    val fileExtras = arrayListOf<Parcelable>()
+                    apps.forEach { app ->
+                        val fileUri = FileProvider.getUriForFile(
+                                context,
+                                "${context.packageName}.myprovider",
+                                File(getOverlayPath(app))
+                        )
+                        fileExtras.add(fileUri)
+                    }
+                    Intent(Intent.ACTION_SEND_MULTIPLE).run {
+                        `package` = "projekt.samsung.theme.compiler"
+                        putParcelableArrayListExtra(Intent.EXTRA_STREAM, fileExtras)
+                        type = URLConnection.guessContentTypeFromName(File(getOverlayPath(apps[0])).name)
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        context.startActivity(this)
+                    }
+                }
             } else {
-                i
+            val extraIntent = intent != null
+            if (apps.contains("android")) {
+                val index = apps.indexOf("android")
+                apps.removeAt(index)
+                apps.add(0, "android")
             }
-            if (!extraIntent || i > 0) {
-                val appInstall = Intent()
-                if (uninstall) {
-                    appInstall.action = Intent.ACTION_UNINSTALL_PACKAGE
-                    appInstall.data = Uri.fromParts("package",
-                            getOverlayPackageName(apps.elementAt(index)), null)
-                } else {
-                    appInstall.action = Intent.ACTION_INSTALL_PACKAGE
-                    appInstall.data = FileProvider.getUriForFile(context,
-                            "${context.packageName}.myprovider",
-                            File(getOverlayPath(apps.elementAt(index))))
-                }
-                appInstall.addCategory(Intent.CATEGORY_DEFAULT)
-                appInstall.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                appInstall.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                if (context.pm.isAppInstalled("com.google.android.packageinstaller")) {
-                    appInstall.setPackage("com.google.android.packageinstaller")
-                } else if (context.pm.isAppInstalled("com.samsung.android.packageinstaller")) {
-                    appInstall.setPackage("com.samsung.android.packageinstaller")
-                }
-                appInstall
-            } else {
-                intent!!.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                intent
+            if (apps.contains("com.google.android.packageinstaller")) {
+                val index = apps.indexOf("com.google.android.packageinstaller")
+                apps.removeAt(index)
+                apps.add(0, "com.google.android.packageinstaller")
             }
-        }
-        if (intents.isNotEmpty()) {
-            context.startActivities(intents)
-        }
 
-        if (!oppositeApps.isEmpty()) {
-            val oppositeIntents = Array(oppositeApps.size) {
-                val appInstall = Intent()
-                if (!uninstall) {
-                    appInstall.action = Intent.ACTION_UNINSTALL_PACKAGE
-                    appInstall.data = Uri.fromParts("package",
-                            getOverlayPackageName(oppositeApps[it]), null)
+
+            val intents = Array(if (!extraIntent) {
+                apps.size
+            } else {
+                apps.size + 1
+            }) { i ->
+                val index = if (extraIntent) {
+                    i - 1
                 } else {
-                    appInstall.action = Intent.ACTION_INSTALL_PACKAGE
-                    appInstall.data = FileProvider.getUriForFile(context,
-                            BuildConfig.APPLICATION_ID + ".myprovider",
-                            File(getOverlayPath(oppositeApps[it])))
+                    i
                 }
-                appInstall.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                appInstall.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                if (context.pm.isAppInstalled("com.google.android.packageinstaller")) {
-                    appInstall.setPackage("com.google.android.packageinstaller")
-                } else if (context.pm.isAppInstalled("com.samsung.android.packageinstaller")) {
-                    appInstall.setPackage("com.samsung.android.packageinstaller")
+                if (!extraIntent || i > 0) {
+                    val appInstall = Intent()
+                    if (uninstall) {
+                        appInstall.action = Intent.ACTION_UNINSTALL_PACKAGE
+                        appInstall.data = Uri.fromParts("package",
+                                getOverlayPackageName(apps.elementAt(index)), null)
+                    } else {
+                        appInstall.action = Intent.ACTION_INSTALL_PACKAGE
+                        appInstall.data = FileProvider.getUriForFile(context,
+                                "${context.packageName}.myprovider",
+                                File(getOverlayPath(apps.elementAt(index))))
+                    }
+                    appInstall.addCategory(Intent.CATEGORY_DEFAULT)
+                    appInstall.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    appInstall.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    if (context.pm.isAppInstalled("com.google.android.packageinstaller")) {
+                        appInstall.setPackage("com.google.android.packageinstaller")
+                    } else if (context.pm.isAppInstalled("com.samsung.android.packageinstaller")) {
+                        appInstall.setPackage("com.samsung.android.packageinstaller")
+                    }
+                    appInstall
+                } else {
+                    intent!!.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    intent
                 }
-                appInstall
             }
-            context.startActivities(oppositeIntents)
+            if (intents.isNotEmpty()) {
+                context.startActivities(intents)
+            }
+
+            if (!oppositeApps.isEmpty()) {
+                val oppositeIntents = Array(oppositeApps.size) {
+                    val appInstall = Intent()
+                    if (!uninstall) {
+                        appInstall.action = Intent.ACTION_UNINSTALL_PACKAGE
+                        appInstall.data = Uri.fromParts("package",
+                                getOverlayPackageName(oppositeApps[it]), null)
+                    } else {
+                        appInstall.action = Intent.ACTION_INSTALL_PACKAGE
+                        appInstall.data = FileProvider.getUriForFile(context,
+                                BuildConfig.APPLICATION_ID + ".myprovider",
+                                File(getOverlayPath(oppositeApps[it])))
+                    }
+                    appInstall.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    appInstall.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    if (context.pm.isAppInstalled("com.google.android.packageinstaller")) {
+                        appInstall.setPackage("com.google.android.packageinstaller")
+                    } else if (context.pm.isAppInstalled("com.samsung.android.packageinstaller")) {
+                        appInstall.setPackage("com.samsung.android.packageinstaller")
+                    }
+                    appInstall
+                }
+                context.startActivities(oppositeIntents)
+            }
         }
 
         clearAppsToUninstall(context)

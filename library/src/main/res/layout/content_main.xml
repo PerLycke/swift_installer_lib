@@ -39,7 +39,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat"
-        app:subtitleTextAppearance="@style/ToolbarSubtitle"
+        app:subtitleTextAppearance="@style/MainToolbarSubtitle"
         app:title="Swift Installer"
         app:titleTextAppearance="@style/ToolbarTitle" />
 
@@ -76,6 +76,12 @@
             <include
                 android:id="@+id/card_install"
                 layout="@layout/card_install"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <include
+                android:id="@+id/synergy_card_install"
+                layout="@layout/synergy_card_install"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

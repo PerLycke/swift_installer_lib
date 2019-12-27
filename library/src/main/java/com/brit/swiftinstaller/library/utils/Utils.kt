@@ -37,12 +37,29 @@ import androidx.browser.customtabs.CustomTabsIntent
 import java.io.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
+import android.content.pm.PackageManager
+import com.brit.swiftinstaller.library.installer.rom.RomHandler
+
 
 object Utils {
 
     fun isSamsungOreo(): Boolean {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
                 getProperty("ro.config.knox", "def") != "def"
+    }
+
+    fun isSynergyInstalled(context: Context, applicationId: String): Boolean {
+        try {
+            context.packageManager.getPackageInfo(applicationId, PackageManager.GET_ACTIVITIES)
+            return true
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
+        return false
+    }
+    
+    fun isSynergyCompatibleDevice(): Boolean {
+        return Build.VERSION.SDK_INT == Build.VERSION_CODES.P && getProperty("ro.config.knox", "def") != "def" && RomHandler.isSamsungPatched() && !ShellUtils.isRootAccessAvailable
     }
 
     fun createImage(width: Int, height: Int, color: Int): Bitmap {

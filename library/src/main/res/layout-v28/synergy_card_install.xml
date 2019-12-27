@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ /*
+  ~  * Copyright (C) 2019 Griffin Millender
+  ~  * Copyright (C) 2019 Per Lycke
+  ~  * Copyright (C) 2019 Davide Lilli & Nishith Khanna
+  ~  *
+  ~  * This program is free software: you can redistribute it and/or modify
+  ~  * it under the terms of the GNU General Public License as published by
+  ~  * the Free Software Foundation, either version 3 of the License, or
+  ~  * (at your option) any later version.
+  ~  *
+  ~  * This program is distributed in the hope that it will be useful,
+  ~  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~  * GNU General Public License for more details.
+  ~  *
+  ~  * You should have received a copy of the GNU General Public License
+  ~  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  ~  */
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="16dp"
+    android:paddingTop="12dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="0dp">
+
+    <ImageView
+        android:id="@+id/card_install_bg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:contentDescription="@string/image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/big_tile_bg" />
+
+    <ImageView
+        android:id="@+id/card_install_icon"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
+        android:contentDescription="@string/image"
+        app:layout_constraintBottom_toBottomOf="@+id/card_install_bg"
+        app:layout_constraintStart_toStartOf="@+id/card_install_bg"
+        app:layout_constraintTop_toTopOf="@+id/card_install_bg"
+        app:srcCompat="@drawable/ic_install" />
+
+    <TextView
+        android:id="@+id/card_install_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/synergy_card_title"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/card_install_desc"
+        app:layout_constraintEnd_toEndOf="@+id/card_install_bg"
+        app:layout_constraintStart_toEndOf="@+id/card_install_icon"
+        app:layout_constraintTop_toTopOf="@+id/card_install_bg"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/card_install_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/synergy_card_description"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/card_install_bg"
+        app:layout_constraintEnd_toEndOf="@+id/card_install_bg"
+        app:layout_constraintStart_toEndOf="@+id/card_install_icon"
+        app:layout_constraintTop_toBottomOf="@+id/card_install_title" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/installed_info_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/card_install_bg"
+        app:layout_constraintTop_toTopOf="@+id/card_install_bg">
+
+        <ImageView
+            android:id="@+id/installed_info"
+            android:layout_width="98dp"
+            android:layout_height="30dp"
+            android:contentDescription="@string/image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/big_tile_bg" />
+
+        <TextView
+            android:id="@+id/app_count_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@string/synergy_card_app_counter_text"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/installed_info"
+            app:layout_constraintEnd_toStartOf="@+id/app_count"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="@+id/installed_info"
+            app:layout_constraintTop_toTopOf="@+id/installed_info" />
+
+        <TextView
+            android:id="@+id/app_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:minWidth="12dp"
+            android:text="..."
+            android:textColor="@color/minimal_green"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/installed_info"
+            app:layout_constraintEnd_toEndOf="@+id/installed_info"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/app_count_txt"
+            app:layout_constraintTop_toTopOf="@+id/installed_info"
+            tools:ignore="HardcodedText" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

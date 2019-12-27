@@ -28,6 +28,7 @@ import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.applist.AppList
 import com.brit.swiftinstaller.library.ui.applist.AppsTabPagerAdapter
 import com.brit.swiftinstaller.library.utils.OverlayUtils
+import com.brit.swiftinstaller.library.utils.Utils
 import com.brit.swiftinstaller.library.utils.setVisible
 import com.brit.swiftinstaller.library.utils.swift
 import kotlinx.android.synthetic.main.activity_extras.*
@@ -42,7 +43,11 @@ class ExtrasActivity : ThemeActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_extras)
         val extraApps = swift.extrasHandler.appExtras.keys
-        val apps = AppList.activeApps
+        val apps = if (Utils.isSynergyCompatibleDevice()) {
+            AppList.inactiveApps
+        } else {
+            AppList.activeApps
+        }
 
         val pagerAdapter = AppsTabPagerAdapter(supportFragmentManager, false, true, EXTRAS_TAB)
         container.adapter = pagerAdapter

@@ -26,12 +26,15 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import androidx.preference.PreferenceManager
 import android.view.View
+import androidx.browser.customtabs.CustomTabsIntent
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.utils.ShellUtils
+import com.brit.swiftinstaller.library.utils.Utils
 import com.brit.swiftinstaller.library.utils.getProperty
 import com.brit.swiftinstaller.library.utils.swift
 import com.hololo.tutorial.library.TutorialActivity
@@ -76,6 +79,32 @@ open class TutorialActivity : TutorialActivity() {
             dialog.setCancelable(false)
             layout.no_root_msg.text = getString(R.string.android_q_not_yet_supported)
             layout.no_root_exit.visibility = View.VISIBLE
+            layout.no_root_exit.setOnClickListener {
+                finishAffinity()
+            }
+            dialog.show()
+            return
+        }
+
+        if (!Utils.isSynergyInstalled(this, "projekt.samsung.theme.compiler") && Utils.isSynergyCompatibleDevice()) {
+            val dialog = Dialog(this, R.style.AppTheme)
+            val layout = View.inflate(this, R.layout.no_root, null)
+            dialog.setContentView(layout)
+            dialog.setCancelable(false)
+            layout.no_root_msg.text = getString(R.string.synergy_download_message)
+            layout.synergy_download.visibility = View.VISIBLE
+            layout.no_root_exit.visibility = View.VISIBLE
+            layout.synergy_download.text = getString(R.string.synergy_download_now_button)
+            layout.synergy_download.setOnClickListener {
+                        val builder = CustomTabsIntent.Builder()
+                        builder.setToolbarColor(this.swift.selection.backgroundColor)
+                        builder.setSecondaryToolbarColor(this.swift.selection.backgroundColor)
+                        builder.setShowTitle(false)
+                        builder.enableUrlBarHiding()
+                        val intent = builder.build()
+                        intent.intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        intent.launchUrl(this, Uri.parse(getString(R.string.link_synergy)))
+            }
             layout.no_root_exit.setOnClickListener {
                 finishAffinity()
             }

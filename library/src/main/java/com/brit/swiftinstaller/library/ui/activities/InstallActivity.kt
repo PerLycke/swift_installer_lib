@@ -29,10 +29,7 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.MessageQueue
+import android.os.*
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
@@ -86,19 +83,35 @@ class InstallActivity : ThemeActivity() {
 
     private fun installComplete() {
         LocalBroadcastManager.getInstance(applicationContext).unregisterReceiver(installListener)
-        val intent = Intent(this, InstallSummaryActivity::class.java)
-        intent.putExtra("update", update)
-        errorMap.keys.forEach {
-            if (apps.contains(it)) {
-                apps.remove(it)
+        if (Utils.isSynergyInstalled(this, "projekt.samsung.theme.compiler") && Utils.isSynergyCompatibleDevice()) {
+            val intent = Intent(this, SynergySummaryActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent.putExtra("app list", apps)
+            errorMap.keys.forEach {
+                if (apps.contains(it)) {
+                    apps.remove(it)
+                }
             }
+            Holder.installApps.clear()
+            Holder.installApps.addAll(apps)
+            Holder.errorMap.clear()
+            Holder.errorMap.putAll(errorMap)
+            startActivity(intent)
+        } else {
+            val intent = Intent(this, InstallSummaryActivity::class.java)
+            intent.putExtra("update", update)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            errorMap.keys.forEach {
+                if (apps.contains(it)) {
+                    apps.remove(it)
+                }
+            }
+            Holder.installApps.clear()
+            Holder.installApps.addAll(apps)
+            Holder.errorMap.clear()
+            Holder.errorMap.putAll(errorMap)
+            swift.romHandler.postInstall(false, apps, updateAppsToUninstall, intent)
         }
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        Holder.installApps.clear()
-        Holder.installApps.addAll(apps)
-        Holder.errorMap.clear()
-        Holder.errorMap.putAll(errorMap)
-        swift.romHandler.postInstall(false, apps, updateAppsToUninstall, intent)
         finish()
     }
 

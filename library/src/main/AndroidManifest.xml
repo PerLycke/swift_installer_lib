@@ -37,6 +37,14 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.activities.SynergyActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.SynergySummaryActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.activities.CustomizeActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />

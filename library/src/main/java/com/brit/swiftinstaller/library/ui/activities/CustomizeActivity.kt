@@ -457,7 +457,12 @@ class CustomizeActivity : ThemeActivity() {
     }
 
     private fun checkAndAddApp(apps: SynchronizedArrayList<String>, app: String) {
-        if (!apps.contains(app) && swift.romHandler.isOverlayInstalled("android")) {
+        if(Utils.isSynergyInstalled(this, "projekt.samsung.theme.compiler") && Utils.isSynergyCompatibleDevice()) {
+            if (swift.pm.isAppInstalled(app)) {
+                apps.add(app)
+                recompile = true
+            }
+        } else if (!apps.contains(app) && swift.romHandler.isOverlayInstalled("android")) {
             if (swift.pm.isAppInstalled(app) && swift.pm.isAppEnabled(app)) {
                 apps.add(app)
                 recompile = true

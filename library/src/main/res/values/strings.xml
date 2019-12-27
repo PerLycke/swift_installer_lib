@@ -234,4 +234,13 @@
     <string name="setting_icons_samsung_pie_accent_option">Accent</string>
     <string name="setting_icons_samsung_pie_white_option">White</string>
     <string name="android_q_not_yet_supported">Android Q is not yet supported for your device</string>
+    <string name="synergy_card_title">Install</string>
+    <string name="synergy_card_description">Install all your overlays via synergy</string>
+    <string name="synergy_card_app_counter_text">Apps</string>
+    <string name="main_toolbar_synergy_mode">Synergy Mode</string>
+    <string name="main_toolbar_root_mode">Root Mode</string>
+    <string name="main_toolbar_rootless_mode">Rootless Mode</string>
+    <string name="synergy_download_message">Your device can only run Swift Installer without root by using the Synergy plugin, developed by the Substratum team.</string>
+    <string name="synergy_download_now_button">Download Now</string>
+    <string name="go_to_synergy">Go to Synergy</string>
 </resources>

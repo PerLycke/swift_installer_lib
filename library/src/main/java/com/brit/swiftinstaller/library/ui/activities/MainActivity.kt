@@ -54,6 +54,7 @@ import com.brit.swiftinstaller.library.utils.OverlayUtils.enableAllOverlays
 import kotlinx.android.synthetic.main.card_install.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.popup_menu.view.*
+import kotlinx.android.synthetic.main.synergy_card_install.*
 import org.jetbrains.anko.doAsync
 
 
@@ -75,6 +76,13 @@ class MainActivity : ThemeActivity() {
 
         update_checker_spinner.indeterminateDrawable.setColorFilter(swift.selection.accentColor,
                 PorterDuff.Mode.SRC_ATOP)
+         if(Utils.isSynergyInstalled(this, "projekt.samsung.theme.compiler") && Utils.isSynergyCompatibleDevice()) {
+             main_toolbar.subtitle = getString(R.string.main_toolbar_synergy_mode)
+         } else if (ShellUtils.isRootAccessAvailable) {
+             main_toolbar.subtitle = (getString(R.string.main_toolbar_root_mode))
+         } else {
+             main_toolbar.subtitle = (getString(R.string.main_toolbar_rootless_mode))
+         }
 
         doAsync {
             enableAllOverlays()
@@ -102,6 +110,12 @@ class MainActivity : ThemeActivity() {
             val intent = Intent(this, OverlaysActivity::class.java)
             startActivity(intent)
             card_install.isEnabled = false
+        }
+
+        synergy_card_install.setOnClickListener {
+            val intent = Intent(this, SynergyActivity::class.java)
+            startActivity(intent)
+            synergy_card_install.isEnabled = false
         }
 
         card_personalize.setOnClickListener {
@@ -134,7 +148,7 @@ class MainActivity : ThemeActivity() {
     }
 
     private fun setupExtraCard() {
-        if (prefs.getBoolean("foundExtra", false)) {
+        if (prefs.getBoolean("foundExtra", false) || Utils.isSynergyCompatibleDevice()) {
             extrasCard = MainCard(
                     title = getString(R.string.overlay_extras_title),
                     desc = getString(R.string.extras_card_desc),
@@ -224,6 +238,7 @@ class MainActivity : ThemeActivity() {
             }
             override fun finished(installedCount: Int, hasOption: Boolean, updates: SynchronizedArrayList<String>) {
                 active_count.text = String.format("%d", installedCount)
+                app_count.text = String.format("%d", installedCount)
 
                 if (updates.isEmpty()) {
                     updateCard.let {
@@ -238,7 +253,7 @@ class MainActivity : ThemeActivity() {
                 }
 
                 if (!hasOption) {
-                    if (extrasCardShowing) {
+                    if (extrasCardShowing && !Utils.isSynergyCompatibleDevice()) {
                         cards_list.removeView(extrasCard)
                         extrasCardShowing = false
                         prefs.edit().putBoolean("foundExtra", false).apply()
@@ -261,7 +276,13 @@ class MainActivity : ThemeActivity() {
 
         extrasCard?.isEnabled = true
         updateCard?.isEnabled = true
-        card_install.isEnabled = true
+        if (Utils.isSynergyInstalled(this, "projekt.samsung.theme.compiler") && Utils.isSynergyCompatibleDevice()) {
+            synergy_card_install.isEnabled = true
+            card_install.visibility = View.GONE
+        } else {
+            card_install.isEnabled = true
+            synergy_card_install.visibility = View.GONE
+        }
         card_personalize.isEnabled = true
     }
 
