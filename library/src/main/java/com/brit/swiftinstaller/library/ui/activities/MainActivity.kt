@@ -314,7 +314,7 @@ class MainActivity : ThemeActivity() {
                 title = getString(R.string.swift_app_name)
 
                 val pi = packageManager.getPackageInfo(packageName, 0)
-                val m = getString(R.string.swift_installer_version) + " ${pi.versionName}" + " (${pi.getVersionCode()})" + "\n\n" +
+                val m = getString(R.string.swift_installer_version) + " ${pi.versionName}" + "\n\n" +
                         getString(R.string.swift_installer_lib_version) + " ${BuildConfig.VERSION_NAME}" +  " (${BuildConfig.VERSION_CODE})"  + "\n\n" +
                         getString(R.string.github)
                 message = Utils.createLinkedString(this@MainActivity, m, getString(R.string.github), getString(R.string.link_installer_source))

@@ -82,7 +82,7 @@ class InstallSummaryActivity : ThemeActivity() {
                 alert {
                     title = appItem.title
                     icon = appItem.icon
-                    message = "Installer Version: ${getString(R.string.lib_version)} (${packageManager.getPackageInfo(packageName, 0).getVersionCode()})\n" + "App Version: " + appItem.versionName + "\n\n" + errorMap[appItem.packageName]!!
+                    message = "Installer Version: ${getString(R.string.lib_version)}\n" + "App Version: " + appItem.versionName + "\n\n" + errorMap[appItem.packageName]!!
                     positiveButton(R.string.ok) { dialog ->
                         dialog.dismiss()
                     }
@@ -367,7 +367,7 @@ class InstallSummaryActivity : ThemeActivity() {
 
         val text = StringBuilder()
         text.append("\n")
-        text.append("Installer Version: ${getString(R.string.lib_version)} (${packageManager.getPackageInfo(packageName, 0).getVersionCode()})")
+        text.append("Installer Version: ${getString(R.string.lib_version)}")
         text.append("\n")
         text.append("Device: ${Build.DEVICE}")
         text.append("\n")
