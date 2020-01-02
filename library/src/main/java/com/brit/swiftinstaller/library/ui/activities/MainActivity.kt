@@ -77,13 +77,15 @@ class MainActivity : ThemeActivity() {
 
         update_checker_spinner.indeterminateDrawable.setColorFilter(swift.selection.accentColor,
                 PorterDuff.Mode.SRC_ATOP)
-         if(Utils.isSynergyInstalled(this, "projekt.samsung.theme.compiler") && Utils.isSynergyCompatibleDevice()) {
-             main_toolbar.subtitle = getString(R.string.main_toolbar_synergy_mode)
-         } else if (ShellUtils.isRootAccessAvailable) {
-             main_toolbar.subtitle = (getString(R.string.main_toolbar_root_mode))
-         } else {
-             main_toolbar.subtitle = (getString(R.string.main_toolbar_rootless_mode))
-         }
+        if (getProperty("ro.config.knox", "def") != "def") {
+            if (Utils.isSynergyInstalled(this, "projekt.samsung.theme.compiler") && Utils.isSynergyCompatibleDevice()) {
+                main_toolbar.subtitle = getString(R.string.main_toolbar_synergy_mode)
+            } else if (ShellUtils.isRootAccessAvailable) {
+                main_toolbar.subtitle = (getString(R.string.main_toolbar_root_mode))
+            } else {
+                main_toolbar.subtitle = (getString(R.string.main_toolbar_rootless_mode))
+            }
+        }
 
         doAsync {
             enableAllOverlays()
