@@ -27,10 +27,7 @@ import android.content.pm.PackageManager
 import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
 import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import android.os.Handler
-import android.os.SystemClock
+import android.os.*
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ClickableSpan
@@ -56,6 +53,7 @@ import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.popup_menu.view.*
 import kotlinx.android.synthetic.main.synergy_card_install.*
 import org.jetbrains.anko.doAsync
+import java.io.File
 
 
 class MainActivity : ThemeActivity() {
@@ -72,6 +70,9 @@ class MainActivity : ThemeActivity() {
         setContentView(R.layout.activity_main)
         extraApps = swift.extrasHandler.appExtras.keys
 
+        if (Utils.isSynergyCompatibleDevice()) {
+            File(Environment.getExternalStorageDirectory(), ".swift").deleteRecursively()
+        }
         ChangelogHandler.showChangelog(this, true)
 
         update_checker_spinner.indeterminateDrawable.setColorFilter(swift.selection.accentColor,
