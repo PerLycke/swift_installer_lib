@@ -31,7 +31,11 @@
             android:name=".ui.activities.MainActivity"
             android:configChanges="orientation|keyboardHidden"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="projekt.samsung.theme.compiler.IMPORT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.activities.OverlaysActivity"
             android:configChanges="orientation|keyboardHidden"
