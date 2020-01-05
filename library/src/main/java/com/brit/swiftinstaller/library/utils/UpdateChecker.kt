@@ -45,25 +45,31 @@ class UpdateChecker(context: Context, private val callback: Callback?) :
 
         clearAppsToUpdate(context!!)
         val overlays = context.assets.list("overlays") ?: emptyArray()
-        for (packageName in overlays) {
-            if (Utils.isSynergyCompatibleDevice() && context.pm.isAppInstalled(packageName)) {
-                installedCount++
-            } else if (context.swift.romHandler.isOverlayInstalled(packageName)
-                    && context.pm.isAppInstalled(packageName)
-                    && context.pm.isAppEnabled(packageName)) {
-                installedCount++
-                if (OverlayUtils.checkOverlayVersion(context, packageName)
-                        || OverlayUtils.checkAppVersion(context, packageName)) {
-                    updates.add(packageName)
-                    addAppToUpdate(context, packageName)
-                    publishProgress(1)
-                } else {
-                    removeAppToUpdate(context, packageName)
+        if (Utils.isSynergyCompatibleDevice()) {
+            for (packageName in overlays) {
+                if (context.pm.isAppInstalled(packageName)) {
+                    installedCount++
                 }
-                AppList.updateApp(context, packageName)
-                if (OverlayUtils.getOverlayOptions(context, packageName).isNotEmpty() ||
-                        context.swift.extrasHandler.appExtras.containsKey(packageName)) {
-                    hasOption = true
+            }
+        } else {
+            for (packageName in overlays) {
+                if (context.swift.romHandler.isOverlayInstalled(packageName)
+                        && context.pm.isAppInstalled(packageName)
+                        && context.pm.isAppEnabled(packageName)) {
+                    installedCount++
+                    if (OverlayUtils.checkOverlayVersion(context, packageName)
+                            || OverlayUtils.checkAppVersion(context, packageName)) {
+                        updates.add(packageName)
+                        addAppToUpdate(context, packageName)
+                        publishProgress(1)
+                    } else {
+                        removeAppToUpdate(context, packageName)
+                    }
+                    AppList.updateApp(context, packageName)
+                    if (OverlayUtils.getOverlayOptions(context, packageName).isNotEmpty() ||
+                            context.swift.extrasHandler.appExtras.containsKey(packageName)) {
+                        hasOption = true
+                    }
                 }
             }
         }
