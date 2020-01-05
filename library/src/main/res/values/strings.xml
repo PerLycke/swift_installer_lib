@@ -150,7 +150,7 @@
     <string name="reboot_now_title">Reboot now?</string>
     <string name="info_card_compatibility_msg">Please note that we cannot guarantee a stable experience if you use Swift Installer in combination with other themes or mods!</string>
     <string name="instructions">Instructions</string>
-    <string name="no_root_msg">Root access is required for Swift Installer to work on this device and setup. We inform about this in the Play Store description. You can request a refund from the Play Store, or email us your GPA code for a manual refund, within 48 hours of purchase. Email is swiftthemerefunds@gmail.com</string>
+    <string name="no_root_msg">Root access is required for Swift Installer to work on this device and setup. We inform about this in the Play Store description. You can request a refund from the Play Store, or email us your GPA code for a manual refund, within 48 hours of purchase. Email is swiftthemesfeedback@gmail.com</string>
     <string name="exit">Exit</string>
     <string name="requesting_root_access">Requesting root access…</string>
     <string name="search_in_settings">Search in Settings</string>
@@ -213,8 +213,8 @@
     <string name="swift_installer_version">Swift Installer version:</string>
     <string name="swift_installer_lib_version">Swift Installer Lib version:</string>
     <string name="email_feedback_subject">Swift Installer: Feedback</string>
-    <string name="email_feedback">swiftuserhelp@gmail.com</string>
-    <string name="email_reports">swiftthemereports@gmail.com</string>
+    <string name="email_feedback">swiftthemesfeedback@gmail.com</string>
+    <string name="email_reports">swiftthemesfeedback@gmail.com</string>
     <string name="email_reports_subject">Swift Installer: Error log</string>
     <string name="email_send_feedback">Send Feedback</string>
     <string name="email_support_intent_link">mailto:</string>
