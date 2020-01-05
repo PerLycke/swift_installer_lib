@@ -47,7 +47,7 @@ class UpdateChecker(context: Context, private val callback: Callback?) :
         val overlays = context.assets.list("overlays") ?: emptyArray()
         if (Utils.isSynergyCompatibleDevice()) {
             for (packageName in overlays) {
-                if (context.pm.isAppInstalled(packageName)) {
+                if (context.pm.isAppInstalled(packageName) && context.pm.isAppEnabled(packageName) && !context.swift.romHandler.getDisabledOverlays().contains(packageName)) {
                     installedCount++
                 }
             }
