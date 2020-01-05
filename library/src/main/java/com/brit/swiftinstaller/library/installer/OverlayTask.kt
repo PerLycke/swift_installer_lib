@@ -164,7 +164,8 @@ class OverlayTask(private val om: OverlayManager) : Runnable {
 
     private fun applyAccent() {
         val accent = selection.accentColor
-        val darkAccent = ColorUtils.handleColor(accent, 10)
+        val darkAccent = ColorUtils.handleColor(accent, -40)
+        val lightAccent = ColorUtils.handleColor(accent, 40)
         val file = StringBuilder()
         file.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
         file.append("<resources>\n")
@@ -173,6 +174,9 @@ class OverlayTask(private val om: OverlayManager) : Runnable {
                         2)}</color>\n")
         file.append(
                 "<color name=\"material_blue_grey_800\">#${String.format("%06x", darkAccent).substring(
+                        2)}</color>\n")
+        file.append(
+                "<color name=\"material_blue_grey_700\">#${String.format("%06x", lightAccent).substring(
                         2)}</color>\n")
         file.append("<color name=\"highlighted_text_dark\">#${ColorUtils.getAlpha(accent, 30)}</color>\n")
         file.append("</resources>")
