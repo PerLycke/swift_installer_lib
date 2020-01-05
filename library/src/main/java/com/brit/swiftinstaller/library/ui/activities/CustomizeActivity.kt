@@ -576,7 +576,11 @@ class CustomizeActivity : ThemeActivity() {
                 startActivity(intent)
             } else {
                 if (parentActivity == "tutorial") {
-                    val intent = Intent(this, OverlaysActivity::class.java)
+                    val intent = if (Utils.isSynergyCompatibleDevice()) {
+                        Intent(this, SynergyActivity::class.java)
+                    } else {
+                        Intent(this, OverlaysActivity::class.java)
+                    }
                     val bundle = Bundle()
                     intent.putExtras(bundle)
                     startActivity(intent)
