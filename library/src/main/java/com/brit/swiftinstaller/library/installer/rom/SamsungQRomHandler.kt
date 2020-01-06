@@ -27,9 +27,11 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.LayerDrawable
+import android.net.Uri
 import android.os.Parcelable
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.R
 import com.brit.swiftinstaller.library.ui.customize.*
 import com.brit.swiftinstaller.library.utils.*
@@ -43,7 +45,7 @@ import java.net.URLConnection
 
 class SamsungQRomHandler(context: Context) : RomHandler(context) {
 
-    private val qHandler = QRomHandler(context)
+    private val pHandler = PRomHandler(context)
 
     override fun requiresRoot(): Boolean {
         return false
@@ -65,51 +67,51 @@ class SamsungQRomHandler(context: Context) : RomHandler(context) {
     }
 
     override fun getDisabledOverlays(): SynchronizedArrayList<String> {
-            return synchronizedArrayListOf(
-                    "com.android.emergency",
-                    "com.android.bluetooth",
-                    "com.android.phone",
-                    "com.samsung.android.app.aodservice",
-                    "com.samsung.android.app.appsedge",
-                    "com.samsung.android.app.cocktailbarservice",
-                    "com.samsung.android.app.notes",
-                    "com.samsung.android.app.smartcapture",
-                    "com.samsung.android.app.spage",
-                    "com.samsung.android.applock",
-                    "com.samsung.android.bixby.agent",
-                    "com.samsung.android.calendar",
-                    "com.samsung.android.clipboarduiservice",
-                    "com.samsung.android.da.daagent",
-                    "com.samsung.android.game.gametools",
-                    "com.samsung.android.gametuner.thin",
-                    "com.samsung.android.oneconnect",
-                    "com.samsung.android.samsungpassautofill",
-                    "com.samsung.android.securitylogagent",
-                    "com.samsung.android.videolist",
-                    "com.samsung.app.newtrim",
-                    "com.samsung.networkui",
-                    "com.sec.android.app.clockpackage",
-                    "com.sec.android.app.launcher",
-                    "com.sec.android.app.myfiles",
-                    "com.sec.android.app.simsettingmgr",
-                    "com.sec.android.app.soundalive",
-                    "com.sec.android.app.voicenote",
-                    "com.sec.android.daemonapp",
-                    "com.sec.android.gallery3d",
-                    "com.sec.hearingadjust",
-                    "com.android.server.telecom",
-                    "com.wssyncmldm",
-                    "com.samsung.android.scloud",
-                    "com.android.providers.media",
-                    "com.google.android.marvin.talkback"
-            )
+        return synchronizedArrayListOf(
+                "com.android.emergency",
+                "com.android.bluetooth",
+                "com.android.phone",
+                "com.samsung.android.app.aodservice",
+                "com.samsung.android.app.appsedge",
+                "com.samsung.android.app.cocktailbarservice",
+                "com.samsung.android.app.notes",
+                "com.samsung.android.app.smartcapture",
+                "com.samsung.android.app.spage",
+                "com.samsung.android.applock",
+                "com.samsung.android.bixby.agent",
+                "com.samsung.android.calendar",
+                "com.samsung.android.clipboarduiservice",
+                "com.samsung.android.da.daagent",
+                "com.samsung.android.game.gametools",
+                "com.samsung.android.gametuner.thin",
+                "com.samsung.android.oneconnect",
+                "com.samsung.android.samsungpassautofill",
+                "com.samsung.android.securitylogagent",
+                "com.samsung.android.videolist",
+                "com.samsung.app.newtrim",
+                "com.samsung.networkui",
+                "com.sec.android.app.clockpackage",
+                "com.sec.android.app.launcher",
+                "com.sec.android.app.myfiles",
+                "com.sec.android.app.simsettingmgr",
+                "com.sec.android.app.soundalive",
+                "com.sec.android.app.voicenote",
+                "com.sec.android.daemonapp",
+                "com.sec.android.gallery3d",
+                "com.sec.hearingadjust",
+                "com.android.server.telecom",
+                "com.wssyncmldm",
+                "com.samsung.android.scloud",
+                "com.android.providers.media",
+                "com.google.android.marvin.talkback"
+        )
     }
 
     override fun getRequiredApps(): Array<String> {
-            return arrayOf(
-                    "android",
-                    "com.android.systemui"
-            )
+        return arrayOf(
+                "android",
+                "com.android.systemui"
+        )
     }
 
     override fun getDefaultAccent(): Int {
@@ -119,12 +121,7 @@ class SamsungQRomHandler(context: Context) : RomHandler(context) {
     override fun postInstall(uninstall: Boolean, apps: SynchronizedArrayList<String>,
                              oppositeApps: SynchronizedArrayList<String>, intent: Intent?) {
         if (ShellUtils.isRootAvailable) {
-            qHandler.postInstall(uninstall, apps, oppositeApps, intent)
-            if (apps.contains("android") || apps.contains("com.android.systemui")) {
-                runCommand("settings put system current_sec_active_themepackage 1", true)
-                runCommand("settings put system current_theme_support_night_mode 1", true)
-
-            }
+            pHandler.postInstall(uninstall, apps, oppositeApps, intent)
             return
         }
 
@@ -139,40 +136,118 @@ class SamsungQRomHandler(context: Context) : RomHandler(context) {
             }
             return
         }
-        
+
         if (Utils.isSynergyInstalled(context, "projekt.samsung.theme.compiler") && Utils.isSynergyCompatibleDevice()) {
-                if (apps.size == 1) {
-                    val file = File(getOverlayPath(apps[0]))
-                    val fileUri = FileProvider.getUriForFile(context,
-                            "${context.packageName}.myprovider", file)
-                    Intent(Intent.ACTION_SEND).run {
-                        `package` = "projekt.samsung.theme.compiler"
-                        putExtra(Intent.EXTRA_STREAM, fileUri)
-                        type = URLConnection.guessContentTypeFromName(file.name)
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        context.startActivity(this)
-                    }
-                } else if (apps.size > 1) {
-                    val fileExtras = arrayListOf<Parcelable>()
-                    apps.forEach { app ->
-                        val fileUri = FileProvider.getUriForFile(
-                                context,
-                                "${context.packageName}.myprovider",
-                                File(getOverlayPath(app))
-                        )
-                        fileExtras.add(fileUri)
-                    }
-                    Intent(Intent.ACTION_SEND_MULTIPLE).run {
-                        `package` = "projekt.samsung.theme.compiler"
-                        putParcelableArrayListExtra(Intent.EXTRA_STREAM, fileExtras)
-                        type = URLConnection.guessContentTypeFromName(File(getOverlayPath(apps[0])).name)
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        context.startActivity(this)
-                    }
+            if (apps.size == 1) {
+                val file = File(getOverlayPath(apps[0]))
+                val fileUri = FileProvider.getUriForFile(context,
+                        "${context.packageName}.myprovider", file)
+                Intent(Intent.ACTION_SEND).run {
+                    `package` = "projekt.samsung.theme.compiler"
+                    putExtra(Intent.EXTRA_STREAM, fileUri)
+                    type = URLConnection.guessContentTypeFromName(file.name)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    context.startActivity(this)
+                }
+            } else if (apps.size > 1) {
+                val fileExtras = arrayListOf<Parcelable>()
+                apps.forEach { app ->
+                    val fileUri = FileProvider.getUriForFile(
+                            context,
+                            "${context.packageName}.myprovider",
+                            File(getOverlayPath(app))
+                    )
+                    fileExtras.add(fileUri)
+                }
+                Intent(Intent.ACTION_SEND_MULTIPLE).run {
+                    `package` = "projekt.samsung.theme.compiler"
+                    putParcelableArrayListExtra(Intent.EXTRA_STREAM, fileExtras)
+                    type = URLConnection.guessContentTypeFromName(File(getOverlayPath(apps[0])).name)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    context.startActivity(this)
                 }
             }
+        } else {
+            val extraIntent = intent != null
+            if (apps.contains("android")) {
+                val index = apps.indexOf("android")
+                apps.removeAt(index)
+                apps.add(0, "android")
+            }
+            if (apps.contains("com.google.android.packageinstaller")) {
+                val index = apps.indexOf("com.google.android.packageinstaller")
+                apps.removeAt(index)
+                apps.add(0, "com.google.android.packageinstaller")
+            }
+
+
+            val intents = Array(if (!extraIntent) {
+                apps.size
+            } else {
+                apps.size + 1
+            }) { i ->
+                val index = if (extraIntent) {
+                    i - 1
+                } else {
+                    i
+                }
+                if (!extraIntent || i > 0) {
+                    val appInstall = Intent()
+                    if (uninstall) {
+                        appInstall.action = Intent.ACTION_UNINSTALL_PACKAGE
+                        appInstall.data = Uri.fromParts("package",
+                                getOverlayPackageName(apps.elementAt(index)), null)
+                    } else {
+                        appInstall.action = Intent.ACTION_INSTALL_PACKAGE
+                        appInstall.data = FileProvider.getUriForFile(context,
+                                "${context.packageName}.myprovider",
+                                File(getOverlayPath(apps.elementAt(index))))
+                    }
+                    appInstall.addCategory(Intent.CATEGORY_DEFAULT)
+                    appInstall.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    appInstall.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    if (context.pm.isAppInstalled("com.google.android.packageinstaller")) {
+                        appInstall.setPackage("com.google.android.packageinstaller")
+                    } else if (context.pm.isAppInstalled("com.samsung.android.packageinstaller")) {
+                        appInstall.setPackage("com.samsung.android.packageinstaller")
+                    }
+                    appInstall
+                } else {
+                    intent!!.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    intent
+                }
+            }
+            if (intents.isNotEmpty()) {
+                context.startActivities(intents)
+            }
+
+            if (!oppositeApps.isEmpty()) {
+                val oppositeIntents = Array(oppositeApps.size) {
+                    val appInstall = Intent()
+                    if (!uninstall) {
+                        appInstall.action = Intent.ACTION_UNINSTALL_PACKAGE
+                        appInstall.data = Uri.fromParts("package",
+                                getOverlayPackageName(oppositeApps[it]), null)
+                    } else {
+                        appInstall.action = Intent.ACTION_INSTALL_PACKAGE
+                        appInstall.data = FileProvider.getUriForFile(context,
+                                BuildConfig.APPLICATION_ID + ".myprovider",
+                                File(getOverlayPath(oppositeApps[it])))
+                    }
+                    appInstall.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    appInstall.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    if (context.pm.isAppInstalled("com.google.android.packageinstaller")) {
+                        appInstall.setPackage("com.google.android.packageinstaller")
+                    } else if (context.pm.isAppInstalled("com.samsung.android.packageinstaller")) {
+                        appInstall.setPackage("com.samsung.android.packageinstaller")
+                    }
+                    appInstall
+                }
+                context.startActivities(oppositeIntents)
+            }
+        }
 
         clearAppsToUninstall(context)
         clearAppsToInstall(context)
@@ -180,13 +255,13 @@ class SamsungQRomHandler(context: Context) : RomHandler(context) {
 
     override fun installOverlay(context: Context, targetPackage: String, overlayPath: String) {
         if (ShellUtils.isRootAvailable) {
-            qHandler.installOverlay(context, targetPackage, overlayPath)
+            pHandler.installOverlay(context, targetPackage, overlayPath)
         }
     }
 
     override fun uninstallOverlay(context: Context, packageName: String) {
         if (ShellUtils.isRootAvailable) {
-            qHandler.uninstallOverlay(context, packageName)
+            pHandler.uninstallOverlay(context, packageName)
         } else {
             addAppToUninstall(context, getOverlayPackageName(packageName))
         }
@@ -194,14 +269,14 @@ class SamsungQRomHandler(context: Context) : RomHandler(context) {
 
     override fun isOverlayInstalled(targetPackage: String): Boolean {
         if (ShellUtils.isRootAvailable) {
-            return qHandler.isOverlayInstalled(targetPackage)
+            return pHandler.isOverlayInstalled(targetPackage)
         }
         return super.isOverlayInstalled(targetPackage)
     }
 
     override fun getOverlayInfo(pm: PackageManager, packageName: String): PackageInfo {
         if (ShellUtils.isRootAvailable) {
-            return qHandler.getOverlayInfo(pm, packageName)
+            return pHandler.getOverlayInfo(pm, packageName)
         }
         return super.getOverlayInfo(pm, packageName)
     }
@@ -217,7 +292,6 @@ class SamsungQRomHandler(context: Context) : RomHandler(context) {
                 selection["settings_icons_samsung_pie"] = "stock"
                 return selection
             }
-
             override fun populateCustomizeOptions(categories: CategoryMap) {
                 populateQCustomizeOptions(categories)
                 super.populateCustomizeOptions(categories)
@@ -255,9 +329,17 @@ class SamsungQRomHandler(context: Context) : RomHandler(context) {
                             null, null)
                     if (id > 0) {
                         icon.setImageDrawable(context.getDrawable(id))
+
+                        if (selection["settings_icons_color_samsung_pie"] == "accent") {
+                            icon.setColorFilter(selection.accentColor)
+                        } else
+                            if (selection["settings_icons_color_samsung_pie"] == "white") {
+                                icon.setColorFilter(context.getColor(R.color.white))
+
+                            } else {
+                                icon.clearColorFilter()
+                            }
                     }
-                }
-                val qsIcon = (selection["qs_icons_color_samsung_pie"]) == "accent"
                 systemUiIcons.forEach { icon ->
                     val idName =
                             "ic_${context.resources.getResourceEntryName(icon.id)}_aosp"
@@ -265,13 +347,8 @@ class SamsungQRomHandler(context: Context) : RomHandler(context) {
                             null, null)
                     if (id > 0) {
                         val drawable = context.getDrawable(id)?.mutate() as LayerDrawable
-                        if (qsIcon) {
                             drawable.findDrawableByLayerId(R.id.icon_bg)
                                     .setTint(selection.accentColor)
-                        } else {
-                            drawable.findDrawableByLayerId(R.id.icon_bg)
-                                    .setTint(context.getColor(R.color.white))
-                        }
                         drawable.findDrawableByLayerId(
                                 R.id.icon_tint).setTint(selection.backgroundColor)
                         icon.setImageDrawable(drawable)
@@ -279,6 +356,7 @@ class SamsungQRomHandler(context: Context) : RomHandler(context) {
                 }
             }
         }
+    }
 
     private fun populateQCustomizeOptions(categories: CategoryMap) {
 
@@ -290,5 +368,6 @@ class SamsungQRomHandler(context: Context) : RomHandler(context) {
         categories.add(CustomizeCategory(context.getString(R.string.quick_settings_style),
                 "qs_alpha", "0", qsOptions,
                 synchronizedArrayListOf("android")))
+
     }
 }
