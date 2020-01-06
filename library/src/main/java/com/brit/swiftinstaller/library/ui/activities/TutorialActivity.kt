@@ -72,19 +72,6 @@ open class TutorialActivity : TutorialActivity() {
             dialog.show()
             return
         }
-        if ((getProperty("ro.config.knox", "def") != "def") && Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-            val dialog = Dialog(this, R.style.AppTheme)
-            val layout = View.inflate(this, R.layout.no_root, null)
-            dialog.setContentView(layout)
-            dialog.setCancelable(false)
-            layout.no_root_msg.text = getString(R.string.android_q_not_yet_supported)
-            layout.no_root_exit.visibility = View.VISIBLE
-            layout.no_root_exit.setOnClickListener {
-                finishAffinity()
-            }
-            dialog.show()
-            return
-        }
 
         if (!Utils.isSynergyInstalled(this, "projekt.samsung.theme.compiler") && Utils.isSynergyCompatibleDevice()) {
             val dialog = Dialog(this, R.style.AppTheme)

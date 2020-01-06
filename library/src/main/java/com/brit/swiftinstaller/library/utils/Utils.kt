@@ -59,7 +59,7 @@ object Utils {
     }
     
     fun isSynergyCompatibleDevice(): Boolean {
-        return Build.VERSION.SDK_INT == Build.VERSION_CODES.P && getProperty("ro.config.knox", "def") != "def" && RomHandler.isSamsungPatched() && !ShellUtils.isRootAccessAvailable
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && getProperty("ro.config.knox", "def") != "def" && RomHandler.isSamsungPatched() && !ShellUtils.isRootAccessAvailable
     }
 
     fun createImage(width: Int, height: Int, color: Int): Bitmap {

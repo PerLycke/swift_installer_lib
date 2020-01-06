@@ -169,6 +169,9 @@ abstract class RomHandler constructor(var context: Context) {
                         && Build.VERSION.SDK_INT == Build.VERSION_CODES.Q -> OOSQRomHandler(context)
                 getProperty("ro.miui.ui.version.code", "def") != "def"
                         && Build.VERSION.SDK_INT == Build.VERSION_CODES.Q -> MiuiQRomHandler(context)
+                getProperty("ro.config.knox", "def") != "def"
+                        && Build.VERSION.SDK_INT == Build.VERSION_CODES.Q -> SamsungQRomHandler(context)
+
 
                 getProperty("ro.oxygen.version", "def") != "def"
                         && Build.VERSION.SDK_INT == Build.VERSION_CODES.P -> OOSPRomHandler(context)
