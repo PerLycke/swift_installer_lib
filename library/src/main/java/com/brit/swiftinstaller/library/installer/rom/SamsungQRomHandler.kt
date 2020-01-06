@@ -107,7 +107,8 @@ class SamsungQRomHandler(context: Context) : RomHandler(context) {
 
     override fun getRequiredApps(): Array<String> {
             return arrayOf(
-                    "android"
+                    "android",
+                    "com.android.systemui"
             )
     }
 
@@ -217,6 +218,11 @@ class SamsungQRomHandler(context: Context) : RomHandler(context) {
                 return selection
             }
 
+            override fun populateCustomizeOptions(categories: CategoryMap) {
+                populateQCustomizeOptions(categories)
+                super.populateCustomizeOptions(categories)
+            }
+
 
             override fun createPreviewHandler(context: Context): PreviewHandler {
                 return SamsungQPreviewHandler(context)
@@ -273,4 +279,16 @@ class SamsungQRomHandler(context: Context) : RomHandler(context) {
                 }
             }
         }
+
+    private fun populateQCustomizeOptions(categories: CategoryMap) {
+
+        val qsOptions = OptionsMap()
+        val trans =
+                SliderOption(context.getString(R.string.qs_transparency), "qs_alpha")
+        trans.current = 0
+        qsOptions.add(trans)
+        categories.add(CustomizeCategory(context.getString(R.string.quick_settings_style),
+                "qs_alpha", "0", qsOptions,
+                synchronizedArrayListOf("android")))
+    }
 }
