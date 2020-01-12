@@ -342,6 +342,7 @@ class SamsungQRomHandler(context: Context) : RomHandler(context) {
                                 icon.clearColorFilter()
                             }
                     }
+                val qsIcon = (selection["qs_icons_color_samsung_pie"]) == "accent"
                 systemUiIcons.forEach { icon ->
                     val idName =
                             "ic_${context.resources.getResourceEntryName(icon.id)}_aosp"
@@ -349,8 +350,13 @@ class SamsungQRomHandler(context: Context) : RomHandler(context) {
                             null, null)
                     if (id > 0) {
                         val drawable = context.getDrawable(id)?.mutate() as LayerDrawable
+                        if (qsIcon) {
                             drawable.findDrawableByLayerId(R.id.icon_bg)
                                     .setTint(selection.accentColor)
+                        } else {
+                            drawable.findDrawableByLayerId(R.id.icon_bg)
+                                    .setTint(context.getColor(R.color.white))
+                        }
                         drawable.findDrawableByLayerId(
                                 R.id.icon_tint).setTint(selection.backgroundColor)
                         icon.setImageDrawable(drawable)
@@ -370,6 +376,20 @@ class SamsungQRomHandler(context: Context) : RomHandler(context) {
         categories.add(CustomizeCategory(context.getString(R.string.quick_settings_style),
                 "qs_alpha", "0", qsOptions,
                 synchronizedArrayListOf("android")))
+
+        val sbarIconColorOptions = OptionsMap()
+        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_default), "default", infoDialogTitle = context.getString(R.string.sbar_icons_color_default_dialog_title), infoDialogText = context.getString(R.string.sbar_icons_color_default_dialog_text)))
+        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_white), "white", infoDialogTitle = context.getString(R.string.sbar_icons_color_white_dialog_title), infoDialogText = context.getString(R.string.sbar_icons_color_white_dialog_text)))
+        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_grey), "grey", infoDialogTitle = context.getString(R.string.sbar_icons_color_grey_dialog_title), infoDialogText = context.getString(R.string.sbar_icons_color_grey_dialog_text)))
+        sbarIconColorOptions.add(Option(context.getString(R.string.sbar_icons_color_accent), "accent", infoDialogTitle = context.getString(R.string.sbar_icons_color_accent_dialog_title), infoDialogText = context.getString(R.string.sbar_icons_color_accent_dialog_text)))
+
+        categories.add(CustomizeCategory(context.getString(R.string.sbar_icons_color_category), "sbar_icons_color", "stock", sbarIconColorOptions, synchronizedArrayListOf("com.android.systemui")))
+
+        val qsIconColorOptions = OptionsMap()
+        qsIconColorOptions.add(Option(context.getString(R.string.qs_icons_samsung_pie_accent_option), "accent"))
+        qsIconColorOptions.add(Option(context.getString(R.string.qs_icons_samsung_pie_white_option), "white"))
+
+        categories.add(CustomizeCategory(context.getString(R.string.qs_icons_samsung_pie_category), "qs_icons_color_samsung_pie", "accent", qsIconColorOptions, synchronizedArrayListOf("com.android.systemui")))
 
     }
 }
