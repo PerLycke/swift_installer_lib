@@ -6,9 +6,9 @@ import com.topjohnwu.superuser.io.SuFile
 
 object MagiskUtils {
 
-    const val MAGISK_PATH = "/sbin/.magisk/img"
+    const val MAGISK_PATH = "/sbin/.magisk/modules"
     const val MAGISK_MODULE_PATH = "$MAGISK_PATH/swift_installer"
-    const val MAGISk_MODULE_VERSION = 4
+    const val MAGISk_MODULE_VERSION = 5
 
 
     @Suppress("UNUSED_PARAMETER")
