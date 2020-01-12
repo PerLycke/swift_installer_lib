@@ -68,6 +68,8 @@ class SamsungQRomHandler(context: Context) : RomHandler(context) {
 
     override fun getDisabledOverlays(): SynchronizedArrayList<String> {
         return synchronizedArrayListOf(
+                "com.samsung.android.dialer",
+                "com.samsung.android.app.telephonyui",
                 "com.android.emergency",
                 "com.android.bluetooth",
                 "com.android.phone",
