@@ -51,10 +51,10 @@ dependencies {
     implementation 'com.github.MFlisar:changelog:1.1.6'
     implementation 'androidx.browser:browser:1.2.0'
     implementation 'com.github.madrapps:pikolo:2.0.1'
+    implementation 'com.github.nishithkhanna:tutorial-view:1.0.8'
     constraints {
         implementation('androidx.collection:collection:1.1.0') {
             because 'transitive dependencies are including an older version'
         }
     }
-    implementation project(':tutorial-view')
 }
