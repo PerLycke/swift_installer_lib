@@ -7,9 +7,9 @@ import com.brit.swiftinstaller.library.BuildConfig
 import com.brit.swiftinstaller.library.utils.swift
 import com.michaelflisar.changelog.ChangelogBuilder
 import com.michaelflisar.changelog.ChangelogSetup
-import com.michaelflisar.changelog.classes.IChangelogFilter
-import com.michaelflisar.changelog.classes.IRecyclerViewItem
-import com.michaelflisar.changelog.classes.Row
+import com.michaelflisar.changelog.interfaces.IChangelogFilter
+import com.michaelflisar.changelog.interfaces.IRecyclerViewItem
+import com.michaelflisar.changelog.items.ItemRow
 import com.michaelflisar.changelog.internal.ChangelogRecyclerViewAdapter
 import kotlinx.android.parcel.Parcelize
 
@@ -64,7 +64,7 @@ object ChangelogHandler {
 
         override fun checkFilter(item: IRecyclerViewItem): Boolean {
             if (item.recyclerViewType == ChangelogRecyclerViewAdapter.Type.Row) {
-                val tag = (item as Row).tag.xmlTagName
+                val tag = (item as ItemRow).tag.xmlTagName
                 if (tag != this.tag && tag != "installer" && tag != "common") {
                     return false
                 }
