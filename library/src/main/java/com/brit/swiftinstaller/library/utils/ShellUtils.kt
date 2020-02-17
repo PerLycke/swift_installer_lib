@@ -179,34 +179,11 @@ object ShellUtils {
     }
 
     private fun getAapt(context: Context): String? {
-        val aapt = File(File(context.codeCacheDir, "bin"),"aapt")
-        if (aapt.exists()) return aapt.absolutePath
-        if (!context.assets.extractAsset("aapt${getArchString()}", aapt.absolutePath)) {
-            return null
-        }
-        Os.chmod(aapt.absolutePath, 755)
-        return aapt.absolutePath
+        return File(File(context.codeCacheDir, "bin"),"aapt").absolutePath
     }
 
     private fun getZipalign(context: Context): String? {
-        val zipalign = File(File(context.codeCacheDir, "bin"),"zipalign")
-        if (zipalign.exists()) return zipalign.absolutePath
-        if (!context.assets.extractAsset("zipalign${getArchString()}", zipalign.absolutePath)) {
-            return null
-        }
-        Os.chmod(zipalign.absolutePath, 755)
-        return zipalign.absolutePath
-    }
-
-    private fun getArchString(): String {
-        if (Arrays.toString(Build.SUPPORTED_ABIS).contains("86")) {
-            return "86"
-        } else {
-            if (Build.SUPPORTED_64_BIT_ABIS.isNotEmpty()) {
-                return "64"
-            }
-        }
-        return ""
+        return File(File(context.codeCacheDir, "bin"),"zipalign").absolutePath
     }
 }
 
