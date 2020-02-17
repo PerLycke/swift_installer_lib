@@ -15,7 +15,7 @@ import java.util.zip.ZipFile
 
 
 object SharedLibraryLoader {
-    private val TAG = SharedLibraryLoader.javaClass.name
+    private val TAG = SharedLibraryLoader::class.java.simpleName
 
     fun extractNativeLibrary(
             context: Context,
