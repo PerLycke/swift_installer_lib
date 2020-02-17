@@ -29,11 +29,13 @@ import com.brit.swiftinstaller.library.ui.customize.CustomizeSelection
 import com.brit.swiftinstaller.library.utils.AppExtrasHandler
 import com.brit.swiftinstaller.library.utils.OverlayUtils
 import com.brit.swiftinstaller.library.utils.PackageListener
+import com.brit.swiftinstaller.library.utils.SharedLibraryLoader
 import com.topjohnwu.superuser.BuildConfig
 import com.topjohnwu.superuser.BusyBox
 import com.topjohnwu.superuser.ContainerApp
 import com.topjohnwu.superuser.Shell
 import org.jetbrains.anko.doAsync
+import java.io.File
 import javax.crypto.Cipher
 
 open class SwiftApplication : ContainerApp() {
@@ -73,6 +75,9 @@ open class SwiftApplication : ContainerApp() {
 
             OverlayUtils.checkAndHideOverlays(this@SwiftApplication)
             AppList.updateList(this@SwiftApplication)
+            val localBinaryDir = File(applicationContext.codeCacheDir, "bin")
+            localBinaryDir.mkdirs()
+            arrayOf("aapt", "zipalign").forEach { SharedLibraryLoader.extractNativeLibrary(applicationContext, it, File(localBinaryDir, it))  }
         }
 
         Shell.Config.verboseLogging(BuildConfig.DEBUG)

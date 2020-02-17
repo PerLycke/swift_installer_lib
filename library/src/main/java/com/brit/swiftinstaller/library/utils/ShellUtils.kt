@@ -179,7 +179,7 @@ object ShellUtils {
     }
 
     private fun getAapt(context: Context): String? {
-        val aapt = File(context.cacheDir, "aapt")
+        val aapt = File(File(context.codeCacheDir, "bin"),"aapt")
         if (aapt.exists()) return aapt.absolutePath
         if (!context.assets.extractAsset("aapt${getArchString()}", aapt.absolutePath)) {
             return null
@@ -189,7 +189,7 @@ object ShellUtils {
     }
 
     private fun getZipalign(context: Context): String? {
-        val zipalign = File(context.cacheDir, "zipalign")
+        val zipalign = File(File(context.codeCacheDir, "bin"),"zipalign")
         if (zipalign.exists()) return zipalign.absolutePath
         if (!context.assets.extractAsset("zipalign${getArchString()}", zipalign.absolutePath)) {
             return null
