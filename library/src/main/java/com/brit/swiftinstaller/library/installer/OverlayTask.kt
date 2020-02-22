@@ -179,6 +179,7 @@ class OverlayTask(private val om: OverlayManager) : Runnable {
                 "<color name=\"material_blue_grey_700\">#${String.format("%06x", lightAccent).substring(
                         2)}</color>\n")
         file.append("<color name=\"highlighted_text_dark\">#${ColorUtils.getAlpha(accent, 30)}</color>\n")
+        file.append("<color name=\"highlighted_text_light\">#${ColorUtils.getAlpha(accent, 15)}</color>\n")
         file.append("</resources>")
 
         val values = File(resDir, "/values")
