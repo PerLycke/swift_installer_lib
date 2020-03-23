@@ -79,8 +79,6 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
                     "com.samsung.android.app.spage",
                     "com.samsung.android.applock",
                     "com.samsung.android.bixby.agent",
-                    "com.samsung.android.calendar",
-                    "com.samsung.android.clipboarduiservice",
                     "com.samsung.android.da.daagent",
                     "com.samsung.android.game.gametools",
                     "com.samsung.android.gametuner.thin",
@@ -90,7 +88,6 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
                     "com.samsung.android.videolist",
                     "com.samsung.app.newtrim",
                     "com.samsung.networkui",
-                    "com.sec.android.app.clockpackage",
                     "com.sec.android.app.launcher",
                     "com.sec.android.app.myfiles",
                     "com.sec.android.app.simsettingmgr",
@@ -102,7 +99,6 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
                     "com.android.server.telecom",
                     "com.wssyncmldm",
                     "com.samsung.android.scloud",
-                    "com.android.providers.media",
                     "com.google.android.marvin.talkback"
             )
     }
