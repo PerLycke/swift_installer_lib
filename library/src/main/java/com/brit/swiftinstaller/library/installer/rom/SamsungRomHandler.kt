@@ -64,7 +64,9 @@ class SamsungRomHandler(context: Context) : RomHandler(context) {
     override fun getDisabledOverlays(): SynchronizedArrayList<String> {
         return synchronizedArrayListOf(
                 "com.android.emergency",
-                "com.samsung.android.app.reminder"
+                "com.samsung.android.app.reminder",
+                "com.samsung.android.mobileservice",
+                "com.sec.android.mimage.photoretouching"
         )
     }
 
