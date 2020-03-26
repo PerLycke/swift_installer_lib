@@ -69,7 +69,6 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
     override fun getDisabledOverlays(): SynchronizedArrayList<String> {
             return synchronizedArrayListOf(
                     "com.android.emergency",
-                    "com.android.bluetooth",
                     "com.android.phone",
                     "com.samsung.android.app.aodservice",
                     "com.samsung.android.app.appsedge",
@@ -90,7 +89,6 @@ class SamsungPRomHandler(context: Context) : RomHandler(context) {
                     "com.samsung.networkui",
                     "com.sec.android.app.launcher",
                     "com.sec.android.app.myfiles",
-                    "com.sec.android.app.simsettingmgr",
                     "com.sec.android.app.soundalive",
                     "com.sec.android.app.voicenote",
                     "com.sec.android.daemonapp",
