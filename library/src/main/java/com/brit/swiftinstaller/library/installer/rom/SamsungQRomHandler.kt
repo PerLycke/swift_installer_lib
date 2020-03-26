@@ -105,7 +105,10 @@ class SamsungQRomHandler(context: Context) : RomHandler(context) {
                 "com.wssyncmldm",
                 "com.samsung.android.scloud",
                 "com.android.providers.media",
-                "com.google.android.marvin.talkback"
+                "com.google.android.marvin.talkback",
+                "com.samsung.android.app.reminder",
+                "com.samsung.android.mobileservice",
+                "com.sec.android.mimage.photoretouching"
         )
     }
 
