@@ -48,6 +48,7 @@ object SharedLibraryLoader {
                         }
                     }
                     zipFile.close()
+                    destination.setExecutable(true, false)
                     return true
                 } catch (e: Exception) {
                     Log.d(TAG, "Failed to load library apk:/$libZipPath", e)
